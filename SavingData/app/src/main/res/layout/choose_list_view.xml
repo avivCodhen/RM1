@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="4dp"
+    android:background="@drawable/selector"
+
+    >
+
+    <ImageView
+        android:id="@+id/choose_list_view_imageView"
+        android:layout_width="@dimen/exercise_size_height"
+        android:layout_height="@dimen/exercise_size_height"
+        android:background="@drawable/strongest_exercise"
+       />
+
+
+
+</LinearLayout>

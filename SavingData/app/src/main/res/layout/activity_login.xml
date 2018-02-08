@@ -1,0 +1,48 @@
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v4.view.ViewPager
+        android:layout_marginTop="50dp"
+        android:id="@+id/login_activity_viewPager"
+        android:layout_width="300dp"
+        android:layout_height="330dp"
+        android:layout_centerHorizontal="true">
+
+    </android.support.v4.view.ViewPager>
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabDots"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="350dp"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"/>
+
+
+    <Button
+        android:layout_above="@+id/login_activity_registerBtn"
+        android:id="@+id/login_activity_logInBtn"
+        android:text="@string/log_in"
+        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:background="@drawable/strongest_buttons"
+        android:layout_marginTop="460dp"
+       android:layout_centerHorizontal="true"
+        android:layout_marginBottom="13dp" />
+
+
+        <Button
+            android:layout_alignParentBottom="true"
+            android:id="@+id/login_activity_registerBtn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:text="REGISTER"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/strongest_buttons"/>
+
+</RelativeLayout>

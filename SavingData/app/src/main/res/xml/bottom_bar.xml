@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Tab>
+
+    <tab
+        id="@+id/tab_home"
+        icon="@drawable/ic_home_black_24dp"
+        activeColor="@color/colorPrimary"
+        titleSize="6dp"
+        title="Home"
+
+        />
+    <tab
+        id="@+id/tab_workout"
+        icon="@drawable/ic_content_paste_black_24dp"
+        activeColor="@color/colorPrimary"
+        titleSize="6dp"
+        title="Workout"
+
+        />
+    <tab
+        id="@+id/tab_progress"
+        icon="@drawable/ic_assessment_black_24dp"
+        activeColor="@color/colorPrimary"
+        titleSize="6dp"
+        title="Progress"
+
+        />
+
+
+
+</Tab>

@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/create_program_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+<Button
+    android:id="@+id/create_create_image_view"
+    android:text="SAVE"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+<com.strongest.savingdata.MyViews.WorkoutView.WorkoutView
+    android:id="@+id/workout_test"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"></com.strongest.savingdata.MyViews.WorkoutView.WorkoutView>
+
+
+</LinearLayout>
+

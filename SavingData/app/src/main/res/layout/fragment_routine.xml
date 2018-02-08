@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/routines_linearLayout"
+    >
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:id="@+id/fragment_routine_textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/routine_discription"
+        android:textAlignment="center"
+        android:textSize="18dp" />
+
+
+
+
+        <RadioGroup
+            android:id="@+id/fragment_routine_radioGroup"
+            android:layout_below="@id/fragment_routine_textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <RadioButton
+                android:id="@+id/fragment_routine_fbwBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FBW"
+
+                />
+
+            <RadioButton
+                android:layout_marginTop="10dp"
+                android:id="@+id/fragment_routine_abBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AB"
+                />
+
+            <RadioButton
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/fragment_routine_fbwBtn"
+                android:id="@+id/fragment_routine_abcBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ABC"
+                />
+
+            <RadioButton
+                android:layout_marginTop="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/fragment_routine_fbwBtn"
+                android:id="@+id/fragment_routine_abcdeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ABCDE"
+                />
+
+            <RadioButton
+                android:layout_marginTop="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/fragment_routine_fbwBtn"
+                android:id="@+id/fragment_routine_customBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Custom Template"
+                />
+        </RadioGroup>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/fragment_routine_radioGroup"
+        android:id="@+id/fragment_routine_textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp" />
+    <Button
+        android:background="@drawable/strongest_buttons"
+        android:layout_alignParentBottom="true"
+        android:text="build program"
+        android:id="@+id/fragment_routine_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>

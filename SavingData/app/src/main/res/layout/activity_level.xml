@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/activity_level_layout"
+    android:orientation="vertical"
+
+    tools:context="com.strongest.savingdata.Activities.LevelActivity">
+
+
+    <SeekBar
+        android:progress="1"
+        android:layout_above="@+id/activity_level_textview"
+        android:max="3"
+        android:padding="8dp"
+        android:id="@+id/activity_level_seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="20dp"
+        android:id="@+id/activity_level_textview"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:textColor="#fff"
+        android:text="Don't worry, you can change it later."
+        android:layout_below="@+id/activity_level_textview"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/activity_level_save"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        android:textAllCaps="false"
+        android:text="Finish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

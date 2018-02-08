@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+    <View
+        android:id="@+id/article_view_line"
+        android:layout_width="1dp"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentRight="true"></View>
+
+    <ImageView
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_toLeftOf="@id/article_view_line"
+        android:background="@color/colorAccent"
+        android:id="@+id/article_image"
+        android:layout_weight="2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"></ImageView>
+
+    <LinearLayout
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@id/article_image"
+        android:id="@+id/article_layout1"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+
+            android:id="@+id/article_title"
+            android:maxLines="10"
+            android:textAlignment="textStart"
+            android:textSize="16dp"
+            android:text="המאמר המוצלח ביותר שקיים"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:textAlignment="textStart"
+            android:text=""
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/article_title"
+            android:id="@+id/article_summary"
+            android:maxLines="100"
+            android:textSize="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />/>
+
+        <Button
+
+            android:layout_marginTop="40dp"
+            android:id="@+id/article_read_button"
+            android:text="read"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"/>
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+    
+
+</RelativeLayout>

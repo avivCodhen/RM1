@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ToggleButton
+        android:textColor="#fff"
+        android:textOn=""
+        android:textOff=""
+        android:background="@drawable/strongest_selected_buttons"
+        android:textSize="@dimen/choose_buttons_size"
+        android:id="@+id/manager_tv"
+        android:text="Low Rep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"/>
+</LinearLayout>

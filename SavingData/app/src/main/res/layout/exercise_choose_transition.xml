@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionGroup="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/exerciseView_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    />/ android:background="#F3F3F3"
+
+    <RelativeLayout
+
+        android:layout_below="@+id/exercise_list_view_progress_plan_tv"
+        android:id="@+id/list_view_exercise_lay1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/strongest_selected_buttons"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        >
+
+
+        <!--<ImageView
+             android:id="@+id/ex1"
+             android:layout_width="@dimen/exercise_view_size"
+             android:layout_height="@dimen/exercise_size_height"
+             android:background="@drawable/buttons_default_not_highlight"
+              />-->
+
+        <TextView
+            android:id="@+id/exerciseView_nameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+
+            android:layout_marginTop="-1dp"
+            android:layout_toEndOf="@+id/ex1"
+            android:layout_toRightOf="@+id/ex1"
+            android:text=""
+            android:textSize="14sp"
+            android:textColor="#fff"
+
+            />
+
+        <TextView
+
+            android:id="@+id/exerciseView_setsTV"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/exerciseView_nameTV"
+
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/ex1"
+            android:background="@drawable/strongest_selected_buttons"
+            android:backgroundTint="#CD853F"
+            android:paddingBottom="0.5dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingTop="0.5dp"
+            android:textColor="#fff"
+            android:textSize="30sp"
+           />
+
+
+        <TextView
+            android:id="@+id/exerciseView_repsTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/exerciseView_setsTV"
+            android:layout_alignBottom="@+id/exerciseView_setsTV"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/exerciseView_setsTV"
+            android:layout_toRightOf="@+id/exerciseView_setsTV"
+            android:background="@drawable/strongest_selected_buttons"
+            android:backgroundTint="#791976d2"
+            android:paddingBottom="0.5dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingTop="0.5dp"
+            android:text=""
+            android:textColor="#fff"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/exerciseView_restTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/exerciseView_setsTV"
+            android:layout_alignBottom="@+id/exerciseView_setsTV"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/exerciseView_repsTV"
+            android:layout_toRightOf="@+id/exerciseView_repsTV"
+            android:background="@drawable/strongest_selected_buttons"
+            android:backgroundTint="#A6A6A6"
+            android:paddingBottom="1dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingTop="1dp"
+            android:text=""
+            android:textColor="#fff"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/exerciseView_methodTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/exerciseView_repsTV"
+            android:layout_alignBottom="@+id/exerciseView_repsTV"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/exerciseView_restTV"
+            android:layout_toRightOf="@+id/exerciseView_restTV"
+            android:background="@drawable/strongest_selected_buttons"
+            android:backgroundTint="#7800796b"
+            android:paddingBottom="1dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingTop="1dp"
+            android:textColor="#fff"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/exerciseView_weightTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/exerciseView_methodTV"
+            android:layout_alignBottom="@+id/exerciseView_methodTV"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/exerciseView_methodTV"
+            android:background="@drawable/strongest_selected_buttons"
+            android:backgroundTint="#79737474"
+            android:paddingBottom="1dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingTop="1dp"
+            android:textColor="#fff"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

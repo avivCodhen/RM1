@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingLeft="10dp"
+    android:gravity="center"
+    android:id="@+id/weight_keyboard_decimal_layout"
+    >
+
+
+    <Button
+        android:id="@+id/keyboard_up_arrow"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="-10dp"
+        android:background="@drawable/sort_up_selector"></Button>
+
+
+    <TextView
+        android:text=".5"
+        android:id="@+id/keyboard_unEven_numbers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/keyboard_down_arrow"
+        android:layout_marginTop="-10dp"
+        android:layout_above="@id/keyboard_down_arrow"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/sort_down_selector"></Button>
+
+
+</LinearLayout>

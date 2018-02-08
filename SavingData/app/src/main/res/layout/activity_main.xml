@@ -1,0 +1,28 @@
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:src="@drawable/logo"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="230dp"
+        android:layout_height="360dp" />
+
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="-40dp"
+        android:textSize="20dp"
+        android:text="www.strongest.co.il"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:text="Your new fitness home."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

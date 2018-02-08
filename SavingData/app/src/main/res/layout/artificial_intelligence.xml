@@ -1,0 +1,68 @@
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<com.allattentionhere.fabulousfilter.AAH_FilterView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="60dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+
+        android:id="@+id/rl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bb_tabletRightBorderDark"
+        android:visibility="invisible"
+        tools:ignore="MissingPrefix"
+        tools:visibility="visible">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/ai_tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/ai_view"></android.support.design.widget.TabLayout>
+
+        <ImageView
+            android:id="@+id/ai_imageview"
+            android:src="@drawable/ai"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        <View
+            android:id="@+id/ai_view"
+            android:layout_marginBottom="20dp"
+            android:layout_above="@+id/ll_buttons"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@id/ai_imageview"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"></View>
+
+        <android.support.v4.view.ViewPager
+            android:layout_below="@+id/ai_tablayout"
+            android:layout_above="@+id/ll_buttons"
+            android:id="@+id/ai_viewpager"
+            android:layout_toEndOf="@+id/ai_view"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+        <LinearLayout
+            android:id="@+id/ll_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/bb_inActiveBottomBarItemColor"
+            android:orientation="horizontal"
+            android:weightSum="2">
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</com.allattentionhere.fabulousfilter.AAH_FilterView>
+</FrameLayout>

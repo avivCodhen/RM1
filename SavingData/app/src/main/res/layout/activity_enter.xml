@@ -1,0 +1,39 @@
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <EditText
+        android:id="@+id/enter_activity_emailED"
+        android:layout_gravity="center"
+        android:hint="email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/enter_activity_passwordED"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:hint="password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:id="@+id/enter_activity_checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remember me" />
+
+    <Button
+        android:id="@+id/enter_activiy_logIn"
+        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:background="@drawable/strongest_buttons"
+        android:layout_gravity="center"
+        android:text="@string/log_in"
+        android:layout_marginTop="30dp"/>
+
+
+</LinearLayout>

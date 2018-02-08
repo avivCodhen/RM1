@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:id="@+id/choose_number_pyramid_linear_layout"
+    >
+
+
+    <Button
+        android:textColor="@color/cardview_dark_background"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:id="@+id/choose_number_pyramid_add_set_btn"
+        android:background="@android:color/transparent"
+        android:text="Add a set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:id="@+id/choose_number_pyramid_sc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/choose_number_pyramid_innerlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

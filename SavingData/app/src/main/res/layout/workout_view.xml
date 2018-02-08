@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:id="@+id/workoutview_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorAccent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/workout_view_workoutmenubutton"
+            android:gravity="center_vertical"
+            android:paddingRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:textColor="#ffff"
+                android:text="A"
+                android:textAllCaps="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+
+                android:id="@+id/workout_view_arrow"
+                android:layout_marginLeft="13dp"
+                android:backgroundTint="#fff"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:background="@drawable/expand_arrow_24px"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_toLeftOf="@+id/workout_view_lock"
+            android:id="@+id/workout_view_layoutTV"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/workout_view_workoutmenubutton"
+            android:fontFamily="assets/varela_round_regular"
+            android:text="LIST NAME"
+            android:textSize="18dp"
+            android:textColor="#ffff"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/workout_view_lock"
+            android:background="@drawable/lock_white_24px"
+            android:layout_width="25dp"
+            android:layout_height="25dp" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/progress_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="fuck you"
+        android:visibility="gone" />
+
+    <android.support.v4.view.ViewPager
+        android:layout_marginTop="5dp"
+        android:id="@+id/workoutview_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+
+</LinearLayout>

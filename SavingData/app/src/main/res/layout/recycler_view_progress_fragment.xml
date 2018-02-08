@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:textAlignment="center"
+        android:id="@+id/progress_recycler_view_exercise_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_weight="2"
+        />
+
+    <TextView
+        android:id="@+id/progress_fragment_currentMax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.4"
+        android:text="45kg"
+        android:textAlignment="center" />
+
+    <View
+
+        android:layout_width="1dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0"
+        android:background="#FF0000FF"></View>
+
+    <TextView
+        android:id="@+id/progress_fragment_current_reps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.4"
+        android:text="3"
+        android:textAlignment="center" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"></View>
+
+    <TextView
+        android:id="@+id/progress_fragment_all_time_Max"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.4"
+        android:text="45kg"
+        android:textAlignment="center" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0"
+        android:background="#FF0000FF"></View>
+
+    <TextView
+        android:id="@+id/progress_fragment_all_time_reps"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.4"
+        android:text="3"
+        android:textAlignment="center" />
+
+
+</LinearLayout>

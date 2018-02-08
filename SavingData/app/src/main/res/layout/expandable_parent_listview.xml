@@ -1,0 +1,46 @@
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/buttons_default_not_highlight">
+
+        <TextView
+
+            android:layout_marginLeft="35dp"
+            android:id="@+id/routine_listView_TV1"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="AB1" />
+
+        <TextView
+
+            android:id="@+id/routine_listView_TV2"
+            android:textColor="#FF0000"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:padding="16dp"
+            android:layout_marginLeft="70dp"
+            android:text=" - This routine is not recommended for you." />
+
+        <RadioButton
+            android:id="@+id/routine_listView_RB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:focusable="false"/>
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

@@ -1,0 +1,619 @@
+<resources>
+
+    <string name="transition_icon">icon</string>
+    <string name="transition_exercise">exercise</string>
+    <string name="transition_superset_exercise">exercise</string>
+    <string name="transition_reps">reps</string>
+    <string name="transition_superset_reps">reps</string>
+    <string name="transition_sets">sets</string>
+    <string name="transition_rest">method</string>
+    <string name="transition_method">sets</string>
+
+    <string name="app_name">Strongest</string>
+    <string name="untrained_description">You do not have experience lifting weights at all, or you have not been training regularly for a year or more.\n\nYour progress will be fast, and the programming will be simple.</string>
+    <string name="intermediate_description">You have been lifting weights regularly for at least a year, and have experience with the basic lifts(squat, deadlift and bench press).\n\nYou will get to choose advanced Methods and unlock advanced progress.</string>
+    <string name="novice_description">You have been training regulary for up to several months, and have experience lifting free weights.\n\nYou will get to choose Methods and more complex progress. </string>
+    <string name="advanced_description">You have been lifting weights regularly for a couple of years, have experience with the basic lifts, and consider yourself strong with the basic lifts(squat, deadlift and bench press).\n\nYou will be introduced to Overriders for maximum results.</string>
+    <string name="fbw1_description">"FBW 1 is a simple full body workout, recommended for trainees that are new to lifting weights or had a long break.\n\nit consists of simple programming and key exercises for each body part for fast and effective results.\n\nRecommended level: Untrained."</string>
+    <string name="fbw2_description">"FBW 2 is a slight more advanced full body workout routine, split into three full body workouts (A,B and C).\n\nit allows for a slight more work as the trainee advances in training.\n\nRecommended level: Novice"</string>
+    <string name="ab1_description">"AB 1 is a split routine, divided into two workouts: A and B.\n\nit allows for more work per body and advanced programming.\n\nRecommended level: Novice-Intermediate"</string>
+    <string name="ab2_description">"AB 2 is a double split routine, dividing the workouts into four workouts:\nA1 - Lower body low intensity\nB1 - Upper body high intensity\nA2 - Lower body high intensity\nB2 - Upper body low intensity.\n\nRecommended level: Novice-Intermediate"</string>
+    <string name="abc1_description">"ABC 1 is a more advanced split routine, dividing the workouts into A, B and C.\n\nit offers more work per body part per workout, and allows for far more complex programming.\n\nRecommended level: Intermediate-Advanced"</string>
+    <string name="abc2_description">"ABC 2 is similar to ABC 1, with the change of working less body parts per workout, but more specific work per body part.\n\nIt's advantage is in more volume for the body parts per workout.\n\nRecommended level: Intermediate-Advanced"</string>
+    <string name="abcde_description">"ABCDE is the most advanced split routine, divided into four different workouts.\n\nIt allows for the highest volume per body part, but has the disadvantage of low frequency training per body part (a body part is only trained once a week)\n\nRecommended level: Advanced"</string>
+    <string name="level_untrained">Recommended level: Untrained</string>
+    <string name="level_novice">Recommended level: Novice</string>
+    <string name="level_novice_intermediate">Recommended level: Novice-Intermediate</string>
+    <string name="level_intermediate_advanced">Recommended level: Intermediate-Advanced</string>
+    <string name="level_advanced">Recommended level: Advanced</string>
+    <string name="toast_noLevelChoose">Please estimate your level and experience</string>
+    <string name="UNTRAINED">Untrained</string>
+    <string name="NOVICE">Novice</string>
+    <string name="INTERMEDIATE">Intermediate</string>
+    <string name="ADVANCED">Advanced</string>
+    <string name="details_programCreate">Welcome to the self design program creation!\n\nIn here, you will be provided with instructions to create your own program, followed by general guidelines based on science for optimum results.</string>
+    <string name="routine_fragment_advice">*We do not advise to choose the most advanced recommended routine. Pick in between and advance from there.</string>
+    <string name="swipe">Swipe to learn more</string>
+    <string name="swipe_details">Strongest is your new fitness life changing app.</string>
+    <string name="swipe_create">Easly create and design profesional workouts.</string>
+    <string name="swipe_improve">New progress system to help you improve, develop and see results.</string>
+    <string name="swipe_progress">Track, manage and compare your progress.</string>
+    <string name="title_estimate">Estimate level</string>
+    <string name="error_estimate">Please estimate your level.</string>
+    <string name="error_frequency">Please choose your training frequency.</string>
+    <string name="title_frequency">Frequency</string>
+    <string name="log_in">log in</string>
+    <string name="days_discription">How many days per week are you willing to train?</string>
+    <string name="days_suggestion">*We do not recommend to train less than 2 times per week, and more than 6 workouts per week.</string>
+    <string name="days_2">At least 2 times</string>
+    <string name="days_3">3 times at most</string>
+    <string name="days_4">4 times at most</string>
+    <string name="_5_days_5">5 times or more</string>
+    <string name="level_discription">Which level do you estimate your current training experience to be?</string>
+    <string name="routine_discription">Choose your preferred workout routine:</string>
+    <string name="routine_not_recommend">This routine is not recommended for you.</string>
+    <string name="routine_detail_yes">Sounds good</string>
+    <string name="routine_details_no">Let me think</string>
+    <string name="routine_notrecommend">- Not recommended for you.</string>
+    <string name="title_routine">Routine</string>
+    <string name="Error_routine">Please choose a routine.</string>
+    <string name="creatingviewpager_TV">Just before you are ready to design your own profesional workout, please swipe to better understand the program creator.</string>
+    <string name="createviewpager_title">Almost!</string>
+    <string name="rockey_description">"Our Generator is a built on science based algorithms.\"\n\n It can create proffesional workouts for you with a few touches."</string>
+    <string name="rockstar_description">"Create your own program.\"\n\n You will be able to create your own touch-made program easly and fast."</string>
+    <string name="body_part_prompt">Choose body part</string>
+    <string name="limit_tv">Do you trust us or do you trust yourself?</string>
+    <string name="limit_title">Limitations</string>
+    <string name="choose_repetttion_title">Choose Repetition range:</string>
+    <string name="choose_exercise_title">Choose exercise:</string>
+    <string name="choose_method_title">Choose a Method(Optional):</string>
+    <string name="level_determiner_title">Level Determiner</string>
+    <string name="determine_level_tv">Not sure about your level?</string>
+    <string name="level_determiner_btn_text">Determine Level</string>
+    <string name="Error">Error</string>
+    <string name="create_fragment_alert_message">Leaving will reset everything. Are you sure?</string>
+    <string name="im_sure">I\'m sure</string>
+    <string name="wait">wait</string>
+
+
+    <!--
+    this is for the drawler layout navigation
+    -->
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string-array name="determiner_questions_array">
+        <item>How many days are you planning to workout?</item>
+        <item>Are you familiar with the core lifting exercises(Squat, Bench, Deadlift, Overhead Press)?</item>
+        <item>What would you consider your strength level(do you lift big)?</item>
+        <item>How many months IN A ROW have you been working out(not overall)?</item>
+    </string-array>
+
+    <string-array name="determiner_answer0_array">
+        <item>At least 2 times</item>
+        <item>3 times at most</item>
+        <item>4 times at most</item>
+        <item>5 times or more</item>
+    </string-array>
+    <string-array name="determiner_answer1_array">
+        <item>These are food names right?</item>
+        <item>Have the resource to learn them</item>
+        <item>Familiar with the lifts</item>
+        <item>Control well</item>
+    </string-array>
+    <string-array name="determiner_answer2_array">
+        <item>"Not sure which strength you\'re talking about"</item>
+        <item>Have not had the chance to work on my strength</item>
+        <item>Not too shaby</item>
+        <item>Strong as hell</item>
+    </string-array>
+    <string-array name="determiner_answer3_array">
+        <item>None to weeks</item>
+        <item>A couple of months</item>
+        <item>Between half a year to a year</item>
+        <item>A year or more</item>
+    </string-array>
+
+    <string-array name="levels_description_array">
+        <item name="untrained_description">You do not have experience lifting weights at all, or you have not been training regularly for a year or more.\n\nYour progress will be fast, and the programming will be simple.</item>
+        <item name="intermediate_description">You have been lifting weights regularly for at least a year, and have experience with the basic lifts(squat, deadlift and bench press).\n\nYou will get to choose advanced Methods and unlock advanced progress.</item>
+        <item name="novice_description">You have been training regulary for up to several months, and have experience lifting free weights.\n\nYou will get to choose Methods and more complex progress. </item>
+        <item name="advanced_description">You have been lifting weights regularly for a couple of years, have experience with the basic lifts, and consider yourself strong with the basic lifts(squat, deadlift and bench press).\n\nYou will be introduced to Overriders for maximum results.</item>
+    </string-array>
+
+    methods used - FDropset, IDropset, FIsometric, IIsometric, FFailure, IFailure.
+    <string-array name="methods_array">
+        <item>Max Set</item>
+        <item>To Failure</item>
+        <item>Last Dropset</item>
+        <item>End Dropset</item>
+        <item>Last Isometric</item>
+        <item>End Isometric</item>
+        <item>Last Rest Pause</item>
+        <item>End Rest Pause</item>
+
+    </string-array>
+
+    <string-array name="methods_description">
+        <item>Last set give everything you have got until failure.</item>
+        <item>Reach to failure in every set.</item>
+        <item>Finish the sets, Drop 5-10% weight off, and continue to failure with no rest. Up to three extra sets.</item>
+        <item>On each set, perform a set and then drop 5-10% weight off, and reach similar reps with no rest. One extra set per set.</item>
+        <item>Last set hold on isometric for as much as possible.</item>
+        <item>On each set, hold on isometric for as much as possible.</item>
+        <item>Last set rest for 10 seconds and perform another set with the same weight.</item>
+        <item>On each set, perform and rest for 10 seconds and perform another set. One extra set per set.</item>
+
+    </string-array>
+
+
+    <string-array name="reps_array">
+        <item>"Low Rep\n3-5"</item>
+        <item>"Medium Rep\n6-10"</item>
+        <item>"High Rep\n10-15"</item>
+        <item>"Low Pyramid\n3,5,8"</item>
+        <item>"Med Pyramid\n6,8,10"</item>
+        <item>"High Pyramid\n10,12,15"</item>
+    </string-array>
+
+    <string-array name="reps_string_array">
+        <item>Low Rep</item>
+        <item>Medium Rep</item>
+        <item>High Rep</item>
+        <item>Low Pyramid</item>
+        <item>Med Pyramid</item>
+        <item>High Pyramid</item>
+    </string-array>
+
+    <string-array name="fbw_arrays">
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Shoulders</item>
+        <item>Triceps</item>
+        <item>Biceps</item>
+        <item>Legs</item>
+
+    </string-array>
+
+    <string-array name="ab_arrays">
+        <item>Chest</item>
+        <item>Shoulders</item>
+        <item>Triceps</item>
+        <item>Back</item>
+        <item>Legs</item>
+        <item>Biceps</item>
+    </string-array>
+
+    <string-array name="abc_arrays">
+        <item>Chest</item>
+        <item>Biceps</item>
+        <item>Back</item>
+        <item>Triceps</item>
+        <item>Legs</item>
+        <item>Shoulders</item>
+    </string-array>
+
+    <string-array name="abcde_array">
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Shoulders</item>
+        <item>Arms</item>
+        <item>Legs</item>
+    </string-array>
+
+    <string-array name="routines_names">
+        <item>FBW</item>
+        <item>AB</item>
+        <item>ABC</item>
+        <item>ABCDE</item>
+    </string-array>
+
+    <string-array name="workouts">
+        <item>Workout A</item>
+        <item>Workout B</item>
+        <item>Workout C</item>
+        <item>Workout D</item>
+        <item>Workout E</item>
+    </string-array>
+
+    <string-array name="chest_exercises">
+        <item>Barbell Flat Bench Press</item>
+        <item>Barbell Incline Bench Press</item>
+        <item>Barbell Decline Bench Press</item>
+        <item>Dumbbell Decline Bench Press</item>
+        <item>Pushups</item>
+        <item>Dips</item>
+        <item>Dumbbell Flat Bench Press</item>
+        <item>Dumbbell Incline Bench Press</item>
+        <item>Dumbbell Flat Flies</item>
+        <item>Dumbbell Incline Flies</item>
+        <item>Dumbbell Decline Flies</item>
+        <item>Cable Standing Flies</item>
+        <item>Machine Flat Bench Press</item>
+        <item>Machine Incline Bench Press</item>
+        <item>Machine Decline Bench Press</item>
+        <item>Machine Flies</item>
+        <item>Smith Machine Bench Press</item>
+
+
+    </string-array>
+
+    <string-array name="chest_exercise_description">
+        <item>"Core Compound Exercise.\n\nSuggested exercise for every lifter, in any level. It involves all the chest muscles, including Triceps and shoulders. Great for improving strength."</item>
+        <item>"Compound Exercise.\n\nSimilar to the Flat Bench Press, Incline forces more involvement from the Upper chest. Great for improving the Upper chest"</item>
+        <item>"Compound Exercise.\n\nSimilar to the Flat Bench Press, Decline forces more involvement from the Lower chest. Great for improving overall chest developement."</item>
+        <item>"Compound Exercise.\n\nSimilar to the Barbell variant, using Dumbbells."</item>
+        <item>"Compound Exercise.\n\nWeight can be added to increase difficulty and effectiveness."</item>
+        <item>"Compound Exercise.\n\nWeight can be added to increase difficulty and effectiveness."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Barbell variant, using Dumbbells."</item>
+        <item>"IIsolation Exercise.\n\nSimilar to the Barbell variant, using Dumbbells."</item>
+        <item>"Isolation Exercise\n\nInvolves mainly the chest muscles. Great for going High Rep and getting pump."</item>
+        <item>"Isolation Exercise\n\nInvolves mainly the chest muscles. Incline Forces more involvement from the Upper chest. Great for improving the Upper chest."</item>
+        <item>"Isolation Exercise\n\nInvolves mainly the chest muscles. Decline forces more involvement from the Lower chest."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Flies, using Cables."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Cable Flies variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Flat Bench Press, but with Smith Machine."</item>
+
+    </string-array>
+
+    <string-array name="back_exercises">
+        <item>Barbell Deadlift</item>
+        <item>Barbell Bent Over Row</item>
+        <item>Barbell Rack Pulse</item>
+        <item>Dumbell Chainsaw Row</item>
+        <item>Pullups</item>
+        <item>Chinups</item>
+        <item>Dumbell Pullover</item>
+        <item>Cable Sitted Row</item>
+        <item>Cable Wide-Grip Seated Row</item>
+        <item>Cable Pulldown</item>
+        <item>Cable Close-Grip Pulldown</item>
+        <item>Cable Pullover</item>
+        <item>Machine Row</item>
+        <item>Machine Pullover</item>
+
+
+    </string-array>
+
+
+    <string-array name="back_exercise_description">
+        <item>"Core Compound Exercise.\n\nGreat for big weights and improving strength."</item>
+        <item>"Compound Exercise.\n\nSuggested exercise to be learned and controled in any level. Great for improving strength."</item>
+        <item>"Compound Exercise.\n\nAdvanced exercise that shold be controled. Used mostly on advanced strength programs."</item>
+        <item>"Compound Exercise.\n\nOne-hand row that targets mainly the back muscles."</item>
+        <item>"Compound Exercise.\n\nWeight can be added to increase difficulty and effectiveness."</item>
+        <item>"Compound Exercise.\n\nWeight can be added to increase difficulty and effectiveness."</item>
+        <item>"Isolation Exercise.\n\nInvolves mainly the back muscles."</item>
+        <item>"Isolation Exercise.\n\nInvolves mainly the back muscles."</item>
+        <item>"Isolation Exercise.\n\nInvolves mainly the back muscles."</item>
+        <item>"Isolation Exercise.\n\nInvolves mainly the back muscles."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Bent Over Row, but sited and with cables."</item>
+        <item>"Beginners Exercise\n\nA pullups movement done sited with cable."</item>
+        <item>"Beginners Exercise\n\nSimilar to Pulldown, but wide grip."</item>
+        <item>"Beginners Exercise\n\nSimilar to the Dumbbel variant, but standing, and with cable."</item>
+    </string-array>
+
+    <string-array name="shoulder_exercises">
+        <item>Barbell Standing Overhead Press</item>
+        <item>Barbell Sited Overhead Press</item>
+        <item>Barbell Upright Row</item>
+        <item>Dumbbell Shoulder Press</item>
+        <item>Dumbbell Front Raise</item>
+        <item>Dumbbell Lateral Raise</item>
+        <item>Dumbbell Arnold Press</item>
+        <item>Dumbbell Upright Row</item>
+        <item>Dumbbell Rear Delt Row</item>
+        <item>Dumbbell Rear Delt Lateral Raise</item>
+        <item>Cable Lateral Raise</item>
+        <item>Cable Upright Row</item>
+        <item>Cable Rear Delt Lateral Raise</item>
+        <item>Smith Machine Sited Overhead Press</item>
+        <item>Machine Shoulder Press</item>
+        <item>Machine Front Raise</item>
+        <item>Machine Lateral Raise</item>
+        <item>Machine Rear Delt Lateral Raise</item>
+
+    </string-array>
+
+    <string-array name="shoulder_exercise_description">
+        <item>"Core Compound Exercise.\n\nGreat for big weights and improving strength."</item>
+        <item>"Compound Exercise.\n\nSimilar to the Standing Overhead but with sited."</item>
+        <item>"Compound Exercise.\n\nInvolves all the front shoulder muscles."</item>
+        <item>"Compound Exercise.\n\nSuggested exercise for all levels."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Barbell variant, using Dumbbells."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Barbell variant, using Dumbbells."</item>
+        <item>"Isolation Exercise\n\nInvolves mainly the chest muscles. Great for going High Rep and getting pump."</item>
+        <item>"Isolation Exercise\n\nInvolves mainly the chest muscles. Incline Forces more involvement from the Upper chest. Great for improving the Upper chest."</item>
+        <item>"Isolation Exercise\n\nInvolves mainly the chest muscles. Decline forces more involvement from the Lower chest."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Flies, using Cables."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Cable Flies variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Cable Flies variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Cable Flies variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+    </string-array>
+
+    <string-array name="legs_exercises">
+        <item>Barbell Squat</item>
+        <item>Barbell Front Squat</item>
+        <item>Barbell Romanian Deadlift</item>
+        <item>Barbbell Lunge</item>
+        <item>Dumbbell Lunge</item>
+        <item>Machine Leg Press</item>
+        <item>Dumbbell Squat</item>
+        <item>Dumbbell Romanian Deadlift</item>
+        <item>Machine Knee Extension</item>
+        <item>Machine Knee Flexion</item>
+        <item>Machine Hack Squat</item>
+        <item>Smith Machine Squat</item>
+        <item>Smith Machine Front Squat</item>
+        <item>Smith Machine Lunge</item>
+        <item>Smith Machine Calves</item>
+    </string-array>
+
+    <string-array name="legs_exercise_description">
+        <item>"Advanced Exercise.\n\nGreat for big weights and improving strength."</item>
+        <item>"Advanced Exercise.\n\nSimilar to the Standing Overhead but with sited."</item>
+        <item>"Intermediate Exercise.\n\nInvolves all the front shoulder muscles."</item>
+        <item>"Intermediate Exercise.\n\nInvolves all the front shoulder muscles."</item>
+        <item>"Beginners Exercise.\n\nSuggested exercise for all levels."</item>
+        <item>"Intermediate Exercise.\n\nSimilar to the Flies, using Cables."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Cable Flies variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Intermediate Exercise.\n\nSimilar to the Barbell variant, using Dumbbells."</item>
+        <item>"Intermediate Exercise.\n\nSimilar to the Barbell variant, using Dumbbells."</item>
+        <item>"intermediate Exercise\n\nInvolves mainly the chest muscles. Great for going High Rep and getting pump."</item>
+        <item>"Beginners Exercise\n\nInvolves mainly the chest muscles. Incline Forces more involvement from the Upper chest. Great for improving the Upper chest."</item>
+    </string-array>
+
+    <string-array name="triceps_exercises">
+        <item>Barbell Close-Grip Bench Press</item>
+        <item>EZ Bar Skull Crusher</item>
+        <item>EZ Bar Close-Grip Bench Press</item>
+        <item>Dumbbell Close-Grip Bench Press</item>
+        <item>Dumbbell Overhead Extension</item>
+        <item>Dumbbell Skull Crusher</item>
+        <item>Dumbbell Kickback</item>
+        <item>Cable Kickback</item>
+        <item>Cable Triceps Extension</item>
+        <item>Machine Triceps Extension</item>
+        <item>Narrow Pushups</item>
+        <item>Narrow Dips</item>
+        <item>Jacksons</item>
+    </string-array>
+
+    <string-array name="triceps_exercise_description">
+        <item>"Compound Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Cable Flies variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Cable Flies variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Isolation Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Cable Flies variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Cable Flies variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+        <item>"Beginners Exercise.\n\nSimilar to the Bench Press variant. Machines are mostly suggested for beginners, or at the end of the workout."</item>
+
+    </string-array>
+
+    <string-array name="biceps_exercises">
+        <item>Reverse Grip Cable Sitted Row</item>
+        <item>Barbell Standing Curls</item>
+        <item>EZ Bar Standing Curls</item>
+        <item>Dumbbell Standing Curls</item>
+        <item>Dumbbell Incline Curls</item>
+        <item>Dumbbell Standing Hammer Curls</item>
+        <item>Dumbbell Incline Hammer Curls</item>
+        <item>Cable Standing Curls</item>
+        <item>Cable Standing Hammer Curls</item>
+        <item>Machine Bicep Curls</item>
+    </string-array>
+
+    <string-array name="biceps_exercise_description">
+        <item>"Compound Exercise.\n\nGreat for big weights and improving strength."</item>
+        <item>"Isolation Exercise\n\nInvolves mainly the chest muscles. Great for going High Rep and getting pump."</item>
+        <item>"Isolation Exercise\n\nInvolves mainly the chest muscles. Incline Forces more involvement from the Upper chest. Great for improving the Upper chest."</item>
+        <item>"Isolation Exercise\n\nInvolves mainly the chest muscles. Great for going High Rep and getting pump."</item>
+        <item>"Isolation Exercise\n\nInvolves mainly the chest muscles. Incline Forces more involvement from the Upper chest. Great for improving the Upper chest."</item>
+        <item>"Isolation Exercise\n\nInvolves mainly the chest muscles. Decline forces more involvement from the Lower chest."</item>
+        <item>"Beginners Exercise\n\nInvolves mainly the chest muscles. Great for going High Rep and getting pump."</item>
+        <item>"Beginners Exercise\n\nInvolves mainly the chest muscles. Great for going High Rep and getting pump."</item>
+        <item>"Beginners Exercise\n\nInvolves mainly the chest muscles. Incline Forces more involvement from the Upper chest. Great for improving the Upper chest."</item>
+        <item>"Beginners Exercise\n\nInvolves mainly the chest muscles. Decline forces more involvement from the Lower chest."</item>
+    </string-array>
+
+
+    <string-array name="routines_description">
+        <item>FBW is a simple full body workout, recommended for trainees that are new to lifting weights or had a long break.\n\nit consists of simple programming and key exercises for each body part for fast and effective results.\n\nRecommended level: Untrained.</item>
+        <item>AB is a split routine, divided into two workouts: A and B.\n\nit allows for more work per body and advanced programming.\n\nRecommended level: Novice-Intermediate</item>
+        <item>ABC is a more advanced split routine, dividing the workouts into A, B and C.\n\nit offers more work per body part per workout, and allows for far more complex programming.\n\nRecommended level: Intermediate-Advanced</item>
+        <item>"ABCDE is the most advanced split routine, divided into four different workouts.\n\nIt allows for the highest volume per body part, but has the disadvantage of low frequency training per body part (a body part is only trained once a week)\n\nRecommended level: Advanced"</item>
+    </string-array>
+
+    <string-array name="arms_exercises">
+
+
+    </string-array>
+
+    <string-array name="create_generator_questions">
+        <item>Workouts Per Week</item>
+        <item>Workout Template</item>
+        <item>Program Exercise level</item>
+        <item>Program Volume</item>
+        <item>Program Intensity</item>
+        <item>Program Complexity</item>
+
+    </string-array>
+
+
+    <string name="chest">"Chest"</string>
+    <string name="back">"Back"</string>
+    <string name="shoulders">"Shoulders"</string>
+    <string name="triceps">"Triceps"</string>
+    <string name="biceps">"Biceps"</string>
+    <string name="legs">"Legs"</string>
+    <string name="arms">"Arms"</string>
+    <string name="posterior_legs">"Posterior Legs"</string>
+    <string name="anterior_legs">"Anterior Legs"</string>
+    <string name="anterior_shoulders">"Anterior Shoulders"</string>
+    <string name="rear_shoulders">"Rear Shoulders"</string>
+    <string name="abs">"Abs"</string>
+
+
+    <string name="all_eng_exercises_table">"exerciseeng"</string>
+    <string name="legs_eng_exercises_table">"legseng"</string>
+    <string name="chest_eng_exercises_table">"chesteng"</string>
+    <string name="back_eng_exercises_table">"backeng"</string>
+    <string name="shoulders_eng_exercises_table">"shoulderseng"</string>
+    <string name="arms_eng_exercises_table">"armseng"</string>
+
+    <string name="muscle">Muscle</string>
+    <string name="damage">Damage</string>
+    <string name="mechanical_stress">Mechanical \n Stress</string>
+    <string name="metabolic_stress">metabolic \n Stress</string>
+    <string name="progress_tile_exercise">Exercise</string>
+    <string name="progress_tile_current_weight">Current\n Weight</string>
+    <string name="progress_tile_current_reps">For\n Reps</string>
+    <string name="progress_tile_alltimereps">For \nReps</string>
+    <string name="progress_tile_alltimemax">All-time\n Max</string>
+
+    <string-array name="workout_ham_buttons_title">
+        <item>Auto Progress</item>
+        <item>Progress by weight</item>
+        <item>Progress by volume</item>
+        <item>Progress by variety</item>
+        <item>Return</item>
+
+
+    </string-array>
+
+    <string-array name="workout_ham_buttons_sub_text">
+        <item>The system will determine the progress for you</item>
+        <item>Adds weight to all exercises in this workout</item>
+        <item>Adds more volume to the program</item>
+        <item>Changes elements in the workout</item>
+        <item>""</item>
+
+
+    </string-array>
+
+    <string-array name="muscles_arr">
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Legs(all)</item>
+        <item>Shoulders(all)</item>
+        <item>Arms(all)</item>
+        <item>Triceps</item>
+        <item>Biceps</item>
+        <item>Anterior Shoulders</item>
+        <item>Rear Shoulders</item>
+        <item>Anterior Legs</item>
+        <item>Posterior Legs</item>
+        <item>Abs</item>
+
+    </string-array>
+
+    <array name="sets_arr">
+        <item>1 Set</item>
+        <item>2 Sets</item>
+        <item>3 Sets</item>
+        <item>4 Sets</item>
+        <item>5 Sets</item>
+    </array>
+
+    <array name="rest_arr">
+        <item>15s</item>
+        <item>30s</item>
+        <item>45s</item>
+        <item>1m</item>
+        <item>1.30m</item>
+        <item>2m</item>
+        <item>2.30m</item>
+        <item>3m+</item>
+    </array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="creator_suggestions">
+        <item>Your muscle frequency is freq_num times per week. It is recommended to have f-l exercises.</item>
+        <item>Based on your level been level_name:</item>
+        <item>"it is best to include "</item>
+        <item>you may </item>
+        <item>method</item>
+    </string-array>
+
+
+    <string-array name="creator_suggestions_exercises">
+        <item>complex machine exercises.</item>
+        <item>a mix of machine and dumbell execrcises.</item>
+        <item>a mix of complex and isolated exercises.</item>
+        <item>barbell and complex exercises</item>
+    </string-array>
+
+    <string-array name="creator_suggestions_reps">
+        <item>favor more high rep.</item>
+        <item>"include a low rep exercise('s)."</item>
+        <item>aim to have a mix of all repetitions.</item>
+    </string-array>
+
+    <string-array name="creator_suggestions_method">
+        <item>it is not recommended for you to pick a method.</item>
+    </string-array>
+
+    <string-array name="creator_notes">
+        <item>You should choose exercises you are familiar with.</item>
+        <item>For a more dominant metabolic stress, favor high rep and med rep.</item>
+        <item>For a more dominant mechanical stress, favor low rep and med rep.</item>
+        <item>For a balanced workout, favor a mix of all the repetitions.</item>
+        <item>"You don't have to choose a method. it is mostly used to progress and make the workout harder."</item>
+        <item>Three sets is a fine pick for the number of sets of an exercise</item>
+        <item>The lower the repetitions, the more rest you should pick, and vice versa.</item>
+    </string-array>
+    <!-- untrained, novice, intermediate, advanced -->
+
+
+    <string-array name="artificial_intelligence_stats">
+        <item>You have not added any exercises.</item>
+        <item>muscle has too low stat. You should consider suggestion.</item>
+        <item>muscle has too high stat. You should consider suggestion.</item>
+        <item></item>
+    </string-array>
+
+    <string-array name="artificial_intelligence_stats_options">
+        <item>damage</item>
+        <item>metabolic</item>
+        <item>mechanical</item>
+    </string-array>
+
+    <!--<string-array name="artificial_intelligence_suggestions_options">
+        <item>adding at least one more exercise.</item>
+        <item>removing an exercise.</item>
+        <item>changing one exercise to med rep or high rep.</item>
+        <item>changing one exercise to med rep or low rep</item>
+        
+
+    </string-array>-->
+
+    <string name="ai_change_to_more_complex_exercise">You have picked only n complex exercises. You
+    should change an exercise to a complex exercise.</string>
+    <string name="ai_add_to_more_complex_exercise">You have picked only n complex exercises. You
+    should add at least another complex exercise.</string>
+
+    <string name="ai_not_enough_exercises">tmuscle does not have enough exercises. You should have atleast nexercise exercises.</string>
+    <string name="ai_change_to_lower_rep">changing one exercise to med rep or high rep.</string>
+    <string name="ai_change_to_higher_rep">changing one exercise to med rep or low rep</string>
+    <string name="ai_add_exercise">changing one exercise to med rep or low rep</string>
+    <string name="ai_remove_exercise">changing one exercise to med rep or low rep</string>
+    <string name="my_selector_create_rest_button">Create rest</string>
+    <string name="my_selector_create_reps_button">Create reps</string>
+    <string name="my_selector_create_sets_button">Create sets</string>
+</resources>

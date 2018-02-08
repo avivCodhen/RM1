@@ -1,0 +1,18 @@
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.strongest.savingdata.MyViews.WorkoutView.Choose.OptionalChooseDialogFragment">
+
+    <com.strongest.savingdata.MyViews.CreateCustomBeansView.CreateBeansHolderView
+        android:layout_width="match_parent"
+        android:id="@+id/fragment_optional_createbeanview"
+        android:layout_height="match_parent"></com.strongest.savingdata.MyViews.CreateCustomBeansView.CreateBeansHolderView>
+
+</FrameLayout>
+
+</ScrollView>

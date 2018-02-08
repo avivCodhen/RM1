@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <HorizontalScrollView
+        android:id="@+id/my_selector_method_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:padding="@dimen/selector_padding"
+        android:scrollbarSize="2dp"
+        android:paddingBottom="10dp">
+
+        <RadioGroup
+            android:id="@+id/my_selector_method_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" />
+
+
+    </HorizontalScrollView>
+    <Button
+        android:id="@+id/my_selector_custom_method_btn"
+        android:padding="8dp"
+        android:background="@drawable/strongest_selected_buttons"
+        android:textAllCaps="false"
+        android:text="Custom method"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/my_selector_method_description_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

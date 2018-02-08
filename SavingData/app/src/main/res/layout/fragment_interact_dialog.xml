@@ -1,0 +1,25 @@
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="150dp"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_gravity="right"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Button
+        android:id="@+id/interact_remove_btn"
+
+        android:layout_gravity="center"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/cancel"/>
+
+    <Button
+        android:id="@+id/interact_add_btn"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/add"/>
+
+
+</LinearLayout>

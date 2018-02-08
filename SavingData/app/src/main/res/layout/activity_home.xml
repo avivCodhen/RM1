@@ -1,0 +1,84 @@
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/activity_home_drawer_layout"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <RelativeLayout
+        android:id="@+id/activity_home_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <com.strongest.savingdata.MyViews.MyViewPager
+        android:layout_below="@+id/activity_home_navigationbar"
+        android:id="@+id/activity_home_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.strongest.savingdata.MyViews.MyViewPager>
+
+
+    <android.support.design.widget.TabLayout
+        android:layout_alignParentTop="true"
+        android:background="#ffff"
+        android:id="@+id/activity_home_navigationbar"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        />
+
+    <!--<FrameLayout
+
+        android:id="@+id/home_activity_secondFrameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></FrameLayout>-->
+
+   <!-- <com.roughike.bottombar.BottomBar
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        app:bb_tabXmlResource="@xml/bottom_bar"
+        android:background="#fff"
+        app:bb_inActiveTabAlpha="1.9">
+
+
+    </com.roughike.bottombar.BottomBar>-->
+
+    <android.support.design.widget.FloatingActionButton
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/activity_home_navigationbar"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_add_white_24dp"
+        android:id="@+id/workout_fab_create"
+        app:backgroundTint="#00ADD3"
+
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:visibility="gone"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/activity_home_navigationbar"
+        android:foregroundGravity="right"
+        android:src="@drawable/red_eye_icon"
+        android:id="@+id/home_ai"
+        app:backgroundTint="#fff"
+
+        />
+    </RelativeLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/home_activity_navigationview"
+        app:menu="@menu/menu_main"
+        android:layout_gravity="start"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"></android.support.design.widget.NavigationView>
+
+
+</android.support.v4.widget.DrawerLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+   <!-- <item android:id="@+id/buttomBar_one"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Home" />
+
+    <item android:id="@+id/buttomBar_two"
+        android:icon="@drawable/ic_content_paste_black_24dp"
+        android:title="Your Workout"/>
+
+    <item android:id="@+id/buttomBar_three"
+        android:icon="@drawable/ic_assessment_black_24dp"
+        android:title="Your Progress"/>
+-->
+    <item android:id="@+id/menu_create_program"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="Create Program"/>
+
+
+</menu>

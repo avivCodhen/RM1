@@ -1,0 +1,107 @@
+apply plugin: 'com.android.application'
+
+dependencies {
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+}
+android {
+    compileSdkVersion 25
+    buildToolsVersion "27.0.3"
+    dataBinding.enabled = true
+    defaultConfig {
+        multiDexEnabled true
+        applicationId "com.strongest.savingdata"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath false
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        configurations.all {
+            resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+        }
+    }
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile fileTree(dir: 'libs', include: ['*.jar'])
+        androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+            exclude group: 'com.android.support', module: 'support-annotations'
+        })
+        compile 'com.android.support:appcompat-v7:25.3.+'
+        compile 'com.android.support:design:25.3.+'
+        compile 'com.android.support.constraint:constraint-layout:1.0.2'
+        compile 'com.roughike:bottom-bar:2.0'
+        compile 'com.allattentionhere:fabulousfilter:0.0.4'
+
+        compile 'com.google.dagger:dagger:2.4'
+        annotationProcessor 'com.google.dagger:dagger-compiler:2.4'
+
+        compile 'com.android.support:cardview-v7:25.3.1'
+        compile 'com.android.support:recyclerview-v7:25.1.0'
+
+        testCompile 'junit:junit:4.12'
+        compile 'com.squareup.retrofit2:retrofit:2.3.0'
+        compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+        compile 'com.google.code.gson:gson:2.6.1'
+
+
+        compile 'com.roughike:swipe-selector:1.0.6'
+        compile 'com.dinuscxj:circleprogressbar:1.1.1'
+
+        compile 'org.jsoup:jsoup:1.10.3'
+
+        compile 'com.nightonke:boommenu:2.1.1'
+        compile 'com.wefika:horizontal-picker:1.1.1'
+
+        compile 'devlight.io:navigationtabbar:1.2.5'
+        compile 'com.thoughtbot:expandablerecyclerview:1.3'
+       // compile 'com.thoughtbot:expandablecheckrecyclerview:1.4'
+        compile 'org.greenrobot:eventbus:3.1.1'
+        compile 'com.github.tslamic.fancybackground:library:1.0'
+        compile 'com.jakewharton:butterknife:8.8.1'
+        annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+        compile 'com.github.lsjwzh.RecyclerViewPager:lib:v1.1.2@aar'
+        compile 'com.github.lsjwzh.RecyclerViewPager:tablayoutsupport:v1.1.2@aar'
+
+
+
+        compile 'com.github.vipulasri:timelineview:1.0.5'
+
+        compile 'com.github.devlight.navigationtabstrip:navigationtabstrip:+'
+        //compile "com.andkulikov:transitionseverywhere:1.7.8"
+        compile 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
+        ///compile 'com.marshalchen.ultimaterecyclerview:library:0.7.3'
+        //compile 'com.xw.repo:bubbleseekbar:3.14-lite'
+        //compile 'com.xw.repo:bubbleseekbar:3.14'
+        compile 'de.hdodenhof:circleimageview:2.2.0'
+        compile 'com.shehabic.droppy:Droppy:0.6.0@aar'
+        //compile 'com.android.support:multidex:1.0.2'
+
+    }
+
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.android.support') {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion '25.3.0'
+                }
+            }
+        }
+    }
+}

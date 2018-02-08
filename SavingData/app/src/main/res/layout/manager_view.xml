@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="20dp"
+        android:id="@+id/manager_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/manager_add_btn"
+        android:orientation="horizontal"
+        ></android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/manager_add_btn"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/strongest_selected_buttons"
+        android:text="+"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textColor="#fff"
+        android:id="@+id/manager_view_tv"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/manager_recyclerview"
+        android:text="Low rep, mechanical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+</RelativeLayout>

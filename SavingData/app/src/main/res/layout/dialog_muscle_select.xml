@@ -1,0 +1,19 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:theme="@style/TransparentAppCompatTheme"
+    android:background="@android:color/transparent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <GridView
+        android:background="@android:color/transparent"
+        android:stretchMode="columnWidth"
+        android:numColumns="3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_muscle_select_gridview"></GridView>
+</LinearLayout>

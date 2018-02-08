@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.strongest.savingdata">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".DependencyInjection.MainApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="Strongest"
+        android:roundIcon="@drawable/logo"
+        android:supportsRtl="true"
+        android:theme="@style/newAppTheme"
+        tools:replace="android:label">
+        <activity android:name=".Activities.MainActivity" />
+        <activity android:name=".Activities.LoginActivity" />
+        <activity android:name=".Activities.RegisterActivity" />
+        <activity android:name=".Activities.HomeActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity android:name=".Activities.EnterActivity" />
+        <activity android:name=".Activities.CreateWorkoutActivity" />
+        <activity
+            android:name=".Dialogs.DialogMuscleSelect"
+            android:theme="@style/AppTheme.CustomeTheme" />
+        <activity android:name=".createProgramFragments.CreateProgram.LimitFragment" />
+        <activity android:name=".createProgramFragments.Unused.LevelDeterminerDialogFragment" />
+        <activity android:name=".MyViews.WorkoutView.Choose.ChooseDialogFragment" />
+        <activity android:name=".Activities.LevelActivity">
+
+        </activity>
+        <activity android:name=".Activities.WebViewActivity" />
+        <activity android:name=".TestActivity">
+
+        </activity>
+    </application>
+
+</manifest>

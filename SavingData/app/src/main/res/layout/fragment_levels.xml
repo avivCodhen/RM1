@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/blabla"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/level_discription"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:maxLines="100"/>
+
+    <RadioGroup
+
+        android:padding="4dp"
+        android:orientation="vertical"
+        android:layout_below="@+id/blabla"
+        android:layout_marginTop="10dp"
+        android:id="@+id/levels_radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:text="@string/UNTRAINED"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/level_radio_untrained"/>
+
+        <RadioButton
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:text="@string/NOVICE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/level_radio_novice"/>
+
+        <RadioButton
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:text="@string/INTERMEDIATE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/level_radio_intermediate"/>
+
+        <RadioButton
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:text="@string/ADVANCED"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/level_radio_advanced"/>
+
+
+
+    </RadioGroup>
+
+
+    <TextView
+
+        android:layout_below="@+id/levels_radioGroup"
+        android:id="@+id/levels_and_days_levels_description_TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        android:textColor="#808080"
+        />
+    <TextView
+        android:textSize="14dp"
+        android:text="@string/determine_level_tv"
+        android:layout_above="@+id/fragment_level_determine_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/fragment_level_determine_btn"
+        android:text="Level Determiner"
+        android:background="@drawable/strongest_buttons"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+
+</RelativeLayout>

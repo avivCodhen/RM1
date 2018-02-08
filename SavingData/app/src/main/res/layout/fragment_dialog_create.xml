@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp">
+
+    <TextView
+        android:textColor="#fff"
+        android:text="Exercises, repetitions range and methods are selected based on your personal information."
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="40dp"
+        android:textColor="#fff"
+        android:text="You can change the selected exercises, repetitions and methods or add another exercise simply by touching on the layout."
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="40dp"
+        android:textColor="#fff"
+        android:text="Confused? You can click the for more information on the design, and for designing a better program for yourself."
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fragment_dialog_create_floatingBtn"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        app:backgroundTint="#e02013"
+        android:src="@drawable/ic_done_white_24dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>

@@ -1,0 +1,54 @@
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditText
+        android:id="@+id/register_activity_emailED"
+        android:layout_gravity="center"
+        android:hint="email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/register_activity_passwordED"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:hint="password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/register_activity_confirmED"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:hint="confirm password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:onClick="register"
+        android:id="@+id/register_activity_registernBtn"
+        android:text="register"
+        android:layout_width="300dp"
+        android:background="@drawable/strongest_buttons"
+        android:layout_height="wrap_content"
+       />
+    <Button
+
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:onClick="back"
+        android:id="@+id/register_activity_btnBack"
+        android:text="back"
+        android:layout_width="300dp"
+        android:background="@drawable/strongest_buttons"
+        android:layout_height="wrap_content"
+        />
+
+
+</LinearLayout>
