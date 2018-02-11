@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="38dp"
+
+   >
+
+    <android.support.v7.widget.CardView
+        android:paddingRight="90dp"
+        android:backgroundTint="#fff"
+        android:background="@drawable/aviv_exercise_placeholder_left_margin"
+        android:layout_marginLeft="40dp"
+        android:gravity="center_vertical"
+        android:layout_height="30dp"
+        android:id="@+id/exerciseView_data_layout"
+        android:layout_width="match_parent"
+        app:cardElevation="3dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp">
+
+        <LinearLayout
+            android:paddingRight="90dp"
+            android:backgroundTint="#fff"
+            android:background="@drawable/aviv_exercise_placeholder_left_margin"
+
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:id="@+id/exerciseView_data_linearlayout"
+            android:layout_width="match_parent"
+            >
+            <RelativeLayout
+                android:gravity="center"
+                android:layout_marginRight="12dp"
+                android:layout_marginLeft="6dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/recycler_view_exercise_details_sets_tv"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:textStyle="bold"
+                    android:textColor="#fff"
+                    android:textSize="11sp"
+                    android:text="1"
+                    android:textAlignment="center"
+                    android:elevation="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <android.support.design.widget.FloatingActionButton
+                    app:elevation="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/recycler_view_exercise_details_fab"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    />
+            </RelativeLayout>
+
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/exerciseView_repsTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reps: "
+                android:textSize="12sp" />
+
+            <TextView
+                android:text="Rest: "
+                android:layout_weight="1"
+                android:id="@+id/exerciseView_restTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp" />
+
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/exerciseView_weightTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Wgh:"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>

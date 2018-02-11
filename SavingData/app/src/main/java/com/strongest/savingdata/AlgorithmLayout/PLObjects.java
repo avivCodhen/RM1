@@ -211,5 +211,19 @@ public class PLObjects implements Aba {
 
     }
 
+    public static class AddExercise extends PLObjects{
+
+        private Muscle m;
+
+        public AddExercise(Muscle m){
+            this.m = m;
+            type = WorkoutLayoutTypes.AddExercise;
+        }
+
+        public Muscle getM() {
+            return m;
+        }
+    }
+
 
 }

@@ -7,4 +7,9 @@
     <color name="background_color">#EEEEEE</color>
     <color name="cyan_dark">#00CCCC</color>
     <color name="green_dark">#00CC00</color>
+    <color name="color_chest">#2FCBC0</color>
+    <color name="color_back">#dddb8b</color>
+    <color name="color_shoulders">#2FCBC0</color>
+    <color name="color_arms">#dd8ba6</color>
+    <color name="color_legs">#6EDEA2</color>
 </resources>

@@ -51,66 +51,110 @@ import static com.strongest.savingdata.Database.Muscles.DBMuscleHelper.PARENT;
         BEGINNERS, INTERMEDIATE, ADVANCED, ANY
     }*/
 
-    public class Muscle {
+public class Muscle {
 
-        private int id,muscle_int;
-        private String muscle_name, muscle_size, muscle_display, parent, image, children;
+    private int id, muscle_int;
+    private String muscle_name, muscle_size, muscle_display, parent, image, children;
 
-        public Muscle() {
+    public Muscle() {
 
+    }
+
+
+    public static Muscle createMuscle(MusclesDataManager dm, String muscle) {
+
+
+        Cursor c = dm.getMuscleFromDB(muscle);
+        Muscle m = new Muscle();
+        if (c.getCount() != 0 && c.moveToNext()) {
+            m.muscle_name = c.getString(c.getColumnIndex(MUSCLE_NAME));
+            m.muscle_int = c.getInt(c.getColumnIndex(MUSCLE_INT));
+            m.muscle_display = c.getString(c.getColumnIndex(MUSCLE_DISPLAY));
+            m.muscle_size = c.getString(c.getColumnIndex(MUSCLE_SIZE));
+            m.parent = c.getString(c.getColumnIndex(PARENT));
+            m.image = c.getString(c.getColumnIndex(IMAGE));
+            m.children = c.getString(c.getColumnIndex(CHILDREN));
+        }
+        return m;
+
+    }
+
+
+    public String getMuscle_display() {
+        return muscle_display;
+    }
+
+
+    public String getParent() {
+        return parent;
+    }
+
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getMuscle_size() {
+        return muscle_size;
+    }
+
+    public String getMuscle_name() {
+        return muscle_name;
+    }
+
+    public int getMuscle_int() {
+        return muscle_int;
+    }
+
+    public String getChildren() {
+        return children;
+    }
+
+
+    public static class MuscleUI {
+
+        private int color;
+        private int image;
+
+        public MuscleUI(int color, int image) {
+            this.color = color;
+
+            this.image = image;
         }
 
-
-        public static Muscle createMuscle(MusclesDataManager dm, String muscle) {
-
-
-            Cursor c = dm.getMuscleFromDB(muscle);
-            Muscle m = new Muscle();
-            if(c.getCount() != 0 && c.moveToNext()) {
-                m.muscle_name = c.getString(c.getColumnIndex(MUSCLE_NAME));
-                m.muscle_int = c.getInt(c.getColumnIndex(MUSCLE_INT));
-                m.muscle_display = c.getString(c.getColumnIndex(MUSCLE_DISPLAY));
-                m.muscle_size = c.getString(c.getColumnIndex(MUSCLE_SIZE));
-                m.parent = c.getString(c.getColumnIndex(PARENT));
-                m.image = c.getString(c.getColumnIndex(IMAGE));
-                m.children = c.getString(c.getColumnIndex(CHILDREN));
-            }
-            return m;
-
-        }
-
-
-        public String getMuscle_display() {
-            return muscle_display;
-        }
-
-
-
-        public String getParent() {
-            return parent;
-        }
-
-
-
-        public String getImage() {
+        public int getImage() {
             return image;
         }
 
-        public String getMuscle_size() {
-            return muscle_size;
+        public int getColor() {
+            return color;
         }
+    }
 
-        public String getMuscle_name() {
-            return muscle_name;
-        }
+    public static MuscleUI provideMuscleUI(Muscle muscle) {
+        String m = muscle.getMuscle_name();
+        switch (m) {
+            case "chest":
+                return new MuscleUI(R.color.color_chest, R.drawable.muscle_chest);
+            case "back":
+                return new MuscleUI(R.color.color_back, R.drawable.muscle_back);
+            case "shoulders":
+                return new MuscleUI(R.color.color_shoulders, R.drawable.muscle_shoulders);
 
-        public int getMuscle_int() {
-            return muscle_int;
-        }
+            case "legs":
+                return new MuscleUI(R.color.color_legs, R.drawable.muscle_legs);
+            case "arms":
+                return new MuscleUI(R.color.color_arms, R.drawable.muscle_arms);
+            case "biceps":
+                return new MuscleUI(R.color.color_arms, R.drawable.muscle_arms);
+            case "triceps":
+                return new MuscleUI(R.color.color_arms, R.drawable.muscle_arms);
 
-        public String getChildren() {
-            return children;
         }
+        return null;
+    }
+
+}
 
 
    /* public abstract static class Muscle implements Serializable {
@@ -431,7 +475,6 @@ import static com.strongest.savingdata.Database.Muscles.DBMuscleHelper.PARENT;
                 setSize(SMALL);
             }
         }*/
-    }
 
 
 

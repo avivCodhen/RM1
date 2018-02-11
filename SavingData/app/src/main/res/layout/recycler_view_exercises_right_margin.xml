@@ -2,21 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_view_exercise_lay1"
     android:layout_width="match_parent"
-    android:layout_height="76dp"
+    android:layout_height="74dp"
     >
 
     <TextView
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:id="@+id/exerciseView_muscleTV"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginLeft="32dp"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="12dp"
         android:fontFamily="assets/varela_round_regular"
         android:gravity="top"
-        android:rotation="-90"
+        android:rotation="90"
         android:text="chest"
         android:textAlignment="center"
         android:textAllCaps="true"
+        android:textColor="#7E7E7E"
         android:textSize="8sp" />
 
 
@@ -24,12 +26,12 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/exerciseView_layout"
         android:layout_width="match_parent"
-        android:layout_height="66dp"
+        android:layout_height="60dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="30dp"
-        android:background="@drawable/aviv_exercise_placeholder"
+        android:layout_marginRight="20dp"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardElevation="4dp"
         android:layout_marginTop="5dp"
         >
@@ -54,19 +56,21 @@
                 android:id="@+id/ex_arrow"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_alignBottom="@+id/exerciseView_nameTV"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:layout_toEndOf="@+id/exerciseView_nameTV"
                 android:layout_toRightOf="@+id/exerciseView_nameTV"
-                android:background="@drawable/collapse_arrow_24px" />
+                android:background="@drawable/expand_arrow_grey_24px" />
+
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ex1"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_alignParentRight="true"
                 android:background="@drawable/muscle_legs"
 
                 />
@@ -76,7 +80,6 @@
                 android:id="@+id/ex_choose"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_below="@+id/exerciseView_nameTV"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_toLeftOf="@+id/ex_arrow"
@@ -88,8 +91,8 @@
                 android:id="@+id/exerciseView_nameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
                 android:text="Barbell Bench Press"
                 android:textColor="#2FCBC0"
                 android:textSize="15sp"
@@ -101,9 +104,9 @@
                 android:id="@+id/exerciseView_data_layout"
                 android:layout_width="match_parent"
                 android:layout_height="17dp"
-                android:layout_marginLeft="70dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginRight="17dp"
-                android:layout_marginTop="37dp">
+                android:layout_marginTop="33dp">
 
                 <TextView
                     android:id="@+id/exerciseView_setsTV"

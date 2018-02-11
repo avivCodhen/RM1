@@ -62,7 +62,7 @@ public class CreateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             View v2 = inflater.inflate(R.layout.recyclerview_body_parts, parent, false);
             holder = new MuscleViewHolder(v2);
         } else {
-            View v3 = inflater.inflate(R.layout.recycler_view_exercises, parent, false);
+            View v3 = inflater.inflate(R.layout.recycler_view_exercises_left_margin, parent, false);
             holder = new ExerciseProfileViewHolder(v3);
         }
 

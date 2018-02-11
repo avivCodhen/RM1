@@ -30,7 +30,7 @@ public class ExerciseView extends LinearLayout implements Serializable{
         this.context = context;
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layout = (LinearLayout) inflater.inflate(R.layout.recycler_view_exercises, this, true);
+        layout = (LinearLayout) inflater.inflate(R.layout.recycler_view_exercises_left_margin, this, true);
 
         setTextViewID();
         setDefaultTextViewText();
@@ -41,7 +41,7 @@ public class ExerciseView extends LinearLayout implements Serializable{
         this.context = context;
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layout = (LinearLayout) inflater.inflate(R.layout.recycler_view_exercises, this, true);
+        layout = (LinearLayout) inflater.inflate(R.layout.recycler_view_exercises_left_margin, this, true);
 
         setTextViewID();
         setDefaultTextViewText();

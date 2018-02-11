@@ -6,26 +6,28 @@ package com.strongest.savingdata.AlgorithmLayout;
 
 public enum WorkoutLayoutTypes {
 
-    WorkoutView(0),
+    WorkoutView,
 
-    BodyView(1),
+    BodyView,
 
-    ExerciseView(2),
+    ExerciseView,
 
-    BeansHolderPLObject(3),
+    BeansHolderPLObject,
 
-    ProgressPLObject(4);
+    ProgressPLObject,
 
-    private int value;
-    private WorkoutLayoutTypes(int value){
-        this.value = value;
-    }
+    ExerciseViewLeftMargin,
+
+    ExerciseViewRightMargin,
+
+    BeansHolderLeftMargin,
+
+    BeansHolderRightMargin,
+
+    AddExercise;
 
     public static WorkoutLayoutTypes getEnum(int value) {
         return values()[value];
     }
 
-    public int getValue() {
-        return value;
-    }
 }

@@ -336,7 +336,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void onPause() {
-        programmer.getLayoutManager().saveLayoutToDataBase(true);
+    //    programmer.getLayoutManager().saveLayoutToDataBase(true);
         getPrefsEditor().putBoolean(TO_REFRESH, true).commit();
         //dataManager.getArticleDataManager().delete(TABLE_NAME);
         super.onPause();

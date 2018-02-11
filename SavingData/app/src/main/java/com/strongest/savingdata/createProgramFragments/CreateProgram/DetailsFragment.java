@@ -97,7 +97,7 @@ public class DetailsFragment extends BaseCreateProgramFragment implements View.O
 
 //        ExerciseTemplate eT = new ExerciseTemplate(new BodyPart.Chest(getContext()),new Load(0,0,0,0));
         //      BParams[][] muscle = eT.getTemplate(0);
-        //ArrayList<recycler_view_exercises> a =(ArrayList<recycler_view_exercises>) dm.readByString("");
+        //ArrayList<recycler_view_exercises_left_margin> a =(ArrayList<recycler_view_exercises_left_margin>) dm.readByString("");
 
     }
 

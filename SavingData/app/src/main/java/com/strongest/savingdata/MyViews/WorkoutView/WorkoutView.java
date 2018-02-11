@@ -1,5 +1,8 @@
 package com.strongest.savingdata.MyViews.WorkoutView;
 
+import android.animation.Animator;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
@@ -22,7 +25,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +81,9 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
     private ProgressorManager progressorManager;
     private DroppyMenuPopup droppyMenuPopup;
     private ViewGroup dropMenuButton;
+    private ImageView lock;
+    private ViewGroup addExercise;
+    private boolean editMode;
 
 
     /*
@@ -108,13 +116,77 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
         } else {
             mProgramLayout = programLayoutManager.getSplitRecyclerWorkouts();
         }*/
-        setOrientation(VERTICAL);
+       /* setOrientation(VERTICAL);
         layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
-        setLayoutParams(layoutParams);
+        setLayoutParams(layoutParams);*/
         inflate(context, R.layout.workout_view, this);
+        lock = (ImageView) findViewById(R.id.workout_view_lock);
+        addExercise = (ViewGroup) findViewById(R.id.workout_view_add_exercise);
+        lock.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editMode) {
+                    editMode = false;
+                    addExercise.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0));
+                    addExercise.animate()
+                            .translationY(addExercise.getHeight())
+                            .setListener(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
 
+                                }
+
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    addExercise.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0));
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {
+
+                                }
+                            });
+
+                } else {
+                    addExercise.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 60));
+
+                    addExercise.animate()
+                            .translationY(addExercise.getHeight())
+                            .setListener(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+
+                                }
+
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    addExercise.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 60));
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {
+
+                                }
+                            });
+                    editMode = true;
+                }
+            }
+
+        });
         //inflate(context, R.layout.keyboard_layout, this);
 
 
@@ -130,14 +202,6 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
 */
             instantiateViewPager();
         } else {
-          /*  mAdapter = new WorkoutAdapter(
-                    mProgramLayout.get(workout),
-                    context,
-                    onClickListener,
-                    onPositionListener,
-                    showStats
-
-            );*/
             instantiateRecyclerView(workout);
         }
         progressButton = (Button) findViewById(R.id.progress_button);
@@ -151,14 +215,7 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
     }
 
     private void instantiateRecyclerView(int workout) {
-        //    configurateRecycler();
 
-        //  ItemTouchHelper.Callback callback = new DragAndSwipeCallback(mAdapter);
-        // mTouchHelper = new ItemTouchHelper(callback);
-        //mRecyclerView.setAdapter(mAdapter);
-
-        //mTouchHelper.attachToRecyclerView(mRecyclerView);
-        // addView(mRecyclerView);
     }
 
     private void configurateRecycler() {
@@ -176,25 +233,25 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
 
       /*  mTabLayout = (TabLayout) findViewById(R.id.workoutview_tablayout);
         mTabLayout.setupWithViewPager(mViewPager);*/
-      if(layoutManager.getProgramTemplate() != null){
-          final ArrayList<String> strings = layoutManager.getProgramTemplate().getWorkoutsNames();
-          dropMenuButton = (ViewGroup) findViewById(R.id.workout_view_workoutmenubutton);
-          DroppyMenuPopup.Builder builder = new DroppyMenuPopup.Builder(getContext(), dropMenuButton);
-          for (String argh : strings) {
-              builder.addMenuItem(new DroppyMenuItem(argh));
+        if (layoutManager.getProgramTemplate() != null) {
+            final ArrayList<String> strings = layoutManager.getProgramTemplate().getWorkoutsNames();
+            dropMenuButton = (ViewGroup) findViewById(R.id.workout_view_workoutmenubutton);
+            DroppyMenuPopup.Builder builder = new DroppyMenuPopup.Builder(getContext(), dropMenuButton);
+            for (String argh : strings) {
+                builder.addMenuItem(new DroppyMenuItem(argh));
 
 
-          }
-          // DroppyMenuCustomItem it = new DroppyMenuCustomItem()
+            }
+            // DroppyMenuCustomItem it = new DroppyMenuCustomItem()
 
-          builder.setOnClick(new DroppyClickCallbackInterface() {
-              @Override
-              public void call(View v, int id) {
-                  ((TextView) dropMenuButton.getChildAt(0)).setText(strings.get(id));
-                  mViewPager.setCurrentItem(id);
-              }
-          });
-          droppyMenuPopup = builder.build();
+            builder.setOnClick(new DroppyClickCallbackInterface() {
+                @Override
+                public void call(View v, int id) {
+                    ((TextView) dropMenuButton.getChildAt(0)).setText(strings.get(id));
+                    mViewPager.setCurrentItem(id);
+                }
+            });
+            droppyMenuPopup = builder.build();
        /* mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
@@ -213,32 +270,36 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
 
             }
         });*/
-          //  ItemTouchHelper.Callback callback = new DragAndSwipeCallback(mAdapter);
-          // mTouchHelper = new ItemTouchHelper(callback);
-          //mTouchHelper.attachToRecyclerView(mRecyclerView);
+            //  ItemTouchHelper.Callback callback = new DragAndSwipeCallback(mAdapter);
+            // mTouchHelper = new ItemTouchHelper(callback);
+            //mTouchHelper.attachToRecyclerView(mRecyclerView);
 
-          mAdapter = new WorkoutViewPagerAdapter(this, this, fm,
-                  layoutManager, this);
-          //  mViewPager.setOffscreenPageLimit(programLayoutManager.getNumOfWorkouts());
-          mViewPager.setAdapter(mAdapter);
-          //mViewPager.addView(mRecyclerView);
-          mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-              @Override
-              public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                  ((TextView) dropMenuButton.getChildAt(0)).setText(strings.get(position));
-              }
+            mAdapter = new WorkoutViewPagerAdapter(this, this, fm,
+                    layoutManager, this);
+            mViewPager.setOffscreenPageLimit(layoutManager.getProgramTemplate().getNumOfWorkouts());
+            mViewPager.setAdapter(mAdapter);
+            //mViewPager.addView(mRecyclerView);
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    ((TextView) dropMenuButton.getChildAt(0)).setText(strings.get(position));
+                    ObjectAnimator colorAnim = ObjectAnimator.ofInt(((TextView) dropMenuButton.getChildAt(0)), "textColor",
+                            Color.RED, Color.WHITE);
+                    colorAnim.setEvaluator(new ArgbEvaluator());
+                    colorAnim.start();
+                }
 
-              @Override
-              public void onPageSelected(int position) {
+                @Override
+                public void onPageSelected(int position) {
 
-              }
+                }
 
-              @Override
-              public void onPageScrollStateChanged(int state) {
+                @Override
+                public void onPageScrollStateChanged(int state) {
 
-              }
-          });
-      }
+                }
+            });
+        }
 
     }
 
@@ -342,7 +403,7 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
     public ArrayList<PLObjects> updateLayoutStats(LayoutManager.UpdateComponents updateComponents) {
         updateComponents.setWorkoutPosition(workoutPosition);
         layoutManager.updateLayout(updateComponents);
-      //  layoutManager.updateLayoutStats(true);
+        //  layoutManager.updateLayoutStats(true);
        /* mAdapter.setmProgramLayout(layoutManager.getLayout());
         mAdapter.notifyDataSetChanged();*/
         return layoutManager.getSplitRecyclerWorkouts().get(workoutPosition);

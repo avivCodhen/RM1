@@ -170,7 +170,7 @@ public class MandatoryChooseDialogFragment extends Fragment {
     }
 
     private boolean vaildate(MySelector.CheckedHolder[] checkHolder) {
-        /*if (checkHolder[recycler_view_exercises.ordinal()] != null || beansHolder.getExercise() != null) {
+        /*if (checkHolder[recycler_view_exercises_left_margin.ordinal()] != null || beansHolder.getExercise() != null) {
             if (checkHolder[Reps.ordinal()] != null || beansHolder.getRep() != null) {
                 return true;
             }

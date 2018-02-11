@@ -114,7 +114,7 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
             View v2 = inflater.inflate(R.layout.recyclerview_body_parts, parent, false);
             holder = new MuscleViewHolder(v2);
         } else {
-            View v3 = inflater.inflate(R.layout.recycler_view_exercises, parent, false);
+            View v3 = inflater.inflate(R.layout.recycler_view_exercises_left_margin, parent, false);
             holder = new ExerciseViewHolder(v3);
         }
 
@@ -395,7 +395,7 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
             return  new MuscleViewHolder(v2);
 
         } else {
-            View v3 = inflater.inflate(R.layout.recycler_view_exercises, parent, false);
+            View v3 = inflater.inflate(R.layout.recycler_view_exercises_left_margin, parent, false);
             return new ExerciseViewHolder(v3);
 
         }
@@ -406,7 +406,7 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         /*
-        View v = inflater.inflate(R.layout.recycler_view_exercise_details, parent, false);
+        View v = inflater.inflate(R.layout.recycler_view_exercise_details_left_margin, parent, false);
 
 
         return new BeansHolderViewHolder(v);
