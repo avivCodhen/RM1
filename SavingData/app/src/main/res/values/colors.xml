@@ -12,4 +12,5 @@
     <color name="color_shoulders">#2FCBC0</color>
     <color name="color_arms">#dd8ba6</color>
     <color name="color_legs">#6EDEA2</color>
+    <color name="textColor">#434343</color>
 </resources>

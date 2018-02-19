@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.vipulasri.timelineview.TimelineView;
 import com.strongest.savingdata.R;
 
 import java.lang.reflect.Array;
@@ -46,18 +45,13 @@ public class CreateworkoutActivityAdapter extends RecyclerView.Adapter<Createwor
 
     public class TimeLineViewHolder extends RecyclerView.ViewHolder{
 
-        private TimelineView tlv;
         private ImageView icon;
         private TextView tv;
         public TimeLineViewHolder(View itemView, int viewtype) {
             super(itemView);
-            tlv = (TimelineView) itemView.findViewById(R.id.timeline);
-            tlv.initLine(viewtype);
+
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return TimelineView.getTimeLineViewType(position,fragList.size() );
-    }
+
 }

@@ -53,7 +53,7 @@ public class ArtificialIntelligence implements ArtificialIntelligenceObserver {
     public void learnStats(int workoutPosition) {
         body = new ArrayList<>();
         ArrayList<PLObjects> layout =
-                programmer.getLayoutManager().getSplitRecyclerWorkouts().get(workoutPosition);
+                programmer.getLayoutManager().getSplitRecyclerWorkouts(false).get(workoutPosition);
         for (int i = 0; i < layout.size(); i++) {
             if (layout.get(i).getType() == WorkoutLayoutTypes.BodyView) {
                 BodyText bt = (BodyText) layout.get(i);

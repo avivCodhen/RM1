@@ -7,11 +7,8 @@ import com.strongest.savingdata.AlgorithmStats.StatsHolder;
 
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.BeansHolder;
-import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -108,21 +105,24 @@ public class PLObjects implements Aba {
 
         // private final WorkoutLayoutTypes type = WorkoutLayoutTypes.ExerciseView;
         // private BeansHolder beansHolder;
-        private Muscle muscle;
+        //private Muscle muscle;
         private boolean loaded;
         private boolean selected = false;
+        private BeansHolder mBeansHolder;
         private ArrayList<BeansHolder> beansHolders;
         private int exerciseProfileId;
         private boolean firstExercise;
+        private boolean hasBeansHolders;
+        private WorkoutLayoutTypes innerType;
 
         //private char id;
-        public ExerciseProfile(ArrayList<BeansHolder> beansHolders, Muscle muscle, int workoutId, int bodyId, int exerciseProfileId) {
+        public ExerciseProfile(BeansHolder mBeansHolder, ArrayList<BeansHolder> beansHolders, int workoutId, int bodyId, int exerciseProfileId) {
+            this.mBeansHolder = mBeansHolder;
             this.beansHolders = beansHolders;
             this.exerciseProfileId = exerciseProfileId;
             this.workoutId = workoutId;
             this.bodyId = bodyId;
             //this.beansHolder = beansHolder;
-            this.muscle = muscle;
             type = WorkoutLayoutTypes.ExerciseView;
 
         }
@@ -135,14 +135,14 @@ public class PLObjects implements Aba {
             this.beansHolder = beansHolder;
         }*/
 
-        public void setMuscle(Muscle muscle) {
+    /*    public void setMuscle(Muscle muscle) {
             this.muscle = muscle;
         }
 
 
         public Muscle getMuscle() {
             return muscle;
-        }
+        }*/
 
       /*  public ExerciseProfileView getExerciseProfileView() {
             return exerciseProfileView;
@@ -151,6 +151,14 @@ public class PLObjects implements Aba {
       /*  public BeansHolder getBeansHolder() {
             return beansHolder;
         }*/
+
+        public WorkoutLayoutTypes getInnerType() {
+            return innerType;
+        }
+
+        public void setInnerType(WorkoutLayoutTypes innerType) {
+            this.innerType = innerType;
+        }
 
         public boolean isSelected() {
             return selected;
@@ -179,6 +187,18 @@ public class PLObjects implements Aba {
         public void setBeansHolders(ArrayList<BeansHolder> beansHolders) {
             this.beansHolders = beansHolders;
         }
+
+        public BeansHolder getmBeansHolder() {
+            return mBeansHolder;
+        }
+
+        public void setmBeansHolder(BeansHolder mBeansHolder) {
+            this.mBeansHolder = mBeansHolder;
+        }
+
+        public boolean isHasBeansHolders() {
+            return mBeansHolder != null;
+        }
     }
 
     public static class BeansHolderPLObject extends PLObjects implements Ben {
@@ -189,7 +209,6 @@ public class PLObjects implements Aba {
             this.beansHolder = beansHolder;
             type = WorkoutLayoutTypes.BeansHolderPLObject;
         }
-
 
 
         public BeansHolder getBeansHolder() {
@@ -211,11 +230,49 @@ public class PLObjects implements Aba {
 
     }
 
-    public static class AddExercise extends PLObjects{
+    public static class AddExercise extends PLObjects {
 
         private Muscle m;
 
-        public AddExercise(Muscle m){
+        public AddExercise(Muscle m) {
+            this.m = m;
+            type = WorkoutLayoutTypes.AddExercise;
+        }
+
+        public Muscle getM() {
+            return m;
+        }
+    }
+
+  /*  public static class Method extends ExerciseProfile {
+
+        private String method;
+        private Muscle m;
+
+        public Method(String method, ArrayList<BeansHolder> beansHolders, Muscle m, int workoutId, int bodyId, int exerciseProfileId) {
+            super(beansHolders, m, workoutId, bodyId, exerciseProfileId);
+            this.method = method;
+            type = WorkoutLayoutTypes.Method;
+        }
+
+        public Muscle getM() {
+            return m;
+        }
+
+        public String getMethod() {
+            return method;
+        }
+
+        public void setMethod(String method) {
+            this.method = method;
+        }
+    }*/
+
+    public static class Superset extends PLObjects {
+
+        private Muscle m;
+
+        public Superset(Muscle m) {
             this.m = m;
             type = WorkoutLayoutTypes.AddExercise;
         }

@@ -27,10 +27,6 @@ import com.strongest.savingdata.MyViews.WeightKeyBoard.WeightKeyboard;
 import com.strongest.savingdata.MyViews.WorkoutView.OnChooseClickListener;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.createProgramFragments.Create.OnPositionViewListener;
-import com.thoughtbot.expandablerecyclerview.MultiTypeExpandableRecyclerViewAdapter;
-import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
-import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
-import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -45,6 +41,7 @@ import static com.strongest.savingdata.AlgorithmLayout.PLObjects.*;
  * Created by Cohen on 10/15/2017.
  */
 
+/*
 public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<WorkoutAdapter.ExerciseViewHolder,
         ChildViewHolder> implements ItemTouchHelperAdapter {
 
@@ -102,6 +99,7 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
       //  this.exArray = exArray;
         this.showStats = showStats;
     }
+*/
 /*
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -133,7 +131,8 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
             ExerciseViewHolder vh3 = (ExerciseViewHolder) holder;
             configureViewHolder3(vh3, position);
         }
-    }*/
+    }*//*
+
 
     private void configureViewHolder1(ViewHolderWorkout vh1, final int position) {
 
@@ -165,14 +164,16 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
             }
             //    ViewCompat.setTransitionName(vh3.sets, exerciseProfile.getBeansHolder().getExercise().getName()+position);
 
-          /* vh3.itemView.setOnClickListener(new View.OnClickListener() {
+          */
+/* vh3.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         //listener.click(v, exerciseProfile, "");
                     }
                 }
-            });*/
+            });*//*
+
 
         vh3.layout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -196,16 +197,20 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
                 vh3.reps.setText(beansHolder.getRep().getName());
                 vh3.sets.setText(beansHolder.getSets().getName());
                 vh3.rest.setText(beansHolder.getRest().getName());
-               /* if (exerciseProfile.getBeansHolder().getMethod() != null) {
+               */
+/* if (exerciseProfile.getBeansHolder().getMethod() != null) {
                     vh3.method.setText(exerciseProfile.getBeansHolder().getMethod().getName());
                 } else {
                     vh3.method.setText("");
-                }*/
-             /*   if ((exerciseProfile.getBeansHolder().getWeight() == 0)) {
+                }*//*
+
+             */
+/*   if ((exerciseProfile.getBeansHolder().getWeight() == 0)) {
                     vh3.weight.setText("W: -");
                 } else {
                     vh3.weight.setText("W: " + exerciseProfile.getBeansHolder().getWeight());
-                }*/
+                }*//*
+
 
 
                     vh3.icon.setOnTouchListener(new View.OnTouchListener() {
@@ -354,14 +359,16 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
 
     @Override
     public int getGroupViewType(int position, ExpandableGroup group) {
-     /*   Log.d(TAG, "getGroupViewType: " + position + " group: "+ group.getTitle());
+     */
+/*   Log.d(TAG, "getGroupViewType: " + position + " group: "+ group.getTitle());
         if (((PLObjects) group).getType() == WorkoutLayoutTypes.BodyView) {
             return BODY;
         } else if (((PLObjects) group).getType() == WorkoutLayoutTypes.WorkoutView) {
             return TITLE;
         } else if (((PLObjects) group).getType() == WorkoutLayoutTypes.ExerciseView) {
             return EXERCISE;
-        }*/
+        }*//*
+
         return CUSTOM_BUILD;
     }
 
@@ -405,12 +412,14 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
     public ChildViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        /*
+        */
+/*
         View v = inflater.inflate(R.layout.recycler_view_exercise_details_left_margin, parent, false);
 
 
         return new BeansHolderViewHolder(v);
-        */
+        *//*
+
        View v = inflater.inflate(R.layout.progress_set, parent, false);
         return new ProgressViewHolder(v);
 
@@ -418,7 +427,9 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
 
     @Override
     public void onBindChildViewHolder(ChildViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
-       /* ((BeansViewHolder) holder).setText("dasdsad");*/
+       */
+/* ((BeansViewHolder) holder).setText("dasdsad");*//*
+
 
     }
 
@@ -429,13 +440,15 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
         if (viewType == TITLE) {
             WorkoutAdapter.ViewHolderWorkout vh1 = (ViewHolderWorkout) holder;
             configureViewHolder1(vh1, flatPosition);
-      /*  } else if (viewType == BODY) {
+      */
+/*  } else if (viewType == BODY) {
             MuscleViewHolder vh2 = (MuscleViewHolder) holder;
             configureViewHolder2(vh2, flatPosition, (BodyText)group);
         } else if (viewType == EXERCISE){
             ExerciseViewHolder vh3 = (ExerciseViewHolder) holder;
             configureViewHolder3(vh3, flatPosition, (ExerciseProfile) group);
-        }*/
+        }*//*
+
         }
     }
 
@@ -475,7 +488,8 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
             edit = (ImageView) itemView.findViewById(R.id.ex_choose);
             // layout.setOnLongClickListener(this);
             //layout.setOnClickListener(listener);
-           /* layout.setOnTouchListener(new View.OnTouchListener() {
+           */
+/* layout.setOnTouchListener(new View.OnTouchListener() {
                 private GestureDetector gestureDetector = new GestureDetector(context,
                         new GestureDetector.SimpleOnGestureListener() {
                             @Override
@@ -494,7 +508,8 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
                     }
 
                 }
-            });*/
+            });*//*
+
 
             //delete = (ImageView) itemView.findViewById(R.id.recycler_view_exercise_delete);
 
@@ -508,11 +523,13 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
 
         }
 
-       /* @Override
+       */
+/* @Override
         public boolean onLongClick(View v) {
            // lonListener.longClick(v, this.getLayoutPosition());
             return true;
-        }*/
+        }*//*
+
 
         @Override
         public void onItemSelected() {
@@ -569,10 +586,12 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
         }
     }
 
-    /*@Override
+    */
+/*@Override
     public int getItemCount() {
         return exArray.size();
-    }*/
+    }*//*
+
 
 
     private class MuscleViewHolder extends ExerciseViewHolder {
@@ -669,9 +688,11 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
         if (exArray.get(fromPosition).getType() == WorkoutLayoutTypes.BodyView) {
             return false;
         }
-      /*  if (toPosition == 0 || fromPosition == 0) {
+      */
+/*  if (toPosition == 0 || fromPosition == 0) {
             return false;
-        }*/
+        }*//*
+
         ExerciseProfile toEp;
         ExerciseProfile fromEp = (ExerciseProfile) exArray.get(fromPosition);
         try {
@@ -726,7 +747,8 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
         notifyItemRemoved(position);
     }
 
-   /* public class ExerciseViewHolder extends GroupViewHolder {
+   */
+/* public class ExerciseViewHolder extends GroupViewHolder {
 
         public ExerciseViewHolder(View itemView) {
             super(itemView);
@@ -734,4 +756,3 @@ public class WorkoutAdapter extends MultiTypeExpandableRecyclerViewAdapter<Worko
     }*/
 
 
-}

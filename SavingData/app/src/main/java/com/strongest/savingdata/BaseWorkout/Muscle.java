@@ -63,7 +63,7 @@ public class Muscle {
 
     public static Muscle createMuscle(MusclesDataManager dm, String muscle) {
 
-
+        muscle = muscle.toLowerCase();
         Cursor c = dm.getMuscleFromDB(muscle);
         Muscle m = new Muscle();
         if (c.getCount() != 0 && c.moveToNext()) {

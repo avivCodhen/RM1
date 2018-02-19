@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_view_exercise_lay1"
     android:layout_width="match_parent"
-    android:layout_height="74dp"
-    >
+    android:layout_height="70dp">
 
     <TextView
         android:layout_centerVertical="true"
@@ -14,11 +14,28 @@
         android:fontFamily="assets/varela_round_regular"
         android:gravity="top"
         android:rotation="-90"
-        android:text="chest"
+        android:text="muscle"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="#7E7E7E"
-        android:textSize="8sp" />
+        android:textSize="8sp"
+        android:layout_toRightOf="@+id/ex1"
+        />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/colorPrimary"
+        android:src="@drawable/plus_48px"
+        app:civ_fill_color="@color/colorAccent"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/ex1"
+        android:elevation="5dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="@dimen/exercise_image_left_margin"
+        android:layout_marginTop="12dp"
+
+        />
 
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -27,12 +44,11 @@
         android:layout_width="match_parent"
         android:layout_height="62dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="80dp"
         app:cardElevation="4dp"
         android:foreground="?android:attr/selectableItemBackground"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="2dp"
         >
 
         <RelativeLayout
@@ -51,6 +67,7 @@
                   />-->
 
             <ImageView
+
                 android:layout_marginTop="10dp"
                 android:id="@+id/ex_arrow"
                 android:layout_width="16dp"
@@ -61,15 +78,7 @@
                 android:layout_toRightOf="@+id/exerciseView_nameTV"
                 android:background="@drawable/expand_arrow_grey_24px" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/ex1"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="@dimen/exercise_image_left_margin"
-                android:layout_marginTop="12dp"
-                android:src="@drawable/muscle_legs"
 
-                />
 
 
             <ImageView
@@ -88,29 +97,28 @@
                 android:id="@+id/exerciseView_nameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:text="Barbell Bench Press"
-                android:textColor="#2FCBC0"
                 android:textSize="15sp"
-                android:textStyle="bold"
 
                 />
+
+
 
             <LinearLayout
                 android:id="@+id/exerciseView_data_layout"
                 android:layout_width="match_parent"
                 android:layout_height="17dp"
-                android:layout_marginLeft="70dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginRight="17dp"
                 android:layout_marginTop="33dp">
-
                 <TextView
                     android:id="@+id/exerciseView_setsTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="18dp"
-                    android:text="Sets: "
+                    android:layout_marginRight="12dp"
+                    android:text="Sets: 3"
                     android:textSize="12sp" />
 
 
@@ -119,16 +127,16 @@
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="18dp"
-                    android:text="Reps: "
+                    android:layout_marginRight="12dp"
+                    android:text="Reps: 1-5"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/exerciseView_restTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="18dp"
-                    android:text="Rest: "
+                    android:layout_marginRight="12dp"
+                    android:text="Rest: 01:23"
                     android:textSize="12sp" />
 
 
@@ -137,9 +145,9 @@
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="18dp"
+                    android:layout_marginRight="12dp"
 
-                    android:text="Wgh: "
+                    android:text="Wgh: 10lbs"
                     android:textSize="12sp" />
 
             </LinearLayout>

@@ -21,6 +21,7 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.*;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.BODY_TEMPLATE_STR;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.EXERCISE_ID;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.EXERCISE_PROFILE_ID;
+import static com.strongest.savingdata.Database.Program.DBProgramHelper.INNER_TYPE;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.LAYOUT_NAME;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.PROGRAM_NAME;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.RECOMMENDED_WORKOUTS;
@@ -63,7 +64,7 @@ public class ProgramDataManager extends DataManager {
         this.context = context;
         exercisesHelper = new DBExercisesHelper(context);
         programHelper = new DBProgramHelper(context);
-      //  updateCurrentTables(0);
+        //  updateCurrentTables(0);
     }
 
     public void insertData(String tableName, ContentValues[] contentValues) {
@@ -222,7 +223,7 @@ public class ProgramDataManager extends DataManager {
 
     }
 
-    public void getCurrentLayourTable(int backBy){
+    public void getCurrentLayourTable(int backBy) {
         Cursor c;
         String getLatestTable = "SELECT * FROM " + currentProgramTable;
         c = getDb(programHelper).rawQuery(getLatestTable, null);
@@ -275,14 +276,14 @@ public class ProgramDataManager extends DataManager {
             } catch (Exception e) {
                 e.toString();
             }
-            if(c.getCount() >= 0){
+            if (c.getCount() >= 0) {
                 String currentLayout = c.getString(c.getColumnIndex(LAYOUT_NAME));
-                c = db.rawQuery("SELECT * FROM " + currentLayout , null);
+                c = db.rawQuery("SELECT * FROM " + currentLayout, null);
             }
             /*c.moveToNext();
             String laySQL = sql.replace(currentProgramTable, c.getString(c.getColumnIndex(LAYOUT_NAME)));
             String tempSQL = sql.replace(currentProgramTable, c.getString(c.getColumnIndex(TEMPLATE_NAME)));*/
-           return c;
+            return c;
         } else {
             return null;
         }
@@ -350,7 +351,7 @@ public class ProgramDataManager extends DataManager {
                     if (exerciseProfile.getBeansHolders() != null || exerciseProfile.isFirstExercise()) {
                         BeansHolder beansHolder = exerciseProfile.getBeansHolders().get(0);
                         v.put(EXERCISE_PROFILE_ID, exerciseProfile.getExerciseProfileId());
-                        v.put(MUSCLE, exerciseProfile.getMuscle().getMuscle_name());
+                        v.put(MUSCLE, exerciseProfile.getmBeansHolder().getExercise().getMuscle().getMuscle_name());
                         if (exerciseProfile.getBeansHolders().get(0) != null) {
 
 
@@ -366,6 +367,7 @@ public class ProgramDataManager extends DataManager {
                         /*if (beansHolder.getMethod() != null)
                             v.put(METHOD_ID, beansHolder.getMethod().getId());
 */
+                            v.put(INNER_TYPE, exerciseProfile.getInnerType().ordinal());
                             v.put(SETS, beansHolder.getSets().getName());
                             v.put(WEIGHT, beansHolder.getWeight());
                             v.put(REST, beansHolder.getRest().getName());

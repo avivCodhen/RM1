@@ -1,0 +1,151 @@
+<RelativeLayout android:elevation="10dp"
+    android:layout_marginLeft="10dp"
+    android:orientation="vertical"
+    android:layout_width="220dp"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:layout_above="@+id/workout_view_program_tools_expandable"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/workout_view_show_program_tools_expand"
+        app:el_expanded="false"
+        android:elevation="10dp"
+        android:background="@color/colorAccent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/workout_view_open_program_tools"
+            android:background="@color/colorAccent"
+            android:src="@drawable/ic_add_white_24dp"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+    </net.cachapa.expandablelayout.ExpandableLayout>
+
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:layout_alignParentBottom="true"
+
+        android:id="@+id/workout_view_program_tools_expandable"
+        app:el_expanded="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+
+                android:id="@+id/workout_view_add_exercise"
+                android:layout_marginTop="10dp"
+                android:elevation="10dp"
+                android:padding="5dp"
+                android:backgroundTint="@color/colorAccent"
+                android:background="@drawable/aviv_exercises_placeholder_right_margin"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:text="Add New Exercise"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:elevation="10dp"
+                android:id="@+id/workout_view_add_exercise_split"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:backgroundTint="@color/colorAccent"
+                android:background="@drawable/aviv_exercises_placeholder_right_margin"
+                android:layout_marginRight="5dp"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:text="Add New Exercise (Flipped)"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+
+                android:elevation="10dp"
+                android:id="@+id/workout_view_attach_superset"
+
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:backgroundTint="@color/colorAccent"
+                android:background="@drawable/aviv_exercises_placeholder_right_margin"
+                android:layout_marginRight="5dp"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:text="Attach New Superset"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:elevation="10dp"
+                android:id="@+id/workout_view_attach_dropset"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:backgroundTint="@color/colorAccent"
+                android:background="@drawable/aviv_exercises_placeholder_right_margin"
+                android:layout_marginRight="5dp"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:text="Attach New Dropset"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:elevation="10dp"
+                android:id="@+id/workout_view_add_workout"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:backgroundTint="@color/colorAccent"
+                android:background="@drawable/aviv_exercises_placeholder_right_margin"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:text="Add New Workout"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/workout_view_delete_workout"
+                android:elevation="10dp"
+
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:backgroundTint="@color/colorAccent"
+                android:background="@drawable/aviv_exercises_placeholder_right_margin"
+                android:layout_marginRight="5dp"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:text="Delete Workout"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </net.cachapa.expandablelayout.ExpandableLayout>
+
+</RelativeLayout>

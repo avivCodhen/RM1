@@ -47,7 +47,7 @@ public class OptionalChooseDialogFragment extends BaseDialogFragment {
         OptionalChooseDialogFragment fragment = new OptionalChooseDialogFragment();
         Bundle args = new Bundle();
         args.putSerializable("beans_holder", data.getBeansHolder());
-        args.putString(MUSCLE, data.getMuscle().getMuscle_name());
+        args.putString(MUSCLE, "chest");
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,7 +57,7 @@ public class OptionalChooseDialogFragment extends BaseDialogFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mBeansHolders = (ArrayList<BeansHolder>) getArguments().getSerializable("beans_holder");
-            mMuscle = getArguments().getInt(MUSCLE);
+            //mMuscle = getArguments().getInt(MUSCLE);
         }
     }
 

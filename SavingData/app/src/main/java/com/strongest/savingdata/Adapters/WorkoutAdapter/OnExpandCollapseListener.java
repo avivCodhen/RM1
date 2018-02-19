@@ -11,5 +11,10 @@ import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 public interface OnExpandCollapseListener {
 
     void onExpand(MyExpandableAdapter.ExerciseViewHolder vh);
+
     void onCollapse(MyExpandableAdapter.ExerciseViewHolder vh);
+
+    void deTailExpand(RecyclerView.ViewHolder vh);
+
+    void detailCollapse(RecyclerView.ViewHolder vh);
 }

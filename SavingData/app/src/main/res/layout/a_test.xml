@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="10dp"
+    android:padding="4dp"
+    >
+
+    <FrameLayout
+        android:layout_above="@+id/a_test_view"
+        android:background="@drawable/aviv_exercises_placeholder_right_margin"
+        android:elevation="5dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:id="@+id/choose_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+    <View
+        android:id="@+id/a_test_view"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"></View>
+
+</RelativeLayout>

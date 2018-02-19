@@ -24,7 +24,9 @@ public enum WorkoutLayoutTypes {
 
     BeansHolderRightMargin,
 
-    AddExercise;
+    AddExercise,
+
+    Method;
 
     public static WorkoutLayoutTypes getEnum(int value) {
         return values()[value];

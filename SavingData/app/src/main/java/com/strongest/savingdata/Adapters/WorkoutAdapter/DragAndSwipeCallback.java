@@ -5,7 +5,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 import com.strongest.savingdata.Adapters.MainAdapter;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
-import com.strongest.savingdata.Adapters.WorkoutAdapter.WorkoutAdapter;
 
 /**
  * Created by Cohen on 10/27/2017.
@@ -16,16 +15,12 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
 {
 
     private MainAdapter mainAdapter;
-    private WorkoutAdapter workoutAdapter2;
     private MyExpandableAdapter workoutAdapter;
 
     public DragAndSwipeCallback(MainAdapter adapter) {
         mainAdapter = adapter;
     }
 
-    public DragAndSwipeCallback(WorkoutAdapter adapter) {
-        workoutAdapter2 = adapter;
-    }
     public DragAndSwipeCallback(MyExpandableAdapter adapter) {
         workoutAdapter = adapter;
     }
@@ -85,8 +80,8 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
             if (viewHolder instanceof MainAdapter.MuscleViewHolder) {
                     MainAdapter.MuscleViewHolder itemViewHolder = (MainAdapter.MuscleViewHolder) viewHolder;
                     itemViewHolder.onItemSelected();
-            }else if(viewHolder instanceof WorkoutAdapter.ExerciseViewHolder){
-                WorkoutAdapter.ExerciseViewHolder itemViewHolder = (WorkoutAdapter.ExerciseViewHolder) viewHolder;
+            }else if(viewHolder instanceof MyExpandableAdapter.ExerciseViewHolder){
+                MyExpandableAdapter.ExerciseViewHolder itemViewHolder = (MyExpandableAdapter.ExerciseViewHolder) viewHolder;
                 itemViewHolder.onItemSelected();
             }
         }

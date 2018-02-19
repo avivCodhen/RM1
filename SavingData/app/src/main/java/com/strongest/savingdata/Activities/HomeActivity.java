@@ -41,7 +41,6 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import devlight.io.library.ntb.NavigationTabBar;
 
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_ARMS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_BACK;

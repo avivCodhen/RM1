@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
@@ -24,16 +25,21 @@ import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.BeansHolder;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.MyViews.MySelector.ChooseSelectorAdapter;
+import com.strongest.savingdata.MyViews.MySelector.MySelectorOnBeansHolderChange;
 import com.strongest.savingdata.MyViews.MyViewPager;
+import com.strongest.savingdata.MyViews.WorkoutView.OnExerciseChangeListener;
 import com.strongest.savingdata.MyViews.WorkoutView.WorkoutSubject;
 import com.strongest.savingdata.MyViews.WorkoutView.WorkoutView;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 
 public class ChooseDialogFragment extends BaseCreateProgramFragment implements View.OnClickListener,
-        TabLayout.OnTabSelectedListener, WorkoutSubject {
+        TabLayout.OnTabSelectedListener, WorkoutSubject, MySelectorOnBeansHolderChange {
 
     public static final String LISTENER = "listener";
     private TabLayout tabLayout;
@@ -59,6 +65,10 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     private PLObjects.ExerciseProfile exerciseProfile;
     private String tName;
     private Button backBtn;
+
+    private OnExerciseChangeListener onExerciseChangeListener;
+
+    private int exercisePosition;
     TimingLogger timings;
 
   /*  private RadioGroup rg1;
@@ -79,12 +89,22 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         }
     };*/
 
+    public static ChooseDialogFragment getInstance(OnExerciseChangeListener onExerciseChangeListener,
+                                                   int position,
+                                                   PLObjects.ExerciseProfile ep){
+        ChooseDialogFragment f = new ChooseDialogFragment();
+        f.setExerciseProfile(ep);
+        f.setExercisePosition(position);
+        f.setOnExerciseChangeListener(onExerciseChangeListener);
+        return f;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         postponeEnterTransition();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+        //    setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
         }
     }
 
@@ -160,7 +180,11 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     }
 
     private void initView(View v) {
-        backBtn = (Button) v.findViewById(R.id.choose_back_btn);
+       // TextView tv = (TextView) v.findViewById(R.id.choose_test_tv);
+        //tv.setTransitionName(tName);
+//        tv.setText(exerciseProfile.getBeansHolders().get(0).getExercise().getName());
+
+       /* backBtn = (Button) v.findViewById(R.id.choose_back_btn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,7 +193,8 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
                 //getFragmentManager().popBackStackImmediate("unique", 0);
             }
-        });
+        });*/
+        startPostponedEnterTransition();
         dataManager = new DataManager(getContext());
         tabLayout = (TabLayout) v.findViewById(R.id.choose_dialog_tablayout);
         i = getArguments();
@@ -185,11 +210,15 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
         //not for lolipop!
         //data.setMuscle(getArguments().getInt(MUSCLE));
-
-        data.setMuscle(exerciseProfile.getMuscle());
+        if(exerciseProfile.isHasBeansHolders()){
+            data.setMuscle(exerciseProfile.getmBeansHolder().getExercise().getMuscle());
+        }else{
+            data.setMuscle(null);
+        }
         //   TimingLogger t = new TimingLogger("aviv", "for viewpager");
 
         mandatoryFragment = MandatoryChooseDialogFragment.newInstance(data);
+        mandatoryFragment.setBeansHolderChange(this);
         optionalFragment = OptionalChooseDialogFragment.newInstance(data);
         ChooseAdapter adapter = new ChooseAdapter(getChildFragmentManager(),
                 data,
@@ -273,15 +302,12 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-//        chooseDataListener = (ChooseDataListener) context;
-    }
+
 
     @Override
     public void Attach(WorkoutView o) {
         workoutView = (WorkoutView) o;
+
     }
 
     @Override
@@ -307,6 +333,34 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         this.tName = tName;
 
     }
+
+    @Override
+    public void notifyExerciseProfileBeanChange(String beanType, Beans bean) {
+        switch (beanType){
+            case "exercise":
+                exerciseProfile.getmBeansHolder().setExercise(bean);
+            case "reps":
+                exerciseProfile.getmBeansHolder().setRep(bean);
+                break;
+            case "sets":
+                exerciseProfile.getmBeansHolder().setSets(bean);
+                break;
+            case "rest":
+                exerciseProfile.getmBeansHolder().setRest(bean);
+        }
+        onExerciseChangeListener.onExerciseChange(exercisePosition, beanType);
+
+    }
+
+    public void setOnExerciseChangeListener(OnExerciseChangeListener onExerciseChangeListener) {
+        this.onExerciseChangeListener = onExerciseChangeListener;
+    }
+
+    public void setExercisePosition(int exercisePosition) {
+        this.exercisePosition = exercisePosition;
+    }
+
+
 
     /*  @Subscribe
     public void updateBeansHolder(double weight, Beans method) {

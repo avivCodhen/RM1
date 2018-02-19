@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_view_exercise_lay1"
     android:layout_width="match_parent"
-    android:layout_height="74dp"
+    android:layout_height="70dp"
     >
 
     <TextView
@@ -11,11 +11,11 @@
         android:id="@+id/exerciseView_muscleTV"
         android:layout_width="60dp"
         android:layout_height="match_parent"
-        android:layout_marginRight="12dp"
+        android:layout_marginRight="8dp"
         android:fontFamily="assets/varela_round_regular"
         android:gravity="top"
         android:rotation="90"
-        android:text="chest"
+        android:text="muscle"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="#7E7E7E"
@@ -30,10 +30,10 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="25dp"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardElevation="4dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         >
 
         />/ android:background="#F3F3F3"
@@ -71,7 +71,9 @@
                 android:layout_marginRight="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/muscle_legs"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/colorPrimary"
+                android:src="@drawable/plus_48px"
 
                 />
 
@@ -93,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Barbell Bench Press"
+                android:text="New Exercise"
                 android:textColor="#2FCBC0"
                 android:textSize="15sp"
                 android:textStyle="bold"

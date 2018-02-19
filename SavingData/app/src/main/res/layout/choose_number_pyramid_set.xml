@@ -35,7 +35,7 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:background="@drawable/strongest_border_rec_layout"
-            android:backgroundTint="@color/default_bmb_normal_color"
+            android:backgroundTint="@color/colorAccent"
             android:paddingBottom="2dp"
             android:paddingTop="2dp"
             android:text="Repetitions"
@@ -121,7 +121,7 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:background="@drawable/strongest_border_bottom_curve_layout"
-        android:backgroundTint="@color/default_bmb_normal_color"
+        android:backgroundTint="@color/colorAccent"
         android:orientation="vertical">
 
         <Button

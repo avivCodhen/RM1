@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +43,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
-import devlight.io.library.ntb.NavigationTabBar;
 
 import static android.view.View.GONE;
 
@@ -72,6 +72,7 @@ public class WorkoutFragment extends BaseCreateProgramFragment implements TabLay
     private WorkoutFragmentAdapter newAdapter;
     private Button backBtn, saveBtn;
     private boolean toInitiateWorkout = true;
+    public static int workoutFragmentHeight;
 
 
     private ArrayList<BaseCreateProgramFragment> fragmentsList = new ArrayList<>();
@@ -126,6 +127,8 @@ public class WorkoutFragment extends BaseCreateProgramFragment implements TabLay
             viewPager.setAdapter(newAdapter);
 
         }
+        workoutFragmentHeight = getResources().getDisplayMetrics().heightPixels;
+        workoutView.setWorkoutFragmentHeight(workoutFragmentHeight);
 
     }
 

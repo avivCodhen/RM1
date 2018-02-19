@@ -154,8 +154,8 @@ public class CreateProgramFragment extends BaseCreateProgramFragment implements 
     @Subscribe
     public void onEvent(ExerciseProfileEventMessage eventMessage) {
         PLObjects.ExerciseProfile exerciseProfile = eventMessage.getExerciseProfile();
-        programmer.getLayoutManager().getSplitRecyclerWorkouts().get(position).set(eventMessage.getPosition(), exerciseProfile);
-        programmer.getLayoutManager().updateLayoutStats(true);
+       /* programmer.getLayoutManager().getSplitRecyclerWorkouts().get(position).set(eventMessage.getPosition(), exerciseProfile);
+        programmer.getLayoutManager().updateLayoutStats(true);*/
     }
 
 

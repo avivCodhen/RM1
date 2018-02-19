@@ -69,7 +69,7 @@ public class LimitFragment extends BaseCreateProgramFragment implements RadioGro
         descriptionTV = (TextView) v.findViewById(R.id.fragment_limit_descriptionTV);
         radioGroup.setOnCheckedChangeListener(this);
         v.findViewById(R.id.limit_fragment_btn).setOnClickListener(this);
-      /*  Download d = new Download(getContext());
+       /* Download d = new Download(getContext());
         try {
 
             d.refreshData(

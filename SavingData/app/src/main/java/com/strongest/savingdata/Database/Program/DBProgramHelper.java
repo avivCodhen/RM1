@@ -33,6 +33,7 @@ public class DBProgramHelper extends SQLiteOpenHelper {
     public static final String WORKOUT_ID = "workout_id";
     public static final String EXERCISE_PROFILE_ID = "exercise_profile_id";
     public static final String FIRST_EXERCISE = "first_exercise";
+    public static final String INNER_TYPE = "inner_type";
 
     //template fields
     public static final String BODY_TEMPLATE_STR = "body_template_str",
@@ -84,9 +85,9 @@ public class DBProgramHelper extends SQLiteOpenHelper {
 
     //commands
     private final String LAYOUT_CREATE_COMMAND = "CREATE TABLE " + "programs" + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + SETS + " TEXT, " + SUPERSET + " INTEGER, " + NAME + " TEXT," + WORKOUT_ID + " INTEGER," + EXERCISE_PROFILE_ID + " INTEGER, " + TYPE + " INTEGER, "
+            + SETS + " TEXT, " + SUPERSET + " INTEGER, " + INNER_TYPE+" INTEGER,"+ NAME + " TEXT," + WORKOUT_ID + " INTEGER," + EXERCISE_PROFILE_ID + " INTEGER, " + TYPE + " INTEGER, "
             + WEIGHT + " INTEGER, " + REST + " TEXT, " + FIRST_EXERCISE + " INTEGER, "
-            + EXERCISE_ID + " TEXT, " + REP_ID + " TEXT," + METHOD_ID + " INTEGER DEFAULT -1, " + MUSCLE + " INTEGER,"
+            + EXERCISE_ID + " TEXT, "+ REP_ID + " TEXT," + METHOD_ID + " INTEGER DEFAULT -1, " + MUSCLE + " TEXT,"
             + STATS_DAMAGE + " INTEGER," + STATS_MECHANICAL + " INTEGER, " + STATS_METABOLIC + " INTEGER )";
 
 

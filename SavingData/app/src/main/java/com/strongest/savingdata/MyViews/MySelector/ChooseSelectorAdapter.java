@@ -14,16 +14,17 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.strongest.savingdata.Animations.MyJavaAnimator;
+import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
-import com.strongest.savingdata.Database.Managers.ExercisesDataManager;
 import com.strongest.savingdata.Dialogs.CreateRepsDialog;
-import com.strongest.savingdata.MyViews.MySelector.MySelector;
 import com.strongest.savingdata.MyViews.MySelector.MySelector.SelectorTypes;
 import com.strongest.savingdata.MyViews.WeightKeyBoard.WeightKeyboard;
 import com.strongest.savingdata.R;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
+
+import static com.strongest.savingdata.MyViews.MySelector.MySelector.SelectorTypes.Rest;
 
 /**
  * Created by Cohen on 11/1/2017.
@@ -33,14 +34,19 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHolder> {
 
 
-    private final int muscle;
+    private final MySelectorOnBeansHolderChange mySelectorOnBeansHolderChange;
     // private MySelector.CheckedHolder[] checkedHolders;
     private final SelectorTypes[] types;
     private final Context context;
 
-    public ChooseSelectorAdapter(FragmentManager fm, Context context, int muscle, MySelector.CheckedHolder[] checkedHolders, SelectorTypes... types) {
+    public ChooseSelectorAdapter(MySelectorOnBeansHolderChange mySelectorOnBeansHolderChange,
+                                 FragmentManager fm,
+                                 Context context,
+                                 Muscle muscle,
+                                 MySelector.CheckedHolder[] checkedHolders,
+                                 SelectorTypes... types) {
         super(fm, context, muscle, checkedHolders, types);
-        this.muscle = muscle;
+        this.mySelectorOnBeansHolderChange = mySelectorOnBeansHolderChange;
         this.types = types;
         this.context = context;
     }
@@ -62,22 +68,22 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
         switch (type) {
             case Exercise:
                 v = inflater.inflate(R.layout.my_selector_exercise, parent, false);
-                return new ViewHolderExercise(v);
+                return new ViewHolderExercise(v, mySelectorOnBeansHolderChange);
             case Reps:
                 v = inflater.inflate(R.layout.my_selector_reps, parent, false);
-                return new ViewHolderReps(v);
+                return new ViewHolderReps(v, mySelectorOnBeansHolderChange);
             case Method:
                 v = inflater.inflate(R.layout.my_selector_method, parent, false);
-                return new ViewHolderMethod(v);
+                return new ViewHolderMethod(v, mySelectorOnBeansHolderChange);
             case Sets:
                 v = inflater.inflate(R.layout.my_selector_sets, parent, false);
-                return new ViewHolderSets(v);
+                return new ViewHolderSets(v, mySelectorOnBeansHolderChange);
             case Rest:
                 v = inflater.inflate(R.layout.my_selector_rest, parent, false);
-                return new ViewHolderRest(v);
+                return new ViewHolderRest(v, mySelectorOnBeansHolderChange);
             case Weight:
                 v = new WeightKeyboard(context);
-                return new ViewHolderWeight(v);
+                return new ViewHolderWeight(v, mySelectorOnBeansHolderChange);
         }
 
         return null;
@@ -92,61 +98,111 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
         }
     }
 
-
     @Override
-    public int getMuscleType() {
-        return muscle;
-    }
-
-    @Override
-    public void bindView(MySelector.ViewHolder viewHolder, String val) {
+    public void bindView(MySelector.ViewHolder viewHolder, Beans bean) {
         switch (viewHolder.getType()) {
             case Exercise:
-                configExerciseViewHolder((ViewHolderExercise) viewHolder, val);
+                configExerciseViewHolder((ViewHolderExercise) viewHolder, bean);
                 break;
             case Reps:
-                configRepsViewHolder((ViewHolderReps) viewHolder);
+                configRepsViewHolder((ViewHolderReps) viewHolder, bean);
                 break;
             case Method:
                 configMethodViewHolder((ViewHolderMethod) viewHolder);
                 break;
+            case Rest:
+                configurateRestViewHolder(viewHolder, bean);
+                break;
+            case Sets:
+                configurateSetsViewHolder(viewHolder, bean);
+                break;
+        }
+    }
+
+    private void configurateSetsViewHolder(MySelector.ViewHolder viewHolder, Beans bean) {
+
+        if (viewHolder.isInitiated()) {
+            viewHolder.getMySelectorOnBeansHolderChange().notifyExerciseProfileBeanChange("sets", bean);
+        } else {
+            viewHolder.setInitiated(true);
+        }
+    }
+
+    private void configurateRestViewHolder(MySelector.ViewHolder viewHolder, Beans bean) {
+        if (viewHolder.isInitiated()) {
+            viewHolder.getMySelectorOnBeansHolderChange().notifyExerciseProfileBeanChange("rest", bean);
+        } else {
+            viewHolder.setInitiated(true);
         }
     }
 
 
-    private void configRepsViewHolder(ViewHolderReps viewHolder) {
+    private void configRepsViewHolder(ViewHolderReps viewHolder, Beans b) {
+        if (viewHolder.isInitiated()) {
+            viewHolder.getMySelectorOnBeansHolderChange().notifyExerciseProfileBeanChange("reps", b);
+        } else {
+            viewHolder.setInitiated(true);
+        }
     }
 
     private void configMethodViewHolder(ViewHolderMethod viewHolder) {
     }
 
-    private void configExerciseViewHolder(ViewHolderExercise viewHolder, String val) {
-        viewHolder.exercise_tv.setText(val);
+    private void configExerciseViewHolder(ViewHolderExercise viewHolder, Beans bean) {
+        //viewHolder.exercise_tv.setText(val);
+        if(bean == null){
+            viewHolder.el.expand();
+            viewHolder.exercise_tv.setText("Choose a muscle to display exercises");
+        }else{
+                viewHolder.el.collapse();
+
+            viewHolder.exercise_tv.setText("Displaying " + this.getMuscleType().getMuscle_display() + " Exercises");
+            String type = "";
+            switch (bean.getType()) {
+                case 0:
+                    type = "Isolation Exercise";
+                    break;
+                case 1:
+                    type = "Compound Exercise";
+            }
+            viewHolder.type_tv.setText(type);
+            if (viewHolder.isInitiated()) {
+                viewHolder.getMySelectorOnBeansHolderChange().notifyExerciseProfileBeanChange("exercise", bean);
+            } else {
+                viewHolder.setInitiated(true);
+            }
+
+            MyJavaAnimator.fadeIn(viewHolder.muscleChange_tv);
+        }
+
     }
 
 
     public class ViewHolderExercise extends MySelector.ViewHolder {
 
-        private TextView exercise_tv;
+        private TextView exercise_tv, type_tv, muscleChange_tv;
         private ExpandableLayout el;
         private ImageView exercise_description_img;
         private ImageView arrow;
         private HorizontalScrollView sc;
         private boolean isExpand = true;
 
-        public ViewHolderExercise(View v) {
-            super(v);
+        public ViewHolderExercise(View v, MySelectorOnBeansHolderChange mySelectorOnBeansHolderChange) {
+            super(v, mySelectorOnBeansHolderChange);
             sc = (HorizontalScrollView) v.findViewById(R.id.my_selector_exercise_scrollview);
             el = (ExpandableLayout) v.findViewById(R.id.expandable);
             arrow = (ImageView) v.findViewById(R.id.arrow);
-            arrow.setOnClickListener(new View.OnClickListener() {
+            exercise_tv = (TextView) v.findViewById(R.id.my_selector_exercise_muscle_text_view);
+            type_tv = (TextView) v.findViewById(R.id.my_selector_exercise_type_tv);
+            muscleChange_tv = (TextView) v.findViewById(R.id.my_selector_exercise_muscle_change_text_view);
+            muscleChange_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     el.toggle();
                     toggleCollapseExpand();
+                    type_tv.setText("Exercise Type");
                 }
             });
-            exercise_tv = (TextView) v.findViewById(R.id.my_selector_exercise_muscle_text_view);
             // exercise_description_img = (ImageView) v.findViewById(R.id.my_selector_muscle_dialog_imageview);
         }
 
@@ -164,6 +220,7 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
         public HorizontalScrollView getSc() {
             return sc;
         }
+
     }
 
 
@@ -173,8 +230,8 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
         private HorizontalScrollView sc;
 
 
-        public ViewHolderReps(View v) {
-            super(v);
+        public ViewHolderReps(View v, MySelectorOnBeansHolderChange mySelectorOnBeansHolderChange) {
+            super(v, mySelectorOnBeansHolderChange);
             custom_btn = (Button) v.findViewById(R.id.my_selector_custom_reps_btn);
             custom_btn.setOnClickListener(this);
             sc = (HorizontalScrollView) v.findViewById(R.id.my_selector_reps_scrollview);
@@ -201,8 +258,8 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
 
         private TextView method_description_tv;
 
-        public ViewHolderMethod(View v) {
-            super(v);
+        public ViewHolderMethod(View v, MySelectorOnBeansHolderChange mySelectorOnBeansHolderChange) {
+            super(v, mySelectorOnBeansHolderChange);
             method_description_tv = (TextView) v.findViewById(R.id.my_selector_method_description_tv);
             custom_btn = (Button) v.findViewById(R.id.my_selector_custom_method_btn);
             custom_btn.setOnClickListener(this);
@@ -218,8 +275,8 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
 
     public class ViewHolderWeight extends MySelector.ViewHolder {
 
-        public ViewHolderWeight(View v) {
-            super(v);
+        public ViewHolderWeight(View v, MySelectorOnBeansHolderChange mySelectorOnBeansHolderChange) {
+            super(v, mySelectorOnBeansHolderChange);
         }
 
     }
@@ -229,8 +286,8 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
         private HorizontalScrollView sc;
 
 
-        public ViewHolderSets(View v) {
-            super(v);
+        public ViewHolderSets(View v, MySelectorOnBeansHolderChange mySelectorOnBeansHolderChange) {
+            super(v, mySelectorOnBeansHolderChange);
             custom_btn = (Button) v.findViewById(R.id.my_selector_custom_sets_btn);
             custom_btn.setOnClickListener(this);
             sc = (HorizontalScrollView) v.findViewById(R.id.my_selector_sets_scrollview);
@@ -248,8 +305,8 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
         private HorizontalScrollView sc;
 
 
-        public ViewHolderRest(View v) {
-            super(v);
+        public ViewHolderRest(View v, MySelectorOnBeansHolderChange mySelectorOnBeansHolderChange) {
+            super(v, mySelectorOnBeansHolderChange);
             sc = (HorizontalScrollView) v.findViewById(R.id.my_selector_rest_scrollview);
 
             custom_btn = (Button) v.findViewById(R.id.my_selector_custom_rest_btn);

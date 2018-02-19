@@ -24,7 +24,7 @@ public class ManagerFragment extends BaseCreateProgramFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //View v = inflater.inflate(R.layout.fragment_manager, container, false);
-        View v = inflater.inflate(R.layout.fragment_program_template, container, false);
+        View v = inflater.inflate(R.layout.fragment_manager, container, false);
         return v;
     }
 
@@ -35,7 +35,6 @@ public class ManagerFragment extends BaseCreateProgramFragment {
     }
 
     private void initView(View v) {
-        mManagerView = (ManagerView) v.findViewById(R.id.fragment_manager_managerview);
        /* mManagerView.instantiate(((HomeActivity) getActivity()).getDataManager(),
                 ManagerView.ViewType.Reps,
                 ManagerView.ViewType.Rest);*/

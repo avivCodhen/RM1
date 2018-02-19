@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
+import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.Beans;
@@ -14,6 +15,7 @@ import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes.*;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_EXERCISES_GENERATOR;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_METHODS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_REPS;
@@ -107,7 +109,7 @@ public class Generator {
         methods = new ArrayList<>();
         for (int i = 0; i < programTemplate.getNumOfWorkouts(); i++) {
             String workoutName = programTemplate.getWorkoutsNames().get(i);
-            layoutManager.drawWorkout(layoutManager.getLayout(),workoutName);
+            layoutManager.drawWorkout(layoutManager.getLayout(), workoutName);
             first = true;
             fillWorkout(i);
         }
@@ -117,7 +119,7 @@ public class Generator {
         for (int i = 0; i < programTemplate.getBodyTemplate().get(currentWorkout).size(); i++) {
             String muscle = programTemplate.getBodyTemplate().get(currentWorkout).get(i);
             Muscle muscle1 = Muscle.createMuscle(dm.getMuscleDataManager(), muscle);
-            layoutManager.drawBody(layoutManager.getLayout(),muscle1);
+            layoutManager.drawBody(layoutManager.getLayout(), muscle1);
             fillBlock(muscle1, i);
         }
     }
@@ -144,13 +146,13 @@ public class Generator {
         }
 
         for (int i = 0; i < numOfExercises; i++) {
-            LoadExercises(i, currentMuscle, permExerciseBlock[i], permRepBlock[i]);
+            LoadExercises(i, currentMuscle, permExerciseBlock[i], permRepBlock[i], currentBody);
         }
         first = false;
     }
 
 
-    private void LoadExercises(int pos, Muscle muscle, BParams[] exerciseParams, BParams[] repsParams) {
+    private void LoadExercises(int pos, Muscle muscle, BParams[] exerciseParams, BParams[] repsParams, int currentBody) {
         Beans exerciseBean;
         Beans repBean;
         Beans methodBean;
@@ -162,7 +164,7 @@ public class Generator {
         ArrayList<Beans> methods;*/
         if (first) {
             reps.add((ArrayList<Beans>) dm.getExerciseDataManager().readByBParams(TABLE_REPS, repsParams));
-          //  methods.add((ArrayList<Beans>) dm.getExerciseDataManager().readByBParams(TABLE_METHODS, methodParams));
+            //  methods.add((ArrayList<Beans>) dm.getExerciseDataManager().readByBParams(TABLE_METHODS, methodParams));
         }
         BParams[] restParams = generatorTemplateManager.getRestTemplate(reps.get(pos).get(0).getIntensity());
         ArrayList<Beans> rests = (ArrayList<Beans>) dm.getExerciseDataManager().readByBParams(TABLE_REST, restParams);
@@ -181,23 +183,45 @@ public class Generator {
         } else {
             methodBean = null;
         }*/
+        WorkoutLayoutTypes innerType;
+        if(currentBody%2 != 0){
+            innerType = ExerciseViewLeftMargin;
 
-        injectExercise(sets.get(2),muscle, exerciseBean, repBean, restBean);
+        }else{
+            innerType = ExerciseViewRightMargin;
+        }
+       /* if (layoutManager.getLayout().size() != 0) {
+            if (layoutManager.getLayout().get(layoutManager.getLayoutSize() - 1).getType() == ExerciseView) {
+                if (layoutManager.getLayout().get(layoutManager.getLayoutSize() - 1).getBodyId() % 2 != 0) {
+                    innerType = ExerciseViewLeftMargin;
+
+                } else {
+                    innerType = ExerciseViewRightMargin;
+
+                }
+            } else {
+                innerType = ExerciseViewLeftMargin;
+            }
+        } else {
+            innerType = ExerciseViewLeftMargin;
+        }
+*/
+        injectExercise(sets.get(2), muscle, exerciseBean, repBean, restBean, innerType);
     }
 
     //saves the generated exercise to the new array
-    private void injectExercise(Beans sets, Muscle muscle, Beans exercise, Beans reps, Beans rest) {
+    private void injectExercise(Beans sets, Muscle muscle, Beans exercise, Beans reps, Beans rest,
+                                WorkoutLayoutTypes type) {
         BeansHolder beansHolder = new BeansHolder();
         beansHolder.setExercise(exercise);
         beansHolder.setRep(reps);
-       // beansHolder.setMethod(method);
+        // beansHolder.setMethod(method);
         beansHolder.setSets(sets);
         beansHolder.setRest(rest);
         beansHolder.setLoaded(true);
-        //code for it to choose based on method
 
         beansHolder.setSuperset(new Beans());
-        layoutManager.drawExercise(layoutManager.getLayout(),beansHolder, muscle);
+        layoutManager.drawExercise(layoutManager.getLayout(), beansHolder, type);
         dm.getExerciseDataManager().removeByName(TABLE_EXERCISES_GENERATOR, exercise.getName());
 
         //     p.setRepsId(reps.getWorkoutId());
