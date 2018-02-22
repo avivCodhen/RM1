@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.BeansHolder;
 import com.strongest.savingdata.Database.Managers.DataManager;
@@ -91,7 +92,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     public static ChooseDialogFragment getInstance(OnExerciseChangeListener onExerciseChangeListener,
                                                    int position,
-                                                   PLObjects.ExerciseProfile ep){
+                                                   PLObjects.ExerciseProfile ep) {
         ChooseDialogFragment f = new ChooseDialogFragment();
         f.setExerciseProfile(ep);
         f.setExercisePosition(position);
@@ -104,7 +105,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         super.onCreate(savedInstanceState);
         postponeEnterTransition();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        //    setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+            //    setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
         }
     }
 
@@ -140,7 +141,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
    /* @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void nothing(ExerciseViewHolder vh3) {
         if (exerciseProfile.getBeansHolder() != null && exerciseProfile.getBeansHolder() != null) {
-            //vh3.name.setTransitionName(exerciseProfile.getExerciseProfileId() + vh3.name.getId() + "");
+            //vh3.name.setTransitionName(exerciseProfile.getExerciseProfileId() + vh3.name.getBean() + "");
             // vh3.layout.setTransitionName(tName);
             vh3.name.setText(exerciseProfile.getBeansHolder().getExercise().getName());
             vh3.reps.setText(exerciseProfile.getBeansHolder().getRep().getName());
@@ -180,7 +181,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     }
 
     private void initView(View v) {
-       // TextView tv = (TextView) v.findViewById(R.id.choose_test_tv);
+        // TextView tv = (TextView) v.findViewById(R.id.choose_test_tv);
         //tv.setTransitionName(tName);
 //        tv.setText(exerciseProfile.getBeansHolders().get(0).getExercise().getName());
 
@@ -198,8 +199,8 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         dataManager = new DataManager(getContext());
         tabLayout = (TabLayout) v.findViewById(R.id.choose_dialog_tablayout);
         i = getArguments();
-      //  if (exerciseView)
-            prevBeansHolders = exerciseProfile.getBeansHolders();
+        //  if (exerciseView)
+        prevBeansHolders = exerciseProfile.getBeansHolders();
 
         //not for lolipop!
         //prevBeansHolders = (BeansHolder) i.getSerializable("beans_holder");
@@ -210,9 +211,11 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
         //not for lolipop!
         //data.setMuscle(getArguments().getInt(MUSCLE));
-        if(exerciseProfile.isHasBeansHolders()){
-            data.setMuscle(exerciseProfile.getmBeansHolder().getExercise().getMuscle());
-        }else{
+        if (exerciseProfile.isHasBeansHolders()) {
+            if (exerciseProfile.getmBeansHolder().getExercise() != null) {
+                data.setMuscle(exerciseProfile.getmBeansHolder().getExercise().getMuscle());
+            }
+        } else {
             data.setMuscle(null);
         }
         //   TimingLogger t = new TimingLogger("aviv", "for viewpager");
@@ -303,7 +306,6 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     }
 
 
-
     @Override
     public void Attach(WorkoutView o) {
         workoutView = (WorkoutView) o;
@@ -336,7 +338,15 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     @Override
     public void notifyExerciseProfileBeanChange(String beanType, Beans bean) {
-        switch (beanType){
+        if (!exerciseProfile.isHasBeansHolders()) {
+            exerciseProfile.setmBeansHolder(new BeansHolder());
+            ArrayList<BeansHolder> arr= new ArrayList<>();
+            arr.add(exerciseProfile.getmBeansHolder());
+            exerciseProfile.setBeansHolders(arr);
+        }
+        switch (beanType) {
+            case "muscle":
+
             case "exercise":
                 exerciseProfile.getmBeansHolder().setExercise(bean);
             case "reps":
@@ -350,6 +360,12 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         }
         onExerciseChangeListener.onExerciseChange(exercisePosition, beanType);
 
+    }
+
+    @Override
+    public void notifyMuscleChange(Muscle m) {
+        exerciseProfile.setMuscle(m);
+        onExerciseChangeListener.onExerciseChange(exercisePosition, "muscle");
     }
 
     public void setOnExerciseChangeListener(OnExerciseChangeListener onExerciseChangeListener) {
@@ -525,7 +541,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
             ToggleButton tg = new ToggleButton(getContext());
             tg.setBackgroundResource(bG);
             tg.setLayoutParams(params);
-            tg.setId(j + hundred);
+            tg.setBean(j + hundred);
             tg.setOnCheckedChangeListener(this);
             if (!exercise) {
                 if (reps) {

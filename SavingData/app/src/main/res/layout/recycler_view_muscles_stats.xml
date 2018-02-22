@@ -1,0 +1,34 @@
+<RelativeLayout android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp">
+
+    <ImageView
+        android:src="@drawable/muscle_chest"
+        android:id="@+id/reycler_view_muscle_icon_iv"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
+    <TextView
+        android:gravity="center_vertical"
+        android:text="Anterior Shoulders"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/reycler_view_muscle_icon_iv"
+        android:id="@+id/reycler_view_muscle_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp" />
+
+    <ProgressBar
+        android:progress="20"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_toRightOf="@id/reycler_view_muscle_name_tv"
+        android:layout_marginLeft="30dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_height="10dp"
+        android:progressBackgroundTint="@color/colorPrimary"
+        android:background="@drawable/muscle_chest"
+        android:progressTint="@color/colorAccent"
+        />
+
+</RelativeLayout>

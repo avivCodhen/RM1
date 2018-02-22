@@ -359,13 +359,13 @@ public class ProgramDataManager extends DataManager {
                         * ID has been changed from saving the bean id, to saving the bean name
                         * */
 
-                            //v.put(EXERCISE_ID, beansHolder.getExercise().getId());
+                            //v.put(EXERCISE_ID, beansHolder.getExercise().getBean());
                             v.put(EXERCISE_ID, beansHolder.getExercise().getName());
-                            //v.put(REP_ID, beansHolder.getRep().getId());
+                            //v.put(REP_ID, beansHolder.getRep().getBean());
                             v.put(REP_ID, beansHolder.getRep().getName());
 
                         /*if (beansHolder.getMethod() != null)
-                            v.put(METHOD_ID, beansHolder.getMethod().getId());
+                            v.put(METHOD_ID, beansHolder.getMethod().getBean());
 */
                             v.put(INNER_TYPE, exerciseProfile.getInnerType().ordinal());
                             v.put(SETS, beansHolder.getSets().getName());

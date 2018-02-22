@@ -54,7 +54,6 @@ import com.strongest.savingdata.MyViews.WorkoutViewOnWorkoutListener;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
 import com.strongest.savingdata.createProgramFragments.Create.OnPositionViewListener;
-import com.strongest.savingdata.tabFragments.WorkoutFragment;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -95,6 +94,7 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
     private static ArrayList<WorkoutViewFragment> workoutViewFragments;
     public static int workoutFragmentHeight;
 
+
     private int workoutPosition;
     private RecyclerView currentRecyclerView;
 
@@ -124,12 +124,24 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
         lock = (ImageView) findViewById(R.id.workout_view_lock);
         programToolsView = (ProgramToolsView) findViewById(R.id.workout_view_program_tools);
         programToolsView.setOnProgramToolsActionListener(this);
+
         // addExercise = (ViewGroup) findViewById(R.id.workout_view_add_exercise);
 
         lock.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                programToolsView.toggleMode();
+                programToolsView.toggleMode(true);
+                //mWorkoutViewModes.setShowAnimation(true);
+                //workoutViewFragments.get(mViewPager.getCurrentItem()).adapter.notifyDataSetChanged();
+
+                mAdapter.notifyDataSetChanged();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                       /* mWorkoutViewModes.setShowAnimation(false);
+                        */
+                    }
+                }, 1350);
             }
         });
 
@@ -209,10 +221,17 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
             });
             droppyMenuPopup = builder.build();
 
-            mAdapter = new WorkoutViewPagerAdapter(this, fm,
-                    layoutManager, this);
+
+            mAdapter = new WorkoutViewPagerAdapter(
+                    programToolsView.getmWorkoutViewModes(),
+                    this,
+                    fm,
+                    layoutManager,
+                    this);
+
             mViewPager.setOffscreenPageLimit(layoutManager.getNumOfWorkouts());
             mViewPager.setAdapter(mAdapter);
+
             mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -374,12 +393,14 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
         private LayoutManager plm;
         private OnUpdateLayoutStatsListener onUpdateListener;
         private boolean update;
+        private ProgramToolsView.WorkoutViewModes workoutViewModes;
 
 
-        public WorkoutViewPagerAdapter(OnUpdateLayoutStatsListener onUpdateListener,
+        public WorkoutViewPagerAdapter(ProgramToolsView.WorkoutViewModes workoutViewModes, OnUpdateLayoutStatsListener onUpdateListener,
                                        FragmentManager fm, LayoutManager plm,
                                        WorkoutViewOnWorkoutListener listener) {
             super(fm);
+            this.workoutViewModes = workoutViewModes;
             this.onWorkoutViewExplode = onWorkoutViewExplode;
             this.fm = fm;
             this.plm = plm;
@@ -415,8 +436,8 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
         @Override
         public Fragment getItem(int position) {
             WorkoutViewFragment frag = null;
-            mProgramLayout = plm.getExercisesPerWorkout(true).get(position);
-            frag = WorkoutViewFragment.getInstance(onUpdateListener,
+            mProgramLayout = plm.getSplitRecyclerWorkouts(true).get(position);
+            frag = WorkoutViewFragment.getInstance(workoutViewModes,onUpdateListener,
                     mProgramLayout, false, false);
             frag.setOnUpdateLayoutStatsListener(onUpdateListener);
             //list.add(position, frag);
@@ -487,10 +508,12 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
         private ChooseDialogFragment f;
         private MyExpandableLinearLayoutManager lm;
         private View mainView;
+        private ProgramToolsView.WorkoutViewModes workoutViewModes;
 
 
-        public static WorkoutViewFragment getInstance(OnUpdateLayoutStatsListener onUpdateListener, ArrayList<PLObjects> exArray, boolean hideIcon, boolean disable) {
+        public static WorkoutViewFragment getInstance(ProgramToolsView.WorkoutViewModes workoutViewModes, OnUpdateLayoutStatsListener onUpdateListener, ArrayList<PLObjects> exArray, boolean hideIcon, boolean disable) {
             WorkoutViewFragment frag = new WorkoutViewFragment();
+            frag.setWorkoutViewModes(workoutViewModes);
             frag.setExArray(exArray);
             frag.setHideIcon(hideIcon);
             frag.setDisable(disable);
@@ -528,14 +551,11 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
                     this,
                     this,
                     this,
-                    true,
-                    hideIcon,
-                    disable
-            );
+                    workoutViewModes
+                    );
             adapter.setOnExerciseProfileEditClick(this);
 
 
-            adapter.hideIcon(hideIcon);
             adapter.setWorkoutFragmentHeight(workoutFragmentHeight);
 
             if (adapter != null) {
@@ -846,11 +866,11 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
             if (vh == null) {
                 getFragmentManager().popBackStack();
                 expandableLayout.expand();
-                programToolsView.toggleMode();
+                programToolsView.toggleMode(false);
                 lock.setEnabled(true);
             } else {
                 expandableLayout.collapse();
-                programToolsView.toggleMode();
+                programToolsView.toggleMode(false);
                 lock.setEnabled(false);
                 f = ChooseDialogFragment.getInstance(this, position, ep);
                 f.setTargetFragment(this, 0);
@@ -885,6 +905,14 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
 
         public void deleteTransition() {
             MyJavaAnimator.fadeOut(mainView);
+        }
+
+        public ProgramToolsView.WorkoutViewModes getWorkoutViewModes() {
+            return workoutViewModes;
+        }
+
+        public void setWorkoutViewModes(ProgramToolsView.WorkoutViewModes workoutViewModes) {
+            this.workoutViewModes = workoutViewModes;
         }
 
 
@@ -936,6 +964,7 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
         }*/
 
     }
+
 
 
 }

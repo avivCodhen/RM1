@@ -19,6 +19,7 @@ import android.widget.ToggleButton;
 
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
+import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.MyViews.WeightKeyBoard.WeightKeyboard;
 import com.strongest.savingdata.R;
@@ -80,7 +81,6 @@ public class MySelector extends LinearLayout {
             viewHolder.setPosition(i);
             viewHolder.setType(type);
             //      t.addSplit("third " + type.toString());
-
             addView(viewHolder.getV());
             //       t.addSplit("fourth " + type.toString());
             onCreateLayout(viewHolder);
@@ -98,22 +98,26 @@ public class MySelector extends LinearLayout {
     * */
 
     public void onCreateLayout(ViewHolder viewHolder) {
-
+        int vhPosition = viewHolder.getPosition();
         mAdapter.bindViewHolders(viewHolder.getPosition(), viewHolder);
         ArrayList<Beans> beans_ar = null;
         RadioGroup radioGroup = null;
         View v = viewHolder.getV();
         //HorizontalScrollView sc = null;
         String[] array = null;
+        Beans checkedBean = null;
 
         switch (viewHolder.getType()) {
             case Exercise:
                 if (mAdapter.getMuscleType() != null) {
 
                     beans_ar = (ArrayList<Beans>) dataManager.getExerciseDataManager()
-                            .readByTable(mAdapter.getMuscleType().getMuscle_name());
+                            .readByConstraint(mAdapter.getMuscleType().getMuscle_name(),
+                                    new String[]{DBExercisesHelper.MUSCLES},
+                                    new String[]{mAdapter.getMuscleType().getMuscle_name()});
                 }
                 radioGroup = (RadioGroup) v.findViewById(R.id.my_selector_exercise_radio_group);
+                radioGroup.removeAllViews();
                 //sc = (HorizontalScrollView) v.findViewById(R.id.my_selector_exercise_scrollview);
                 break;
             case Reps:
@@ -152,7 +156,7 @@ public class MySelector extends LinearLayout {
                 mAdapter.weightKeyBoard.setWeight(mAdapter.weightValue);
 
         }
-        mAdapter.addBeansHolder(beans_ar);
+        mAdapter.addBeansHolder(viewHolder.getPosition(),beans_ar);
 
         ArrayList<ToggleHolder> toggles = new ArrayList<>();
       /*  if (viewHolder.getType() == Sets *//*&& array != null*//*) {
@@ -166,23 +170,22 @@ public class MySelector extends LinearLayout {
             for (int i = 0; i < length; i++) {
 
                 final ToggleButton toggleButton = createToggleButton(viewHolder,
-                        beans_ar != null ? beans_ar.get(i) : null,
-                        array != null ? array[i] : null);
+                        beans_ar.get(i));
                 if (beans_ar != null) {
                     toggles.add(new ToggleHolder(beans_ar.get(i).getName(), ""));
                     boolean flag = true;
-                    if (mAdapter.checkedHolders[viewHolder.getPosition()] != null) {
-                        if (beans_ar != null &&
-                                mAdapter.checkedHolders[viewHolder.getPosition()].getValue().equals(beans_ar.get(i).getName())) {
-
-                            mAdapter.bindView(viewHolder, beans_ar.get(i));
+                    if (mAdapter.checkedHolders[vhPosition] != null) {
+                        if (mAdapter.checkedHolders[vhPosition].getBean() != null &&
+                                mAdapter.checkedHolders[vhPosition].getBean().getName().equals(beans_ar.get(i).getName())) {
+                            checkedBean = beans_ar.get(i);
+                            mAdapter.bindView(viewHolder, checkedBean,false);
 
                             checkToggle(i, toggleButton, radioGroup, viewHolder.getSc());
                             flag = false;
-                            mAdapter.checkedHolders[viewHolder.getPosition()] = new CheckedHolder(viewHolder.getPosition(), i, beans_ar.get(i).getName(), true);
+                            mAdapter.checkedHolders[vhPosition] = new CheckedHolder(vhPosition, i, beans_ar.get(i).getName(), true);
 
                         }
-                   /* if (array != null && mAdapter.checkedHolders[viewHolder.getPosition()].getId() ==
+                   /* if (array != null && mAdapter.checkedHolders[viewHolder.getPosition()].getBean() ==
                             i) {
                         flag = false;
                         checkToggle(i, toggleButton, radioGroup, sc);
@@ -201,6 +204,10 @@ public class MySelector extends LinearLayout {
             }
 
         }
+        //this is required to initiate the view at first load
+        //when the beansholder is null
+        mAdapter.bindView(viewHolder, checkedBean, true);
+        viewHolder.setInitiated(true);
         mAdapter.bindToggleHolders(viewHolder.getPosition(), toggles);
         mAdapter.bindRadioGroups(viewHolder.getPosition(), radioGroup);
     }
@@ -226,7 +233,7 @@ public class MySelector extends LinearLayout {
         }
     }
 
-    private ToggleButton createToggleButton(ViewHolder viewHolder, Beans bean, String setsOrRest) {
+    private ToggleButton createToggleButton(ViewHolder viewHolder, Beans bean) {
         ToggleButton tg = new ToggleButton(context);
         RadioGroup.LayoutParams params = null;
 
@@ -354,7 +361,16 @@ public class MySelector extends LinearLayout {
 
         public void updateMuscle(Muscle m) {
             muscle = m;
-            mSelector.onCreateLayout(viewHolders.get(0));
+            ChooseSelectorAdapter.ViewHolderExercise vh = (ChooseSelectorAdapter.ViewHolderExercise) viewHolders.get(0);
+            mSelector.onCreateLayout(vh);
+            vh.el.collapse();
+            vh.toggleCollapseExpand();
+            vh.getMySelectorOnBeansHolderChange().notifyMuscleChange(m);
+
+        }
+
+        public DataManager getDataManager() {
+            return mSelector.getDataManager();
         }
 
         public ArrayList<MySelector.ViewHolder> getViewHolders() {
@@ -377,8 +393,13 @@ public class MySelector extends LinearLayout {
 
         public abstract ViewHolder onCreateViewHolder(ViewGroup parent, MySelector.SelectorTypes type);
 
-        public void addBeansHolder(ArrayList<Beans> beansList) {
-            this.beansMatrixList.add(beansList);
+        public void addBeansHolder(int position, ArrayList<Beans> beansList) {
+            if(this.beansMatrixList.size() <= position){
+                this.beansMatrixList.add(position, beansList);
+            }else{
+                this.beansMatrixList.set(position, beansList);
+
+            }
         }
 
         public void bindRadioGroups(int position, RadioGroup radioGroup) {
@@ -386,7 +407,11 @@ public class MySelector extends LinearLayout {
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 radioGroup.getChildAt(i).setOnClickListener(this);
             }
-            this.radioGroups.add(position, radioGroup);
+            if(radioGroups.size() <= position ){
+                radioGroups.add(position, radioGroup);
+            }else{
+                this.radioGroups.set(position, radioGroup);
+            }
         }
 
         public abstract void bindTypeViews(ViewHolder viewHolder);
@@ -400,7 +425,12 @@ public class MySelector extends LinearLayout {
         }
 
         public void bindToggleHolders(int position, ArrayList<ToggleHolder> toggleHolder) {
-            this.toggleHolders.add(position, toggleHolder);
+            //this.toggleHolders.remove(position);
+            if (this.toggleHolders.size() <= position) {
+                this.toggleHolders.add(position, toggleHolder);
+            } else {
+                this.toggleHolders.set(position, toggleHolder);
+            }
         }
 
         @Override
@@ -409,7 +439,7 @@ public class MySelector extends LinearLayout {
         }
 
 
-        public abstract void bindView(MySelector.ViewHolder viewHolder, Beans b);
+        public abstract void bindView(MySelector.ViewHolder viewHolder, Beans b, boolean sendNull);
         //public abstract void updateView(MySelector.ViewHolder viewHolder, int position);
 
         public MySelector.CheckedHolder[] getCheckedHolders() {
@@ -425,7 +455,7 @@ public class MySelector extends LinearLayout {
             checkedHolders = newHolders;
         }*/
 
-        private void check(MySelector.ViewHolder viewHolder, int group, int position) {
+        private boolean check(MySelector.ViewHolder viewHolder, int group, int position) {
             if (checkedHolders[group] == null || checkedHolders[group].getPosition() != position) {
                 ToggleButton b = (ToggleButton) radioGroups.get(group).getChildAt(position);
                 b.setChecked(true);
@@ -435,6 +465,7 @@ public class MySelector extends LinearLayout {
                 //bindView(viewHolder, "");
                 checkedHolders[group] = null;
             }
+            return checkedHolders[group] == null;
 
         }
 
@@ -444,6 +475,7 @@ public class MySelector extends LinearLayout {
                 ((ToggleButton) radioGroup.getChildAt(i)).setChecked(false);
                 ((ToggleButton) radioGroup.getChildAt(i)).setTextColor(ContextCompat.getColor(context, R.color.textColor));
             }
+
         }
 
 
@@ -456,9 +488,10 @@ public class MySelector extends LinearLayout {
                 if (radioGroups.get(i).getId() == group.getId()) { //finds the correct row
                     for (int j = 0; j < group.getChildCount(); j++) {
                         if (group.getChildAt(j) == v) { //finds the corrent button
-                            bindView(viewHolders.get(i), beansMatrixList.get(i).get(j));
                             unCheck(i);
-                            check(viewHolders.get(i), i, j);
+                                bindView(viewHolders.get(i), beansMatrixList.get(i).get(j),
+                                        check(viewHolders.get(i), i, j));
+
                             break allloop;
                         }
                     }
@@ -472,7 +505,11 @@ public class MySelector extends LinearLayout {
         }
 
         public void bindViewHolders(int position, MySelector.ViewHolder viewHolder) {
-            this.viewHolders.add(position, viewHolder);
+            if(this.viewHolders.size() <= position){
+                this.viewHolders.add(position, viewHolder);
+            }else{
+                this.viewHolders.set(position, viewHolder);
+            }
         }
 
         public double getWeightKeyboardValue() {
@@ -588,7 +625,7 @@ public class MySelector extends LinearLayout {
         private int position;
         private boolean provide;
         private String value;
-        private int id;
+        private Beans bean;
 
         public CheckedHolder(int radioGroup, int position, String value, boolean provide) {
 
@@ -598,17 +635,16 @@ public class MySelector extends LinearLayout {
             this.provide = provide;
         }
 
-        public CheckedHolder(int id, String value) {
-            this.id = id;
-            this.value = value;
+        public CheckedHolder(Beans bean) {
+            this.bean = bean;
         }
 
-        public int getId() {
-            return id;
+        public Beans getBean() {
+            return bean;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setBean(Beans bean) {
+            this.bean = bean;
         }
 
         public int getRadioGroup() {

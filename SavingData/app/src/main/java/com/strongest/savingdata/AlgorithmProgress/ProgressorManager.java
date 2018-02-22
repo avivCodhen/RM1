@@ -278,16 +278,16 @@ public class ProgressorManager implements ProgressorObserver{
        /* private boolean changed(ExerciseProfile oEP, ExerciseProfile arrEP) {
             BeansHolder old = oEP.getBeansHolder();
             BeansHolder ne = arrEP.getBeansHolder();
-            if (old.getExercise().getId() != ne.getExercise().getId()) {
+            if (old.getExercise().getBean() != ne.getExercise().getBean()) {
                 return true;
             }
-            if (old.getRep().getId() != ne.getRep().getId()) {
+            if (old.getRep().getBean() != ne.getRep().getBean()) {
                 return true;
             }
-            if (old.getMethod() != ne.getMethod() || old.getMethod().getId() != ne.getMethod().getId()) {
+            if (old.getMethod() != ne.getMethod() || old.getMethod().getBean() != ne.getMethod().getBean()) {
                 return true;
             }
-            if (old.getRest().getId() != ne.getRest().getId()) {
+            if (old.getRest().getBean() != ne.getRest().getBean()) {
                 return true;
             }
             if (old.getSets() != ne.getSets()) {

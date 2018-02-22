@@ -8,6 +8,7 @@ import com.strongest.savingdata.Database.Muscles.MusclesDataManager;
 import com.strongest.savingdata.R;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 //
 //import static com.strongest.savingdata.BaseWorkout.Body.Muscle.MainMuscleEnum.ABS;
@@ -60,6 +61,9 @@ public class Muscle {
 
     }
 
+    public static ArrayList<Muscle> getAllMuscles(MusclesDataManager dm){
+        return dm.getAllMuscles();
+    }
 
     public static Muscle createMuscle(MusclesDataManager dm, String muscle) {
 
@@ -84,6 +88,37 @@ public class Muscle {
         return muscle_display;
     }
 
+    public void setChildren(String children) {
+        this.children = children;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setMuscle_display(String muscle_display) {
+        this.muscle_display = muscle_display;
+    }
+
+    public void setMuscle_int(int muscle_int) {
+        this.muscle_int = muscle_int;
+    }
+
+    public void setMuscle_name(String muscle_name) {
+        this.muscle_name = muscle_name;
+    }
+
+    public void setMuscle_size(String muscle_size) {
+        this.muscle_size = muscle_size;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
 
     public String getParent() {
         return parent;

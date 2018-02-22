@@ -2,15 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_view_exercise_lay1"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    >
+    android:layout_height="70dp">
 
     <TextView
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
         android:id="@+id/exerciseView_muscleTV"
         android:layout_width="60dp"
         android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_marginRight="8dp"
         android:fontFamily="assets/varela_round_regular"
         android:gravity="top"
@@ -31,10 +30,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="25dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardElevation="4dp"
         android:layout_marginTop="3dp"
-        >
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardElevation="4dp">
 
         />/ android:background="#F3F3F3"
 
@@ -56,9 +54,9 @@
                 android:id="@+id/ex_arrow"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_toEndOf="@+id/exerciseView_nameTV"
                 android:layout_toRightOf="@+id/exerciseView_nameTV"
                 android:background="@drawable/expand_arrow_grey_24px" />
@@ -66,17 +64,42 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ex1"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginRight="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentRight="true"
-                app:civ_border_width="2dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="7dp"
+                android:elevation="8dp"
                 app:civ_border_color="@color/colorPrimary"
                 android:src="@drawable/plus_48px"
+                app:civ_circle_background_color="@color/colorAccent"
+                app:civ_border_width="2dp" />
 
-                />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:visibility="invisible"
+                android:src="@drawable/edit_48px"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="7dp"
+                android:id="@+id/ex2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:elevation="8dp"
+                app:civ_border_color="@color/colorPrimary"
+                app:civ_border_width="2dp" />
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:visibility="invisible"
+                android:src="@drawable/plus_16px"
+                android:id="@+id/ex3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="7dp"
+                android:elevation="8dp"
+                app:civ_border_color="@color/colorPrimary"
+                app:civ_border_width="2dp" />
 
             <ImageView
                 android:id="@+id/ex_choose"

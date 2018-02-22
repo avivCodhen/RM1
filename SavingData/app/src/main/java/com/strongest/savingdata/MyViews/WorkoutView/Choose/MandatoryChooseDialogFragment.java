@@ -62,7 +62,7 @@ public class MandatoryChooseDialogFragment extends Fragment {
         MandatoryChooseDialogFragment fragment = new MandatoryChooseDialogFragment();
         Bundle args = new Bundle();
         args.putSerializable("beans_holder", data.getBeansHolder());
-        args.putString(MUSCLE, data.getMuscle() != null? data.getMuscle().getMuscle_name() : null);
+        args.putString(MUSCLE, data.getMuscle() != null ? data.getMuscle().getMuscle_name() : null);
         fragment.setArguments(args);
         fragment.setMuscle(data.getMuscle());
         return fragment;
@@ -105,21 +105,18 @@ public class MandatoryChooseDialogFragment extends Fragment {
 
         MySelector.CheckedHolder[] checkerHolders;
         if (beansHolders == null) {
-            checkerHolders = null;
+            beansHolder = new BeansHolder();
         } else {
             beansHolder = beansHolders.get(0);
-            checkerHolders = new MySelector.CheckedHolder[]{
-                    new MySelector.CheckedHolder(beansHolder.getExercise().getId(),
-                            beansHolder.getExercise().getName()),
-                    new MySelector.CheckedHolder(beansHolder.getSets().getId(),
-                            beansHolder.getSets().getName()),
-                    new MySelector.CheckedHolder(beansHolder.getRep().getId(),
-                            beansHolder.getRep().getName()),
-                    new MySelector.CheckedHolder(beansHolder.getRest().getId(),
-                            beansHolder.getRest().getName())
-            };
         }
-        adapter = new ChooseSelectorAdapter(beansHolderChange,getFragmentManager(),getContext(), muscle , checkerHolders,
+        checkerHolders = new MySelector.CheckedHolder[]{
+                new MySelector.CheckedHolder(beansHolder.getExercise()),
+                new MySelector.CheckedHolder(beansHolder.getSets()),
+                new MySelector.CheckedHolder(beansHolder.getRep()),
+                new MySelector.CheckedHolder(beansHolder.getRest())
+        };
+
+        adapter = new ChooseSelectorAdapter(beansHolderChange, getFragmentManager(), getContext(), muscle, checkerHolders,
                 Exercise,
                 Sets,
                 Reps,

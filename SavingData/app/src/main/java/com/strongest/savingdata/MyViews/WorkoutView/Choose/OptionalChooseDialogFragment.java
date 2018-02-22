@@ -84,7 +84,7 @@ public class OptionalChooseDialogFragment extends BaseDialogFragment {
 
        *//* if(mBeansHolder != null && mBeansHolder.isHasmethod()){
             checkedHolder = new MySelector.CheckedHolder[]{
-                    new MySelector.CheckedHolder(mBeansHolder.getMethod().getId())
+                    new MySelector.CheckedHolder(mBeansHolder.getMethod().getBean())
             };
 
         }else{

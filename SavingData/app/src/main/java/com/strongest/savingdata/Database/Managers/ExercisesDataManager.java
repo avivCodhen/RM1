@@ -398,7 +398,7 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
             v.put(LEVEL, e.getLevel());
             v.put(DETAIL, e.getDetails());
             v.put(TYPE, e.getType());
-            v.put(ID, e.getId());
+            v.put(ID, e.getBean());
             v.put(NAME, e.getName());
             v.put(WEIGHT, e.getWeight());
             v.put(TYPE, e.getType());
@@ -452,7 +452,7 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
                     ex = Beans.createSets(id, name, t, defaultInt);
 
                    /* ex.setDefault_int(defaultInt);
-                    ex.setId(id);
+                    ex.setBean(id);
                     ex.setType(t);
                     ex.setName(name);*/
                 }
@@ -464,7 +464,7 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
                     ex = Beans.createSets(id, name, t, defaultInt);
 
                     /*ex.setDefault_int(defaultInt);
-                    ex.setId(id);
+                    ex.setBean(id);
                     ex.setType(t);
                     ex.setName(name);*/
                 }
@@ -477,7 +477,7 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
                     ex.setLevel(level);
                     ex.setDetails(details);
                     ex.setDefault_int(defaultInt);
-                    ex.setId(id);
+                    ex.setBean(id);
                     ex.setName(name);
                 }*/
 
@@ -548,7 +548,7 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
                     };*/
                     /*ex.setLevel(level);
                     ex.setDetails(details);
-                    ex.setId(id);
+                    ex.setBean(id);
                     ex.setType(t);
                     ex.setName(name);
                     ex.setWeight(weight);

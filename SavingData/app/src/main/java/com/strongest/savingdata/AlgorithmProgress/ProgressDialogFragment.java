@@ -175,11 +175,8 @@ public class ProgressDialogFragment extends BaseDialogFragment implements View.O
             } else {
                 disable = false;
             }
-            WorkoutView.WorkoutViewFragment frag = WorkoutView.WorkoutViewFragment.getInstance(
-                    null, progressModels.get(position), true, disable
-            );
-            list.add(position, frag);
-            return frag;
+            //workoutview fragment has been removed
+            return null;
         }
 
         @Override

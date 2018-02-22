@@ -45,16 +45,33 @@ public class MusclesDataManager {
 
     }
 
-    public ArrayList<NewMuscle> getAllMuscles() {
-        ArrayList<NewMuscle> list = new ArrayList<>();
+    public ArrayList<Muscle> getAllMuscles() {
+        ArrayList<Muscle> list = new ArrayList<>();
 
         Cursor c = db.rawQuery("SELECT * FROM " + DBMuscleHelper.DB_TABLE_NAME, null);
+        if (c != null && c.moveToFirst()) {
+            do {
+                list.add(getMuscleFromCursor(c));
+            } while (c.moveToNext());
+        }
         return list;
+    }
+
+    public Muscle getMuscleFromCursor(Cursor c) {
+        Muscle m = new Muscle();
+        m.setMuscle_name(c.getString(c.getColumnIndex(MUSCLE_NAME)));
+        m.setMuscle_int(c.getInt(c.getColumnIndex(MUSCLE_INT)));
+        m.setMuscle_display(c.getString(c.getColumnIndex(MUSCLE_DISPLAY)));
+        m.setMuscle_size(c.getString(c.getColumnIndex(MUSCLE_SIZE)));
+        m.setParent(c.getString(c.getColumnIndex(PARENT)));
+        m.setImage(c.getString(c.getColumnIndex(IMAGE)));
+        m.setChildren(c.getString(c.getColumnIndex(CHILDREN)));
+        return m;
     }
 
     public Cursor getMuscleFromDB(String muscle) {
         Cursor c = db.rawQuery("SELECT * FROM " + DBMuscleHelper.DB_TABLE_NAME +
-                " WHERE " + DBMuscleHelper.MUSCLE_NAME + " =?", new String[]{muscle});
+                " WHERE " + DBMuscleHelper.MUSCLE_NAME + "=?", new String[]{muscle});
         return c;
     }
 
@@ -71,7 +88,7 @@ public class MusclesDataManager {
     }
 
     public void delete() {
-        Log.d("aviv", "delete: deleting muscles table" );
+        Log.d("aviv", "delete: deleting muscles table");
         db.delete(DB_TABLE_NAME, null, null);
         //db.delete("SQLITE_SEQUENCE", "NAME = ?", new String[]{DB_TABLE_NAME});
     }

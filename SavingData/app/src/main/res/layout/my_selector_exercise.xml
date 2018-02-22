@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="24dp" />
     <TextView
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/my_selector_exercise_muscle_change_text_view"
         android:textColor="#1E90FF"
         android:textStyle="italic"
@@ -44,11 +44,20 @@
             android:backgroundTint="@color/colorAccent"
             android:orientation="horizontal"
             app:el_duration="500"
-            app:el_expanded="true"
+            app:el_expanded="false"
             android:id="@+id/expandable"
             android:layout_toLeftOf="@+id/arrow"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></net.cachapa.expandablelayout.ExpandableLayout>
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_selector_exercises_recyclerview"
+                android:paddingLeft="6dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
 
 
     </LinearLayout>

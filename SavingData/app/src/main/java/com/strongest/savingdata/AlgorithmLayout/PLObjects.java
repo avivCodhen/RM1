@@ -114,6 +114,7 @@ public class PLObjects implements Aba {
         private boolean firstExercise;
         private boolean hasBeansHolders;
         private WorkoutLayoutTypes innerType;
+        private Muscle muscle;
 
         //private char id;
         public ExerciseProfile(BeansHolder mBeansHolder, ArrayList<BeansHolder> beansHolders, int workoutId, int bodyId, int exerciseProfileId) {
@@ -198,6 +199,14 @@ public class PLObjects implements Aba {
 
         public boolean isHasBeansHolders() {
             return mBeansHolder != null;
+        }
+
+        public Muscle getMuscle() {
+            return muscle;
+        }
+
+        public void setMuscle(Muscle muscle) {
+            this.muscle = muscle;
         }
     }
 

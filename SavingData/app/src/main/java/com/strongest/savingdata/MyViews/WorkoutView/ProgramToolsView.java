@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.R;
 
@@ -34,7 +33,8 @@ public class ProgramToolsView extends LinearLayout {
     private View addWorkout;
     private View deleteWorkout;
 
-    private boolean onMode = false;
+    private WorkoutViewModes mWorkoutViewModes;
+
     private OnProgramToolsActionListener onProgramToolsActionListener;
     private boolean expandedToolsButtonOn;
     private boolean programToolsOn;
@@ -54,6 +54,8 @@ public class ProgramToolsView extends LinearLayout {
     private void initViews() {
         inflate(context, R.layout.layout_program_tools_view, this);
         initProgramToolsViews();
+        mWorkoutViewModes = new WorkoutViewModes();
+
 
     }
 
@@ -144,17 +146,16 @@ public class ProgramToolsView extends LinearLayout {
 
     }
 
-    public void setOnMode(boolean onMode) {
-        this.onMode = onMode;
-        toggleShowToolsButton();
-    }
+    public void toggleMode(boolean changeMode) {
+        if(changeMode){
+            if (mWorkoutViewModes.isEdit()) {
+                mWorkoutViewModes.setEdit(false);
+            } else {
+                mWorkoutViewModes.setEdit(true);
 
-    public void toggleMode() {
-        if (onMode) {
-            onMode = false;
-        } else {
-            onMode = true;
+            }
         }
+
         toggleShowToolsButton();
 
     }
@@ -165,7 +166,7 @@ public class ProgramToolsView extends LinearLayout {
     }
 
     private void toggleShowToolsButton() {
-        if (onMode) {
+        if (mWorkoutViewModes.isEdit()) {
           //expand(showExpandedToolsButton);
             showExpandedToolsButton.expand();
         } else {
@@ -205,4 +206,56 @@ public class ProgramToolsView extends LinearLayout {
     public void getState(){
        // expandedToolsButtonOn == true ? expand(showExpandedToolsButton) : coll;
     }
+
+    public void setmWorkoutViewModes(WorkoutViewModes mWorkoutViewModes) {
+        this.mWorkoutViewModes = mWorkoutViewModes;
+    }
+
+    public WorkoutViewModes getmWorkoutViewModes() {
+        return mWorkoutViewModes;
+    }
+
+    public class WorkoutViewModes{
+
+        private boolean edit;
+        private boolean progress;
+        private boolean none;
+        private boolean showAnimation;
+        public WorkoutViewModes(){
+
+        }
+
+        public boolean isShowAnimation() {
+            return showAnimation;
+        }
+
+        public void setShowAnimation(boolean showAnimation) {
+            this.showAnimation = showAnimation;
+        }
+
+        public boolean isEdit() {
+            return edit;
+        }
+
+        public void setEdit(boolean edit) {
+            this.edit = edit;
+        }
+
+        public boolean isProgress() {
+            return progress;
+        }
+
+        public void setProgress(boolean progress) {
+            this.progress = progress;
+        }
+
+        public boolean isNone() {
+            return none;
+        }
+
+        public void setNone(boolean none) {
+            this.none = none;
+        }
+    }
+
 }
