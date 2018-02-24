@@ -49,6 +49,8 @@ import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -172,6 +174,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         MyJavaAnimator.fadeInAndOutTextView(ep.getMuscle().getMuscle_display(),vh.muscle);
                         MyJavaAnimator.fadeInAndOutImageView(mui.getImage(), -1, (ImageView) v);
                     }
+                    break;
                 case "exercise":
                     vh = (ExerciseViewHolder) holder;
                     v = vh.name;
@@ -180,7 +183,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         Muscle.MuscleUI mui = Muscle.provideMuscleUI(ep.getmBeansHolder().getExercise().getMuscle());
                         MyJavaAnimator.fadeInAndOutTextView(ep.getmBeansHolder().getExercise().getName(), (TextView) v);
                     } else {
-
+                        MyJavaAnimator.fadeInAndOutTextView("Configurate New Excercise", (TextView) v);
                     }
                     break;
                 case "reps":
@@ -371,10 +374,26 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void configurateBeansHolder(BeansHolderPlObjectViewHolder vh, int position, int childPosition, ExerciseProfile ep) {
-        Muscle.MuscleUI mui = Muscle.provideMuscleUI(ep.getmBeansHolder().getExercise().getMuscle());
-        vh.fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, mui.getColor())));
-        vh.reps.setText("Reps: " + ep.getBeansHolders().get(childPosition).getRep().getName());
-        vh.rest.setText("Rest: " + ep.getBeansHolders().get(childPosition).getRest().getName());
+        if(ep.getMuscle() != null){
+            Muscle.MuscleUI mui = Muscle.provideMuscleUI(ep.getMuscle());
+            vh.fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, mui.getColor())));
+        }
+        if(ep.getBeansHolders() != null){
+            if(ep.getBeansHolders().get(childPosition).getRep() != null){
+                vh.reps.setText("Reps: " + ep.getBeansHolders().get(childPosition).getRep().getName());
+
+            }else{
+                vh.reps.setText("Reps: -");
+            }
+
+            if(ep.getBeansHolders().get(childPosition).getRest() != null){
+                vh.rest.setText("Rest: " + ep.getBeansHolders().get(childPosition).getRest().getName());
+
+            }else{
+                vh.rest.setText("Rest: -");
+            }
+
+        }
         vh.weight.setText("Wgh: " + ep.getBeansHolders().get(childPosition).getWeight() + "");
         vh.set.setText(childPosition + 1 + "");
     }
@@ -406,9 +425,9 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
         if (exerciseProfile.getMuscle() != null) {
-            mui = Muscle.provideMuscleUI(exerciseProfile.getmBeansHolder().getExercise().getMuscle());
+            mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
             vh3.icon.setImageResource(mui.getImage());
-            vh3.muscle.setText(exerciseProfile.getmBeansHolder().getExercise().getMuscle().getMuscle_display());
+            vh3.muscle.setText(exerciseProfile.getMuscle().getMuscle_display());
 
         }
 

@@ -145,6 +145,22 @@ public class Muscle {
         return children;
     }
 
+    public static String[] parseMuscles(String muscles){
+        int length = 0;
+        for (int i = 0; i < muscles.length(); i++) {
+            if(muscles.charAt(i) == '$'){
+                length++;
+            }
+        }
+        String[] arr = new String[length];
+        for (int i = 0; i < arr.length; i++) {
+            if(muscles.charAt(i) == '$'){
+                arr[length--] = muscles.substring(0, i);
+                muscles = muscles.substring(i, muscles.length()-1);
+            }
+        }
+        return arr;
+    }
 
     public static class MuscleUI {
 
@@ -187,6 +203,31 @@ public class Muscle {
 
         }
         return null;
+    }
+
+    public static class MuscleStatObject{
+        private Muscle m;
+        private int times;
+        private MuscleUI mui;
+        public MuscleStatObject(Muscle m){
+            this.m = m;
+            this.mui = Muscle.provideMuscleUI(m);
+        }
+
+        public void incrementTimes(){
+            this.times++;
+        }
+        public Muscle getM() {
+            return m;
+        }
+
+        public MuscleUI getMui() {
+            return mui;
+        }
+
+        public int getTimes() {
+            return times;
+        }
     }
 
 }

@@ -51,6 +51,10 @@ public class ProgramDataManager extends DataManager {
     private DBProgramHelper programHelper;
     private String currentProgramTable;
     private String currentLayoutTable;
+
+    public String getCurrentLayoutTable() {
+        return currentLayoutTable;
+    }
     //private String currentTemplateTable;
 
 
@@ -81,21 +85,33 @@ public class ProgramDataManager extends DataManager {
         ContentValues[] values;
         LayoutManager lm = null;
         ProgramTemplate p = null;
+
         for (Tables table : tables) {
             switch (table) {
                 case PROGRAM:
+
                     lm = (LayoutManager) obj;
+
                     p = lm.getProgramTemplate();
                     values = getPLObjectsContentValues(lm.getLayout());
                     //creates a new layout table
-                    getDb(programHelper).execSQL(programHelper.getLayoutCommand(lm.getDbName()));
                     v = getLayoutReferenceContentValues(p.getDbName(), lm.getDbName());
-
-                    //inserts name to layout reference
-                    insertData(TABLE_LAYOUT_REFERENCE, new ContentValues[]{v});
                     updateCurrentTables(0);
-                    //creates reference in current program table
-                    insertData(currentProgramTable, new ContentValues[]{v});
+                    if(update){
+                        try{
+                            delete(lm.getDbName());
+                        }catch(Exception e){
+                            Log.d("aviv", "saveLayoutToDataBase: " + e.toString());
+                        }
+                    }else{
+                        getDb(programHelper).execSQL(programHelper.getLayoutCommand(lm.getDbName()));
+                        //inserts name to layout reference
+                        insertData(TABLE_LAYOUT_REFERENCE, new ContentValues[]{v});
+                        //creates reference in current program table
+                        insertData(currentProgramTable, new ContentValues[]{v});
+
+                    }
+
                     //inserts data to the new layout table
                     insertData(lm.getDbName(), values);
                     break;
@@ -278,6 +294,7 @@ public class ProgramDataManager extends DataManager {
             }
             if (c.getCount() >= 0) {
                 String currentLayout = c.getString(c.getColumnIndex(LAYOUT_NAME));
+                currentLayoutTable = currentLayout;
                 c = db.rawQuery("SELECT * FROM " + currentLayout, null);
             }
             /*c.moveToNext();
@@ -351,26 +368,32 @@ public class ProgramDataManager extends DataManager {
                     if (exerciseProfile.getBeansHolders() != null || exerciseProfile.isFirstExercise()) {
                         BeansHolder beansHolder = exerciseProfile.getBeansHolders().get(0);
                         v.put(EXERCISE_PROFILE_ID, exerciseProfile.getExerciseProfileId());
-                        v.put(MUSCLE, exerciseProfile.getmBeansHolder().getExercise().getMuscle().getMuscle_name());
-                        if (exerciseProfile.getBeansHolders().get(0) != null) {
-
-
+                        v.put(MUSCLE, exerciseProfile.getMuscle().getMuscle_name());
                         /*
                         * ID has been changed from saving the bean id, to saving the bean name
                         * */
 
-                            //v.put(EXERCISE_ID, beansHolder.getExercise().getBean());
-                            v.put(EXERCISE_ID, beansHolder.getExercise().getName());
-                            //v.put(REP_ID, beansHolder.getRep().getBean());
-                            v.put(REP_ID, beansHolder.getRep().getName());
+                            if(beansHolder.getExercise() != null){
+                                v.put(EXERCISE_ID, beansHolder.getExercise().getName());
+                            }
+                            if(beansHolder.getRep() != null){
+                                v.put(REP_ID, beansHolder.getRep().getName());
+                            }
+                            if(beansHolder.getSets() != null){
+                                v.put(SETS, beansHolder.getSets().getName());
+
+                            }
+                            if(beansHolder.getRest() != null){
+                                v.put(REST, beansHolder.getRest().getName());
+
+                            }
 
                         /*if (beansHolder.getMethod() != null)
                             v.put(METHOD_ID, beansHolder.getMethod().getBean());
 */
-                            v.put(INNER_TYPE, exerciseProfile.getInnerType().ordinal());
-                            v.put(SETS, beansHolder.getSets().getName());
+
                             v.put(WEIGHT, beansHolder.getWeight());
-                            v.put(REST, beansHolder.getRest().getName());
+                            v.put(INNER_TYPE, exerciseProfile.getInnerType().ordinal());
                             // v.put(SUPERSET, beansHolder.getSuperset());
                             if (beansHolder.getSuperset() != null) {
                                 v.put(SUPERSET, beansHolder.getSuperset().getId());
@@ -379,7 +402,6 @@ public class ProgramDataManager extends DataManager {
 
                             }
                         }
-                    }
                     // v.put(FIRST_EXERCISE, exerciseProfile.isFirstExercise());
                     break;
             }

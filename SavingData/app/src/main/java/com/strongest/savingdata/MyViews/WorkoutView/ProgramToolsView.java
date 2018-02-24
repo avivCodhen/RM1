@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.R;
 
@@ -38,6 +39,7 @@ public class ProgramToolsView extends LinearLayout {
     private OnProgramToolsActionListener onProgramToolsActionListener;
     private boolean expandedToolsButtonOn;
     private boolean programToolsOn;
+    private LayoutManager layoutManager;
 
     public ProgramToolsView(Context context) {
         super(context);
@@ -149,6 +151,7 @@ public class ProgramToolsView extends LinearLayout {
     public void toggleMode(boolean changeMode) {
         if(changeMode){
             if (mWorkoutViewModes.isEdit()) {
+                layoutManager.saveLayoutToDataBase(true);
                 mWorkoutViewModes.setEdit(false);
             } else {
                 mWorkoutViewModes.setEdit(true);
@@ -213,6 +216,10 @@ public class ProgramToolsView extends LinearLayout {
 
     public WorkoutViewModes getmWorkoutViewModes() {
         return mWorkoutViewModes;
+    }
+
+    public void setLayoutManager(LayoutManager layoutManager) {
+        this.layoutManager = layoutManager;
     }
 
     public class WorkoutViewModes{

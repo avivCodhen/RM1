@@ -221,7 +221,7 @@ public class Generator {
         beansHolder.setLoaded(true);
 
         beansHolder.setSuperset(new Beans());
-        layoutManager.drawExercise(layoutManager.getLayout(), beansHolder, type);
+        layoutManager.drawExercise(muscle,layoutManager.getLayout(), beansHolder, type);
         dm.getExerciseDataManager().removeByName(TABLE_EXERCISES_GENERATOR, exercise.getName());
 
         //     p.setRepsId(reps.getWorkoutId());

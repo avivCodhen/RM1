@@ -117,13 +117,13 @@ public class PLObjects implements Aba {
         private Muscle muscle;
 
         //private char id;
-        public ExerciseProfile(BeansHolder mBeansHolder, ArrayList<BeansHolder> beansHolders, int workoutId, int bodyId, int exerciseProfileId) {
+        public ExerciseProfile(Muscle muscle,BeansHolder mBeansHolder, ArrayList<BeansHolder> beansHolders, int workoutId, int bodyId, int exerciseProfileId) {
             this.mBeansHolder = mBeansHolder;
             this.beansHolders = beansHolders;
             this.exerciseProfileId = exerciseProfileId;
             this.workoutId = workoutId;
             this.bodyId = bodyId;
-            //this.beansHolder = beansHolder;
+            this.muscle = muscle;
             type = WorkoutLayoutTypes.ExerciseView;
 
         }

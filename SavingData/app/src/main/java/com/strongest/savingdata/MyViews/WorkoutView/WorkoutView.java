@@ -124,6 +124,7 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
         lock = (ImageView) findViewById(R.id.workout_view_lock);
         programToolsView = (ProgramToolsView) findViewById(R.id.workout_view_program_tools);
         programToolsView.setOnProgramToolsActionListener(this);
+        programToolsView.setLayoutManager(layoutManager);
 
         // addExercise = (ViewGroup) findViewById(R.id.workout_view_add_exercise);
 
@@ -688,7 +689,7 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
 
         private void addRow(int position, WorkoutLayoutTypes innerType) {
             ExerciseProfile tempProfile = (ExerciseProfile) exArray.get(position - 1);
-            ExerciseProfile exerciseProfile = new ExerciseProfile(null, null,
+            ExerciseProfile exerciseProfile = new ExerciseProfile(null,null, null,
                     tempProfile.getWorkoutId(),
                     tempProfile.getBodyId(),
                     tempProfile.getBodyId() + exArray.size());
