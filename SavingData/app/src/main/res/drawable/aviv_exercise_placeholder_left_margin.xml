@@ -6,9 +6,9 @@
         <!--android:selector_text_view_="@android:selector_text_view_/transparent"-->
         <corners
 
-            android:bottomLeftRadius="30dp"
+            android:bottomLeftRadius="5dp"
             android:bottomRightRadius="0dp"
-            android:topLeftRadius="30dp"
+            android:topLeftRadius="5dp"
             android:topRightRadius="0dp" />
     </shape></item>
 

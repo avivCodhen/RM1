@@ -33,6 +33,7 @@ public class ProgramToolsView extends LinearLayout {
     private View attachDropset;
     private View addWorkout;
     private View deleteWorkout;
+    private View drawDivider;
 
     private WorkoutViewModes mWorkoutViewModes;
 
@@ -117,6 +118,15 @@ public class ProgramToolsView extends LinearLayout {
                 }
             }
         });
+        drawDivider = findViewById(R.id.workout_view_add_divider);
+        drawDivider.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onProgramToolsActionListener != null) {
+                    onProgramToolsActionListener.onProgramToolsAction(DRAW_DIVIDER);
+                }
+            }
+        });
         openProgramToolsEL = (ExpandableLayout) findViewById(R.id.workout_view_program_tools_expandable);
         openProgramToolsIV = findViewById(R.id.workout_view_open_program_tools);
         openProgramToolsIV.setOnClickListener(new OnClickListener() {
@@ -127,6 +137,7 @@ public class ProgramToolsView extends LinearLayout {
                     MyJavaAnimator.rotateView(openProgramToolsIV, 180, 225);
                     MyJavaAnimator.fadeIn(addExercise,
                             addExerciseSplit,
+                            drawDivider,
                             attachSuperset,
                             attachDropset,
                             addWorkout,

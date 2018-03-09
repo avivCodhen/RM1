@@ -232,9 +232,9 @@ public class Calculator extends StatsConstants {
                 exerciseStats.setNumOfMethod(1);
             }
 
-            if (beansHolder.getExercise().getType() == Types.Complex.ordinal()) {
+           /* if (beansHolder.getExercise().getType() == Types.Complex.ordinal()) {
                 exerciseStats.setNumOfComplex(1);
-            }
+            }*/
             blockDamage += calcDamage(beansHolder.getExercise(), damage_method);
             blockMetabolic += calcMetabolic(beansHolder.getExercise(), beansHolder.getRep(), stress_method, Stress.METABOLIC);
             blockMechanical += calcMechanical(beansHolder.getExercise(), beansHolder.getRep(), stress_method, Stress.MECHANICAL);
@@ -261,7 +261,7 @@ public class Calculator extends StatsConstants {
                 metabolic = 0;
             } else {
 
-                switch (ex.getType()) {
+               /* switch (ex.getType()) {
                     case 0:
                         metabolic += B_METABOLIC_STRESS;
                         break;
@@ -272,7 +272,7 @@ public class Calculator extends StatsConstants {
                         metabolic += C_METABOLIC_STRESS;
                         break;
                 }
-
+*/
 
                 //metabolic += rep.getMetabolicStress();
                 metabolic += calcStress(rep.getIntensity(), stress);
@@ -287,7 +287,7 @@ public class Calculator extends StatsConstants {
             if (ex == null) {
                 mechanical = 0;
             } else {
-                switch (ex.getType()) {
+              /*  switch (ex.getType()) {
                     case 0:
                         mechanical += B_MECHANICAL_STRESS;
                         break;
@@ -297,7 +297,7 @@ public class Calculator extends StatsConstants {
                     case 2:
                         mechanical += C_MECHANICAL_STRESS;
                         break;
-                }
+                }*/
 
                 //mechanical += rep.getMechanicalStress();
                 mechanical += calcStress(rep.getIntensity(), stress);

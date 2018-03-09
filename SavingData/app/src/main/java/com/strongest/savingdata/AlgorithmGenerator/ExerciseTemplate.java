@@ -71,7 +71,7 @@ public class ExerciseTemplate {
     public ExerciseTemplate(Muscle m, Load load) {
         this.load = load;
         this.muscle = m.getMuscle_name();
-        EXERCISE_LEVEL = String.valueOf(load.getExerciseLevel());
+        EXERCISE_LEVEL = load.getExerciseLevel() == 0 ? "Isolation" : "Compound" ;
         MINUS_EXERCISE_LEVEL = String.valueOf(load.getExerciseLevel()-1);
     }
 

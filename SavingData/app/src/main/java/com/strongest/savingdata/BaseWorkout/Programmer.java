@@ -26,6 +26,9 @@ public class Programmer implements Serializable {
 
     private DataManager dataManager;
 
+    //whether an program exists (mostly new users)
+    private boolean hasProgram;
+
     @Inject
     public LayoutManager layoutManager;
 
@@ -41,10 +44,9 @@ public class Programmer implements Serializable {
         this.context = context;
         //dataManager = new DataManager(context);
         layoutManager = new LayoutManager(context, dataManager);
-     //   progressorManager = new ProgressorManager(context, dataManager, layoutManager);
+        //   progressorManager = new ProgressorManager(context, dataManager, layoutManager);
         tryInitProgram();
     }
-
 
 
     public Programmer(Context context) {
@@ -55,17 +57,18 @@ public class Programmer implements Serializable {
 
 
     public ProgressorManager getProgressorManager() {
-        if(progressorManager == null) {
+        if (progressorManager == null) {
             progressorManager = new ProgressorManager(context, dataManager, layoutManager);
         }
         return progressorManager;
     }
 
 
-    public LayoutManager getLayoutManager(){
+    public LayoutManager getLayoutManager() {
         return layoutManager;
     }
-    public void setLayoutManager(LayoutManager layoutManager){
+
+    public void setLayoutManager(LayoutManager layoutManager) {
         this.layoutManager = layoutManager;
     }
 
@@ -73,17 +76,18 @@ public class Programmer implements Serializable {
         return layoutManager.getProgramTemplate();
     }
 
-   /* public void setProgramTemplate(ProgramTemplate programTemplate){
-        this.programTemplate = programTemplate;
-        programLayoutManager.setProgramTemplate(programTemplate);
-        tryInitProgram();
-    }   */
+    /* public void setProgramTemplate(ProgramTemplate programTemplate){
+         this.programTemplate = programTemplate;
+         programLayoutManager.setProgramTemplate(programTemplate);
+         tryInitProgram();
+     }   */
     private void tryInitProgram() {
-        if(init){
+        if (init) {
             try {
-                layoutManager.readLayoutFromDataBase(requestedLayoutPosition);
-           //     progressorManager.readProgressFromDataBase(0, -1);
-            }catch (Exception e){
+                hasProgram = layoutManager.readLayoutFromDataBase(requestedLayoutPosition);
+                //     progressorManager.readProgressFromDataBase(0, -1);
+            } catch (Exception e) {
+                hasProgram = false;
                 Log.d("aviv", "tryInitProgram: " + e.toString());
             }
 
@@ -91,7 +95,7 @@ public class Programmer implements Serializable {
 
     }
 
-    public void createProgramTable(){
+    public void createProgramTable() {
         dataManager.getProgramDataManager().createNewProgramTable("program");
     }
 
@@ -112,9 +116,8 @@ public class Programmer implements Serializable {
         layoutManager.readLayoutFromDataBase(0);
     }
 
-    public class Builder{
-
-
+    public boolean isHasProgram() {
+        return hasProgram;
     }
 
 

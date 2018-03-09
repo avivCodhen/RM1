@@ -8,9 +8,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.transition.TransitionInflater;
 import android.util.TimingLogger;
 import android.view.LayoutInflater;
@@ -20,6 +22,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.strongest.savingdata.Activities.HomeActivity;
+import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
@@ -70,8 +74,8 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     private OnExerciseChangeListener onExerciseChangeListener;
 
     private int exercisePosition;
-    TimingLogger timings;
 
+    private RecyclerView.ViewHolder vh;
   /*  private RadioGroup rg1;
     private RadioGroup rg2;
     private RadioGroup rg3;
@@ -92,11 +96,12 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     public static ChooseDialogFragment getInstance(OnExerciseChangeListener onExerciseChangeListener,
                                                    int position,
-                                                   PLObjects.ExerciseProfile ep) {
+                                                   PLObjects.ExerciseProfile ep, RecyclerView.ViewHolder vh) {
         ChooseDialogFragment f = new ChooseDialogFragment();
         f.setExerciseProfile(ep);
         f.setExercisePosition(position);
         f.setOnExerciseChangeListener(onExerciseChangeListener);
+        f.setVh(vh);
         return f;
     }
 
@@ -105,7 +110,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         super.onCreate(savedInstanceState);
         postponeEnterTransition();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //    setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+            //    setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.onEditExerciseClick.move));
         }
     }
 
@@ -113,18 +118,19 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //  getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0x22000000));
-        //setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar);
+        getActionBar().hide();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getActionBar().show();
+
+            }
+        }, 500);
+        ((HomeActivity)getActivity()).collapseAppBarLAyout();
         Drawable d = new ColorDrawable(Color.BLACK);
         d.setAlpha(100);
 
-        //getDialog().getWindow().setBackgroundDrawable(d);
         View v = inflater.inflate(R.layout.fragment_choose_dialog, container, false);
-        //only for this to be fragment (and not dialog).
-        /*TimingLogger t = new TimingLogger("aviv", "forlilipop");
-        // forLOLLIPOP(v);
-        //forLOLLIPOP(v);
-        t.addSplit("after lolipop");
-        t.dumpToLog();*/
         return v;
     }
 
@@ -197,7 +203,6 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         });*/
         startPostponedEnterTransition();
         dataManager = new DataManager(getContext());
-        tabLayout = (TabLayout) v.findViewById(R.id.choose_dialog_tablayout);
         i = getArguments();
         //  if (exerciseView)
         prevBeansHolders = exerciseProfile.getBeansHolders();
@@ -219,7 +224,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
             data.setMuscle(null);
         }
         //   TimingLogger t = new TimingLogger("aviv", "for viewpager");
-
+        ((MyExpandableAdapter.ExerciseViewHolder) vh).layout.setOnClickListener(null);
         mandatoryFragment = MandatoryChooseDialogFragment.newInstance(data);
         mandatoryFragment.setBeansHolderChange(this);
         optionalFragment = OptionalChooseDialogFragment.newInstance(data);
@@ -231,11 +236,37 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         viewPager = (MyViewPager) v.findViewById(R.id.choose_dialog_viewpager);
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
+         tabLayout = (TabLayout) v.findViewById(R.id.fragment_choose_tablayout);
         //    t.addSplit("after after viewpager");
+
         tabLayout.setupWithViewPager(viewPager, true);
-        tabLayout.addOnTabSelectedListener(this);
-        tabLayout.setTabTextColors(ColorStateList.valueOf(Color.WHITE));
-        v.findViewById(R.id.choose_floating_button_confirm).setOnClickListener(this);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                ((HomeActivity) getActivity()).workoutView.scrollToPositionCallBack(vh, tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        //tabLayout.addOnTabSelectedListener(this);
+        //tabLayout.setTabTextColors(ColorStateList.valueOf(Color.WHITE));
+        v.findViewById(R.id.fragment_choose_back_iv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity) getActivity()).workoutView.onExitChooseFragment(vh);
+                exerciseProfile.setEditMode(false);
+                getFragmentManager().popBackStack();
+                //((HomeActivity) getActivity()).getSupportActionBar().show();
+            }
+        });
         Attach(workoutView);
         intent = new Intent();
         //  t.addSplit("after after all");
@@ -374,6 +405,10 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     public void setExercisePosition(int exercisePosition) {
         this.exercisePosition = exercisePosition;
+    }
+
+    public void setVh(RecyclerView.ViewHolder vh) {
+        this.vh = vh;
     }
 
 

@@ -100,7 +100,7 @@ public class Download {
                 public void onResponse(Call<ArrayList<Muscle>> call, Response<ArrayList<Muscle>> response) {
                     e = response.body();
                     dm.getMuscleDataManager().insertData(e);
-                    Log.d("aviv", "onResponse: "+ table);
+                    Log.d("aviv", "onResponse: "+ table + response);
                 }
 
                 @Override
@@ -117,13 +117,13 @@ public class Download {
                     for (Beans b : beans){
                         insertBeans(table, b);
                     }
-                    Log.d("aviv", "onResponse: "+ table);
+                    Log.d("aviv", "onResponse: "+ table + response);
 
                 }
 
                 @Override
                 public void onFailure(Call<ArrayList<Beans>> call, Throwable t) {
-                    Log.d("aviv", "onFailure: "+ t.toString()+" "+ table);
+                    Log.d("aviv", "onFailure: "+ t.toString()+" "+ t.getMessage() + table);
 
                 }
             });
@@ -137,14 +137,13 @@ public class Download {
                     for (Beans b : beans){
                         insertBeans(table, b);
                     }
-                    Log.d("aviv", "onResponse: "+ table);
-
+                    Log.d("aviv", "onResponse: exercises "+ response);
 
                 }
 
                 @Override
                 public void onFailure(Call<ArrayList<Beans>> call, Throwable t) {
-                    Log.d("aviv", "onFailure: "+ t.toString()+" "+ table);
+                    Log.d("aviv", "onFailure: "+ t.toString()+" "+t.getMessage()+ table);
 
                 }
             });

@@ -2,7 +2,7 @@
 
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="android:textAppearanceButton">@style/TextAppearance.AppCompat.Button.Custom
         </item>
@@ -12,6 +12,8 @@
         <item name="colorControlNormal">#8064a2</item>
         <item name="android:windowBackground">@color/background_color</item>
         <item name="android:textColor">#070707</item>
+        <item name="android:statusBarColor">@color/colorAccent</item>
+        <item name="android:windowContentOverlay">@null</item>
 
     </style>
 
@@ -31,6 +33,7 @@
         <item name="colorControlNormal">#8064a2</item>
         <item name="android:windowBackground">@color/background_color</item>
         <item name="android:textColor">#434343</item>
+        <item name="actionBarTheme">@style/AppToolbarwhite</item>
 
     </style>
 
@@ -69,6 +72,16 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
+    <!-- style for activity_home toolbar -->
+    <style name="AppToolbarwhite" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:textColorSecondary">@color/colorPrimary</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:windowActionBarOverlay">true</item>
+
     </style>
 
 </resources>

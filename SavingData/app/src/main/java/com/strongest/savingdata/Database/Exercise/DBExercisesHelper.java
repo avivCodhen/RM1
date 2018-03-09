@@ -22,8 +22,8 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
 
 
     //DB fields
-   // public static final String DB_NAME = "exercises.db";
-    public static final String DB_NAME = "exercisesdb.db";
+    public static final String DB_NAME = "exercises.db";
+    //public static final String DB_NAME = "exercisesdb.db";
     public static final int DB_VERSION = 1;
 
     //main fields
@@ -98,7 +98,7 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
     public final String MAIN_EXERCISE_COMMAND = "CREATE TABLE "
             + TABLE_EXERCISES_ALL + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + ID + " INTEGER, "
             + WEIGHT + " INTEGER DEFAULT 0, " + MUSCLES + " TEXT,"  +  NAME + " TEXT, " + IMAGE + " INTEGER, " + DETAIL + " TEXT, "
-            + TYPE + " INTEGER, " + LEVEL + " INTEGER, " + MUSCLE + " INTEGER, " + D_BACK + " INTEGER, "
+            + TYPE + " INTEGER, " + LEVEL + " INTEGER, " + MUSCLE + " TEXT, " + D_BACK + " INTEGER, "
             + D_CHEST + " INTEGER," + D_P_LEGS + " INTEGER, " + D_A_LEGS + " INTEGER, "
             + D_A_SHOULDERS + " INTEGER, " + D_R_SHOULDERS + " INTEGER, " + D_WRIST + " INTEGER, "
             + D_CALVES + " INTEGER, " + D_CORE + " INTEGER, " + D_LOWER_BACK + " INTEGER, "
@@ -111,7 +111,7 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
             + TABLE_EXERCISES_GENERATOR + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, "
             + ID+ " INTEGER, " + WEIGHT +" INTEGER DEFAULT 0,"+  MUSCLES + " TEXT,"  + NAME + " TEXT, "
             + IMAGE + " INTEGER, " + DETAIL + " TEXT, " + TYPE + " INTEGER, " + LEVEL + " INTEGER, "
-            + MUSCLE + " INTEGER, " + D_BACK + " INTEGER, " + D_CHEST + " INTEGER," + D_P_LEGS + " INTEGER, "
+            + MUSCLE + " TEXT, " + D_BACK + " INTEGER, " + D_CHEST + " INTEGER," + D_P_LEGS + " INTEGER, "
             + D_A_LEGS + " INTEGER, " + D_A_SHOULDERS + " INTEGER, " + D_R_SHOULDERS + " INTEGER, "
             + D_WRIST + " INTEGER, " + D_CALVES + " INTEGER, " + D_CORE + " INTEGER, "
             + D_LOWER_BACK + " INTEGER, " + D_TRAPEZIUS + " INTEGER, " + D_BICEPS + " INTEGER, "
@@ -201,7 +201,7 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
         super(context, DB_NAME, null, DB_VERSION);
         this.context = context;
 
-      if(android.os.Build.VERSION.SDK_INT >= 17){
+     /* if(android.os.Build.VERSION.SDK_INT >= 17){
             DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
         }
         else
@@ -214,14 +214,14 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
         } catch (IOException e) {
             Log.d("aviv", "onCreate: ");
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
 
-      /*  if (context != null) {
+        if (context != null) {
             for (String t : muscleTables){
                 String command = COMMAND_ALL.replace(TABLE_EXERCISES_ALL, t);
                 db.execSQL(command);
@@ -239,7 +239,7 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
 
         } else {
 
-        }*/
+        }
 
     }
 

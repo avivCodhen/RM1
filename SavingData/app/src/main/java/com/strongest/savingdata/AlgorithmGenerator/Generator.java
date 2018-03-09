@@ -119,7 +119,7 @@ public class Generator {
         for (int i = 0; i < programTemplate.getBodyTemplate().get(currentWorkout).size(); i++) {
             String muscle = programTemplate.getBodyTemplate().get(currentWorkout).get(i);
             Muscle muscle1 = Muscle.createMuscle(dm.getMuscleDataManager(), muscle);
-            layoutManager.drawBody(layoutManager.getLayout(), muscle1);
+            layoutManager.drawBody(layoutManager.getLayout(), muscle1.getMuscle_display());
             fillBlock(muscle1, i);
         }
     }

@@ -71,14 +71,16 @@ public class PLObjects implements Aba {
         private Context context;
         private Muscle muscle;
         private StatsHolder statsHolder;
+        private String title;
 
-        public BodyText(Muscle muscle, int workoutId, int bodyId, @Nullable StatsHolder statsHolder) {
+        public BodyText(int workoutId, int bodyId, @Nullable StatsHolder statsHolder, String title) {
             this.workoutId = workoutId;
             this.bodyId = bodyId;
             this.context = context;
             type = WorkoutLayoutTypes.BodyView;
             this.muscle = muscle;
             this.statsHolder = statsHolder;
+            this.title = title;
 
         }
 
@@ -99,6 +101,13 @@ public class PLObjects implements Aba {
             return statsHolder;
         }
 
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
     }
 
     public static class ExerciseProfile extends PLObjects {
@@ -115,6 +124,7 @@ public class PLObjects implements Aba {
         private boolean hasBeansHolders;
         private WorkoutLayoutTypes innerType;
         private Muscle muscle;
+        private boolean editMode;
 
         //private char id;
         public ExerciseProfile(Muscle muscle,BeansHolder mBeansHolder, ArrayList<BeansHolder> beansHolders, int workoutId, int bodyId, int exerciseProfileId) {
@@ -207,6 +217,14 @@ public class PLObjects implements Aba {
 
         public void setMuscle(Muscle muscle) {
             this.muscle = muscle;
+        }
+
+        public boolean isEditMode() {
+            return editMode;
+        }
+
+        public void setEditMode(boolean editMode) {
+            this.editMode = editMode;
         }
     }
 

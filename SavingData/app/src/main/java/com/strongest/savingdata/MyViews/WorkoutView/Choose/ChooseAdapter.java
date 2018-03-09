@@ -38,6 +38,6 @@ class ChooseAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return position == 0 ? "Simple Build" : "Custom Build";
+        return position == 0 ? "General" : "Set "+position;
     }
 }

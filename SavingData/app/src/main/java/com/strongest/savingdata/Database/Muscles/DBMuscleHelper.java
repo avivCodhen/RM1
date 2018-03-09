@@ -28,11 +28,10 @@ public class DBMuscleHelper extends SQLiteOpenHelper {
     public static final String CHILDREN = "children";
 
 
-   // private static final String DB_NAME = "muscles.db";
-    private static final String DB_NAME = "musclesdb.db";
+    private static final String DB_NAME = "muscles.db";
+   // private static final String DB_NAME = "musclesdb.db";
     private static final int DB_VERSION = 1;
     public static final String DB_TABLE_NAME = "muscles";
-
 
     private String DB_PATH = "";
     private SQLiteDatabase db;
@@ -45,7 +44,7 @@ public class DBMuscleHelper extends SQLiteOpenHelper {
     public DBMuscleHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         this.context = context;
-        if(android.os.Build.VERSION.SDK_INT >= 17){
+       /* if(android.os.Build.VERSION.SDK_INT >= 17){
             DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
         }
         else
@@ -58,12 +57,12 @@ public class DBMuscleHelper extends SQLiteOpenHelper {
         } catch (IOException e) {
             Log.d("aviv", "onCreate: ");
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-      //  db.execSQL(CREATE_COMMAND);
+        db.execSQL(CREATE_COMMAND);
 
     }
 

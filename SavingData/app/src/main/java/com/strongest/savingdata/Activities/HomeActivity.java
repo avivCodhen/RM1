@@ -3,7 +3,10 @@ package com.strongest.savingdata.Activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -11,15 +14,19 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.roughike.bottombar.BottomBar;
+import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.ArtificialInteligence.ArtificialIntelligenceObserver;
 import com.strongest.savingdata.BaseWorkout.Programmer;
 import com.strongest.savingdata.Database.Articles.ArticleObj;
@@ -27,6 +34,7 @@ import com.strongest.savingdata.Database.Articles.DownloadImage;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.Database.Muscles.DBMuscleHelper;
 import com.strongest.savingdata.MyViews.MyViewPager;
+import com.strongest.savingdata.MyViews.WorkoutView.WorkoutView;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.Server.Download;
 import com.strongest.savingdata.tabFragments.HomeFragment;
@@ -60,6 +68,9 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE
 public class HomeActivity extends BaseActivity implements View.OnClickListener, ProgramDependencies, NavigationView.OnNavigationItemSelectedListener {
 
 
+    private Toolbar toolbar;
+    public WorkoutView workoutView;
+    private AppBarLayout mAppBarLayout;
     private static final String TO_REFRESH = "refresh";
     private static final int COME_BACK_WITH_PROGRAM = 0;
     private BottomBar bottomBar;
@@ -86,6 +97,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 
     private MyViewPager viewPager;
     private TabLayout tabLayout;
+
     //private NavigationTabBar navigationTabBar;
 
     //private ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
@@ -108,37 +120,70 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        toolbar = (Toolbar) findViewById(R.id.activity_home_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("My Program");
+            getSupportActionBar().setElevation(0);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(this ,R.color.colorAccent));
+        }
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.activity_home_app_bar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.activity_home_drawer_layout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mNavigationView = (NavigationView) findViewById(R.id.home_activity_navigationview);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
+        mToggle.setDrawerIndicatorEnabled(true);
         mNavigationView.setNavigationItemSelectedListener(this);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         programmer.getLayoutManager();
         dataManager.getPrefsEditor();
+        toolbar.setTitle("My Program");
+        toolbar.setTitleTextColor(Color.WHITE);
+
+        /*WorkoutFragment f = new WorkoutFragment();
+        getSupportFragmentManager().beginTransaction().
+                add(R.id.activity_home_framelayout,f, "workout")
+                .addToBackStack("workout")
+                .commit();*/
+        workoutView = (WorkoutView) findViewById(R.id.fragment_workout_workoutview);
+        if (programmer.isHasProgram()) {
+            workoutView.instantiate(-1, getSupportFragmentManager(), true, programmer.getLayoutManager());
+            //toInitiateWorkout = false;
+        } else {
+            programmer.setLayoutManager(LayoutManager.getDefaultLayoutManagerInstance(this, dataManager));
+            workoutView.instantiate(-1, getSupportFragmentManager(), true, programmer.getLayoutManager());
+
+        }
 
         // dataManager = new DataManager(this);
-        fab = (FloatingActionButton) findViewById(R.id.workout_fab_create);
-        fab.setOnClickListener(new View.OnClickListener() {
+//        fab = (FloatingActionButton) findViewById(R.id.workout_fab_create);
+        /*fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragments[1] = new ManagerFragment();
                 adapter.notifyDataSetChanged();
 
             }
-        });
+        });*/
 
         if (getPrefs().getBoolean(TO_REFRESH, true)) {
 
         }
-        tabLayout = (TabLayout) findViewById(R.id.activity_home_navigationbar);
-        viewPager = (MyViewPager) findViewById(R.id.activity_home_viewpager);
-        viewPager.setOffscreenPageLimit(defaultIcons.length);
+        /*tabLayout = (TabLayout) findViewById(R.id.home_actiity_tablayout);
+        for (int i = 0; i < 5 ; i++) {
+            TabLayout.Tab tab = tabLayout.newTab();
+            tab.setText("Workout "+i);
+            tabLayout.addTab(tab);
+        }*/
+        //  viewPager = (MyViewPager) findViewById(R.id.activity_home_viewpager);
+        // viewPager.setOffscreenPageLimit(defaultIcons.length);
         // navigationTabBar = (NavigationTabBar) findViewById(R.id.activity_home_navigationbar);
-        initUI();
-        initModels();
+        //  initUI();
+        // initModels();
 
     }
 
@@ -238,9 +283,23 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    public void collapseAppBarLAyout(){
+        mAppBarLayout.setExpanded(false);
+        //workoutView.fadeTabLayout();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_button, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        if(item.getItemId() == R.id.edit_menu){
+        workoutView.enterEditMode();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -335,7 +394,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void onPause() {
-    //    programmer.getLayoutManager().saveLayoutToDataBase(true);
+        //    programmer.getLayoutManager().saveLayoutToDataBase(true);
         getPrefsEditor().putBoolean(TO_REFRESH, true).commit();
         //dataManager.getArticleDataManager().delete(TABLE_NAME);
         super.onPause();

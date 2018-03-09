@@ -277,7 +277,7 @@ public class ProgramTemplateFragment extends BaseCreateProgramFragment implement
         }
     }*/
 
-    @Override
+
     public void scrollToPosition(int position, boolean enableScroll) {
         recyclerView.scrollToPosition(position);
     }
@@ -290,10 +290,14 @@ public class ProgramTemplateFragment extends BaseCreateProgramFragment implement
     public void sendMuscleName(String muscleString) {
         String muscle = parseString(muscleString);
         Muscle m = Muscle.createMuscle(dataManager.getMuscleDataManager(), muscleString);
-        list.add(new PLObjects.BodyText(m, 1, -1, null));
+        list.add(new PLObjects.BodyText(1, -1, null, ""));
         adapter.notifyItemInserted(list.size() - 1);
         recyclerView.scrollToPosition(list.size() - 1);
     }
 
 
+    @Override
+    public void scrollToPosition(int position, boolean enableScroll, boolean lastVisible) {
+
+    }
 }

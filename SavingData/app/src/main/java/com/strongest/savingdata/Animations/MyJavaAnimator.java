@@ -231,8 +231,8 @@ public class MyJavaAnimator {
         /**
          * Creates a 3D flip animation between two views.
          *
-         * @param fromView First view in the transition.
-         * @param toView   Second view in the transition.
+         * @param fromView First view in the onEditExerciseClick.
+         * @param toView   Second view in the onEditExerciseClick.
          */
         public FlipAnimation(View fromView, View toView) {
             this.fromView = fromView;

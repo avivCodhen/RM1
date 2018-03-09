@@ -25,7 +25,7 @@
             android:textAlignment="center"
             android:textSize="16sp" />
 
-        <ProgressBar
+       <!-- <ProgressBar
 
             android:id="@+id/stats_damage_progress"
             style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
@@ -63,7 +63,7 @@
 
             android:layout_toEndOf="@id/recycler_view_body_parts_TV">
 
-        </ProgressBar>
+        </ProgressBar>-->
 
     </RelativeLayout>
 

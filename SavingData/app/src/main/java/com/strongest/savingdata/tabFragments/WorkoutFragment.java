@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import com.strongest.savingdata.Activities.CreateWorkoutActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Activities.OnCreateProgramListener;
+import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.BaseWorkout.Programmer;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.Manager.ManagerView;
@@ -110,49 +111,28 @@ public class WorkoutFragment extends BaseCreateProgramFragment implements TabLay
         // saveBtn = (Button) v.findViewById(R.id.workout_fragment_save_btn);
         backBtn.setOnClickListener(this);
         workoutView = (WorkoutView) v.findViewById(R.id.fragment_workout_workoutview);
-        if (programmer.getLayoutManager() != null) {
+        if (programmer.isHasProgram()) {
             workoutView.instantiate(-1, getChildFragmentManager(), true, programmer.getLayoutManager());
-            toInitiateWorkout = false;
-        }
-        // saveBtn.setOnClickListener(this);
-        //if user doesn't have a program
-        if (dm.getPrefs().getBoolean(HASWORKOUT, false)) {
-            createWorkout(v);
-
-
+            //toInitiateWorkout = false;
         } else {
-            fragmentsList.add(DetailsFragment.getInstance(this));
-            //  viewPager = (MyViewPager) v.findViewById(R.id.workout_fragment_viewpager);
-            viewPager.setVisibility(View.VISIBLE);
-            viewPager.setAdapter(newAdapter);
+            programmer.setLayoutManager(LayoutManager.getDefaultLayoutManagerInstance(getContext(), dm));
+            workoutView.instantiate(-1, getChildFragmentManager(), true, programmer.getLayoutManager());
 
         }
-        workoutFragmentHeight = getResources().getDisplayMetrics().heightPixels;
-        workoutView.setWorkoutFragmentHeight(workoutFragmentHeight);
 
     }
 
-    private void loadWorkout(boolean generated, boolean custom, int routine) {
-
-    }
 
     public void createWorkout(View v) {
         if (viewPager != null) {
-            //mainView.removeView(viewPager);
             viewPager.setVisibility(GONE);
-            //viewPager = null;
-            //newAdapter = null;
         }
         navLayout.setVisibility(GONE);
-        //programmer = ((HomeActivity) getActivity()).getProgrammer();
-        programmer.updateLayout();
-//        workoutView = (WorkoutView) v.findViewById(R.id.fragment_workout_workoutview);
+
         workoutView.setVisibility(View.VISIBLE);
-        //workoutView.setProgressorManager(programmer.getProgressorManager());
-      // if(toInitiateWorkout)
+
         workoutView.instantiate(-1, getChildFragmentManager(), true, programmer.getLayoutManager());
-       /* else
-            workoutView.updateProgramLayoutManager(programmer.getLayoutManager());*/
+
     }
 
 
@@ -173,10 +153,6 @@ public class WorkoutFragment extends BaseCreateProgramFragment implements TabLay
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.workout_fab_create:
-                Intent intent = new Intent(getContext(), CreateWorkoutActivity.class);
-                startActivity(intent);
-                break;
             case R.id.workout_fragment_back_btn:
 
                 fragmentsList.remove(fragmentsList.size() - 1);
@@ -236,7 +212,7 @@ public class WorkoutFragment extends BaseCreateProgramFragment implements TabLay
     }
 
     public void switchToCreateProgram() {
-        if(dm.getPrefs().getBoolean(HASWORKOUT, true)){
+        if (dm.getPrefs().getBoolean(HASWORKOUT, true)) {
 
         }
         fragmentsList.add(LimitFragment.getInstance(this));

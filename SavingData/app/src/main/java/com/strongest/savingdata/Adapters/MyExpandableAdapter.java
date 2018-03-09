@@ -1,19 +1,13 @@
 package com.strongest.savingdata.Adapters;
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Point;
-import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,8 +25,6 @@ import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects.BodyText;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects.ExerciseProfile;
 import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
-import com.strongest.savingdata.AlgorithmStats.ProgressStats;
-import com.strongest.savingdata.Animations.MyAnimator;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.BeansHolder;
@@ -41,24 +33,16 @@ import com.strongest.savingdata.MyViews.CreateCustomBeansView.SingleNumberChoose
 import com.strongest.savingdata.MyViews.WeightKeyBoard.WeightKeyboard;
 import com.strongest.savingdata.MyViews.WorkoutView.OnChooseClickListener;
 import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
-import com.strongest.savingdata.MyViews.WorkoutView.WorkoutView;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.createProgramFragments.Create.OnPositionViewListener;
-import com.strongest.savingdata.tabFragments.WorkoutFragment;
-import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.view.View.GONE;
-import static android.view.View.INVISIBLE;
 
 /**
  * Created by Cohen on 1/28/2018.
@@ -171,7 +155,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     v = vh.icon;
                     if (ep.getMuscle() != null) {
                         Muscle.MuscleUI mui = Muscle.provideMuscleUI(ep.getMuscle());
-                        MyJavaAnimator.fadeInAndOutTextView(ep.getMuscle().getMuscle_display(),vh.muscle);
+                        MyJavaAnimator.fadeInAndOutTextView(ep.getMuscle().getMuscle_display(), vh.muscle);
                         MyJavaAnimator.fadeInAndOutImageView(mui.getImage(), -1, (ImageView) v);
                     }
                     break;
@@ -187,38 +171,41 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
                     break;
                 case "reps":
+                    vh = (ExerciseViewHolder) holder;
+                    v = vh.reps;
                     if (ep.getmBeansHolder().getRep() != null) {
-                        vh = (ExerciseViewHolder) holder;
-                        v = vh.reps;
-                        MyJavaAnimator.fadeInAndOutTextView("Reps: " + ep.getmBeansHolder().getRep().getName(), (TextView) v);
+
+                        MyJavaAnimator.fadeInAndOutTextView( ep.getmBeansHolder().getRep().getName(), (TextView) v);
 
                         // vh.reps.setText("Reps: " + ep.getmBeansHolder().getRep().getName());
 
                     } else {
-                        MyJavaAnimator.fadeInAndOutTextView("Reps: -", (TextView) v);
+                        MyJavaAnimator.fadeInAndOutTextView("-", (TextView) v);
 
                         // vh.reps.setText("Reps: -");
                     }
                     break;
                 case "rest":
+                    vh = (ExerciseViewHolder) holder;
+                    v = vh.rest;
                     if (ep.getmBeansHolder().getRest() != null) {
-                        vh = (ExerciseViewHolder) holder;
-                        v = vh.rest;
-                        MyJavaAnimator.fadeInAndOutTextView("Rest: " + ep.getmBeansHolder().getRest().getName(), (TextView) v);
+
+                        MyJavaAnimator.fadeInAndOutTextView( ep.getmBeansHolder().getRest().getName(), (TextView) v);
 
                     } else {
-                        MyJavaAnimator.fadeInAndOutTextView("Rest: -", (TextView) v);
+                        MyJavaAnimator.fadeInAndOutTextView("-", (TextView) v);
 
                         //   vh.rest.setText("Rest: ");
                     }
                     break;
                 case "sets":
+                    vh = (ExerciseViewHolder) holder;
+                    v = vh.sets;
                     if (ep.getmBeansHolder().getSets() != null) {
-                        vh = (ExerciseViewHolder) holder;
-                        v = vh.sets;
-                        MyJavaAnimator.fadeInAndOutTextView("Sets: " + ep.getmBeansHolder().getSets().getName(), (TextView) v);
+
+                        MyJavaAnimator.fadeInAndOutTextView( ep.getmBeansHolder().getSets().getName(), (TextView) v);
                     } else {
-                        MyJavaAnimator.fadeInAndOutTextView("Sets: -", (TextView) v);
+                        MyJavaAnimator.fadeInAndOutTextView("-", vh.sets);
 
                         //  vh.sets.setText("Sets: ");
                     }
@@ -328,7 +315,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void configurateAddExerciseViewHolder(AddExerciseViewHolder vh, int position) {
-        // onExerciseProfileEditClick.transition(vh, position,(ExerciseProfile) exArray.get(position-1));
+        // onExerciseProfileEditClick.onEditExerciseClick(vh, position,(ExerciseProfile) exArray.get(position-1));
     }
 
 
@@ -343,15 +330,15 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private void configureViewHolder2(MuscleViewHolder vh2, int position) {
         BodyText bodyText = (BodyText) exArray.get(position);
-        vh2.bodyTv.setText(bodyText.getMuscle().getMuscle_display());
+        vh2.bodyTv.setText(bodyText.getTitle());
         ObjectAnimator anim;
-        if (false) {
+        /*if (false) {
             animate(true, vh2.damage, vh2.mechanical, vh2.metabolic);
 
             vh2.damage.setVisibility(View.VISIBLE);
             vh2.mechanical.setVisibility(View.VISIBLE);
             vh2.metabolic.setVisibility(View.VISIBLE);
-              /*  vh2.damage.setMax(bodyText.getStatsHolder().getProgressStats().getMaxDamage());
+              *//*  vh2.damage.setMax(bodyText.getStatsHolder().getProgressStats().getMaxDamage());
                 vh2.mechanical.setMax(bodyText.getStatsHolder().getProgressStats().getMaxMechanical());
                 vh2.metabolic.setMax(bodyText.getStatsHolder().getProgressStats().getMaxMetabolic());
 
@@ -362,7 +349,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 vh2.damage.setProgressDrawable(ContextCompat.getDrawable(context, determineColorForDamage(vh2.damage, bodyText)));
                 vh2.mechanical.setProgressDrawable(ContextCompat.getDrawable(context, determineColorForMechanical(vh2.mechanical, bodyText)));
                 vh2.metabolic.setProgressDrawable(ContextCompat.getDrawable(context, determineColorForMetabolic(vh2.metabolic, bodyText)));
-*/
+*//*
             //  Log.d(TAG, "damage: " + bodyText.getStatsHolder().getDamage());
 
         } else {
@@ -370,31 +357,31 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             animate(false, vh2.damage, vh2.mechanical, vh2.metabolic);
 
         }
-
+*/
     }
 
     public void configurateBeansHolder(BeansHolderPlObjectViewHolder vh, int position, int childPosition, ExerciseProfile ep) {
-        if(ep.getMuscle() != null){
+        if (ep.getMuscle() != null) {
             Muscle.MuscleUI mui = Muscle.provideMuscleUI(ep.getMuscle());
             vh.fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, mui.getColor())));
         }
-        if(ep.getBeansHolders() != null){
-            if(ep.getBeansHolders().get(childPosition).getRep() != null){
-                vh.reps.setText("Reps: " + ep.getBeansHolders().get(childPosition).getRep().getName());
+        if (ep.getBeansHolders() != null) {
+            if (ep.getBeansHolders().get(childPosition).getRep() != null) {
+                vh.reps.setText(ep.getBeansHolders().get(childPosition).getRep().getName());
 
-            }else{
-                vh.reps.setText("Reps: -");
+            } else {
+                vh.reps.setText(" -");
             }
 
-            if(ep.getBeansHolders().get(childPosition).getRest() != null){
-                vh.rest.setText("Rest: " + ep.getBeansHolders().get(childPosition).getRest().getName());
+            if (ep.getBeansHolders().get(childPosition).getRest() != null) {
+                vh.rest.setText(ep.getBeansHolders().get(childPosition).getRest().getName());
 
-            }else{
-                vh.rest.setText("Rest: -");
+            } else {
+                vh.rest.setText("-");
             }
 
         }
-        vh.weight.setText("Wgh: " + ep.getBeansHolders().get(childPosition).getWeight() + "");
+        vh.weight.setText(ep.getBeansHolders().get(childPosition).getWeight() + "");
         vh.set.setText(childPosition + 1 + "");
     }
 
@@ -445,21 +432,21 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 vh3.icon.setCircleBackgroundColor(color);
             }
             if (beansHolder.getRep() != null) {
-                vh3.reps.setText("Reps: " + beansHolder.getRep().getName());
+                vh3.reps.setText(beansHolder.getRep().getName());
             } else {
-                vh3.reps.setText("Reps: -");
+                vh3.reps.setText("-");
 
             }
             if (beansHolder.getSets() != null) {
-                vh3.sets.setText("Sets: " + beansHolder.getSets().getId() + "");
+                vh3.sets.setText(beansHolder.getSets().getId() + "");
             } else {
-                vh3.sets.setText("Sets: -");
+                vh3.sets.setText("-");
 
             }
             if (beansHolder.getRest() != null) {
-                vh3.rest.setText("Rest: " + beansHolder.getRest().getName());
+                vh3.rest.setText(beansHolder.getRest().getName());
             } else {
-                vh3.rest.setText("Rest: -");
+                vh3.rest.setText("-");
 
             }
             ViewCompat.setTransitionName(vh3.name, "unique" + vh3.name.getText().toString() + position);
@@ -470,30 +457,55 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     return true;
                 }
             });*/
-            vh3.weight.setText("Wgh: 0.0kg");
+            vh3.weight.setText("0.0kg");
 
 
         } else {
             vh3.name.setText("Configurate New Exercise");
-            vh3.reps.setText("Reps: -");
-            vh3.sets.setText("Sets: -");
-            vh3.rest.setText("Rest: -");
-            vh3.weight.setText("Wgh: -");
+            vh3.reps.setText("5-6");
+            vh3.sets.setText("3");
+            vh3.rest.setText("12:23");
+            vh3.weight.setText("110.5 lbs");
         }
         if (vh3.method != null) {
             //   vh3.method.setText(((PLObjects.Method) exArray.get(position)).getMethod());
         }
 
-        vh3.edit.setOnClickListener(new View.OnClickListener() {
+        vh3.editIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.click(v, exerciseProfile, "");
+                if (exerciseProfile.isEditMode()) {
+                    vh3.collapseExpandListener.detailCollapse(vh3);
+                    exerciseProfile.setEditMode(false);
+
+                } else {
+                    exerciseProfile.setEditMode(true);
+                    vh3.collapseExpandListener.deTailExpand(vh3);
+                }
+            }
+        });
+
+        vh3.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (exerciseProfile.isExpand()) {
+
+                    vh3.collapseExpandListener.onCollapse(vh3);
+
+
+                } else {
+
+                    vh3.collapseExpandListener.onExpand(vh3);
+
+
+                }
+
+
             }
         });
 
         //Currently not showing weight && method
 
-        vh3.edit.setTag(position);
 
     }
 
@@ -577,18 +589,19 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onExpand(ExerciseViewHolder vh) {
         int position = vh.getAdapterPosition();
         ArrayList<BeansHolder> beansHolders = ((ExerciseProfile) exArray.get(position)).getBeansHolders();
-        if (beansHolders != null || beansHolders.get(0) != null) {
+        BeansHolder beanHolder = ((ExerciseProfile) exArray.get(position)).getmBeansHolder();
+        if (beansHolders != null && beanHolder != null) {
             for (int i = 0; i < beansHolders.size(); i++) {
                 PLObjects.BeansHolderPLObject obj = new PLObjects.BeansHolderPLObject(beansHolders.get(i));
                 exArray.add(position + i + 1, obj);
             }
+            notifyItemRangeInserted(position + 1, beansHolders.size());
+            scrollListener.scrollToPosition(position, true, true);
         }
         ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
         ep.setExpand(true);
         animateExpand(vh);
-        notifyItemRangeInserted(position + 1, beansHolders.size());
-        scrollListener.scrollToPosition(position, true);
-
+        vh.expand = true;
     }
 
     private void animateExpand(ExerciseViewHolder vh) {
@@ -606,14 +619,19 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onCollapse(ExerciseViewHolder vh) {
         int position = vh.getAdapterPosition();
         ArrayList<BeansHolder> beansHolders = ((ExerciseProfile) exArray.get(position)).getBeansHolders();
-        for (int i = 0; i < beansHolders.size(); i++) {
-            exArray.remove(position + 1);
+        if (beansHolders != null) {
+            for (int i = 0; i < beansHolders.size(); i++) {
+                exArray.remove(position + 1);
+            }
+            notifyItemRangeRemoved(position + 1, beansHolders.size());
+            scrollListener.scrollToPosition(position, true, true);
+
         }
         ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
         ep.setExpand(false);
         animateCollapse(vh);
-        notifyItemRangeRemoved(position + 1, beansHolders.size());
-        // scrollListener.scrollToPosition(position);
+        vh.expand = false;
+
     }
 
     @Override
@@ -621,11 +639,13 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         int position = vh.getAdapterPosition();
         PLObjects.AddExercise a = new PLObjects.AddExercise(null);
         ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
-        exArray.add(position + 1, a);
-        notifyItemInserted(position + 1);
-        onExerciseProfileEditClick.transition(vh, position, ep);
-        scrollListener.scrollToPosition(position, false);
-
+        if (!ep.isExpand()) {
+            onExpand((ExerciseViewHolder) vh);
+        }
+        exArray.add(position + ep.getBeansHolders().size() + 1, a);
+        notifyItemInserted(position + ep.getBeansHolders().size() + 1);
+        onExerciseProfileEditClick.onEditExerciseClick(true, vh, position, ep);
+        scrollListener.scrollToPosition(position, false, false);
     }
 
     @Override
@@ -633,10 +653,11 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         int position = vh.getAdapterPosition();
         PLObjects.AddExercise a = new PLObjects.AddExercise(null);
         ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
-        exArray.remove(position + 1);
-        notifyItemRemoved(position + 1);
-        onExerciseProfileEditClick.transition(null, position, ep);
-        scrollListener.scrollToPosition(-1, true);
+        exArray.remove(position + ep.getBeansHolders().size() + 1);
+        notifyItemRemoved(position + ep.getBeansHolders().size() + 1);
+        notifyItemChanged(position);
+        onExerciseProfileEditClick.onEditExerciseClick(false, vh, position, ep);
+        scrollListener.scrollToPosition(-1, true, false);
     }
 
     public void setOnExerciseProfileEditClick(OnExerciseProfileEditClick onExerciseProfileEditClick) {
@@ -680,6 +701,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public CircleImageView icon;
         public ImageView arrow;
         public ImageView edit;
+        public CircleImageView editIv;
 
         public ViewGroup layout;
         private boolean expand;
@@ -690,31 +712,9 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //            layout = (RelativeLayout) itemView.findViewById(R.id.exerciseView_layout);
             layout = (ViewGroup) itemView.findViewById(R.id.list_view_exercise_lay1);
             arrow = (ImageView) itemView.findViewById(R.id.ex_arrow);
-            edit = (ImageView) itemView.findViewById(R.id.ex_choose);
+            // edit = (ImageView) itemView.findViewById(R.id.ex_choose);
             this.collapseExpandListener = collapseExpandListener;
-            layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (expand) {
-                        if (workoutViewModes.isEdit()) {
-                            collapseExpandListener.detailCollapse(vh);
-                        } else {
-                            collapseExpandListener.onCollapse(vh);
-                        }
-                        expand = false;
-                    } else {
-                        if (workoutViewModes.isEdit()) {
-                            collapseExpandListener.deTailExpand(vh);
 
-                        } else {
-                            collapseExpandListener.onExpand(vh);
-                        }
-                        expand = true;
-                    }
-
-
-                }
-            });
 
             // layout.setOnLongClickListener(this);
           /*  layout.setOnClickListener(new View.OnClickListener() {
@@ -755,6 +755,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             weight = (TextView) itemView.findViewById(R.id.exerciseView_weightTV);
             rest = (TextView) itemView.findViewById(R.id.exerciseView_restTV);
             muscle = (TextView) itemView.findViewById(R.id.exerciseView_muscleTV);
+            editIv = (CircleImageView) itemView.findViewById(R.id.recycler_view_edit);
             this.itemView = itemView;
             //    this.listener = listener;
         }
@@ -828,9 +829,9 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         public MuscleViewHolder(View itemView) {
             super(itemView);
-            damage = (ProgressBar) itemView.findViewById(R.id.stats_damage_progress);
+            /*damage = (ProgressBar) itemView.findViewById(R.id.stats_damage_progress);
             metabolic = (ProgressBar) itemView.findViewById(R.id.stats_metabolic_progress);
-            mechanical = (ProgressBar) itemView.findViewById(R.id.stats_mechanical_progress);
+            mechanical = (ProgressBar) itemView.findViewById(R.id.stats_mechanical_progress);*/
             bodyTv = (TextView) itemView.findViewById(R.id.recycler_view_body_parts_TV);
 
 
@@ -1011,125 +1012,3 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 }
 
-
-
-
-
-      /*  @Override
-        public int getGroupViewType(int position, ExpandableGroup group) {
-            Log.d(TAG, "getGroupViewType: " + position + " group: "+ group.getTitle());
-            if (((PLObjects) group).getType() == WorkoutLayoutTypes.BodyView) {
-                return BODY;
-            } else if (((PLObjects) group).getType() == WorkoutLayoutTypes.WorkoutView) {
-                return TITLE;
-            } else if (((PLObjects) group).getType() == WorkoutLayoutTypes.ExerciseView) {
-                return EXERCISE;
-            }
-            return CUSTOM_BUILD;
-        }
-
-        @Override
-        public int getChildViewType(int position, ExpandableGroup group, int childIndex) {
-            return CUSTOM_BUILD;
-        }
-
-        @Override
-        public boolean isChild(int viewType) {
-            return viewType == CUSTOM_BUILD;
-        }
-
-
-        @Override
-        public boolean isGroup(int viewType) {
-            //Log.d(TAG, "isGroup: " + viewType);
-            return viewType == TITLE ||
-                    viewType == BODY ||
-                    viewType == EXERCISE;
-        }*/
-
-     /*   @Override
-        public com.strongest.savingdata.Adapters.WorkoutAdapter.WorkoutAdapter.ExerciseViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            if (viewType == TITLE) {
-                View v1 = inflater.inflate(R.layout.recycler_view_workouts, parent, false);
-                return  new com.strongest.savingdata.Adapters.WorkoutAdapter.WorkoutAdapter.ViewHolderWorkout(v1);
-            } else if (viewType == BODY) {
-                View v2 = inflater.inflate(R.layout.recyclerview_body_parts, parent, false);
-                return  new com.strongest.savingdata.Adapters.WorkoutAdapter.WorkoutAdapter.MuscleViewHolder(v2);
-
-            } else {
-                View v3 = inflater.inflate(R.layout.recycler_view_exercises_left_margin, parent, false);
-                return new com.strongest.savingdata.Adapters.WorkoutAdapter.WorkoutAdapter.ExerciseViewHolder(v3);
-
-            }
-        }
-*/
-    /*    @Override
-        public ChildViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
-
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        *//*
-        View v = inflater.inflate(R.layout.recycler_view_exercise_details_left_margin, parent, false);
-
-
-        return new BeansHolderViewHolder(v);
-        *//*
-            View v = inflater.inflate(R.layout.progress_set, parent, false);
-            return new com.strongest.savingdata.Adapters.WorkoutAdapter.WorkoutAdapter.ProgressViewHolder(v);
-
-        }*/
-
-      /*  @Override
-        public void onBindChildViewHolder(ChildViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
-       *//* ((BeansViewHolder) holder).setText("dasdsad");*//*
-
-        }*/
-
-      /*  @Override
-        public void onBindGroupViewHolder(com.strongest.savingdata.Adapters.WorkoutAdapter.WorkoutAdapter.ExerciseViewHolder holder, int flatPosition, ExpandableGroup group) {
-            currentPosition = flatPosition;
-            int viewType = getItemViewType(flatPosition);
-            if (viewType == TITLE) {
-                com.strongest.savingdata.Adapters.WorkoutAdapter.WorkoutAdapter.ViewHolderWorkout vh1 = (com.strongest.savingdata.Adapters.WorkoutAdapter.WorkoutAdapter.ViewHolderWorkout) holder;
-                configureViewHolder1(vh1, flatPosition);
-            } else if (viewType == BODY) {
-                com.strongest.savingdata.Adapters.WorkoutAdapter.WorkoutAdapter.MuscleViewHolder vh2 = (com.strongest.savingdata.Adapters.WorkoutAdapter.WorkoutAdapter.MuscleViewHolder) holder;
-                configureViewHolder2(vh2, flatPosition);
-            } else if (viewType == EXERCISE){
-                com.strongest.savingdata.Adapters.WorkoutAdapter.WorkoutAdapter.ExerciseViewHolder vh3 = (com.strongest.savingdata.Adapters.WorkoutAdapter.WorkoutAdapter.ExerciseViewHolder) holder;
-                configureViewHolder3(vh3, flatPosition);
-            }
-        }*/
-
-      /*
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder holder;
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if (viewType == TITLE) {
-            View v1 = inflater.inflate(R.layout.recycler_view_workouts, parent, false);
-            holder = new ViewHolderWorkout(v1);
-        } else if (viewType == BODY) {
-            View v2 = inflater.inflate(R.layout.recyclerview_body_parts, parent, false);
-            holder = new MuscleViewHolder(v2);
-        } else {
-            View v3 = inflater.inflate(R.layout.recycler_view_exercises_left_margin, parent, false);
-            holder = new ExerciseViewHolder(v3);
-        }
-
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder.getItemViewType() == TITLE) {
-            WorkoutAdapter.ViewHolderWorkout vh1 = (ViewHolderWorkout) holder;
-            configureViewHolder1(vh1, position);
-        } else if (holder.getItemViewType() == BODY) {
-            MuscleViewHolder vh2 = (MuscleViewHolder) holder;
-            configureViewHolder2(vh2, position);
-        } else {
-            ExerciseViewHolder vh3 = (ExerciseViewHolder) holder;
-            configureViewHolder3(vh3, position);
-        }
-    }*/

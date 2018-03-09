@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
     android:id="@+id/choose_dialog_fragment_layout"
     android:background="@android:color/transparent">
     <Button
@@ -24,11 +23,49 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/choose_dialog_tablayout"
+    <RelativeLayout
+        android:background="@color/colorAccent"
+        android:id="@+id/choose_fragment_actiobar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.design.widget.TabLayout>
+        android:layout_height="40dp">
+        <ImageView
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:id="@+id/fragment_choose_back_iv"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_arrow_24px"/>
+        <Button
+            android:elevation="10dp"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:textColor="@color/colorPrimary"
+            android:text="Add Set"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/fragment_choose_back_iv"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/fragment_choose_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        app:tabIndicatorColor="@color/colorPrimary"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/colorPrimary"
+        app:tabTextColor="@color/background_color"></android.support.design.widget.TabLayout>
+
+
     <com.strongest.savingdata.MyViews.MyViewPager
+        android:layout_marginTop="100dp"
+        android:background="@color/background_color"
         android:id="@+id/choose_dialog_viewpager"
         android:layout_weight="1"
         android:layout_width="match_parent"

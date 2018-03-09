@@ -80,9 +80,11 @@ public class ManagerFragment extends BaseCreateProgramFragment {
 
     private void countMuscleStatsObject() {
         for (PLObjects plobj : layout){
-            if(plobj.getType() == WorkoutLayoutTypes.ExerciseView){
-                if(((PLObjects.ExerciseProfile)plobj).getmBeansHolder().getExercise() != null)
-                countMuscle(((PLObjects.ExerciseProfile)plobj).getmBeansHolder().getExercise().getMuscles());
+            if(plobj.getType() == WorkoutLayoutTypes.ExerciseView) {
+                if (((PLObjects.ExerciseProfile) plobj).getmBeansHolder() != null) {
+                    if (((PLObjects.ExerciseProfile) plobj).getmBeansHolder().getExercise() != null)
+                        countMuscle(((PLObjects.ExerciseProfile) plobj).getmBeansHolder().getExercise().getMuscles());
+                }
             }
         }
     }

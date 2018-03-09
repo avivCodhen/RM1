@@ -23,9 +23,9 @@ public class Beans implements Serializable {
     public int id;
     public String details;
     public Muscle muscle;
-    public int primaryMuscle;
+    public String primaryMuscle;
     public int level;
-    public int type;
+    public String type;
     public int mechanicalStress;
     public int metabolicStress;
     private int value;
@@ -70,7 +70,7 @@ public class Beans implements Serializable {
         return beans;
     }
 
-    public static Beans createRest(int id, String name, int type, int defaultInt) {
+    public static Beans createRest(int id, String name, String type, int defaultInt) {
         Beans beans = new Beans();
         beans.setId(id);
         beans.setName(name);
@@ -80,7 +80,7 @@ public class Beans implements Serializable {
         return beans;
     }
 
-    public static Beans createSets(int id, String name, int type, int defaultInt) {
+    public static Beans createSets(int id, String name, String type, int defaultInt) {
         Beans beans = new Beans();
         beans.setId(id);
         beans.setName(name);
@@ -90,7 +90,7 @@ public class Beans implements Serializable {
         return beans;
     }
 
-    public static Beans createExercise(String muscles,int primaryMuscle,int id, String name, int type,
+    public static Beans createExercise(String muscles,String primaryMuscle,int id, String name, String type,
                                        int level, String detail, Muscle muscle, String image,
                                        double weight,
                                        int m_a_s, int m_r_s, int m_biceps, int m_triceps,
@@ -147,11 +147,11 @@ public class Beans implements Serializable {
         return muscles;
     }
 
-    public int getPrimaryMuscle() {
+    public String getPrimaryMuscle() {
         return primaryMuscle;
     }
 
-    public void setPrimaryMuscle(int primaryMuscle) {
+    public void setPrimaryMuscle(String primaryMuscle) {
         this.primaryMuscle = primaryMuscle;
     }
 
@@ -345,7 +345,7 @@ public class Beans implements Serializable {
         return level;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
@@ -369,7 +369,7 @@ public class Beans implements Serializable {
         this.level = level;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 

@@ -1,42 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_view_exercise_lay1"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:elevation="8dp">
+    android:layout_height="90dp">
 
     <TextView
-        android:id="@+id/exerciseView_muscleTV"
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="8dp"
+        android:id="@+id/exerciseView_muscleTV"
+        android:layout_width="55dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="72dp"
         android:fontFamily="assets/varela_round_regular"
         android:gravity="top"
-        android:rotation="90"
+        android:rotation="-90"
         android:text="muscle"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="#7E7E7E"
-        android:textSize="8sp" />
+        android:textSize="8sp"
+        />
 
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_marginLeft="@dimen/exercise_image_left_margin"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/plus_48px"
+        app:civ_fill_color="@color/colorAccent"
+        app:civ_border_color="@color/colorPrimary"
+        app:civ_border_width="2dp"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/ex1"
+        android:elevation="5dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/exerciseView_layout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginLeft="90dp"
+        android:elevation="6dp"
         android:backgroundTint="@color/colorPrimary"
-        android:background="@drawable/aviv_exercises_placeholder_right_margin"
-        android:elevation="20dp">
+        android:background="@drawable/aviv_exercise_placeholder_left_margin"
+        android:layout_marginTop="2dp"
+        >
 
-        />/ android:background="#F3F3F3"
             <!--<ImageView
                  android:id="@+id/ex1"
                  android:layout_width="@dimen/exercise_view_size"
@@ -45,35 +58,25 @@
                   />-->
 
             <ImageView
+
+                android:layout_marginTop="10dp"
                 android:id="@+id/ex_arrow"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
                 android:layout_toEndOf="@+id/exerciseView_nameTV"
                 android:layout_toRightOf="@+id/exerciseView_nameTV"
                 android:background="@drawable/expand_arrow_grey_24px" />
 
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/ex1"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="12dp"
-                android:layout_marginTop="7dp"
-                android:elevation="8dp"
-                app:civ_border_color="@color/colorPrimary"
-                android:src="@drawable/plus_48px"
-                app:civ_circle_background_color="@color/colorAccent"
-                app:civ_border_width="2dp" />
 
 
             <ImageView
                 android:id="@+id/ex_choose"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_below="@+id/exerciseView_nameTV"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_toLeftOf="@+id/ex_arrow"
@@ -87,12 +90,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:text="New Exercise"
-                android:textColor="#2FCBC0"
+                android:text="Barbell Bench Press"
                 android:textSize="15sp"
-                android:textStyle="bold"
 
                 />
+
+
 
             <LinearLayout
                 android:id="@+id/exerciseView_data_layout"
@@ -101,13 +104,12 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="17dp"
                 android:layout_marginTop="33dp">
-
                 <TextView
                     android:id="@+id/exerciseView_setsTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="18dp"
-                    android:text="Sets: "
+                    android:layout_marginRight="12dp"
+                    android:text="Sets: 3"
                     android:textSize="12sp" />
 
 
@@ -116,16 +118,16 @@
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="18dp"
-                    android:text="Reps: "
+                    android:layout_marginRight="12dp"
+                    android:text="Reps: 1-5"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/exerciseView_restTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="18dp"
-                    android:text="Rest: "
+                    android:layout_marginRight="12dp"
+                    android:text="Rest: 01:23"
                     android:textSize="12sp" />
 
 
@@ -134,10 +136,74 @@
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="18dp"
+                    android:layout_marginRight="12dp"
 
-                    android:text="Wgh: "
+                    android:text="Wgh: 10lbs"
                     android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/exercisView_layout"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="17dp"
+                android:layout_marginTop="53dp">
+                <TextView
+                    android:elevation="3dp"
+                    android:textColor="@color/colorPrimary"
+                    android:padding="2dp"
+
+                    android:id="@+id/exerciseView_setsTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:text="Isometric"
+                    android:background="@color/colorAccent"
+                    android:textSize="8sp" />
+
+
+                <TextView
+                    android:layout_marginRight="5dp"
+
+                    android:id="@+id/exerciseView_repsTV"
+                    android:background="@color/colorAccent"
+                    android:elevation="3dp"
+                    android:textColor="@color/colorPrimary"
+                    android:padding="2dp"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fast Tempo"
+                    android:textSize="8sp" />
+
+                <TextView
+                    android:id="@+id/exerciseView_restTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Eccentric"
+                    android:layout_marginRight="5dp"
+                    android:elevation="3dp"
+                    android:textColor="@color/colorPrimary"
+                    android:padding="2dp"
+
+                    android:background="@color/colorAccent"
+                    android:textSize="8sp" />
+
+
+                <TextView
+                    android:elevation="3dp"
+                    android:textColor="@color/colorPrimary"
+                    android:padding="2dp"
+                    android:background="@color/colorAccent"
+                    android:id="@+id/exerciseView_weightTV"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="Slow Tempo"
+                    android:textSize="8sp" />
 
             </LinearLayout>
 

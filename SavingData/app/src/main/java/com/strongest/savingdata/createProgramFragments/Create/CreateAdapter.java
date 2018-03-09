@@ -276,10 +276,10 @@ public class CreateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public MuscleViewHolder(View itemView) {
             super(itemView);
             vh = this;
-            damage = (ProgressBar) itemView.findViewById(R.id.stats_damage_progress);
+            /*damage = (ProgressBar) itemView.findViewById(R.id.stats_damage_progress);
             //metabolic = (IconRoundCornerProgressBar) itemView.findViewById(R.id.stats_metabolic_progress);
             metabolic = (ProgressBar) itemView.findViewById(R.id.stats_metabolic_progress);
-            mechanical = (ProgressBar) itemView.findViewById(R.id.stats_mechanical_progress);
+            mechanical = (ProgressBar) itemView.findViewById(R.id.stats_mechanical_progress);*/
             bodyTv = (TextView) itemView.findViewById(R.id.recycler_view_body_parts_TV);
 
 

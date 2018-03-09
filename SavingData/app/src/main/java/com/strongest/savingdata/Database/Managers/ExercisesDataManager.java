@@ -444,7 +444,7 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
             do {
                 Beans ex = new Beans();
                 if (table.equals(TABLE_SETS)) {
-                    int t = c.getInt(c.getColumnIndex(TYPE));
+                    String t = c.getString(c.getColumnIndex(TYPE));
                     String name = c.getString(c.getColumnIndex(NAME));
                     int id = c.getInt((c.getColumnIndex(ID)));
                     int defaultInt = c.getInt(c.getColumnIndex(DEFAULT_INT));
@@ -457,7 +457,7 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
                     ex.setName(name);*/
                 }
                 if (table.equals(TABLE_REST)) {
-                    int t = c.getInt(c.getColumnIndex(TYPE));
+                    String t = c.getString(c.getColumnIndex(TYPE));
                     String name = c.getString(c.getColumnIndex(NAME));
                     int id = c.getInt((c.getColumnIndex(ID)));
                     int defaultInt = c.getInt(c.getColumnIndex(DEFAULT_INT));
@@ -507,14 +507,14 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
                     String detail = c.getString(c.getColumnIndex(DETAIL));
 //                    int mec = c.getInt((c.getColumnIndex(MECHANICAL_STRESS)));
                     //                  int met = c.getInt((c.getColumnIndex(METABOLIC_STRESS)));
-                    int t = c.getInt(c.getColumnIndex(TYPE));
+                    String t = c.getString(c.getColumnIndex(TYPE));
                     String name = c.getString(c.getColumnIndex(NAME));
                     int id = c.getInt((c.getColumnIndex(ID)));
                     double weight = c.getDouble(c.getColumnIndex(WEIGHT));
                     String image = c.getString((c.getColumnIndex(IMAGE)));
                     String muscle = c.getString((c.getColumnIndex(MUSCLES)));
                     String muscles = c.getString((c.getColumnIndex(MUSCLES)));
-                    int primaryMuscle = c.getInt((c.getColumnIndex(MUSCLE)));
+                    String primaryMuscle = c.getString((c.getColumnIndex(MUSCLE)));
                     muscle = Beans.parsePrimaryMuscle(muscle);
                     Muscle m = Muscle.createMuscle(parent.getMuscleDataManager(), muscle);
 

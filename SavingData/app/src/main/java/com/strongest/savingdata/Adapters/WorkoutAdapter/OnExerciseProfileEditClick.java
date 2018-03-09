@@ -13,5 +13,5 @@ import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 
 public interface OnExerciseProfileEditClick {
 
-    void transition(RecyclerView.ViewHolder vh, int position, PLObjects.ExerciseProfile ep);
+    void onEditExerciseClick(boolean enter, RecyclerView.ViewHolder vh, int position, PLObjects.ExerciseProfile ep);
 }

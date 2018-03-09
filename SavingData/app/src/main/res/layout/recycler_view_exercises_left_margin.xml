@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_view_exercise_lay1"
     android:layout_width="match_parent"
-    android:layout_height="70dp">
+    android:layout_height="100dp">
 
     <TextView
         android:layout_centerVertical="true"
         android:id="@+id/exerciseView_muscleTV"
-        android:layout_width="55dp"
+        android:layout_width="90dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="72dp"
+        android:layout_marginLeft="12dp"
         android:fontFamily="assets/varela_round_regular"
         android:gravity="top"
         android:rotation="-90"
@@ -19,33 +19,37 @@
         android:textAllCaps="true"
         android:textColor="#7E7E7E"
         android:textSize="8sp"
+        android:layout_toRightOf="@+id/ex1"
         />
 
-
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_marginLeft="@dimen/exercise_image_left_margin"
-            android:layout_marginTop="14dp"
-            android:src="@drawable/plus_48px"
-            app:civ_fill_color="@color/colorAccent"
-            app:civ_border_color="@color/colorPrimary"
             app:civ_border_width="2dp"
+            app:civ_border_color="@color/colorPrimary"
             android:layout_alignParentLeft="true"
             android:id="@+id/ex1"
-            android:elevation="5dp"
+            android:elevation="8dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:src="@drawable/plus_48px"
+            android:layout_marginTop="12dp"
+            app:civ_circle_background_color="@color/colorAccent"
+
             />
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/exerciseView_layout"
         android:layout_width="match_parent"
-        android:layout_height="62dp"
+        android:layout_height="92dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="80dp"
-        app:cardElevation="4dp"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:background="@drawable/aviv_exercise_placeholder_left_margin"
+        android:backgroundTint="@color/colorPrimary"
+        android:elevation="6dp"
         android:layout_marginTop="2dp"
         >
 
@@ -57,12 +61,19 @@
             >
 
 
-            <!--<ImageView
-                 android:id="@+id/ex1"
-                 android:layout_width="@dimen/exercise_view_size"
-                 android:layout_height="@dimen/exercise_size_height"
-                 android:background="@drawable/buttons_default_not_highlight"
-                  />-->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:elevation="10dp"
+                app:civ_circle_background_color="@color/colorAccent"
+                app:civ_border_color="@color/colorPrimary"
+                app:civ_border_width="2dp"
+                android:src="@drawable/edit_48px"
+                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                 android:id="@+id/recycler_view_edit"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                  />
 
             <ImageView
 
@@ -77,17 +88,12 @@
                 android:background="@drawable/expand_arrow_grey_24px" />
 
 
-
-
             <ImageView
                 android:id="@+id/ex_choose"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_below="@+id/exerciseView_nameTV"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/ex_arrow"
-                android:layout_toStartOf="@+id/ex_arrow"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:background="@android:drawable/ic_menu_edit"
                 android:visibility="gone" />
 
@@ -105,47 +111,97 @@
 
 
             <LinearLayout
-                android:id="@+id/exerciseView_data_layout"
+                android:id="@+id/exerciseView_data_layout2"
                 android:layout_width="match_parent"
                 android:layout_height="17dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="17dp"
                 android:layout_marginTop="33dp">
                 <TextView
-                    android:id="@+id/exerciseView_setsTV"
-                    android:layout_width="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_width="@dimen/recyclerview_exercises_stats_width"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="12dp"
-                    android:text="Sets: 3"
+                    android:text="Sets"
+                    android:textSize="12sp" />
+
+
+                <TextView
+
+                    android:textAlignment="center"
+                    android:layout_width="@dimen/recyclerview_exercises_stats_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
+                    android:text="Reps"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:textAlignment="center"
+                    android:layout_width="@dimen/recyclerview_exercises_stats_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
+                    android:text="Rest"
+                    android:textSize="12sp" />
+
+
+                <TextView
+
+                    android:textAlignment="center"
+                    android:layout_width="@dimen/recyclerview_exercises_stats_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
+
+                    android:text="Wgh"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/exerciseView_data_layout"
+                android:layout_width="match_parent"
+                android:layout_height="17dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="17dp"
+                android:layout_marginTop="53dp">
+                <TextView
+
+                    android:textAlignment="center"
+                    android:id="@+id/exerciseView_setsTV"
+                    android:layout_width="@dimen/recyclerview_exercises_stats_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
+                    android:text="3"
                     android:textSize="12sp" />
 
 
                 <TextView
                     android:id="@+id/exerciseView_repsTV"
 
-                    android:layout_width="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_width="@dimen/recyclerview_exercises_stats_width"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="12dp"
-                    android:text="Reps: 1-5"
+                    android:text="-"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/exerciseView_restTV"
-                    android:layout_width="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_width="@dimen/recyclerview_exercises_stats_width"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="12dp"
-                    android:text="Rest: 01:23"
+                    android:text="-"
                     android:textSize="12sp" />
 
 
                 <TextView
                     android:id="@+id/exerciseView_weightTV"
 
-                    android:layout_width="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_width="@dimen/recyclerview_exercises_stats_width"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="12dp"
 
-                    android:text="Wgh: 10lbs"
+                    android:text="-"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -194,5 +250,5 @@
         </LinearLayout>
     -->
 
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 </RelativeLayout>

@@ -6,5 +6,5 @@ package com.strongest.savingdata.Adapters.WorkoutAdapter;
 
 public interface ScrollToPositionListener {
 
-    void scrollToPosition(int position, boolean enableScroll);
+    void scrollToPosition(int position, boolean enableScroll, boolean lastVisible);
 }

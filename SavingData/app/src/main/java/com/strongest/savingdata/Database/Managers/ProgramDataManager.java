@@ -95,15 +95,15 @@ public class ProgramDataManager extends DataManager {
                     p = lm.getProgramTemplate();
                     values = getPLObjectsContentValues(lm.getLayout());
                     //creates a new layout table
-                    v = getLayoutReferenceContentValues(p.getDbName(), lm.getDbName());
+                    v = getLayoutReferenceContentValues( lm.getDbName());
                     updateCurrentTables(0);
-                    if(update){
-                        try{
+                    if (update) {
+                        try {
                             delete(lm.getDbName());
-                        }catch(Exception e){
+                        } catch (Exception e) {
                             Log.d("aviv", "saveLayoutToDataBase: " + e.toString());
                         }
-                    }else{
+                    } else {
                         getDb(programHelper).execSQL(programHelper.getLayoutCommand(lm.getDbName()));
                         //inserts name to layout reference
                         insertData(TABLE_LAYOUT_REFERENCE, new ContentValues[]{v});
@@ -337,7 +337,7 @@ public class ProgramDataManager extends DataManager {
         return v;
     }
 
-    public ContentValues getLayoutReferenceContentValues(String template, String layout) {
+    public ContentValues getLayoutReferenceContentValues( String layout) {
         ContentValues v = new ContentValues();
         v.put(LAYOUT_NAME, layout);
         return v;
@@ -359,51 +359,48 @@ public class ProgramDataManager extends DataManager {
                     break;
                 case BodyView:
                     PLObjects.BodyText bodyText = (PLObjects.BodyText) ep;
-                    v.put(DBExercisesHelper.MUSCLE, (bodyText.getMuscle().getMuscle_name()));
+                    v.put(DBExercisesHelper.NAME, (bodyText.getTitle()));
                     //    v.put(DBProgramHelper.workou);
                     break;
                 case ExerciseView:
 
                     PLObjects.ExerciseProfile exerciseProfile = (PLObjects.ExerciseProfile) ep;
-                    if (exerciseProfile.getBeansHolders() != null || exerciseProfile.isFirstExercise()) {
-                        BeansHolder beansHolder = exerciseProfile.getBeansHolders().get(0);
-                        v.put(EXERCISE_PROFILE_ID, exerciseProfile.getExerciseProfileId());
+                    BeansHolder beansHolder;
+                    if (exerciseProfile.getBeansHolders() != null) {
+                        beansHolder = exerciseProfile.getmBeansHolder();
+                    } else {
+                        beansHolder = new BeansHolder();
+                    }
+                    v.put(EXERCISE_PROFILE_ID, exerciseProfile.getExerciseProfileId());
+                    if(exerciseProfile.getMuscle() != null){
                         v.put(MUSCLE, exerciseProfile.getMuscle().getMuscle_name());
+                    }
                         /*
                         * ID has been changed from saving the bean id, to saving the bean name
                         * */
 
-                            if(beansHolder.getExercise() != null){
-                                v.put(EXERCISE_ID, beansHolder.getExercise().getName());
-                            }
-                            if(beansHolder.getRep() != null){
-                                v.put(REP_ID, beansHolder.getRep().getName());
-                            }
-                            if(beansHolder.getSets() != null){
-                                v.put(SETS, beansHolder.getSets().getName());
+                    if (beansHolder.getExercise() != null) {
+                        v.put(EXERCISE_ID, beansHolder.getExercise().getName());
+                    }
+                    if (beansHolder.getRep() != null) {
+                        v.put(REP_ID, beansHolder.getRep().getName());
+                    }
+                    if (beansHolder.getSets() != null) {
+                        v.put(SETS, beansHolder.getSets().getName());
 
-                            }
-                            if(beansHolder.getRest() != null){
-                                v.put(REST, beansHolder.getRest().getName());
-
-                            }
-
-                        /*if (beansHolder.getMethod() != null)
-                            v.put(METHOD_ID, beansHolder.getMethod().getBean());
-*/
-
-                            v.put(WEIGHT, beansHolder.getWeight());
-                            v.put(INNER_TYPE, exerciseProfile.getInnerType().ordinal());
-                            // v.put(SUPERSET, beansHolder.getSuperset());
-                            if (beansHolder.getSuperset() != null) {
-                                v.put(SUPERSET, beansHolder.getSuperset().getId());
-                            } else {
-                                v.put(SUPERSET, -1);
-
-                            }
-                        }
-                    // v.put(FIRST_EXERCISE, exerciseProfile.isFirstExercise());
+                    }
+                    if (beansHolder.getRest() != null) {
+                        v.put(REST, beansHolder.getRest().getName());
+                    }
+                    v.put(WEIGHT, beansHolder.getWeight());
+                    v.put(INNER_TYPE, exerciseProfile.getInnerType().ordinal());
+                    if (beansHolder.getSuperset() != null) {
+                        v.put(SUPERSET, beansHolder.getSuperset().getId());
+                    } else {
+                        v.put(SUPERSET, -1);
+                    }
                     break;
+
             }
             contentValues[i] = v;
             i++;

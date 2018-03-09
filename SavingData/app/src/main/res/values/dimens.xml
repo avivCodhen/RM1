@@ -13,4 +13,5 @@
     <dimen name="recyclerview_exercise_detail_textsize">10sp</dimen>
     <dimen name="exercise_image_left_margin">12dp</dimen>
     <dimen name="my_selector_buttons_text_size">10sp</dimen>
+    <dimen name="recyclerview_exercises_stats_width">40dp</dimen>
 </resources>

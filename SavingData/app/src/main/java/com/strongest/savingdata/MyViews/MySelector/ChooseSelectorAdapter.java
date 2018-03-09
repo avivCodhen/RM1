@@ -126,7 +126,7 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
     private void configurateSetsViewHolder(MySelector.ViewHolder viewHolder, Beans bean, boolean sendNull) {
 
         if (viewHolder.isInitiated()) {
-            viewHolder.getMySelectorOnBeansHolderChange().notifyExerciseProfileBeanChange("sets", bean);
+            viewHolder.getMySelectorOnBeansHolderChange().notifyExerciseProfileBeanChange("sets", sendNull ? null : bean);
         } else {
             //  viewHolder.setInitiated(true);
         }
@@ -134,7 +134,7 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
 
     private void configurateRestViewHolder(MySelector.ViewHolder viewHolder, Beans bean, boolean sendNull) {
         if (viewHolder.isInitiated()) {
-            viewHolder.getMySelectorOnBeansHolderChange().notifyExerciseProfileBeanChange("rest", bean);
+            viewHolder.getMySelectorOnBeansHolderChange().notifyExerciseProfileBeanChange("rest",sendNull ? null : bean);
         } else {
             //   viewHolder.setInitiated(true);
         }
@@ -143,7 +143,7 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
 
     private void configRepsViewHolder(ViewHolderReps viewHolder, Beans b, boolean sendNull) {
         if (viewHolder.isInitiated()) {
-            viewHolder.getMySelectorOnBeansHolderChange().notifyExerciseProfileBeanChange("reps", b);
+            viewHolder.getMySelectorOnBeansHolderChange().notifyExerciseProfileBeanChange("reps",sendNull ? null : b);
         } else {
             // viewHolder.setInitiated(true);
         }
@@ -163,23 +163,13 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
         } else {
             viewHolder.el.collapse();
             viewHolder.exercise_tv.setText("Displaying " + this.getMuscleType().getMuscle_display() + " Exercises");
-            String type = "";
-            switch (bean.getType()) {
-                case 0:
-                    type = "Isolation Exercise";
-                    break;
-                case 1:
-                    type = "Compound Exercise";
-            }
-            viewHolder.type_tv.setText(type);
+            viewHolder.type_tv.setText(bean.getType() + " Exercise");
             MyJavaAnimator.fadeIn(viewHolder.muscleChange_tv);
             if (viewHolder.isInitiated()) {
                 viewHolder.getMySelectorOnBeansHolderChange().
                         notifyExerciseProfileBeanChange("exercise", sendNull ? null : bean);
             }
         }
-
-
     }
 
 

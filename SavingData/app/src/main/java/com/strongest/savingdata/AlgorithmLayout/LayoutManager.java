@@ -60,6 +60,7 @@ public class LayoutManager {
     public static final String
             NEW_EXERCISE = "new_exercise",
             NEW_EXERCISE_FLIPPED = "new_exercise_fliped",
+            DRAW_DIVIDER = "draw_divider",
             NEW_WORKOUT = "new_workout",
             ATTACH_SUPERSET = "attach_superset",
             ATTACH_DROPSET = "attach_dropset",
@@ -112,6 +113,14 @@ public class LayoutManager {
         statsCalculator = new StatsCalculatorManager(this);
     }
 
+    public static LayoutManager getDefaultLayoutManagerInstance(Context context, DataManager dataManager) {
+        LayoutManager layoutManager = new LayoutManager(context, dataManager);
+        layoutManager.drawWorkout(layoutManager.layout, "Workout A");
+        layoutManager.drawBody(layoutManager.layout, "This Is A Title");
+        layoutManager.drawExercise(null, layoutManager.layout, new BeansHolder(), WorkoutLayoutTypes.ExerciseViewLeftMargin);
+        return layoutManager;
+    }
+
 
     public void drawWorkout(ArrayList<PLObjects> toLayout, String workoutName) {
         ++numOfWorkouts;
@@ -121,13 +130,13 @@ public class LayoutManager {
         toLayout.add(new PLObjects.WorkoutText(numOfWorkouts - 1, workoutName));
     }
 
-    public void drawBody(ArrayList<PLObjects> toLayout, Muscle muscle) {
+    public void drawBody(ArrayList<PLObjects> toLayout, String title) {
         ++numOfBodyParts;
 
-        toLayout.add(new PLObjects.BodyText(muscle, numOfWorkouts - 1, numOfBodyParts, null));
+        toLayout.add(new PLObjects.BodyText(numOfWorkouts - 1, numOfBodyParts, null, title));
     }
 
-    public void drawExercise(Muscle m,ArrayList<PLObjects> toLayout, BeansHolder beansHolder, WorkoutLayoutTypes innerType) {
+    public void drawExercise(Muscle m, ArrayList<PLObjects> toLayout, BeansHolder beansHolder, WorkoutLayoutTypes innerType) {
         ++numOfExercises;
         ArrayList<BeansHolder> list = null;
 
@@ -137,7 +146,7 @@ public class LayoutManager {
             list.add(beansHolder);
             list.add(beansHolder);
         }
-        PLObjects.ExerciseProfile ep = new PLObjects.ExerciseProfile(m,beansHolder, list, numOfWorkouts - 1, numOfBodyParts, numOfExercises);
+        PLObjects.ExerciseProfile ep = new PLObjects.ExerciseProfile(m, beansHolder, list, numOfWorkouts - 1, numOfBodyParts, numOfExercises);
         /*if (layout.get(layout.size() - 1).getType() == WorkoutLayoutTypes.BodyView) {
             ep.setFirstExercise(true);
         }*/
@@ -178,7 +187,7 @@ public class LayoutManager {
             String muscle = programTemplate.getBodyTemplate().get(workoutPosition).get(i);
             Muscle m = Muscle.createMuscle(dataManager.getMuscleDataManager(), muscle);
             // StatsHolder statsHolder = statsCalculator.calculateStatsHolder(numOfBodyParts, false);
-            drawBody(layout, m);
+            drawBody(layout, "");
             if (layout.get(layout.size() - 1).bodyId % 0 == 2) {
                 drawExerciseFromTemplate(m, WorkoutLayoutTypes.ExerciseViewLeftMargin);
             } else {
@@ -190,7 +199,7 @@ public class LayoutManager {
 
     private void drawExerciseFromTemplate(Muscle m, WorkoutLayoutTypes innerType) {
         for (int i = 0; i < programTemplate.getBlockLength(m); i++) {
-            drawExercise(m,layout, null, innerType);
+            drawExercise(m, layout, null, innerType);
         }
     }
 
@@ -222,7 +231,7 @@ public class LayoutManager {
 
     }
 
-    public ArrayList<PLObjects> readLayoutFromDataBase(int backBy) {
+    public boolean readLayoutFromDataBase(int backBy) {
         Cursor c = dataManager.getProgramDataManager().readLayoutTableCursor(backBy);
         dbName = dataManager.getProgramDataManager().getCurrentLayoutTable();
         layout = new ArrayList<>();
@@ -238,19 +247,17 @@ public class LayoutManager {
                         workoutsNames.add(c.getString(c.getColumnIndex(NAME)));
                         break;
                     case 1:
-                        muscle_str = c.getString(c.getColumnIndex(MUSCLE));
-                        muscle = Muscle.createMuscle(dataManager.getMuscleDataManager(), muscle_str);
-                        bodyTemplate.get(numOfWorkouts - 1).add(muscle.getMuscle_name());
-                        drawBody(layout, muscle);
+                        // bodyTemplate.get(numOfWorkouts - 1).add(muscle.getMuscle_name());
+                        drawBody(layout, c.getString(c.getColumnIndex(NAME)));
                         break;
                     case 2:
                         BeansHolder beansHolder = new BeansHolder();
 
                         int innerType = c.getInt(c.getColumnIndex(INNER_TYPE));
                         muscle_str = c.getString(c.getColumnIndex(MUSCLE));
-                        try{
+                        try {
                             muscle = Muscle.createMuscle(dataManager.getMuscleDataManager(), muscle_str);
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             Log.d("aviv", "readLayoutFromDataBase: either null or no muscle");
                         }
                         String exId = c.getString(c.getColumnIndex(EXERCISE_ID));
@@ -274,7 +281,7 @@ public class LayoutManager {
                             beansHolder.setSets(dataManager.getExerciseDataManager().fetchByName(TABLE_SETS, sets));
                         }
                         beansHolder.setWeight(weight);
-                        drawExercise(muscle,layout, beansHolder, WorkoutLayoutTypes.getEnum(innerType));
+                        drawExercise(muscle, layout, beansHolder, WorkoutLayoutTypes.getEnum(innerType));
 
                         break;
                 }
@@ -285,17 +292,12 @@ public class LayoutManager {
                     bodyTemplate, -1, -1, "", workoutsNames
             ));
             programTemplate.setModified(false);
-            return layout;
+            return true;
         }
 
-        return null;
+        return false;
     }
 
-   /* private void setWorkoutTemplate() {
-        MainMuscleEnum[][] templateArray = matrixListtoArray(bodyTemplate);
-        programTemplate = new ProgramTemplate(context, templateArray);
-
-    }*/
 
     public void updateLayout(UpdateComponents updateComponents) {
         int workoutPosition = updateComponents.getWorkoutPosition();
@@ -306,12 +308,16 @@ public class LayoutManager {
                     Collections.swap(getSplitRecyclerWorkouts(false).get(workoutPosition), updateComponents.fromPosition, updateComponents.toPosition);
                     break;
                 case NEW_EXERCISE:
-                    getSplitRecyclerWorkouts(false).get(workoutPosition).add(updateComponents.getInsertPosition(), updateComponents.getPlObject());
+                    drawExercise(null,
+                            getSplitRecyclerWorkouts(false).get(workoutPosition),
+                            new BeansHolder(),
+                            updateComponents.innerType);
+                    // getSplitRecyclerWorkouts(false).get(workoutPosition).add(updateComponents.getInsertPosition(), updateComponents.getPlObject());
                     break;
                 case NEW_WORKOUT:
                     getSplitRecyclerWorkouts(false).add(new ArrayList<PLObjects>());
                     drawWorkout(getWorkouts(false), "");
-                    drawExercise(null,getSplitRecyclerWorkouts(false).get(getSplitRecyclerWorkouts(false).size() - 1), null, WorkoutLayoutTypes.ExerciseViewLeftMargin);
+                    drawExercise(null, getSplitRecyclerWorkouts(false).get(getSplitRecyclerWorkouts(false).size() - 1), new BeansHolder(), WorkoutLayoutTypes.ExerciseViewLeftMargin);
                     break;
                 case REMOVE:
                     getSplitRecyclerWorkouts(false).get(workoutPosition).remove(updateComponents.removePosition);
@@ -321,6 +327,8 @@ public class LayoutManager {
                     getWorkouts(false).remove(workout);
                     getSplitRecyclerWorkouts(false).remove(workoutPosition);
                     break;
+                case DRAW_DIVIDER:
+                    drawBody(getSplitRecyclerWorkouts(false).get(workoutPosition), "New Divider...");
             }
             requestSplitToLayout();
             numOfWorkouts = 0;
@@ -690,6 +698,7 @@ public class LayoutManager {
         private PLObjects plObject;
         private String updateType;
         private boolean update;
+        private WorkoutLayoutTypes innerType;
 
         public UpdateComponents(String updateType) {
 
@@ -755,6 +764,14 @@ public class LayoutManager {
 
         public void setUpdate(boolean update) {
             this.update = update;
+        }
+
+        public WorkoutLayoutTypes getInnerType() {
+            return innerType;
+        }
+
+        public void setInnerType(WorkoutLayoutTypes innerType) {
+            this.innerType = innerType;
         }
     }
 }

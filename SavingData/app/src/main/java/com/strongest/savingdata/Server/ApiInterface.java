@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -34,7 +38,7 @@ public interface ApiInterface {
     @GET("getExercisesDB.php/")
     Call<ArrayList<Beans>> getData(@Query("muscles") String muscle);
 
-    @GET("getMusclesDB.php/")
+    @POST("getMusclesDB.php/")
     Call<ArrayList<Muscle>> getMuscles(@Query("muscles") String muscle);
 
     @GET("getTablesDB.php/")
