@@ -69,24 +69,7 @@ public class LimitFragment extends BaseCreateProgramFragment implements RadioGro
         descriptionTV = (TextView) v.findViewById(R.id.fragment_limit_descriptionTV);
         radioGroup.setOnCheckedChangeListener(this);
         v.findViewById(R.id.limit_fragment_btn).setOnClickListener(this);
-        Download d = new Download(getContext());
-        try {
 
-            d.refreshData(
-                    DBMuscleHelper.DB_TABLE_NAME,
-                    TABLE_REPS,
-                    TABLE_CHEST,
-                    TABLE_BACK,
-                    TABLE_LEGS,
-                    TABLE_SHOULDERS,
-                    TABLE_ARMS,
-                    TABLE_SETS,
-                    TABLE_REST
-            );
-        } catch (Exception e) {
-            Log.d("aviv", "downloadExercises: " + e.toString());
-            // dm.getPrefsEditor().putBoolean("download", true).commit();
-        }
     }
 
     @Override

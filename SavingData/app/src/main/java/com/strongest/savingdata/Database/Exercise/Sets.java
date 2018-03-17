@@ -2,13 +2,15 @@ package com.strongest.savingdata.Database.Exercise;
 
 import com.strongest.savingdata.AlgorithmLayout.Ben;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.Serializable;
 
 /**
  * Created by Cohen on 10/18/2017.
  */
 
-public class BeansHolder implements Serializable, Ben {
+public class Sets implements Serializable, Ben {
 
     private Beans exercise;
     private Beans rep;
@@ -19,16 +21,17 @@ public class BeansHolder implements Serializable, Ben {
     private double weight;
     private boolean isLoaded;
     private boolean hasmethod;
+    private String tag;
 
+    private boolean intraSet;
     //progressor stuff
     private int oldPosition = -1;
     private int newPosition = -1;
 
-    public BeansHolder() {
-
+    public Sets() {
     }
 
-    public static boolean compareBeansHolders(BeansHolder one, BeansHolder two) {
+    public static boolean compareBeansHolders(Sets one, Sets two) {
         if(one == null){
             return true;
         }
@@ -153,5 +156,21 @@ public class BeansHolder implements Serializable, Ben {
 
     public void setNewPosition(int newPosition) {
         this.newPosition = newPosition;
+    }
+
+    public boolean isIntraSet() {
+        return intraSet;
+    }
+
+    public void setIntraSet(boolean intraSet) {
+        this.intraSet = intraSet;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

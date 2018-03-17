@@ -2,12 +2,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:state_selected="false"
+        android:id="@+id/settings_menu"
+        android:title="edit"
+        app:showAsAction="always"
+        android:orderInCategory="0"
+        android:icon="@drawable/settings_24px"
+        />
+
+    <item android:state_selected="false"
         android:id="@+id/edit_menu"
         android:title="edit"
         app:showAsAction="always"
         android:orderInCategory="0"
         android:icon="@drawable/ic_edit_white_18dp"
         />
+
+
 
 
 </menu>

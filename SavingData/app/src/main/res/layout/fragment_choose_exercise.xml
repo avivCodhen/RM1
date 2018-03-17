@@ -1,0 +1,69 @@
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:orientation="vertical"
+    android:background="@color/background_color"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <TextView
+        android:text="Muscle:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+  <include layout="@layout/recycler_view_muscle"
+      android:id="@+id/choose_muscle_include"
+      android:layout_marginTop="30dp"
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"></include>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/choose_muscle_include"
+        android:id="@+id/my_selector_exercise_expand_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <net.cachapa.expandablelayout.ExpandableLayout
+            app:el_duration="500"
+            app:el_expanded="false"
+            android:id="@+id/expandable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:el_parallax="1">
+
+                <GridView
+                    android:background="@android:color/transparent"
+                    android:stretchMode="columnWidth"
+                    android:numColumns="4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/fragment_choose_exercise_gridview"></GridView>
+        </net.cachapa.expandablelayout.ExpandableLayout>
+
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/choose_change_Tv"
+        android:textColor="#1E90FF"
+        android:textStyle="italic"
+        android:gravity="center_vertical"
+        android:textSize="10dp"
+        android:text="CHANGE"
+        android:layout_marginTop="43dp"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/choose_muscle_include"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/my_selector_exercise_expand_layout"
+        android:id="@+id/choose_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>
+

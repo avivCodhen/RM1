@@ -1,0 +1,22 @@
+<RelativeLayout android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/muscle_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/muscle_legs"/>
+
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:id="@+id/muscle_tv"
+        android:layout_centerVertical="true"
+        android:text="CHEST"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:layout_toRightOf="@+id/muscle_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

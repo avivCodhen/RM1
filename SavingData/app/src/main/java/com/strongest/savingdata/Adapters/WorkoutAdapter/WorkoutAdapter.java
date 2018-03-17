@@ -1,42 +1,5 @@
 package com.strongest.savingdata.Adapters.WorkoutAdapter;
 
-import android.animation.ObjectAnimator;
-import android.content.Context;
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.strongest.savingdata.AlgorithmStats.ProgressStats;
-import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects.BodyText;
-import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
-import com.strongest.savingdata.Database.Exercise.BeansHolder;
-import com.strongest.savingdata.MyViews.CreateCustomBeansView.NumberChooseManager;
-import com.strongest.savingdata.MyViews.CreateCustomBeansView.SingleNumberChooseView;
-import com.strongest.savingdata.MyViews.WeightKeyBoard.WeightKeyboard;
-import com.strongest.savingdata.MyViews.WorkoutView.OnChooseClickListener;
-import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.Create.OnPositionViewListener;
-
-import net.cachapa.expandablelayout.ExpandableLayout;
-
-import java.util.ArrayList;
-import java.util.Collections;
-
-import static android.view.View.GONE;
-import static android.view.animation.Animation.RELATIVE_TO_SELF;
-import static com.strongest.savingdata.AlgorithmLayout.PLObjects.*;
-
 /**
  * Created by Cohen on 10/15/2017.
  */

@@ -1,20 +1,15 @@
 package com.strongest.savingdata.Dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -86,8 +81,8 @@ public class DialogMuscleSelect extends Dialog {
 
         ViewHolder(View v, int position) {
 
-            tv = (TextView) v.findViewById(R.id.muscle_select_tv);
-            cv = (CardView) v.findViewById(R.id.muscle_select_cardview);
+          //  tv = (TextView) v.findViewById(R.id.muscle_select_tv);
+          //  cv = (CardView) v.findViewById(R.id.muscle_select_cardview);
             cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -144,7 +139,7 @@ public class DialogMuscleSelect extends Dialog {
             View v = convertView;
             ViewHolder holder = null;
             if(v == null){
-                v = li.inflate(R.layout.muscle_select_card_view, parent, false);
+                v = li.inflate(R.layout.recycler_view_muscle, parent, false);
                 holder = new ViewHolder(v, position);
                 v.setTag(holder);
             }else{

@@ -17,8 +17,7 @@
         android:id="@+id/exerciseView_data_layout"
         android:layout_width="match_parent"
         app:cardElevation="3dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp">
+        >
 
         <LinearLayout
             android:paddingRight="90dp"

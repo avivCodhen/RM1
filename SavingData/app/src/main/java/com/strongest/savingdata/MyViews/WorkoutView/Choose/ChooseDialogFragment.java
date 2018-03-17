@@ -1,98 +1,63 @@
 package com.strongest.savingdata.MyViews.WorkoutView.Choose;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
-import android.transition.TransitionInflater;
-import android.util.TimingLogger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.strongest.savingdata.Activities.BaseActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
+import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.ReactLayoutManager;
+import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.Database.Exercise.BeansHolder;
+import com.strongest.savingdata.Database.Exercise.Sets;
 import com.strongest.savingdata.Database.Managers.DataManager;
-import com.strongest.savingdata.MyViews.MySelector.ChooseSelectorAdapter;
 import com.strongest.savingdata.MyViews.MySelector.MySelectorOnBeansHolderChange;
-import com.strongest.savingdata.MyViews.MyViewPager;
 import com.strongest.savingdata.MyViews.WorkoutView.OnExerciseChangeListener;
-import com.strongest.savingdata.MyViews.WorkoutView.WorkoutSubject;
 import com.strongest.savingdata.MyViews.WorkoutView.WorkoutView;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 
 public class ChooseDialogFragment extends BaseCreateProgramFragment implements View.OnClickListener,
-        TabLayout.OnTabSelectedListener, WorkoutSubject, MySelectorOnBeansHolderChange {
+        TabLayout.OnTabSelectedListener, MySelectorOnBeansHolderChange {
 
     public static final String LISTENER = "listener";
     private TabLayout tabLayout;
-    private MyViewPager viewPager;
-    /* private TextView exerciseNameTV, exerciseDetailTV;
-     private TextView methodsTV;*/
+    private ViewPager viewPager;
     private Bundle i;
-    private Intent intent;
-    private ArrayList<BeansHolder> newBeansHolders;
-    private ArrayList<BeansHolder> prevBeansHolders;
-
+    private ArrayList<PLObjects> mLayout;
     private DataManager dataManager;
-    private ArrayList<ArrayList<Beans>> beans_array = new ArrayList<>();
-    //  private static final int hundred = 100;
-    private ChooseSelectorAdapter adapter;
-    private ChooseDataListener chooseDataListener;
+    public AppBarLayout appBarLayout;
+    private NestedScrollView nestedScrollView;
 
-    private OptionalChooseDialogFragment optionalFragment;
-    private MandatoryChooseDialogFragment mandatoryFragment;
-
-    private WorkoutView workoutView;
-    //private View exerciseView;
     private PLObjects.ExerciseProfile exerciseProfile;
     private String tName;
     private Button backBtn;
+    private ReactLayoutManager mReactLayoutManager;
 
     private OnExerciseChangeListener onExerciseChangeListener;
 
     private int exercisePosition;
 
     private RecyclerView.ViewHolder vh;
-  /*  private RadioGroup rg1;
-    private RadioGroup rg2;
-    private RadioGroup rg3;
-    private RadioGroup rg4;*/
-
-    /*private View.OnClickListener cListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v.getParent() == radioGroups[0]) {
-                exerciseNameTV.setText(exerciseBean.get(v.getWorkoutId() - hundred).getName());
-                exerciseDetailTV.setText(exerciseBean.get(v.getWorkoutId() - hundred).getDetails());
-            } else if (v.getParent() == radioGroups[2]) {
-                methodsTV.setText(methodBean.get(v.getWorkoutId() - hundred).getDetails());
-            }
-            onCheckedChanged((RadioGroup) v.getParent(), v.getWorkoutId());
-        }
-    };*/
 
     public static ChooseDialogFragment getInstance(OnExerciseChangeListener onExerciseChangeListener,
                                                    int position,
@@ -109,16 +74,12 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         postponeEnterTransition();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //    setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.onEditExerciseClick.move));
-        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //  getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0x22000000));
-        getActionBar().hide();
+        //getActionBar().hide();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -126,59 +87,13 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
             }
         }, 500);
-        ((HomeActivity)getActivity()).collapseAppBarLAyout();
+        ((HomeActivity) getActivity()).begoneTabLayout();
         Drawable d = new ColorDrawable(Color.BLACK);
         d.setAlpha(100);
 
-        View v = inflater.inflate(R.layout.fragment_choose_dialog, container, false);
+        View v = inflater.inflate(R.layout.fragment_choose, container, false);
         return v;
     }
-
-   /* @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void forLOLLIPOP(View v) {
-        View exerciseView = LayoutInflater.from(getContext()).inflate(R.layout.exercise_choose_transition, (ViewGroup) v, false);
-        //exerciseView.setTransitionName(exerciseProfile.getExerciseProfileId()+"");
-        ((ViewGroup) v).addView(exerciseView, 0);
-        ExerciseViewHolder vh3 = new ExerciseViewHolder(exerciseView);
-        nothing(vh3);
-    }*/
-
-
-   /* @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public void nothing(ExerciseViewHolder vh3) {
-        if (exerciseProfile.getBeansHolder() != null && exerciseProfile.getBeansHolder() != null) {
-            //vh3.name.setTransitionName(exerciseProfile.getExerciseProfileId() + vh3.name.getBean() + "");
-            // vh3.layout.setTransitionName(tName);
-            vh3.name.setText(exerciseProfile.getBeansHolder().getExercise().getName());
-            vh3.reps.setText(exerciseProfile.getBeansHolder().getRep().getName());
-            vh3.sets.setTransitionName(tName);
-            vh3.sets.setText(exerciseProfile.getBeansHolder().getSets() + "");
-            vh3.rest.setText(exerciseProfile.getBeansHolder().getRest().getName());
-            if (exerciseProfile.getBeansHolder().getMethod() != null) {
-                vh3.method.setText(exerciseProfile.getBeansHolder().getMethod().getName());
-            } else {
-                vh3.method.setText("");
-            }
-            if ((exerciseProfile.getBeansHolder().getWeight() == 0)) {
-                vh3.weight.setText("W: -");
-            } else {
-                vh3.weight.setText("W: " + exerciseProfile.getBeansHolder().getWeight());
-            }
-        } else
-
-        {
-            vh3.name.setText("");
-            vh3.reps.setText("");
-            vh3.method.setText("");
-            vh3.sets.setText("");
-            vh3.rest.setText("");
-            vh3.weight.setText("W: -");
-            vh3.icon.setImageResource(R.drawable.ic_add_black_18dp);
-        }
-        //timings.addSplit("after nothingvh3");
-        startPostponedEnterTransition();
-
-    }*/
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -187,57 +102,23 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     }
 
     private void initView(View v) {
-        // TextView tv = (TextView) v.findViewById(R.id.choose_test_tv);
-        //tv.setTransitionName(tName);
-//        tv.setText(exerciseProfile.getBeansHolders().get(0).getExercise().getName());
-
-       /* backBtn = (Button) v.findViewById(R.id.choose_back_btn);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //getParentFragment().getFragmentManager().popBackStack();
-                getParentFragment().getChildFragmentManager().popBackStack();
-
-                //getFragmentManager().popBackStackImmediate("unique", 0);
-            }
-        });*/
-        startPostponedEnterTransition();
+        nestedScrollView = (NestedScrollView) v.findViewById(R.id.fragment_choose_nestedscrollview);
+        mLayout = new ArrayList<>();
+        makeLayout(exerciseProfile);
         dataManager = new DataManager(getContext());
-        i = getArguments();
-        //  if (exerciseView)
-        prevBeansHolders = exerciseProfile.getBeansHolders();
+        // i = getArguments();
+        mReactLayoutManager = ReactLayoutManager.newInstance(
+                ((BaseActivity) getActivity()).getProgrammer().getLayoutManager(),
+                ((WorkoutView.WorkoutViewFragment) getParentFragment()),
+                exerciseProfile
 
-        //not for lolipop!
-        //prevBeansHolders = (BeansHolder) i.getSerializable("beans_holder");
-
-        ChooseData data = new ChooseData();
-        //data.setBeansHolder(newBeansHolder);
-        data.setBeansHolder(prevBeansHolders);
-
-        //not for lolipop!
-        //data.setMuscle(getArguments().getInt(MUSCLE));
-        if (exerciseProfile.isHasBeansHolders()) {
-            if (exerciseProfile.getmBeansHolder().getExercise() != null) {
-                data.setMuscle(exerciseProfile.getmBeansHolder().getExercise().getMuscle());
-            }
-        } else {
-            data.setMuscle(null);
-        }
-        //   TimingLogger t = new TimingLogger("aviv", "for viewpager");
+        );
         ((MyExpandableAdapter.ExerciseViewHolder) vh).layout.setOnClickListener(null);
-        mandatoryFragment = MandatoryChooseDialogFragment.newInstance(data);
-        mandatoryFragment.setBeansHolderChange(this);
-        optionalFragment = OptionalChooseDialogFragment.newInstance(data);
-        ChooseAdapter adapter = new ChooseAdapter(getChildFragmentManager(),
-                data,
-                chooseDataListener,
-                mandatoryFragment,
-                optionalFragment);
-        viewPager = (MyViewPager) v.findViewById(R.id.choose_dialog_viewpager);
+        final ChooseAdapter adapter = new ChooseAdapter(getChildFragmentManager(), mLayout);
+        viewPager = (ViewPager) v.findViewById(R.id.choose_dialog_viewpager);
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
-         tabLayout = (TabLayout) v.findViewById(R.id.fragment_choose_tablayout);
-        //    t.addSplit("after after viewpager");
+        tabLayout = (TabLayout) v.findViewById(R.id.fragment_choose_tablayout);
 
         tabLayout.setupWithViewPager(viewPager, true);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -256,70 +137,83 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
             }
         });
-        //tabLayout.addOnTabSelectedListener(this);
-        //tabLayout.setTabTextColors(ColorStateList.valueOf(Color.WHITE));
+
+        v.findViewById(R.id.choose_add_set).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Sets> set = new ArrayList<>();
+                Sets aSet = new Sets();
+                set.add(new Sets());
+                exerciseProfile.getSets().add(set);
+                PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(aSet);
+                mLayout.add(mLayout.size() - 1, setsPLObject);
+                //makeLayout(exerciseProfile);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        v.findViewById(R.id.choose_add_intra_exercise).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PLObjects.ExerciseProfile ep = new PLObjects.ExerciseProfile(null, 0, 0, 0);
+                ep.setInnerType(WorkoutLayoutTypes.IntraExerciseProfile);
+                exerciseProfile.getExerciseProfiles().add(ep);
+                ep.setTag(LayoutManager.intraWorkoutsLetters[exerciseProfile.getExerciseProfiles().size()]);
+                ArrayList<Sets> set = new ArrayList<>();
+                Sets aSet = new Sets();
+                set.add(new Sets());
+                ep.setIntraSets(set);
+                mLayout.add(exerciseProfile.getExerciseProfiles().size(), ep);
+                adapter.notifyDataSetChanged();
+                viewPager.setCurrentItem(exerciseProfile.getExerciseProfiles().size());
+
+            }
+        });
         v.findViewById(R.id.fragment_choose_back_iv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeActivity) getActivity()).workoutView.onExitChooseFragment(vh);
+                ((HomeActivity) getActivity()).workoutView.onExitChooseFragment(vh, false);
+                ((HomeActivity) getActivity()).reviveTabLayout();
+
                 exerciseProfile.setEditMode(false);
                 getFragmentManager().popBackStack();
-                //((HomeActivity) getActivity()).getSupportActionBar().show();
             }
         });
-        Attach(workoutView);
-        intent = new Intent();
-        //  t.addSplit("after after all");
-        //  t.dumpToLog();
+        // Attach(workoutView);
+        // intent = new Intent();
+    }
 
-//        timings.addSplit("after all");
-
+    private void makeLayout(PLObjects.ExerciseProfile ep) {
+        mLayout.clear();
+        mLayout.add(ep);
+        for (int j = 0; j < ep.getExerciseProfiles().size(); j++) {
+            mLayout.add(ep.getExerciseProfiles().get(j));
+        }
+        for (int j = 0; j < ep.getSets().size(); j++) {
+            PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(ep.getSets().get(j).get(0));
+            mLayout.add(setsPLObject);
+        }
     }
 
     public Resources resources() {
         return getContext().getResources();
     }
 
+
     @Override
     public void onClick(View v) {
-        ArrayList<BeansHolder> mBH = new ArrayList<>();
+        ArrayList<Sets> mBH = new ArrayList<>();
 
-        if (mandatoryFragment.getMandatoryBeansHolder() != null) {
-            mBH.add(mandatoryFragment.getMandatoryBeansHolder());
-           /* if (prevBeansHolders == null) {
-                newBeansHolder = new BeansHolder();
-            }*/
-           /* newBeansHolder = new BeansHolder();
-            newBeansHolder.setExercise(mBH.getExercise());
-            newBeansHolder.setSets(mBH.getSets());
-            newBeansHolder.setRep(mBH.getRep());
-            newBeansHolder.setRest(mBH.getRest());*/
-        } else {
-            Toast.makeText(getContext(), "To save the exercise you need to pick all the Mandatory options.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-       /* if (optionalFragment.getOptionalBeansHolder() != null) {
-            BeansHolder oBh = optionalFragment.getOptionalBeansHolder();
-            if (oBh.getMethod() != null) {
-                newBeansHolder.setMethod(oBh.getMethod());
-                newBeansHolder.setHasmethod(true);
-            }
-            newBeansHolder.setWeight(oBh.getWeight());
 
-        }*/
-
-        Notify(mBH, exerciseProfile.getExerciseProfileId(), false/*BeansHolder.compareBeansHolders(prevBeansHolders, mBH)*/);
-        //dismiss();
     }
 
+    public NestedScrollView getNestedScrollView() {
+        return nestedScrollView;
+    }
 
-  /*  private boolean vaildate(MySelector.CheckedHolder[] checkHolder) {
-        if (checkHolder[Exercise.ordinal()] == null && newBeansHolders.getExercise() == null ||
-                checkHolder[Reps.ordinal()] == null && newBeansHolders.getRep() == null) {
-            return false;
-        }
-        return true;
-    }*/
+    public AppBarLayout getAppBarLayout() {
+        return appBarLayout;
+    }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
@@ -336,28 +230,6 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     }
 
-
-    @Override
-    public void Attach(WorkoutView o) {
-        workoutView = (WorkoutView) o;
-
-    }
-
-    @Override
-    public void Dettach(WorkoutView o) {
-
-    }
-
-    @Override
-    public void Notify(ArrayList<BeansHolder> beanHolders, int position, boolean changed) {
-        ((WorkoutView.WorkoutViewFragment) getTargetFragment()).exerciseOnClick(beanHolders, position, changed);
-        getParentFragment().getChildFragmentManager().popBackStack();
-    }
-
-    public void setWorkoutView(WorkoutView workoutView) {
-        this.workoutView = workoutView;
-    }
-
     public void setExerciseProfile(PLObjects.ExerciseProfile exerciseProfile) {
         this.exerciseProfile = exerciseProfile;
     }
@@ -369,28 +241,28 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     @Override
     public void notifyExerciseProfileBeanChange(String beanType, Beans bean) {
-        if (!exerciseProfile.isHasBeansHolders()) {
-            exerciseProfile.setmBeansHolder(new BeansHolder());
-            ArrayList<BeansHolder> arr= new ArrayList<>();
-            arr.add(exerciseProfile.getmBeansHolder());
-            exerciseProfile.setBeansHolders(arr);
+      /*  if (!exerciseProfile.isHasBeansHolders()) {
+            exerciseProfile.setmSets(new Sets());
+            ArrayList<Sets> arr= new ArrayList<>();
+            arr.add(exerciseProfile.getmSets());
+            exerciseProfile.setSets(arr);
         }
         switch (beanType) {
-            case "muscle":
-
             case "exercise":
-                exerciseProfile.getmBeansHolder().setExercise(bean);
+                exerciseProfile.getmSets().setExercise(bean);
+                break;
             case "reps":
-                exerciseProfile.getmBeansHolder().setRep(bean);
+                exerciseProfile.getmSets().setRep(bean);
                 break;
             case "sets":
-                exerciseProfile.getmBeansHolder().setSets(bean);
+                exerciseProfile.getmSets().setSets(bean);
                 break;
             case "rest":
-                exerciseProfile.getmBeansHolder().setRest(bean);
+                exerciseProfile.getmSets().setRest(bean);
+                break;
         }
         onExerciseChangeListener.onExerciseChange(exercisePosition, beanType);
-
+*/
     }
 
     @Override
@@ -409,6 +281,10 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     public void setVh(RecyclerView.ViewHolder vh) {
         this.vh = vh;
+    }
+
+    public ReactLayoutManager getmReactLayoutManager() {
+        return mReactLayoutManager;
     }
 
 

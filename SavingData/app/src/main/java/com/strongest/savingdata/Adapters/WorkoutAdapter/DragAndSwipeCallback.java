@@ -1,5 +1,6 @@
 package com.strongest.savingdata.Adapters.WorkoutAdapter;
 
+import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
@@ -59,6 +60,7 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
         } else {
             workoutAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         }
+
         return true;
     }
 
@@ -70,7 +72,10 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
         }
     }
 
-
+    @Override
+    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+    }
 
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder,

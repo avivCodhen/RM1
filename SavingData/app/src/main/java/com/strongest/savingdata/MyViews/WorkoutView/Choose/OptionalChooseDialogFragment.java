@@ -8,8 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.Database.Exercise.BeansHolder;
+import com.strongest.savingdata.Database.Exercise.Sets;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.CreateBeansHolderView;
 import com.strongest.savingdata.MyViews.MySelector.ChooseSelectorAdapter;
@@ -20,17 +19,14 @@ import com.strongest.savingdata.createProgramFragments.Unused.BaseDialogFragment
 import java.util.ArrayList;
 
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.MUSCLE;
-import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_METHODS;
-import static com.strongest.savingdata.MyViews.MySelector.MySelector.SelectorTypes.Method;
-import static com.strongest.savingdata.MyViews.MySelector.MySelector.SelectorTypes.Weight;
 
 public class OptionalChooseDialogFragment extends BaseDialogFragment {
 
 
     private MySelector mMySelector;
     private int mMuscle;
-    private ArrayList<BeansHolder> mBeansHolders;
-    private BeansHolder mBeansHolder;
+   // private ArrayList<Sets> mSets;
+    private Sets mSets;
     private ChooseSelectorAdapter adapter;
     //private double[] mValueArray = new double[3901];
 
@@ -46,7 +42,7 @@ public class OptionalChooseDialogFragment extends BaseDialogFragment {
     public static OptionalChooseDialogFragment newInstance(ChooseData data) {
         OptionalChooseDialogFragment fragment = new OptionalChooseDialogFragment();
         Bundle args = new Bundle();
-        args.putSerializable("beans_holder", data.getBeansHolder());
+        args.putSerializable("beans_holder", data.getSets());
         args.putString(MUSCLE, "chest");
         fragment.setArguments(args);
         return fragment;
@@ -56,7 +52,7 @@ public class OptionalChooseDialogFragment extends BaseDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mBeansHolders = (ArrayList<BeansHolder>) getArguments().getSerializable("beans_holder");
+          //  mSets = (ArrayList<Sets>) getArguments().getSerializable("beans_holder");
             //mMuscle = getArguments().getInt(MUSCLE);
         }
     }
@@ -100,8 +96,8 @@ public class OptionalChooseDialogFragment extends BaseDialogFragment {
 */
     }
 
-    public ArrayList<BeansHolder> getOptionalBeansHolder() {
-        ArrayList<BeansHolder> list = new ArrayList<>();
+    public ArrayList<Sets> getOptionalBeansHolder() {
+        ArrayList<Sets> list = new ArrayList<>();
 
         // ArrayList<Beans> methodBean = (ArrayList<Beans>) dataManager.getExerciseDataManager().readByTable(TABLE_METHODS);
 

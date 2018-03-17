@@ -19,6 +19,11 @@ public class DBProgramHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
 
     //program fields
+    public static final String PROGRAM_TIME= "program_time";
+
+
+
+    //layout fields
 
     public static final String EXERCISE_ID = "exercise_id";
     public static final String REP_ID = "rep";
@@ -106,8 +111,8 @@ public class DBProgramHelper extends SQLiteOpenHelper {
 
 
     private final String PROGRAM_REFERENCE_COMMAND = "CREATE TABLE "
-            + TABLE_PROGRAM_REFERENCE + " (id INTEGER PRIMARY KEY AUTOINCREMENT, " + TEMPLATE_NAME + " TEXT, " +
-            PROGRAM_NAME + " TEXT)";
+            + TABLE_PROGRAM_REFERENCE + " (id INTEGER PRIMARY KEY AUTOINCREMENT, " + PROGRAM_NAME + " TEXT, " + PROGRAM_TIME + " TEXT, " + LAYOUT_NAME + " TEXT, " +
+            DATE_CREATED + " TEXT)";
 
     private final String PROGRAM_COMMAND = "CREATE TABLE "
             + "programs" + " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +

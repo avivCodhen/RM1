@@ -1,18 +1,13 @@
 package com.strongest.savingdata.tabFragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.ListFragment;
-import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,25 +17,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.strongest.savingdata.Activities.CreateWorkoutActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Activities.OnCreateProgramListener;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.BaseWorkout.Programmer;
 import com.strongest.savingdata.Database.Managers.DataManager;
-import com.strongest.savingdata.Manager.ManagerView;
 import com.strongest.savingdata.MyViews.MyViewPager;
-import com.strongest.savingdata.MyViews.NoSwipeViewPager;
 import com.strongest.savingdata.MyViews.WorkoutView.WorkoutView;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.Adapters.oldWorkoutsAdapter;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.DetailsFragment;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.LimitFragment;
-import com.strongest.savingdata.createProgramFragments.CreateProgram.ProgramTemplateFragment;
 
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -96,7 +84,7 @@ public class WorkoutFragment extends BaseCreateProgramFragment implements TabLay
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.edit_button, menu);
+        inflater.inflate(R.menu.aviv_menu_program, menu);
         inflater.inflate(R.menu.progress_menu, menu);
     }
 
@@ -111,14 +99,14 @@ public class WorkoutFragment extends BaseCreateProgramFragment implements TabLay
         // saveBtn = (Button) v.findViewById(R.id.workout_fragment_save_btn);
         backBtn.setOnClickListener(this);
         workoutView = (WorkoutView) v.findViewById(R.id.fragment_workout_workoutview);
-        if (programmer.isHasProgram()) {
+        /*if (programmer.isHasProgram()) {
             workoutView.instantiate(-1, getChildFragmentManager(), true, programmer.getLayoutManager());
             //toInitiateWorkout = false;
         } else {
             programmer.setLayoutManager(LayoutManager.getDefaultLayoutManagerInstance(getContext(), dm));
             workoutView.instantiate(-1, getChildFragmentManager(), true, programmer.getLayoutManager());
 
-        }
+        }*/
 
     }
 

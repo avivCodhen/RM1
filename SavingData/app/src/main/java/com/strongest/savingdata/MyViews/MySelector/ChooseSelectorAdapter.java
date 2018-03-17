@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.BaseWorkout.Muscle;
@@ -236,7 +235,7 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
 
             @Override
             public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View v = LayoutInflater.from(context).inflate(R.layout.muscle_select_card_view,
+                View v = LayoutInflater.from(context).inflate(R.layout.recycler_view_muscle,
                         parent, false);
                 return new ViewHolder(v);
             }
@@ -263,8 +262,8 @@ public class ChooseSelectorAdapter extends MySelector.Adapter<MySelector.ViewHol
 
                 public ViewHolder(View itemView) {
                     super(itemView);
-                    tv = (TextView) itemView.findViewById(R.id.muscle_select_tv);
-                    cv = (CardView) itemView.findViewById(R.id.muscle_select_cardview);
+                    //tv = (TextView) itemView.findViewById(R.id.muscle_select_tv);
+                    //cv = (CardView) itemView.findViewById(R.id.muscle_select_cardview);
                 }
             }
 

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ex_arrow"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="11dp"
+        android:padding="10dp"
+        android:src="@drawable/expand_arrow_grey_24px"
+        android:visibility="gone"
+        app:civ_border_color="@color/textColor"
+        app:civ_border_width="0.1dp"
+        app:civ_circle_background_color="@color/colorPrimary" />
+
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/list_view_exercise_lay1"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/aviv_exercise_placeholder_left_margin"
+        android:backgroundTint="@color/colorPrimary"
+        android:elevation="8dp"
+        app:cardCornerRadius="5dp">
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/aviv_exercise_placeholder_left_margin">
+
+            <include layout="@layout/a_big_tag"
+
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"></include>
+
+
+            <TextView
+                android:id="@+id/exerciseView_muscleTV"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ex1"
+                android:layout_marginTop="10dp"
+                android:fontFamily="assets/varela_round_regular"
+                android:gravity="top"
+                android:text="Anterior Shoulder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="#7E7E7E"
+                android:textSize="8sp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ex1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:elevation="8dp"
+                android:src="@drawable/plus_48px"
+                app:civ_border_color="@color/colorPrimary"
+                app:civ_border_width="2dp"
+                app:civ_circle_background_color="@color/colorAccent"
+
+                />
+            <ImageView
+                android:layout_marginRight="25dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/ex_choose"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:padding="5dp"
+                android:src="@drawable/settings_24px_gray"
+                />
+
+            <ImageView
+                android:layout_marginRight="25dp"
+
+                android:layout_alignParentRight="true"
+                android:id="@+id/ex_more"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_below="@+id/ex_choose"
+                android:padding="5dp"
+                android:src="@drawable/menu_vertical_darg_gray_24px"
+                />
+
+            <TextView
+                android:id="@+id/exerciseView_nameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="85dp"
+                android:layout_marginTop="10dp"
+                android:text="Barbell Bench Press"
+                android:textSize="15sp"
+
+                />
+
+
+            <LinearLayout
+                android:layout_marginLeft="85dp"
+
+                android:id="@+id/exerciseView_data_layout2"
+                android:layout_width="match_parent"
+                android:layout_height="17dp"
+                android:layout_marginRight="17dp"
+                android:layout_marginTop="58dp">
+
+
+                <TextView
+                    android:id="@+id/exerciseView_restTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
+                    android:text="Ttl Rest: 03:00"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
+                    android:text="Volume: 1080 kg"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/exerciseView_data_layout"
+                android:layout_width="match_parent"
+                android:layout_height="17dp"
+                android:layout_marginLeft="85dp"
+
+                android:layout_marginRight="17dp"
+                android:layout_marginTop="37dp">
+
+                <TextView
+
+                    android:id="@+id/exerciseView_setsTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
+                    android:text="Ttl Sets: 12"
+                    android:textSize="12sp" />
+
+
+                <TextView
+                    android:id="@+id/exerciseView_repsTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
+                    android:text="Ttl Reps: 30"
+                    android:textSize="12sp" />
+
+                <TextView
+
+                    android:textColor="@color/colorPrimary"
+                    android:background="@color/colorAccent"
+                    android:paddingRight="2dp"
+                    android:paddingLeft="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="2dp"
+
+                    android:text="mainLift"
+                    android:textSize="10sp" />
+
+
+                <TextView
+                    android:id="@+id/exerciseView_weightTV"
+
+                    android:layout_width="@dimen/recyclerview_exercises_stats_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
+                    android:text=""
+
+                    android:textAlignment="center"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true">
+
+        <net.cachapa.expandablelayout.ExpandableLayout
+            android:id="@+id/exercise_menu_expandlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="92dp"
+            android:orientation="horizontal"
+            app:el_expanded="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
+
+                <include layout="@layout/recycler_view_exercise_menu">
+
+                </include>
+            </LinearLayout>
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
+    </LinearLayout>
+
+</RelativeLayout>

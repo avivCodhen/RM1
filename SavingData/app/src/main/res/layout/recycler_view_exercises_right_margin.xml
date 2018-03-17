@@ -44,19 +44,19 @@
                  android:background="@drawable/buttons_default_not_highlight"
                   />-->
 
-            <ImageView
-                android:id="@+id/ex_arrow"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_toEndOf="@+id/exerciseView_nameTV"
-                android:layout_toRightOf="@+id/exerciseView_nameTV"
-                android:background="@drawable/expand_arrow_grey_24px" />
+        <ImageView
+            android:id="@+id/ex_arrow"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/exerciseView_nameTV"
+            android:layout_toRightOf="@+id/exerciseView_nameTV"
+            android:background="@drawable/expand_arrow_grey_24px" />
 
 
-            <de.hdodenhof.circleimageview.CircleImageView
+        <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ex1"
                 android:layout_width="40dp"
                 android:layout_height="40dp"

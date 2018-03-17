@@ -255,9 +255,9 @@ public class CreateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             return WorkoutLayoutTypes.BodyView.ordinal();
         }
-        //      Log.d("aviv", "exerciseView: " +WorkoutLayoutTypes.ExerciseView.ordinal() );
+        //      Log.d("aviv", "exerciseView: " +WorkoutLayoutTypes.ExerciseProfile.ordinal() );
 
-        return WorkoutLayoutTypes.ExerciseView.ordinal();
+        return WorkoutLayoutTypes.ExerciseProfile.ordinal();
     }
 
     @Override

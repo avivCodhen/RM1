@@ -1,0 +1,85 @@
+<LinearLayout android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:background="@color/colorAccent"
+
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="1"
+
+            android:textColor="@color/colorPrimary"
+            android:padding="6dp"
+            android:text="Repetitions"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+
+        <CheckBox
+            android:layout_weight="1"
+
+            android:textColor="@color/colorPrimary"
+            android:buttonTint="@color/colorPrimary"
+            android:text="Match First Set Settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <com.strongest.savingdata.MyViews.CreateCustomBeansView.RangeNumberChooseView
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:id="@+id/fragment_sets_choose_rangenumberview"
+        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.CreateCustomBeansView.RangeNumberChooseView>
+
+    <TextView
+        android:layout_marginLeft="8dp"
+        android:text="Repetitions Used"
+        android:layout_marginTop="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_margin="8dp"
+        android:id="@+id/fragment_sets_choose_recycler_repetitions"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:background="@color/colorAccent"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorAccent"
+            android:padding="6dp"
+            android:text="Rest"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+        <CheckBox
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:buttonTint="@color/colorPrimary"
+            android:text="Match First Set Settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_margin="8dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/fragment_sets_choose_recycler_rest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

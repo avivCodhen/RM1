@@ -1,6 +1,6 @@
 package com.strongest.savingdata.Database.Progress;
 
-import com.strongest.savingdata.Database.Exercise.BeansHolder;
+import com.strongest.savingdata.Database.Exercise.Sets;
 
 /**
  * Created by Cohen on 12/27/2017.
@@ -8,33 +8,33 @@ import com.strongest.savingdata.Database.Exercise.BeansHolder;
 
 public class ProgressModelNode {
 
-    private BeansHolder oldBeansHolder;
-    private BeansHolder newBeansHolder;
+    private Sets oldSets;
+    private Sets newSets;
     private int workoutId;
     private int phase;
     private int exerciseProfileId;
 
 
-    public ProgressModelNode(BeansHolder oldBeansHolder, BeansHolder newBeansHolder, int workoutId, int exerciseProfileId, int order){
+    public ProgressModelNode(Sets oldSets, Sets newSets, int workoutId, int exerciseProfileId, int order){
         this.workoutId = workoutId;
         this.exerciseProfileId = exerciseProfileId;
         this.phase = order;
     }
 
-    public BeansHolder getOldBeansHolder() {
-        return oldBeansHolder;
+    public Sets getOldSets() {
+        return oldSets;
     }
 
-    public void setOldBeansHolder(BeansHolder oldBeansHolder) {
-        this.oldBeansHolder = oldBeansHolder;
+    public void setOldSets(Sets oldSets) {
+        this.oldSets = oldSets;
     }
 
-    public BeansHolder getNewBeansHolder() {
-        return newBeansHolder;
+    public Sets getNewSets() {
+        return newSets;
     }
 
-    public void setNewBeansHolder(BeansHolder newBeansHolder) {
-        this.newBeansHolder = newBeansHolder;
+    public void setNewSets(Sets newSets) {
+        this.newSets = newSets;
     }
 
     public int getWorkoutId() {

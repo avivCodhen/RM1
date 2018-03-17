@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import com.strongest.savingdata.AlgorithmStats.StatsHolder;
 
 import com.strongest.savingdata.BaseWorkout.Muscle;
-import com.strongest.savingdata.Database.Exercise.BeansHolder;
+import com.strongest.savingdata.Database.Exercise.Beans;
+import com.strongest.savingdata.Database.Exercise.Sets;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -15,13 +17,14 @@ import java.util.ArrayList;
  * Created by Cohen on 10/18/2017.
  */
 
-public class PLObjects implements Aba {
+public class PLObjects implements Aba, Serializable {
 
 
     public WorkoutLayoutTypes type;
     public int workoutId;
     public int bodyId;
     public boolean expand;
+
 
     public boolean isExpand() {
         return expand;
@@ -112,56 +115,27 @@ public class PLObjects implements Aba {
 
     public static class ExerciseProfile extends PLObjects {
 
-        // private final WorkoutLayoutTypes type = WorkoutLayoutTypes.ExerciseView;
-        // private BeansHolder beansHolder;
-        //private Muscle muscle;
-        private boolean loaded;
-        private boolean selected = false;
-        private BeansHolder mBeansHolder;
-        private ArrayList<BeansHolder> beansHolders;
+        private ArrayList<ArrayList<Sets>> sets = new ArrayList<>();
+        private ArrayList<Sets> intraSets = new ArrayList<>();
         private int exerciseProfileId;
-        private boolean firstExercise;
-        private boolean hasBeansHolders;
         private WorkoutLayoutTypes innerType;
         private Muscle muscle;
+        private Beans exercise;
         private boolean editMode;
+        private ArrayList<ExerciseProfile> exerciseProfiles = new ArrayList<>();
+        private String tag;
+        private boolean moreOn;
 
-        //private char id;
-        public ExerciseProfile(Muscle muscle,BeansHolder mBeansHolder, ArrayList<BeansHolder> beansHolders, int workoutId, int bodyId, int exerciseProfileId) {
-            this.mBeansHolder = mBeansHolder;
-            this.beansHolders = beansHolders;
+        public ExerciseProfile(Muscle muscle, int workoutId, int bodyId, int exerciseProfileId) {
+            //    this.mSets = mSets;
+            this.sets = sets;
             this.exerciseProfileId = exerciseProfileId;
             this.workoutId = workoutId;
             this.bodyId = bodyId;
             this.muscle = muscle;
-            type = WorkoutLayoutTypes.ExerciseView;
+            type = WorkoutLayoutTypes.ExerciseProfile;
 
         }
-
-      /*  public void setBeansHolder(com.strongest.savingdata.Database.Exercise.BeansHolder beansHolder) {
-            *//*exerciseProfileView.setExercise(beansHolder.getExercise());
-            exerciseProfileView.setReps(beansHolder.getRep());
-            exerciseProfileView.setMethod(beansHolder.getMethod());
-            exerciseProfileView.setSuperset(beansHolder.getSuperset());*//*
-            this.beansHolder = beansHolder;
-        }*/
-
-    /*    public void setMuscle(Muscle muscle) {
-            this.muscle = muscle;
-        }
-
-
-        public Muscle getMuscle() {
-            return muscle;
-        }*/
-
-      /*  public ExerciseProfileView getExerciseProfileView() {
-            return exerciseProfileView;
-        }
-*/
-      /*  public BeansHolder getBeansHolder() {
-            return beansHolder;
-        }*/
 
         public WorkoutLayoutTypes getInnerType() {
             return innerType;
@@ -171,46 +145,44 @@ public class PLObjects implements Aba {
             this.innerType = innerType;
         }
 
-        public boolean isSelected() {
+      /*  public boolean isSelected() {
             return selected;
-        }
+       }*/
 
-        public void setSelected(boolean selected) {
-            this.selected = selected;
-        }
+//        public void setSelected(boolean selected) {
+//            this.selected = selected;
+//        }
 
         public int getExerciseProfileId() {
             return exerciseProfileId;
         }
+//        public boolean isFirstExercise() {
+//            return firstExercise;
+//        }
 
-        public boolean isFirstExercise() {
-            return firstExercise;
+//        public void setFirstExercise(boolean firstExercise) {
+//            this.firstExercise = firstExercise;
+//        }
+
+        public ArrayList<ArrayList<Sets>> getSets() {
+            return sets;
         }
 
-        public void setFirstExercise(boolean firstExercise) {
-            this.firstExercise = firstExercise;
+        public void setSets(ArrayList<ArrayList<Sets>> sets) {
+            this.sets = sets;
         }
 
-        public ArrayList<BeansHolder> getBeansHolders() {
-            return beansHolders;
-        }
+        /* public Sets getmSets() {
+             return mSets;
+         }
 
-        public void setBeansHolders(ArrayList<BeansHolder> beansHolders) {
-            this.beansHolders = beansHolders;
-        }
-
-        public BeansHolder getmBeansHolder() {
-            return mBeansHolder;
-        }
-
-        public void setmBeansHolder(BeansHolder mBeansHolder) {
-            this.mBeansHolder = mBeansHolder;
-        }
-
-        public boolean isHasBeansHolders() {
-            return mBeansHolder != null;
-        }
-
+         public void setmSets(Sets mSets) {
+             this.mSets = mSets;
+         }
+         public boolean isHasBeansHolders() {
+             return mSets != null;
+         }
+ */
         public Muscle getMuscle() {
             return muscle;
         }
@@ -226,33 +198,78 @@ public class PLObjects implements Aba {
         public void setEditMode(boolean editMode) {
             this.editMode = editMode;
         }
+
+        public ArrayList<ExerciseProfile> getExerciseProfiles() {
+            return exerciseProfiles;
+        }
+
+        public ArrayList<Sets> getIntraSets() {
+            return intraSets;
+        }
+
+        public void setIntraSets(ArrayList<Sets> intraSets) {
+            this.intraSets = intraSets;
+        }
+
+        public String getTag() {
+            return tag;
+        }
+
+        public void setTag(String tag) {
+            this.tag = tag;
+        }
+
+        public Beans getExercise() {
+            return exercise;
+        }
+
+        public void setExercise(Beans exercise) {
+            this.exercise = exercise;
+        }
+
+        public boolean isMoreOn() {
+            return moreOn;
+        }
+
+        public void setMoreOn(boolean moreOn) {
+            this.moreOn = moreOn;
+        }
     }
 
-    public static class BeansHolderPLObject extends PLObjects implements Ben {
+    public static class SetsPLObject extends PLObjects implements Ben {
 
-        private BeansHolder beansHolder;
+        private Sets sets;
+        private WorkoutLayoutTypes innerType;
 
-        public BeansHolderPLObject(BeansHolder beansHolder) {
-            this.beansHolder = beansHolder;
-            type = WorkoutLayoutTypes.BeansHolderPLObject;
+        public SetsPLObject(Sets sets) {
+            this.sets = sets;
+            type = WorkoutLayoutTypes.SetsPLObject;
         }
 
-
-        public BeansHolder getBeansHolder() {
-            return beansHolder;
+        public WorkoutLayoutTypes getInnerType() {
+            return innerType;
         }
 
-        public void setBeansHolder(BeansHolder beansHolder) {
-            this.beansHolder = beansHolder;
+        public void setInnerType(WorkoutLayoutTypes innerType) {
+            this.innerType = innerType;
+        }
+
+        public Sets getSets() {
+            return sets;
+        }
+
+        public void setSets(Sets sets) {
+            this.sets = sets;
         }
     }
+
 
     public static class ProgressPLObject extends PLObjects {
 
 
-        public ProgressPLObject(BeansHolder beansHolder) {
+        public ProgressPLObject(Sets sets) {
 
-            type = WorkoutLayoutTypes.BeansHolderPLObject;
+            type = WorkoutLayoutTypes.SetsPLObject;
         }
 
     }
@@ -306,6 +323,13 @@ public class PLObjects implements Aba {
 
         public Muscle getM() {
             return m;
+        }
+    }
+
+    public static class MoreMenu extends PLObjects{
+
+        public MoreMenu(){
+            type = WorkoutLayoutTypes.More;
         }
     }
 

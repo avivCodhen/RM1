@@ -46,19 +46,21 @@ public class CreateProgramModule {
     }
 
 
+/*
     @Provides
     @Singleton
     public LayoutManager getProgramLayoutManager(Context context, DataManager dataManager){
         int workoutOrder = dataManager.getPrefs().getInt(DataManager.WORKOUT_ORDER, -1);
         LayoutManager plm = new LayoutManager(context, dataManager);
-        plm.readLayoutFromDataBase(workoutOrder);
+        plm.readLayoutFromDataBase("");
         return plm;
     }
+*/
 
     @Provides
     @Singleton
     public Programmer getProgrammer(Context context, DataManager dataManager) {
-        return new Programmer(context, dataManager, true);
+        return new Programmer(context, dataManager);
     }
 
 

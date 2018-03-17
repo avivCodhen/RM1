@@ -3,13 +3,17 @@ package com.strongest.savingdata.Animations;
 import android.animation.Animator;
 import android.media.Image;
 import android.os.Handler;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.view.animation.Transformation;
+import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import android.graphics.Camera;
@@ -213,6 +217,32 @@ public class MyJavaAnimator {
 
     public static void slideOutAndIn(ImageView iv){
 
+    }
+
+    public static void MoveView(final int amountToMarginLeft, final int amountToMarginRight, final ViewGroup view){
+        TranslateAnimation anim = new TranslateAnimation(0, 0, 0, 0);
+        anim.setDuration(1000);
+
+        anim.setAnimationListener(new TranslateAnimation.AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) { }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+
+            @Override
+            public void onAnimationEnd(Animation animation)
+            {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)view.getLayoutParams();
+                params.leftMargin -= amountToMarginLeft;
+                params.rightMargin += amountToMarginRight;
+                view.setLayoutParams(params);
+            }
+        });
+        anim.setFillAfter(true);
+
+        view.startAnimation(anim);
     }
 
 

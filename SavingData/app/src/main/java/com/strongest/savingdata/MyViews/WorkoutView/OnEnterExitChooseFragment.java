@@ -12,6 +12,6 @@ public interface OnEnterExitChooseFragment {
 
     void onEnterChooseFragment(RecyclerView.ViewHolder vh);
 
-    void onExitChooseFragment(RecyclerView.ViewHolder vh);
+    void onExitChooseFragment(RecyclerView.ViewHolder vh, boolean isCollapsed);
 
 }

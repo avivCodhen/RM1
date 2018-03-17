@@ -73,7 +73,7 @@ public class HomeFragment extends BaseTabs implements ArticleAdapter.RecyclerVie
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.edit_button, menu);
+        inflater.inflate(R.menu.aviv_menu_program, menu);
     }
 
     @Override

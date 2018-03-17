@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import com.strongest.savingdata.Database.Exercise.Beans;
@@ -13,12 +15,25 @@ import com.strongest.savingdata.R;
  * Created by Cohen on 1/18/2018.
  */
 
-public class RangeNumberChooseView extends LinearLayout implements NumberChoose, OnRangeNumberChooseControl{
+public class RangeNumberChooseView extends LinearLayout implements NumberChoose, OnRangeNumberChooseControl, CompoundButton.OnCheckedChangeListener {
 
     private Context context;
 
     private SingleNumberChooseView lowerNumView, higherNumView;
     private NumberChooseManager mNumberChooseManager;
+    private CheckBox checkBox;
+
+    public SingleNumberChooseView getLowerNumView() {
+        return lowerNumView;
+    }
+
+    public SingleNumberChooseView getHigherNumView() {
+        return higherNumView;
+    }
+
+    public CheckBox getCheckBox() {
+        return checkBox;
+    }
 
     public RangeNumberChooseView(Context context) {
         super(context);
@@ -31,12 +46,16 @@ public class RangeNumberChooseView extends LinearLayout implements NumberChoose,
     }
 
     public void initViews() {
+        checkBox = (CheckBox)  findViewById(R.id.choose_number_range_checkbox);
+        checkBox.setOnCheckedChangeListener(this);
         mNumberChooseManager.setOnRangeNumberChooseControl(this);
         lowerNumView = (SingleNumberChooseView) findViewById(R.id.lower_number_choose_view);
         lowerNumView.setUpWithNumberChooseManager(mNumberChooseManager);
         higherNumView = (SingleNumberChooseView) findViewById(R.id.higher_number_choose_view);
         higherNumView.setUpWithNumberChooseManager(mNumberChooseManager);
         higherNumView.setText("10");
+        higherNumView.setEnabled(false);
+
     }
 
     @Override
@@ -60,6 +79,8 @@ public class RangeNumberChooseView extends LinearLayout implements NumberChoose,
         return false;
     }
 
+
+
     @Override
     public void setUpWithNumberChooseManager(NumberChooseManager numberChooseManager) {
         this.mNumberChooseManager = numberChooseManager;
@@ -81,5 +102,15 @@ public class RangeNumberChooseView extends LinearLayout implements NumberChoose,
     @Override
     public boolean hasManager() {
         return mNumberChooseManager != null;
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(isChecked){
+            higherNumView.setEnabled(true);
+        }else{
+            higherNumView.setEnabled(false);
+
+        }
     }
 }

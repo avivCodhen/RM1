@@ -217,7 +217,7 @@ public class ProgramTemplateFragment extends BaseCreateProgramFragment implement
                             );
                     programTemplate.setCustom(true);
 
-                    dataManager.getProgramDataManager().insertTables(false, programTemplate, TEMPLATE);
+                //    dataManager.getProgramDataManager().insertTables(false, programTemplate, TEMPLATE);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(WORKOUT, programTemplate);
                     getPrefsEditor().putBoolean(MODE_GENERATED_PROGRAM, false).putBoolean(MODE_CUSTOM, true).commit();

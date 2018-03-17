@@ -44,7 +44,7 @@ public class DBMuscleHelper extends SQLiteOpenHelper {
     public DBMuscleHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         this.context = context;
-       /* if(android.os.Build.VERSION.SDK_INT >= 17){
+        if(android.os.Build.VERSION.SDK_INT >= 17){
             DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
         }
         else
@@ -57,7 +57,7 @@ public class DBMuscleHelper extends SQLiteOpenHelper {
         } catch (IOException e) {
             Log.d("aviv", "onCreate: ");
             e.printStackTrace();
-        }*/
+        }
     }
 
     @Override

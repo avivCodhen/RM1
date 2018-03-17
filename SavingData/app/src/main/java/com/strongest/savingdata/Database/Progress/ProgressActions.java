@@ -1,7 +1,7 @@
 package com.strongest.savingdata.Database.Progress;
 
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
-import com.strongest.savingdata.Database.Exercise.BeansHolder;
+import com.strongest.savingdata.Database.Exercise.Sets;
 
 /**
  * Created by Cohen on 1/1/2018.
@@ -52,12 +52,12 @@ public class ProgressActions {
 
     public static class Change extends ProgressActions{
         private int position;
-        private BeansHolder beansHolder;
+        private Sets sets;
 
-        public Change(int exerciseProfileId, int position, BeansHolder beansHolder) {
+        public Change(int exerciseProfileId, int position, Sets sets) {
             super(exerciseProfileId);
             this.position = position;
-            this.beansHolder = beansHolder;
+            this.sets = sets;
         }
     }
 

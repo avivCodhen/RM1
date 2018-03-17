@@ -1,6 +1,6 @@
 package com.strongest.savingdata.MyViews.WorkoutView;
 
-import com.strongest.savingdata.Database.Exercise.BeansHolder;
+import com.strongest.savingdata.Database.Exercise.Sets;
 
 import java.util.ArrayList;
 
@@ -9,5 +9,5 @@ import java.util.ArrayList;
  */
 
 public interface WorkoutObserver {
-    void exerciseOnClick(ArrayList<BeansHolder> beansHolders, int position, boolean changed);
+    void exerciseOnClick(ArrayList<Sets> sets, int position, boolean changed);
 }

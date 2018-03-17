@@ -13,4 +13,8 @@
     <color name="color_arms">#dd8ba6</color>
     <color name="color_legs">#6EDEA2</color>
     <color name="textColor">#434343</color>
+    <color name="textGrayColor">#707070</color>
+    <color name="orangeColor">#FF9933</color>
+    <color name="orangeColor2">#ffa500</color>
+    <color name="muscle_name_gray">#7E7E7E</color>
 </resources>

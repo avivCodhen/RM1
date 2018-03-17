@@ -1,0 +1,115 @@
+package com.strongest.savingdata.Fragments;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.strongest.savingdata.Activities.HomeActivity;
+import com.strongest.savingdata.BaseWorkout.Program;
+import com.strongest.savingdata.R;
+import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+
+/**
+ * Created by Cohen on 3/9/2018.
+ */
+
+public class MyProgramsFragment extends BaseCreateProgramFragment{
+
+    private ArrayList<Program> programs;
+    private RecyclerView recyclerView;
+    private Program currentProgram;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_my_program, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initViews(view);
+        getActionBar().show();
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void initViews(View v) {
+        currentProgram = ((HomeActivity)getActivity()).programmer.getProgram();
+        v.findViewById(R.id.my_program_back_iv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStack();
+            }
+        });
+        
+        initProgramsList();
+
+        recyclerView = (RecyclerView) v.findViewById(R.id.fragment_my_program_recyclerview);
+        RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
+        MyProgramsAdapter adapter = new MyProgramsAdapter();
+        recyclerView.setLayoutManager(lm);
+        recyclerView.setAdapter(adapter);
+
+       initStaticViews(v);
+    }
+
+    private void initStaticViews(View v) {
+        View includeCurrent = v.findViewById(R.id.current_program);
+        View includeMyPrograms = v.findViewById(R.id.my_programs_title);
+        TextView currentTitle = (TextView) includeCurrent.findViewById(R.id.recycler_view_body_parts_TV);
+        currentTitle.setText("Current Program");
+        TextView myPrograms = (TextView) includeMyPrograms.findViewById(R.id.recycler_view_body_parts_TV);
+        myPrograms.setText("My Programs");
+
+        View includeLeftMarginProgram = v.findViewById(R.id.my_program_view);
+        TextView programTitle = (TextView) includeLeftMarginProgram.findViewById(R.id.program_name);
+        TextView programTimeAndDate = (TextView) includeLeftMarginProgram.findViewById(R.id.program_date);
+        programTitle.setText(currentProgram.programName);
+        programTimeAndDate.setText(currentProgram.programDate+", "+ currentProgram.time);
+    }
+
+    private void initProgramsList() {
+        programs = ((HomeActivity) getActivity()).dataManager.getProgramDataManager().getAllPrograms();
+    }
+
+
+    private class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.ViewHolder>{
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+           View v = inflater.inflate(R.layout.recycler_view_program_layout_rightmargin, parent, false);
+            return new ViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return programs.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+            }
+        }
+
+    }
+
+
+}

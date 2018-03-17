@@ -126,7 +126,6 @@ public class SingleNumberChooseView extends LinearLayout implements NumberChoose
     }
 
 
-
     public void setText(String number) {
         numberTV.setText(number);
     }

@@ -8,7 +8,7 @@ import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.Database.Exercise.BeansHolder;
+import com.strongest.savingdata.Database.Exercise.Sets;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 
@@ -17,7 +17,6 @@ import java.util.Random;
 
 import static com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes.*;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_EXERCISES_GENERATOR;
-import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_METHODS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_REPS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_REST;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_SETS;
@@ -183,15 +182,9 @@ public class Generator {
         } else {
             methodBean = null;
         }*/
-        WorkoutLayoutTypes innerType;
-        if(currentBody%2 != 0){
-            innerType = ExerciseViewLeftMargin;
-
-        }else{
-            innerType = ExerciseViewRightMargin;
-        }
+        WorkoutLayoutTypes innerType = ExerciseProfile;
        /* if (layoutManager.getLayout().size() != 0) {
-            if (layoutManager.getLayout().get(layoutManager.getLayoutSize() - 1).getType() == ExerciseView) {
+            if (layoutManager.getLayout().get(layoutManager.getLayoutSize() - 1).getType() == ExerciseProfile) {
                 if (layoutManager.getLayout().get(layoutManager.getLayoutSize() - 1).getBodyId() % 2 != 0) {
                     innerType = ExerciseViewLeftMargin;
 
@@ -212,7 +205,7 @@ public class Generator {
     //saves the generated exercise to the new array
     private void injectExercise(Beans sets, Muscle muscle, Beans exercise, Beans reps, Beans rest,
                                 WorkoutLayoutTypes type) {
-        BeansHolder beansHolder = new BeansHolder();
+        Sets beansHolder = new Sets();
         beansHolder.setExercise(exercise);
         beansHolder.setRep(reps);
         // beansHolder.setMethod(method);
@@ -221,7 +214,7 @@ public class Generator {
         beansHolder.setLoaded(true);
 
         beansHolder.setSuperset(new Beans());
-        layoutManager.drawExercise(muscle,layoutManager.getLayout(), beansHolder, type);
+        layoutManager.drawExercise(muscle,layoutManager.getLayout(),type);
         dm.getExerciseDataManager().removeByName(TABLE_EXERCISES_GENERATOR, exercise.getName());
 
         //     p.setRepsId(reps.getWorkoutId());

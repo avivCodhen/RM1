@@ -14,14 +14,12 @@ import android.view.ViewGroup;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.Database.Exercise.BeansHolder;
+import com.strongest.savingdata.Database.Exercise.Sets;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.MyViews.MySelector.ChooseSelectorAdapter;
 import com.strongest.savingdata.MyViews.MySelector.MySelector;
 import com.strongest.savingdata.MyViews.MySelector.MySelectorOnBeansHolderChange;
 import com.strongest.savingdata.R;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -40,8 +38,8 @@ public class MandatoryChooseDialogFragment extends Fragment {
 
     private Bundle i;
     private Intent intent;
-    private ArrayList<BeansHolder> beansHolders;
-    private BeansHolder beansHolder;
+    private ArrayList<Sets> sets;
+    private Sets set;
     private Muscle muscle;
 
     private DataManager dataManager;
@@ -61,7 +59,7 @@ public class MandatoryChooseDialogFragment extends Fragment {
 
         MandatoryChooseDialogFragment fragment = new MandatoryChooseDialogFragment();
         Bundle args = new Bundle();
-        args.putSerializable("beans_holder", data.getBeansHolder());
+        args.putSerializable("beans_holder", data.getSets());
         args.putString(MUSCLE, data.getMuscle() != null ? data.getMuscle().getMuscle_name() : null);
         fragment.setArguments(args);
         fragment.setMuscle(data.getMuscle());
@@ -72,7 +70,7 @@ public class MandatoryChooseDialogFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            beansHolders = (ArrayList<BeansHolder>) getArguments().getSerializable("beans_holder");
+            sets = (ArrayList<com.strongest.savingdata.Database.Exercise.Sets>) getArguments().getSerializable("beans_holder");
 
         }
     }
@@ -104,16 +102,16 @@ public class MandatoryChooseDialogFragment extends Fragment {
         MySelector mySelector = (MySelector) v.findViewById(R.id.dialog_fragment_my_selector);
 
         MySelector.CheckedHolder[] checkerHolders;
-        if (beansHolders == null) {
-            beansHolder = new BeansHolder();
+        if (sets == null) {
+            set = new Sets();
         } else {
-            beansHolder = beansHolders.get(0);
+            set = sets.get(0);
         }
         checkerHolders = new MySelector.CheckedHolder[]{
-                new MySelector.CheckedHolder(beansHolder.getExercise()),
-                new MySelector.CheckedHolder(beansHolder.getSets()),
-                new MySelector.CheckedHolder(beansHolder.getRep()),
-                new MySelector.CheckedHolder(beansHolder.getRest())
+                new MySelector.CheckedHolder(set.getExercise()),
+                new MySelector.CheckedHolder(set.getSets()),
+                new MySelector.CheckedHolder(set.getRep()),
+                new MySelector.CheckedHolder(set.getRest())
         };
 
         adapter = new ChooseSelectorAdapter(beansHolderChange, getFragmentManager(), getContext(), muscle, checkerHolders,
@@ -141,10 +139,10 @@ public class MandatoryChooseDialogFragment extends Fragment {
 
     }
 
-    public BeansHolder getMandatoryBeansHolder() {
+    public com.strongest.savingdata.Database.Exercise.Sets getMandatoryBeansHolder() {
         initBeans();
-        if (beansHolder == null) {
-            beansHolder = new BeansHolder();
+        if (sets == null) {
+            set = new Sets();
         }
         MySelector.CheckedHolder[] checkHolder = adapter.getCheckedHolders();
 
@@ -153,25 +151,25 @@ public class MandatoryChooseDialogFragment extends Fragment {
             if (vaildate(checkHolder)) {
 
                 if (checkHolder[i] != null) {
-                    beansHolder.setExercise(beans_array.get(i).
+                    set.setExercise(beans_array.get(i).
                             get(checkHolder[i++].getPosition()));
                     //beansHolder.setLoaded(true);
                 }
                 if (checkHolder[i] != null)
-                    beansHolder.setRep(beans_array.get(i).
+                    set.setRep(beans_array.get(i).
                             get(checkHolder[i++].getPosition()));
                 if (checkHolder[i] != null) {
-                    beansHolder.setSets(beans_array.get(i).
+                    set.setSets(beans_array.get(i).
                             get(checkHolder[i++].getPosition()));
                 }
                 if (checkHolder[i] != null) {
-                    beansHolder.setRest(beans_array.get(i).
+                    set.setRest(beans_array.get(i).
                             get(checkHolder[i].getPosition()));
                 }
 
             }
         }
-        return beansHolder;
+        return set;
     }
 
     private boolean vaildate(MySelector.CheckedHolder[] checkHolder) {

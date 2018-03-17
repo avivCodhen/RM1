@@ -5,7 +5,7 @@ import android.content.Context;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.Database.Exercise.BeansHolder;
+import com.strongest.savingdata.Database.Exercise.Sets;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 
 import java.util.ArrayList;
@@ -217,28 +217,28 @@ public class Calculator extends StatsConstants {
         //0 = damage, 1 = metabolic, 3 = mechanical
         private void getBeansStats(PLObjects.ExerciseProfile ep, ExerciseStats exerciseStats) {
             //  ExerciseProfileView epv = ep.getExerciseProfileView();
-            if (ep.getBeansHolders() == null || ep.getBeansHolders().get(0) == null) {
+            if (ep.getSets() == null || ep.getSets().get(0) == null) {
                 return;
             }
             exerciseStats.setNumOfExercises(1);
-            BeansHolder beansHolder = ep.getBeansHolders().get(0);
+          /*  Sets sets = ep.getSets().get(0);
             int damage_method = 0;
             int stress_method = 0;
 
 
-            if (beansHolder.getMethod() != null) {
+            if (sets.getMethod() != null) {
                 damage_method = METHOD_DAMAGE;
                 stress_method = METHOD_METABOLIC_STRESS;
                 exerciseStats.setNumOfMethod(1);
-            }
+            }*/
 
            /* if (beansHolder.getExercise().getType() == Types.Complex.ordinal()) {
                 exerciseStats.setNumOfComplex(1);
             }*/
-            blockDamage += calcDamage(beansHolder.getExercise(), damage_method);
-            blockMetabolic += calcMetabolic(beansHolder.getExercise(), beansHolder.getRep(), stress_method, Stress.METABOLIC);
-            blockMechanical += calcMechanical(beansHolder.getExercise(), beansHolder.getRep(), stress_method, Stress.MECHANICAL);
-        }
+          /*  blockDamage += calcDamage(sets.getExercise(), damage_method);
+            blockMetabolic += calcMetabolic(sets.getExercise(), sets.getRep(), stress_method, Stress.METABOLIC);
+            blockMechanical += calcMechanical(sets.getExercise(), sets.getRep(), stress_method, Stress.MECHANICAL);
+*/        }
 
         private int calcDamage(Beans ex, int method) {
             if (ex != null) {

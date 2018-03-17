@@ -8,9 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
+import com.strongest.savingdata.BaseWorkout.Program;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
-import com.strongest.savingdata.Database.Exercise.BeansHolder;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
+import com.strongest.savingdata.Database.Exercise.Sets;
 import com.strongest.savingdata.Database.Program.DBProgramHelper;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 
@@ -19,17 +20,15 @@ import java.util.Collection;
 
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.*;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.BODY_TEMPLATE_STR;
+import static com.strongest.savingdata.Database.Program.DBProgramHelper.DATE_CREATED;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.EXERCISE_ID;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.EXERCISE_PROFILE_ID;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.INNER_TYPE;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.LAYOUT_NAME;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.PROGRAM_NAME;
+import static com.strongest.savingdata.Database.Program.DBProgramHelper.PROGRAM_TIME;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.RECOMMENDED_WORKOUTS;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.REP_ID;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.REST;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.ROUNDS_PER_WEEK;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.SETS;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.SUPERSET;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.TABLE_LAYOUT_REFERENCE;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.TABLE_PROGRAM_REFERENCE;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.TABLE_TEMPLATES;
@@ -80,51 +79,32 @@ public class ProgramDataManager extends DataManager {
         }
     }
 
-    public void insertTables(boolean update, Object obj, Tables... tables) {
+    public void insertTables(boolean update, LayoutManager lm) {
         ContentValues v;
         ContentValues[] values;
-        LayoutManager lm = null;
-        ProgramTemplate p = null;
 
-        for (Tables table : tables) {
-            switch (table) {
-                case PROGRAM:
-
-                    lm = (LayoutManager) obj;
-
-                    p = lm.getProgramTemplate();
-                    values = getPLObjectsContentValues(lm.getLayout());
-                    //creates a new layout table
-                    v = getLayoutReferenceContentValues( lm.getDbName());
-                    updateCurrentTables(0);
-                    if (update) {
-                        try {
-                            delete(lm.getDbName());
-                        } catch (Exception e) {
-                            Log.d("aviv", "saveLayoutToDataBase: " + e.toString());
-                        }
-                    } else {
-                        getDb(programHelper).execSQL(programHelper.getLayoutCommand(lm.getDbName()));
-                        //inserts name to layout reference
-                        insertData(TABLE_LAYOUT_REFERENCE, new ContentValues[]{v});
-                        //creates reference in current program table
-                        insertData(currentProgramTable, new ContentValues[]{v});
-
-                    }
-
-                    //inserts data to the new layout table
-                    insertData(lm.getDbName(), values);
-                    break;
-                case TEMPLATE:
-                    if (p == null) {
-                        p = (ProgramTemplate) obj;
-                    }
-                    v = getTemplateContentValues(p);
-                    getDb(programHelper).execSQL(programHelper.getTemplateCreateCommand(p.getDbName()));
-                    insertData(p.getDbName(), new ContentValues[]{v});
-
+        values = getPLObjectsContentValues(lm.getLayout());
+        //creates a new layout table
+        v = getLayoutReferenceContentValues(lm.getDbName());
+        updateCurrentTables(0);
+        if (update) {
+            try {
+                delete(lm.getDbName());
+            } catch (Exception e) {
+                Log.d("aviv", "saveLayoutToDataBase: " + e.toString());
             }
+        } else {
+            getDb(programHelper).execSQL(programHelper.getLayoutCommand(lm.getDbName()));
+            //inserts name to layout reference
+            insertData(TABLE_LAYOUT_REFERENCE, new ContentValues[]{v});
+            //creates reference in current program table
+           // insertData(currentProgramTable, new ContentValues[]{v});
+
         }
+
+        //inserts data to the new layout table
+        insertData(lm.getDbName(), values);
+
         if (update) {
 
         }
@@ -279,31 +259,55 @@ public class ProgramDataManager extends DataManager {
         return null;
     }
 
-    public Cursor readLayoutTableCursor(int backBy) {
-        updateCurrentTables(backBy);
+    public ArrayList<Program> getAllPrograms(){
+        ArrayList<Program> programs = new ArrayList<>();
+        Cursor c = getDb(programHelper).rawQuery("Select * from "+ TABLE_PROGRAM_REFERENCE, null);
+        if(c != null & c.moveToFirst()) {
+            do{
+                Program program = new Program(
+                        c.getString(c.getColumnIndex(PROGRAM_NAME)),
+                        c.getString(c.getColumnIndex(PROGRAM_TIME)),
+                        c.getString(c.getColumnIndex(DATE_CREATED)),
+                        c.getString(c.getColumnIndex(LAYOUT_NAME))
+                );
+                programs.add(program);
+            }
+            while (c.moveToNext());
+        }
+        return programs;
+    }
 
-        if (currentProgramTable != null) {
-            String sql = "SELECT * FROM " + currentProgramTable + " ORDER BY ID ASC";
+    public Program readProgramTable(String currentDbName) {
+        String sql = "SELECT * FROM " + TABLE_PROGRAM_REFERENCE + " WHERE " + LAYOUT_NAME + "=?";
+        Cursor c = getDb(programHelper).rawQuery(sql, new String[]{currentDbName});
+        if (c != null && c.moveToFirst()) {
+            return new Program(
+                    c.getString(c.getColumnIndex(PROGRAM_NAME)),
+                    c.getString(c.getColumnIndex(PROGRAM_TIME)),
+                    c.getString(c.getColumnIndex(DATE_CREATED)),
+                    currentDbName
+            );
+        }
+        return null;
+
+    }
+
+    public Cursor readLayoutTableCursor(String currentDbName) {
+        //updateCurrentTables(backBy);
+            String sql = "SELECT * FROM " + currentDbName;
             Cursor c = null;
             try {
                 c = db.rawQuery(sql, null);
-                c.moveToLast();
-
             } catch (Exception e) {
-                e.toString();
+                throw e;
             }
-            if (c.getCount() >= 0) {
+           /* if (c.getCount() >= 0) {
                 String currentLayout = c.getString(c.getColumnIndex(LAYOUT_NAME));
                 currentLayoutTable = currentLayout;
                 c = db.rawQuery("SELECT * FROM " + currentLayout, null);
-            }
-            /*c.moveToNext();
-            String laySQL = sql.replace(currentProgramTable, c.getString(c.getColumnIndex(LAYOUT_NAME)));
-            String tempSQL = sql.replace(currentProgramTable, c.getString(c.getColumnIndex(TEMPLATE_NAME)));*/
+            }*/
             return c;
-        } else {
-            return null;
-        }
+
         // return c;
     }
 
@@ -337,9 +341,19 @@ public class ProgramDataManager extends DataManager {
         return v;
     }
 
-    public ContentValues getLayoutReferenceContentValues( String layout) {
+    public ContentValues getLayoutReferenceContentValues(String layout) {
         ContentValues v = new ContentValues();
         v.put(LAYOUT_NAME, layout);
+        return v;
+    }
+
+    public ContentValues getProgramContentValues(Program program) {
+        ContentValues v = new ContentValues();
+        v.put(DBProgramHelper.LAYOUT_NAME, program.getDbName());
+        v.put(DBProgramHelper.DATE_CREATED, program.programDate);
+        v.put(DBProgramHelper.PROGRAM_NAME, program.programName);
+        v.put(DBProgramHelper.PROGRAM_TIME, program.time);
+
         return v;
     }
 
@@ -362,43 +376,43 @@ public class ProgramDataManager extends DataManager {
                     v.put(DBExercisesHelper.NAME, (bodyText.getTitle()));
                     //    v.put(DBProgramHelper.workou);
                     break;
-                case ExerciseView:
+                case ExerciseProfile:
 
                     PLObjects.ExerciseProfile exerciseProfile = (PLObjects.ExerciseProfile) ep;
-                    BeansHolder beansHolder;
-                    if (exerciseProfile.getBeansHolders() != null) {
-                        beansHolder = exerciseProfile.getmBeansHolder();
+                    Sets sets;
+                    v.put(INNER_TYPE, exerciseProfile.getInnerType().ordinal());
+                    /*if (exerciseProfile.getSets() != null) {
+                        //sets = exerciseProfile.getmSets();
                     } else {
-                        beansHolder = new BeansHolder();
-                    }
+                        sets = new Sets();
+                    }*/
                     v.put(EXERCISE_PROFILE_ID, exerciseProfile.getExerciseProfileId());
-                    if(exerciseProfile.getMuscle() != null){
+                   /* if (exerciseProfile.getMuscle() != null) {
                         v.put(MUSCLE, exerciseProfile.getMuscle().getMuscle_name());
                     }
-                        /*
+
                         * ID has been changed from saving the bean id, to saving the bean name
-                        * */
+                        *
 
-                    if (beansHolder.getExercise() != null) {
-                        v.put(EXERCISE_ID, beansHolder.getExercise().getName());
+                    if (sets.getExercise() != null) {
+                        v.put(EXERCISE_ID, sets.getExercise().getName());
                     }
-                    if (beansHolder.getRep() != null) {
-                        v.put(REP_ID, beansHolder.getRep().getName());
+                    if (sets.getRep() != null) {
+                        v.put(REP_ID, sets.getRep().getName());
                     }
-                    if (beansHolder.getSets() != null) {
-                        v.put(SETS, beansHolder.getSets().getName());
+                    if (sets.getSets() != null) {
+                        v.put(SETS, sets.getSets().getName());
 
                     }
-                    if (beansHolder.getRest() != null) {
-                        v.put(REST, beansHolder.getRest().getName());
+                    if (sets.getRest() != null) {
+                        v.put(REST, sets.getRest().getName());
                     }
-                    v.put(WEIGHT, beansHolder.getWeight());
-                    v.put(INNER_TYPE, exerciseProfile.getInnerType().ordinal());
-                    if (beansHolder.getSuperset() != null) {
-                        v.put(SUPERSET, beansHolder.getSuperset().getId());
+                    v.put(WEIGHT, sets.getWeight());
+                    if (sets.getSuperset() != null) {
+                        v.put(SUPERSET, sets.getSuperset().getId());
                     } else {
                         v.put(SUPERSET, -1);
-                    }
+                    }*/
                     break;
 
             }

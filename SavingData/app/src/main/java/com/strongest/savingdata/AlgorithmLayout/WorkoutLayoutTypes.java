@@ -10,23 +10,25 @@ public enum WorkoutLayoutTypes {
 
     BodyView,
 
-    ExerciseView,
+    ExerciseProfile,
 
-    BeansHolderPLObject,
+    SetsPLObject,
 
     ProgressPLObject,
-
-    ExerciseViewLeftMargin,
-
-    ExerciseViewRightMargin,
 
     BeansHolderLeftMargin,
 
     BeansHolderRightMargin,
 
+    IntraSet,
+
+    IntraExerciseProfile,
+
     AddExercise,
 
-    Method;
+    Method,
+
+    More;
 
     public static WorkoutLayoutTypes getEnum(int value) {
         return values()[value];

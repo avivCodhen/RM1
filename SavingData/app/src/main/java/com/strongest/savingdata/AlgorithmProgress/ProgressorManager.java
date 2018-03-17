@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects.ExerciseProfile;
-import com.strongest.savingdata.Database.Exercise.BeansHolder;
+import com.strongest.savingdata.Database.Exercise.Sets;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.Database.Progress.ProgressDataManager;
@@ -45,7 +45,7 @@ public class ProgressorManager implements ProgressorObserver{
         copyProgramLayoutManager();
         this.dataManager = dataManager;
         fakeLayoutManager = new LayoutManager(context, dataManager);
-        fakeLayoutManager.readLayoutFromDataBase(0);
+        //fakeLayoutManager.readLayoutFromDataBase(0);
         progressDataManager = dataManager.getProgressDataManager();
         progressDataReader = new ProgressDataReader();
         //  initProgressModels();
@@ -61,7 +61,7 @@ public class ProgressorManager implements ProgressorObserver{
     }*/
 
     @Override
-    public void notifyProgressorChanged(BeansHolder prev, BeansHolder next) {
+    public void notifyProgressorChanged(Sets prev, Sets next) {
 
     }
 
@@ -83,7 +83,7 @@ public class ProgressorManager implements ProgressorObserver{
 
     public ArrayList<PLObjects> CreateProgressModel() {
         fakeLayoutManager = new LayoutManager(context, dataManager);
-        fakeLayoutManager.readLayoutFromDataBase(0);
+        //fakeLayoutManager.readLayoutFromDataBase(0);
         return fakeLayoutManager.getLayout();
     }
     private void copyProgramLayoutManager() {
@@ -92,7 +92,7 @@ public class ProgressorManager implements ProgressorObserver{
 
     public void readProgressFromDataBase(int position, int workout) {
         fakeLayoutManager = new LayoutManager(context, dataManager);
-        fakeLayoutManager.readLayoutFromDataBase(position);
+        //fakeLayoutManager.readLayoutFromDataBase(position);
         //readProgressFromDataBase(dataManager.getProgramDataManager().getCurrentProgramTable());
     }
 
@@ -309,7 +309,7 @@ public class ProgressorManager implements ProgressorObserver{
             return p;
         }
 */
-        private BeansHolder transferBeans(BeansHolder bean1, BeansHolder bean2) {
+        private Sets transferBeans(Sets bean1, Sets bean2) {
             bean1.setExercise(bean2.getExercise());
             bean1.setSets(bean2.getSets());
             bean1.setRep(bean2.getRep());

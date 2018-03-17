@@ -1,14 +1,13 @@
 package com.strongest.savingdata.BaseWorkout;
 
-import android.content.Context;
 import android.database.Cursor;
 
-import com.strongest.savingdata.Database.Managers.DataManager;
-import com.strongest.savingdata.Database.Muscles.MusclesDataManager;
+import com.strongest.savingdata.Database.Managers.MusclesDataManager;
 import com.strongest.savingdata.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 //
 //import static com.strongest.savingdata.BaseWorkout.Body.Muscle.MainMuscleEnum.ABS;
@@ -52,7 +51,7 @@ import static com.strongest.savingdata.Database.Muscles.DBMuscleHelper.PARENT;
         BEGINNERS, INTERMEDIATE, ADVANCED, ANY
     }*/
 
-public class Muscle {
+public class Muscle implements Serializable {
 
     private int id, muscle_int;
     private String muscle_name, muscle_size, muscle_display, parent, image, children;
@@ -61,7 +60,7 @@ public class Muscle {
 
     }
 
-    public static ArrayList<Muscle> getAllMuscles(MusclesDataManager dm){
+    public static ArrayList<Muscle> getAllMuscles(MusclesDataManager dm) {
         return dm.getAllMuscles();
     }
 
@@ -145,20 +144,30 @@ public class Muscle {
         return children;
     }
 
-    public static String[] parseMuscles(String muscles){
+    public static String[] parseMuscles(String muscles) {
         int length = 0;
         for (int i = 0; i < muscles.length(); i++) {
-            if(muscles.charAt(i) == '$'){
+            if (muscles.charAt(i) == '$') {
                 length++;
             }
         }
-        String[] arr = new String[length];
-        for (int i = 0; i < arr.length; i++) {
-            if(muscles.charAt(i) == '$'){
-                arr[length--] = muscles.substring(0, i);
-                muscles = muscles.substring(i, muscles.length()-1);
+        ArrayList<String> muList = new ArrayList();
+        int point = 0;
+        boolean isFirst = true;
+        for (int i = 0; i < muscles.length(); i++) {
+            if (muscles.charAt(i) == '$') {
+                    String m = muscles.substring(point, i);
+                    muList.add(m);
+                point = i + 1;
+
             }
         }
+        if(muList.size() < 3){
+            muList.remove(0);
+        }
+        String[] arr = new String[muList.size()];
+        arr = muList.toArray(arr);
+
         return arr;
     }
 
@@ -191,8 +200,19 @@ public class Muscle {
                 return new MuscleUI(R.color.color_back, R.drawable.muscle_back);
             case "shoulders":
                 return new MuscleUI(R.color.color_shoulders, R.drawable.muscle_shoulders);
-
+            case "anterior_shoulders":
+                return new MuscleUI(R.color.color_shoulders, R.drawable.muscle_shoulders);
+            case "middle_shoulders":
+                return new MuscleUI(R.color.color_shoulders, R.drawable.muscle_shoulders);
             case "legs":
+                return new MuscleUI(R.color.color_legs, R.drawable.muscle_legs);
+            case "quadriceps":
+                return new MuscleUI(R.color.color_legs, R.drawable.muscle_legs);
+            case "hip":
+                return new MuscleUI(R.color.color_legs, R.drawable.muscle_legs);
+            case "hamstring":
+                return new MuscleUI(R.color.color_legs, R.drawable.muscle_legs);
+            case "calf":
                 return new MuscleUI(R.color.color_legs, R.drawable.muscle_legs);
             case "arms":
                 return new MuscleUI(R.color.color_arms, R.drawable.muscle_arms);
@@ -205,18 +225,20 @@ public class Muscle {
         return null;
     }
 
-    public static class MuscleStatObject{
+    public static class MuscleStatObject {
         private Muscle m;
         private int times;
         private MuscleUI mui;
-        public MuscleStatObject(Muscle m){
+
+        public MuscleStatObject(Muscle m) {
             this.m = m;
             this.mui = Muscle.provideMuscleUI(m);
         }
 
-        public void incrementTimes(){
+        public void incrementTimes() {
             this.times++;
         }
+
         public Muscle getM() {
             return m;
         }

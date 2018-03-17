@@ -2,42 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:orientation="horizontal">
 
     <TextView
         android:id="@+id/simple_number_choose_minus"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:background="@drawable/strongest_selected_buttons"
         android:backgroundTint="#fff"
         android:text="-"
         android:textAlignment="center"
-        android:textSize="20sp" />
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/simple_number_choose_number"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
         android:layout_width="35dp"
         android:textAlignment="center"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
         android:text="5"
-        android:textSize="16sp" />
+        android:textSize="13sp" />
 
 
 
     <TextView
         android:id="@+id/simple_number_choose_plus"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:background="@drawable/strongest_selected_buttons"
         android:backgroundTint="#fff"
-
         android:text="+"
         android:textAlignment="center"
-        android:textSize="20sp" />
+        android:textSize="15sp" />
 
 </LinearLayout>

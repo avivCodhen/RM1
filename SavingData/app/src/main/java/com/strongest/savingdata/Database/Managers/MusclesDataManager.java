@@ -1,4 +1,4 @@
-package com.strongest.savingdata.Database.Muscles;
+package com.strongest.savingdata.Database.Managers;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.BaseWorkout.NewMuscle;
+import com.strongest.savingdata.Database.Muscles.DBMuscleHelper;
 
 import java.util.ArrayList;
 

@@ -1,0 +1,37 @@
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorAccent"
+            android:id="@+id/fragment_sets_choose_add_intraset_btn"
+            android:padding="5dp"
+            android:gravity="center"
+            android:text="Add Intra-set"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <android.support.design.widget.TabLayout
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/colorPrimary"
+            app:tabTextColor="@color/background_color"
+            android:layout_gravity="left"
+            android:background="@color/colorAccent"
+            android:id="@+id/fragment_sets_choose_tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></android.support.design.widget.TabLayout>
+    </LinearLayout>
+    <com.strongest.savingdata.MyViews.MyViewPager
+        android:id="@+id/fragment_sets_choose_myviewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.strongest.savingdata.MyViews.MyViewPager>
+
+</LinearLayout>

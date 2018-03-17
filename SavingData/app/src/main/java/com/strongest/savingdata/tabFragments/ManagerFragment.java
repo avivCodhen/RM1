@@ -2,7 +2,6 @@ package com.strongest.savingdata.tabFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,13 +16,11 @@ import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Managers.DataManager;
-import com.strongest.savingdata.Manager.ManagerView;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.zip.Inflater;
 
 /**
  * Created by Cohen on 4/22/2017.
@@ -79,14 +76,14 @@ public class ManagerFragment extends BaseCreateProgramFragment {
     }
 
     private void countMuscleStatsObject() {
-        for (PLObjects plobj : layout){
+        /*for (PLObjects plobj : layout){
             if(plobj.getType() == WorkoutLayoutTypes.ExerciseView) {
-                if (((PLObjects.ExerciseProfile) plobj).getmBeansHolder() != null) {
-                    if (((PLObjects.ExerciseProfile) plobj).getmBeansHolder().getExercise() != null)
-                        countMuscle(((PLObjects.ExerciseProfile) plobj).getmBeansHolder().getExercise().getMuscles());
+                if (((PLObjects.ExerciseProfile) plobj).getmSets() != null) {
+                    if (((PLObjects.ExerciseProfile) plobj).getmSets().getExercise() != null)
+                        countMuscle(((PLObjects.ExerciseProfile) plobj).getmSets().getExercise().getMuscles());
                 }
             }
-        }
+        }*/
     }
 
     public ArrayList<Muscle.MuscleStatObject> getMuscleStatObjects(){
