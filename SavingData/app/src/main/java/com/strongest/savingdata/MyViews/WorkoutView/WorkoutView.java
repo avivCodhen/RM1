@@ -2,11 +2,8 @@ package com.strongest.savingdata.MyViews.WorkoutView;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -14,12 +11,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.transition.AutoTransition;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,23 +31,19 @@ import android.widget.Toast;
 import com.shehabic.droppy.DroppyClickCallbackInterface;
 import com.shehabic.droppy.DroppyMenuItem;
 import com.shehabic.droppy.DroppyMenuPopup;
-import com.strongest.savingdata.Activities.BaseActivity;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.DragAndSwipeCallback;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.MyExpandableLinearLayoutManager;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.OnExerciseProfileEditClick;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ScrollToPositionListener;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
-import com.strongest.savingdata.AlgorithmLayout.ReactLayoutManager;
 import com.strongest.savingdata.AlgorithmProgress.ProgressorManager;
 import com.strongest.savingdata.AlgorithmProgress.ProgressorObserver;
-import com.strongest.savingdata.AlgorithmProgress.ProgressorSubject;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects.ExerciseProfile;
 import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
-import com.strongest.savingdata.Database.Exercise.Sets;
 import com.strongest.savingdata.DragNDrop.DragAndDrop;
 import com.strongest.savingdata.MyViews.WorkoutViewOnWorkoutListener;
 import com.strongest.savingdata.R;
@@ -60,9 +51,6 @@ import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
 import com.strongest.savingdata.createProgramFragments.Create.OnPositionViewListener;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -364,10 +352,16 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
         }
     }
 
-    public void scrollToPositionCallBack(RecyclerView.ViewHolder vh, int position) {
+    public void scrollToPositionCallBack(int position) {
         WorkoutViewFragment f = workoutViewFragments.get(mViewPager.getCurrentItem());
-        f.scrollToPosition(vh.getAdapterPosition() + position, false, false);
+        f.scrollToPosition(position, false, false);
 
+    }
+
+    public void addSet(int position, PLObjects.SetsPLObject setsPLObject){
+        WorkoutViewFragment f = workoutViewFragments.get(mViewPager.getCurrentItem());
+        f.exArray.add(position, setsPLObject);
+        f.adapter.notifyItemInserted(position);
     }
 
     @Override

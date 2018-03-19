@@ -1,6 +1,6 @@
 package com.strongest.savingdata.MyViews.WorkoutView;
 
-import com.strongest.savingdata.Database.Exercise.Sets;
+import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 
 import java.util.ArrayList;
 
@@ -11,5 +11,5 @@ import java.util.ArrayList;
 public interface WorkoutSubject {
     void Attach(WorkoutView o);
     void Dettach(WorkoutView o);
-    void Notify(ArrayList<Sets> beanHolders, int position, boolean changed);
+    void Notify(ArrayList<ExerciseSet> beanHolders, int position, boolean changed);
 }

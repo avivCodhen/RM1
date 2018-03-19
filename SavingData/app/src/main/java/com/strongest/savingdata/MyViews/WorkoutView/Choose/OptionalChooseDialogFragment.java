@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.strongest.savingdata.Database.Exercise.Sets;
+import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.CreateBeansHolderView;
 import com.strongest.savingdata.MyViews.MySelector.ChooseSelectorAdapter;
@@ -26,7 +26,7 @@ public class OptionalChooseDialogFragment extends BaseDialogFragment {
     private MySelector mMySelector;
     private int mMuscle;
    // private ArrayList<Sets> mSets;
-    private Sets mSets;
+    private ExerciseSet mExerciseSet;
     private ChooseSelectorAdapter adapter;
     //private double[] mValueArray = new double[3901];
 
@@ -96,8 +96,8 @@ public class OptionalChooseDialogFragment extends BaseDialogFragment {
 */
     }
 
-    public ArrayList<Sets> getOptionalBeansHolder() {
-        ArrayList<Sets> list = new ArrayList<>();
+    public ArrayList<ExerciseSet> getOptionalBeansHolder() {
+        ArrayList<ExerciseSet> list = new ArrayList<>();
 
         // ArrayList<Beans> methodBean = (ArrayList<Beans>) dataManager.getExerciseDataManager().readByTable(TABLE_METHODS);
 

@@ -8,20 +8,22 @@ import com.strongest.savingdata.AlgorithmLayout.PLObjects.ExerciseProfile;
 import com.strongest.savingdata.AlgorithmStats.StatsCalculatorManager;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
-import com.strongest.savingdata.Database.Exercise.Sets;
+import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 
+import static com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes.IntraExerciseProfile;
+import static com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes.SetsPLObject;
+import static com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes.SuperSetIntraSet;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.*;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TYPE;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.EXERCISE_ID;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.INNER_TYPE;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.REP_ID;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.REST;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.SETS;
 
 /**
  * Created by Cohen on 10/18/2017.
@@ -59,6 +61,7 @@ public class LayoutManager {
 
     public static final String
             NEW_EXERCISE = "new_exercise",
+            NEW_SUPERSET = "new_superset",
             NEW_EXERCISE_FLIPPED = "new_exercise_fliped",
             DRAW_DIVIDER = "draw_divider",
             NEW_WORKOUT = "new_workout",
@@ -126,7 +129,7 @@ public class LayoutManager {
         LayoutManager layoutManager = new LayoutManager(context, dataManager);
         layoutManager.drawWorkout(layoutManager.layout, "Workout A");
         layoutManager.drawBody(layoutManager.layout, "This Is A Title");
-        layoutManager.drawExercise(null, layoutManager.layout, WorkoutLayoutTypes.ExerciseProfile);
+        layoutManager.drawExercise(null, layoutManager.layout, WorkoutLayoutTypes.ExerciseProfile, true);
         return layoutManager;
     }
 
@@ -154,59 +157,31 @@ public class LayoutManager {
         toLayout.add(new PLObjects.BodyText(numOfWorkouts - 1, numOfBodyParts, null, title));
     }
 
-    public ExerciseProfile drawExercise(Muscle m, ArrayList<PLObjects> toLayout, WorkoutLayoutTypes innerType) {
+    public ExerciseProfile drawExercise(Muscle m, ArrayList<PLObjects> toLayout, WorkoutLayoutTypes innerType,
+                                        boolean isNew) {
         if (toLayout == this.layout) {
             ++numOfExercises;
         }
-        ArrayList<ArrayList<Sets>> setsList = new ArrayList<>();
-        Sets set = new Sets();
+        ArrayList<ArrayList<ExerciseSet>> setsList = new ArrayList<>();
+        ExerciseSet set = new ExerciseSet();
         ExerciseProfile ep = new ExerciseProfile(m, numOfWorkouts - 1, numOfBodyParts, numOfExercises);
-        ArrayList<Sets> sets = new ArrayList<>();
-        sets.add(set);
-        setsList.add(sets);
+        if (isNew) {
+            PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(ep, set);
+            setsPLObject.setInnerType(SetsPLObject);
+            ep.getSets().add(setsPLObject);
+        }
         ep.setInnerType(innerType);
-        ep.setSets(setsList);
         if (toLayout != null) {
             toLayout.add(ep);
         }
         return ep;
     }
 
-    public void createNewLayoutFromTemplate(ProgramTemplate programTemplate) {
-        this.programTemplate = programTemplate;
-        layout = new ArrayList<>();
-        drawWorkoutFromTemplate();
-        updateLayoutStats(false);
-    }
+    public PLObjects.SetsPLObject createSetsPlObject(ExerciseProfile parent, ExerciseSet exerciseSet, WorkoutLayoutTypes innerType) {
+        PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(parent, exerciseSet);
+        setsPLObject.setInnerType(innerType);
+        return setsPLObject;
 
-    private void drawWorkoutFromTemplate() {
-        for (int i = 0; i < programTemplate.getNumOfWorkouts(); i++) {
-            String workoutName = programTemplate.getWorkoutsNames().get(0);
-            drawWorkout(layout, workoutName);
-            drawBodyFromTemplate(i);
-
-        }
-    }
-
-    private void drawBodyFromTemplate(int workoutPosition) {
-        for (int i = 0; i < programTemplate.getBodyPartsPerWorkout(workoutPosition); i++) {
-            String muscle = programTemplate.getBodyTemplate().get(workoutPosition).get(i);
-            Muscle m = Muscle.createMuscle(dataManager.getMuscleDataManager(), muscle);
-            // StatsHolder statsHolder = statsCalculator.calculateStatsHolder(numOfBodyParts, false);
-            drawBody(layout, "");
-           /* if (layout.get(layout.size() - 1).bodyId % 0 == 2) {
-                drawExerciseFromTemplate(m, WorkoutLayoutTypes.ExerciseViewLeftMargin);
-            } else {
-                drawExerciseFromTemplate(m, WorkoutLayoutTypes.ExerciseViewLeftMargin);
-
-            }*/
-        }
-    }
-
-    private void drawExerciseFromTemplate(Muscle m, WorkoutLayoutTypes innerType) {
-        for (int i = 0; i < programTemplate.getBlockLength(m); i++) {
-            drawExercise(m, layout, innerType);
-        }
     }
 
     public void saveLayoutToDataBase(boolean update) {
@@ -216,57 +191,110 @@ public class LayoutManager {
 
     public boolean readLayoutFromDataBase(String currentDbName) {
         Cursor c = dataManager.getProgramDataManager().readLayoutTableCursor(currentDbName);
-        dbName = dataManager.getProgramDataManager().getCurrentLayoutTable();
+        dbName = currentDbName;
         layout = new ArrayList<>();
         Muscle muscle = null;
         String muscle_str;
+        WorkoutLayoutTypes type;
+        WorkoutLayoutTypes innerType;
+        String rep;
+        String rest;
+        double weight;
+        ExerciseSet exerciseSet;
+        ExerciseProfile ep;
+
         if (c != null && c.moveToFirst()) {
             do {
-
-                switch (c.getInt(c.getColumnIndex(TYPE))) {
-                    case 0:
+                type = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(TYPE)));
+                switch (type) {
+                    case WorkoutView:
                         bodyTemplate.add(new ArrayList<String>());
                         drawWorkout(layout, c.getString(c.getColumnIndex(NAME)));
                         workoutsNames.add(c.getString(c.getColumnIndex(NAME)));
                         break;
-                    case 1:
+                    case BodyView:
                         // bodyTemplate.get(numOfWorkouts - 1).add(muscle.getMuscle_name());
                         drawBody(layout, c.getString(c.getColumnIndex(NAME)));
                         break;
-                    case 2:
-                        Sets beansHolder = new Sets();
+                    case ExerciseProfile:
+                        ExerciseProfile parent = null;
+                        innerType = WorkoutLayoutTypes
+                                .getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
 
-                        int innerType = c.getInt(c.getColumnIndex(INNER_TYPE));
                         muscle_str = c.getString(c.getColumnIndex(MUSCLE));
                         try {
                             muscle = Muscle.createMuscle(dataManager.getMuscleDataManager(), muscle_str);
                         } catch (Exception e) {
                             Log.d("aviv", "readLayoutFromDataBase: either null or no muscle");
                         }
+
+                        if (innerType == IntraExerciseProfile) {
+                            parent = ((ExerciseProfile) layout.get(layout.size() - 1));
+                        }
+                        ep = drawExercise(muscle, layout, innerType, false);
+
                         String exId = c.getString(c.getColumnIndex(EXERCISE_ID));
-                        String repId = c.getString(c.getColumnIndex(REP_ID));
-                        double weight = c.getDouble(c.getColumnIndex(WEIGHT));
-                        String rest = c.getString(c.getColumnIndex(REST));
-                        String sets = c.getString(c.getColumnIndex(SETS));
-
                         if (exId != null) {
-                            beansHolder.setExercise(dataManager.getExerciseDataManager().fetchByName(muscle.getMuscle_name(), exId));
+                            ep.setExercise(dataManager.getExerciseDataManager().fetchByName(muscle.getMuscle_name(), exId));
                         }
-                        if (repId != null) {
-                            beansHolder.setRep(dataManager.getExerciseDataManager().fetchByName(TABLE_REPS, repId));
-
+                        if (parent != null) {
+                            parent.getExerciseProfiles().add(ep);
+                            ep.setParent(parent);
                         }
-                        if (rest != null) {
-                            beansHolder.setRest(dataManager.getExerciseDataManager().fetchByName(TABLE_REST, rest));
-
-                        }
-                        if (sets != null) {
-                            beansHolder.setSets(dataManager.getExerciseDataManager().fetchByName(TABLE_SETS, sets));
-                        }
-                        beansHolder.setWeight(weight);
-                        drawExercise(muscle, layout, WorkoutLayoutTypes.getEnum(innerType));
-
                         break;
+                    case SetsPLObject:
+
+                        innerType = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
+                        ep = ((ExerciseProfile) layout.get(layout.size() - 1));
+                        rep = c.getColumnName(c.getColumnIndex(REP_ID));
+                        rest = c.getColumnName(c.getColumnIndex(REST));
+                        weight = c.getDouble(c.getColumnIndex(WEIGHT));
+                        exerciseSet = new ExerciseSet();
+                        exerciseSet.setRep(rep);
+                        exerciseSet.setRep(rest);
+                        exerciseSet.setWeight(weight);
+                        PLObjects.SetsPLObject setsPLObjectSet = new PLObjects.SetsPLObject(ep, exerciseSet);
+                        setsPLObjectSet.setInnerType(innerType);
+                        ep.getSets().add(setsPLObjectSet);
+
+                    case IntraSet:
+                        ep = ((ExerciseProfile) layout.get(layout.size() - 1));
+                        innerType = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
+                        switch (innerType) {
+
+                            case SuperSetIntraSet:
+                                //exerciseprofile is a superset
+
+                                rep = c.getColumnName(c.getColumnIndex(REP_ID));
+                                rest = c.getColumnName(c.getColumnIndex(REST));
+                                weight = c.getDouble(c.getColumnIndex(WEIGHT));
+                                exerciseSet = new ExerciseSet();
+                                exerciseSet.setRep(rep);
+                                exerciseSet.setRep(rest);
+                                exerciseSet.setWeight(weight);
+                                PLObjects.IntraSetPLObject intra = new PLObjects.IntraSetPLObject(
+                                        ep,
+                                        exerciseSet,
+                                        innerType);
+                                ep.getIntraSets().add(intra);
+                                break;
+
+                            case IntraSetNormal:
+                                //exerciseprofile is normal
+                                rep = c.getColumnName(c.getColumnIndex(REP_ID));
+                                rest = c.getColumnName(c.getColumnIndex(REST));
+                                weight = c.getDouble(c.getColumnIndex(WEIGHT));
+                                exerciseSet = new ExerciseSet();
+                                exerciseSet.setRep(rep);
+                                exerciseSet.setRep(rest);
+                                exerciseSet.setWeight(weight);
+                                PLObjects.IntraSetPLObject setsPLObjectIntraSet = new PLObjects.IntraSetPLObject(ep, exerciseSet, innerType);
+                                int position = ep.getSets().size();
+                                ep.getSets().get(position).getIntraSets().add(setsPLObjectIntraSet);
+                                break;
+
+                        }
+
                 }
             } while (c.moveToNext());
             //programTemplate = ProgramTemplate.ProgramTemplateFactory.createCustomProgramTemplate();
@@ -293,13 +321,16 @@ public class LayoutManager {
                 case NEW_EXERCISE:
                     drawExercise(null,
                             getSplitRecyclerWorkouts(false).get(workoutPosition),
-                            updateComponents.innerType);
+                            updateComponents.innerType, true);
                     // getSplitRecyclerWorkouts(false).get(workoutPosition).add(updateComponents.getInsertPosition(), updateComponents.getPlObject());
                     break;
+                case NEW_SUPERSET:
+
                 case NEW_WORKOUT:
                     getSplitRecyclerWorkouts(false).add(new ArrayList<PLObjects>());
                     drawWorkout(getWorkouts(false), "");
-                    drawExercise(null, getSplitRecyclerWorkouts(false).get(getSplitRecyclerWorkouts(false).size() - 1), WorkoutLayoutTypes.ExerciseProfile);
+                    drawExercise(null, getSplitRecyclerWorkouts(false).get(getSplitRecyclerWorkouts(false).size() - 1),
+                            WorkoutLayoutTypes.ExerciseProfile, true);
                     break;
                 case REMOVE:
                     getSplitRecyclerWorkouts(false).get(workoutPosition).remove(updateComponents.removePosition);

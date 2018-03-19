@@ -2,7 +2,7 @@ package com.strongest.savingdata.AlgorithmLayout;
 
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.Database.Exercise.Sets;
+import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 
 import java.io.Serializable;
 
@@ -26,7 +26,7 @@ public class ExerciseProfileView implements Serializable {
     private int metPosition;
     private ProgramTemplate programTemplate;
 
-    private Sets sets;
+    private ExerciseSet ExerciseSet;
 
     private int exerciseId;
     private int repsId;
@@ -163,12 +163,12 @@ public class ExerciseProfileView implements Serializable {
         this.exerciseId = exerciseId;
     }
 
-    public Sets getSets() {
-        return sets;
+    public ExerciseSet getExerciseSet() {
+        return ExerciseSet;
     }
 
-    public void setSets(Sets sets) {
-        this.sets = sets;
+    public void setExerciseSet(ExerciseSet exerciseSet) {
+        this.ExerciseSet = exerciseSet;
     }
 
     public class Builder{

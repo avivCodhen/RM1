@@ -10,14 +10,14 @@ import java.io.Serializable;
  * Created by Cohen on 10/18/2017.
  */
 
-public class Sets implements Serializable, Ben {
+public class ExerciseSet implements Serializable, Ben {
 
     private Beans exercise;
-    private Beans rep;
-    private Beans method;
+    private String rep;
+    private String method;
     private Beans superset;
     private Beans sets;
-    private Beans rest;
+    private String rest;
     private double weight;
     private boolean isLoaded;
     private boolean hasmethod;
@@ -28,8 +28,9 @@ public class Sets implements Serializable, Ben {
     private int oldPosition = -1;
     private int newPosition = -1;
 
-    public Sets() {
+    public ExerciseSet() {
     }
+/*
 
     public static boolean compareBeansHolders(Sets one, Sets two) {
         if(one == null){
@@ -55,6 +56,7 @@ public class Sets implements Serializable, Ben {
         }
         return false;
     }
+*/
 
    /* public static BeansHolder defaultBeansHolder(){
         BeansHolder beansHolder = new BeansHolder();
@@ -66,9 +68,6 @@ public class Sets implements Serializable, Ben {
         return beansHolder;
     }*/
 
-    public boolean isLoadedWithExerciseAndReps() {
-        return rep.isLoaded() == true && exercise.isLoaded() == true;
-    }
 
     public void setHasmethod(boolean hasmethod) {
         this.hasmethod = hasmethod;
@@ -86,19 +85,19 @@ public class Sets implements Serializable, Ben {
         this.exercise = exercise;
     }
 
-    public Beans getRep() {
+    public String getRep() {
         return rep;
     }
 
-    public void setRep(Beans rep) {
+    public void setRep(String rep) {
         this.rep = rep;
     }
 
-    public Beans getMethod() {
+    public String getMethod() {
         return method;
     }
 
-    public void setMethod(Beans method) {
+    public void setMethod(String method) {
         this.method = method;
     }
 
@@ -118,11 +117,11 @@ public class Sets implements Serializable, Ben {
         this.sets = sets;
     }
 
-    public Beans getRest() {
+    public String getRest() {
         return rest;
     }
 
-    public void setRest(Beans rest) {
+    public void setRest(String rest) {
         this.rest = rest;
     }
 

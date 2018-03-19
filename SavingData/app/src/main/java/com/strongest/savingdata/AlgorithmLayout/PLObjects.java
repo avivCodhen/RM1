@@ -7,7 +7,7 @@ import com.strongest.savingdata.AlgorithmStats.StatsHolder;
 
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.Database.Exercise.Sets;
+import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -115,16 +115,17 @@ public class PLObjects implements Aba, Serializable {
 
     public static class ExerciseProfile extends PLObjects {
 
-        private ArrayList<ArrayList<Sets>> sets = new ArrayList<>();
-        private ArrayList<Sets> intraSets = new ArrayList<>();
+        private ArrayList<SetsPLObject> sets = new ArrayList<>();
+        private ArrayList<IntraSetPLObject> intraSets = new ArrayList<>();
+        private ArrayList<ExerciseProfile> exerciseProfiles = new ArrayList<>();
         private int exerciseProfileId;
         private WorkoutLayoutTypes innerType;
         private Muscle muscle;
         private Beans exercise;
         private boolean editMode;
-        private ArrayList<ExerciseProfile> exerciseProfiles = new ArrayList<>();
         private String tag;
         private boolean moreOn;
+        private ExerciseProfile parent;
 
         public ExerciseProfile(Muscle muscle, int workoutId, int bodyId, int exerciseProfileId) {
             //    this.mSets = mSets;
@@ -135,6 +136,10 @@ public class PLObjects implements Aba, Serializable {
             this.muscle = muscle;
             type = WorkoutLayoutTypes.ExerciseProfile;
 
+        }
+
+        public ArrayList<IntraSetPLObject> getIntraSets() {
+            return intraSets;
         }
 
         public WorkoutLayoutTypes getInnerType() {
@@ -164,11 +169,11 @@ public class PLObjects implements Aba, Serializable {
 //            this.firstExercise = firstExercise;
 //        }
 
-        public ArrayList<ArrayList<Sets>> getSets() {
+        public ArrayList<SetsPLObject> getSets() {
             return sets;
         }
 
-        public void setSets(ArrayList<ArrayList<Sets>> sets) {
+        public void setSets(ArrayList<SetsPLObject> sets) {
             this.sets = sets;
         }
 
@@ -203,14 +208,6 @@ public class PLObjects implements Aba, Serializable {
             return exerciseProfiles;
         }
 
-        public ArrayList<Sets> getIntraSets() {
-            return intraSets;
-        }
-
-        public void setIntraSets(ArrayList<Sets> intraSets) {
-            this.intraSets = intraSets;
-        }
-
         public String getTag() {
             return tag;
         }
@@ -234,16 +231,27 @@ public class PLObjects implements Aba, Serializable {
         public void setMoreOn(boolean moreOn) {
             this.moreOn = moreOn;
         }
+
+        public ExerciseProfile getParent() {
+            return parent;
+        }
+
+        public void setParent(ExerciseProfile parent) {
+            this.parent = parent;
+        }
     }
 
     public static class SetsPLObject extends PLObjects implements Ben {
 
-        private Sets sets;
+        private ExerciseSet ExerciseSet;
+        private ArrayList<IntraSetPLObject> intraSets = new ArrayList<>();
         private WorkoutLayoutTypes innerType;
+        private ExerciseProfile parent;
 
-        public SetsPLObject(Sets sets) {
-            this.sets = sets;
+        public SetsPLObject(ExerciseProfile father, ExerciseSet ExerciseSet) {
+            this.ExerciseSet = ExerciseSet;
             type = WorkoutLayoutTypes.SetsPLObject;
+            parent = father;
         }
 
         public WorkoutLayoutTypes getInnerType() {
@@ -254,12 +262,61 @@ public class PLObjects implements Aba, Serializable {
             this.innerType = innerType;
         }
 
-        public Sets getSets() {
-            return sets;
+        public ExerciseSet getExerciseSet() {
+            return ExerciseSet;
         }
 
-        public void setSets(Sets sets) {
-            this.sets = sets;
+        public void setExerciseSet(ExerciseSet exerciseSet) {
+            this.ExerciseSet = exerciseSet;
+        }
+
+        public ExerciseProfile getParent() {
+            return parent;
+        }
+
+        public ArrayList<IntraSetPLObject> getIntraSets() {
+            return intraSets;
+        }
+
+        public void setIntraSets(ArrayList<IntraSetPLObject> intraSets) {
+            this.intraSets = intraSets;
+        }
+    }
+
+    public static class IntraSetPLObject extends PLObjects{
+
+        private ExerciseProfile parent;
+        private ExerciseSet exerciseSet;
+        private WorkoutLayoutTypes innerType;
+        public IntraSetPLObject(ExerciseProfile parent, ExerciseSet exerciseSet, WorkoutLayoutTypes innerType){
+            this.innerType = innerType;
+            this.parent = parent;
+            this.exerciseSet = exerciseSet;
+            type = WorkoutLayoutTypes.IntraSet;
+        }
+
+        public ExerciseProfile getParent() {
+            return parent;
+        }
+
+        public void setParent(ExerciseProfile parent) {
+            this.parent = parent;
+        }
+
+        public ExerciseSet getExerciseSet() {
+            return exerciseSet;
+        }
+
+        public void setExerciseSet(ExerciseSet exerciseSet) {
+            this.exerciseSet = exerciseSet;
+        }
+
+        public WorkoutLayoutTypes getInnerType() {
+            return innerType;
+        }
+
+        public void setInnerType(WorkoutLayoutTypes innerType) {
+            this.innerType = innerType;
         }
     }
 
@@ -267,7 +324,7 @@ public class PLObjects implements Aba, Serializable {
     public static class ProgressPLObject extends PLObjects {
 
 
-        public ProgressPLObject(Sets sets) {
+        public ProgressPLObject(ExerciseSet ExerciseSet) {
 
             type = WorkoutLayoutTypes.SetsPLObject;
         }

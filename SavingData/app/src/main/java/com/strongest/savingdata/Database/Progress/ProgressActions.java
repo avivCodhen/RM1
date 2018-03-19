@@ -1,7 +1,7 @@
 package com.strongest.savingdata.Database.Progress;
 
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
-import com.strongest.savingdata.Database.Exercise.Sets;
+import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 
 /**
  * Created by Cohen on 1/1/2018.
@@ -52,12 +52,12 @@ public class ProgressActions {
 
     public static class Change extends ProgressActions{
         private int position;
-        private Sets sets;
+        private ExerciseSet ExerciseSet;
 
-        public Change(int exerciseProfileId, int position, Sets sets) {
+        public Change(int exerciseProfileId, int position, ExerciseSet ExerciseSet) {
             super(exerciseProfileId);
             this.position = position;
-            this.sets = sets;
+            this.ExerciseSet = ExerciseSet;
         }
     }
 

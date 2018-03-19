@@ -91,7 +91,7 @@ public class DBProgramHelper extends SQLiteOpenHelper {
     //commands
     private final String LAYOUT_CREATE_COMMAND = "CREATE TABLE " + "programs" + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
             + SETS + " TEXT, " + SUPERSET + " INTEGER, " + INNER_TYPE+" INTEGER,"+ NAME + " TEXT," + WORKOUT_ID + " INTEGER," + EXERCISE_PROFILE_ID + " INTEGER, " + TYPE + " INTEGER, "
-            + WEIGHT + " INTEGER, " + REST + " TEXT, " + FIRST_EXERCISE + " INTEGER, "
+            + WEIGHT + " TEXT, " + REST + " TEXT, " + FIRST_EXERCISE + " INTEGER, "
             + EXERCISE_ID + " TEXT, "+ REP_ID + " TEXT," + METHOD_ID + " INTEGER DEFAULT -1, " + MUSCLE + " TEXT,"
             + STATS_DAMAGE + " INTEGER," + STATS_MECHANICAL + " INTEGER, " + STATS_METABOLIC + " INTEGER )";
 

@@ -9,7 +9,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlNormal">#8064a2</item>
+        <item name="colorControlNormal">@color/colorAccent</item>
         <item name="android:windowBackground">@color/background_color</item>
         <item name="android:textColor">#070707</item>
         <item name="android:statusBarColor">@color/colorAccent</item>
@@ -30,7 +30,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlNormal">#8064a2</item>
+        <item name="colorControlNormal">@color/colorAccent</item>
         <item name="android:windowBackground">@color/background_color</item>
         <item name="android:textColor">#434343</item>
         <item name="actionBarTheme">@style/AppToolbarwhite</item>

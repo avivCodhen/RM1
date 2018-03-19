@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects.ExerciseProfile;
-import com.strongest.savingdata.Database.Exercise.Sets;
+import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.Database.Progress.ProgressDataManager;
@@ -61,7 +61,7 @@ public class ProgressorManager implements ProgressorObserver{
     }*/
 
     @Override
-    public void notifyProgressorChanged(Sets prev, Sets next) {
+    public void notifyProgressorChanged(ExerciseSet prev, ExerciseSet next) {
 
     }
 
@@ -309,7 +309,7 @@ public class ProgressorManager implements ProgressorObserver{
             return p;
         }
 */
-        private Sets transferBeans(Sets bean1, Sets bean2) {
+        private ExerciseSet transferBeans(ExerciseSet bean1, ExerciseSet bean2) {
             bean1.setExercise(bean2.getExercise());
             bean1.setSets(bean2.getSets());
             bean1.setRep(bean2.getRep());

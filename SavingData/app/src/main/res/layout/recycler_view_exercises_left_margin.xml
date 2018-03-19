@@ -4,21 +4,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="96dp">
+    android:layout_height="96dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:focusable="true"
+
+    >
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/list_view_exercise_lay1"
         android:layout_width="wrap_content"
-        android:layout_height="92dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         >
 
 
         <RelativeLayout
+            android:focusable="true"
             android:id="@+id/exercise_main_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:foreground="?attr/selectableItemBackground"
             android:background="@drawable/aviv_exercise_placeholder_left_margin"
             android:paddingTop="3dp">
 
@@ -96,7 +104,7 @@
 
 
             <LinearLayout
-                android:id="@+id/exerciseView_data_layout"
+                android:id="@+id/recycler_view_set_card"
                 android:layout_width="match_parent"
                 android:layout_height="17dp"
                 android:layout_marginLeft="85dp"
@@ -216,7 +224,7 @@
         <net.cachapa.expandablelayout.ExpandableLayout
             android:id="@+id/exercise_menu_expandlayout"
             android:layout_width="wrap_content"
-            android:layout_height="92dp"
+            android:layout_height="85dp"
             android:orientation="horizontal"
             app:el_expanded="true">
 

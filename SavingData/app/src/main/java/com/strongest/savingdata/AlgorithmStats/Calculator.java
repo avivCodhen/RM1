@@ -5,7 +5,6 @@ import android.content.Context;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.Database.Exercise.Sets;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 
 import java.util.ArrayList;

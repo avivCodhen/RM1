@@ -1,7 +1,7 @@
 package com.strongest.savingdata.MyViews.WorkoutView.Choose;
 
 import com.strongest.savingdata.BaseWorkout.Muscle;
-import com.strongest.savingdata.Database.Exercise.Sets;
+import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 
 import java.util.ArrayList;
 
@@ -11,18 +11,18 @@ import java.util.ArrayList;
 
 public class ChooseData {
 
-    private ArrayList<Sets> sets;
+    private ArrayList<ExerciseSet> sets;
     private Muscle muscle;
 
     public ChooseData(){
 
     }
 
-    public ArrayList<Sets> getSets() {
+    public ArrayList<ExerciseSet> getSets() {
         return sets;
     }
 
-    public void setSets(ArrayList<Sets> sets) {
+    public void setSets(ArrayList<ExerciseSet> sets) {
         this.sets = sets;
     }
 

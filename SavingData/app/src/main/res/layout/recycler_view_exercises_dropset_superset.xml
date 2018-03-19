@@ -112,7 +112,7 @@
                 />
 
             <LinearLayout
-                android:id="@+id/exerciseView_data_layout"
+                android:id="@+id/recycler_view_set_card"
                 android:layout_width="match_parent"
                 android:layout_height="17dp"
                 android:layout_marginLeft="70dp"

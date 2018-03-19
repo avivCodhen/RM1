@@ -1,6 +1,6 @@
 package com.strongest.savingdata.Database.Progress;
 
-import com.strongest.savingdata.Database.Exercise.Sets;
+import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 
 /**
  * Created by Cohen on 12/27/2017.
@@ -8,33 +8,33 @@ import com.strongest.savingdata.Database.Exercise.Sets;
 
 public class ProgressModelNode {
 
-    private Sets oldSets;
-    private Sets newSets;
+    private ExerciseSet oldExerciseSet;
+    private ExerciseSet newExerciseSet;
     private int workoutId;
     private int phase;
     private int exerciseProfileId;
 
 
-    public ProgressModelNode(Sets oldSets, Sets newSets, int workoutId, int exerciseProfileId, int order){
+    public ProgressModelNode(ExerciseSet oldExerciseSet, ExerciseSet newExerciseSet, int workoutId, int exerciseProfileId, int order){
         this.workoutId = workoutId;
         this.exerciseProfileId = exerciseProfileId;
         this.phase = order;
     }
 
-    public Sets getOldSets() {
-        return oldSets;
+    public ExerciseSet getOldExerciseSet() {
+        return oldExerciseSet;
     }
 
-    public void setOldSets(Sets oldSets) {
-        this.oldSets = oldSets;
+    public void setOldExerciseSet(ExerciseSet oldExerciseSet) {
+        this.oldExerciseSet = oldExerciseSet;
     }
 
-    public Sets getNewSets() {
-        return newSets;
+    public ExerciseSet getNewExerciseSet() {
+        return newExerciseSet;
     }
 
-    public void setNewSets(Sets newSets) {
-        this.newSets = newSets;
+    public void setNewExerciseSet(ExerciseSet newExerciseSet) {
+        this.newExerciseSet = newExerciseSet;
     }
 
     public int getWorkoutId() {

@@ -32,6 +32,6 @@
     <com.strongest.savingdata.MyViews.MyViewPager
         android:id="@+id/fragment_sets_choose_myviewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.strongest.savingdata.MyViews.MyViewPager>
+        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.MyViewPager>
 
 </LinearLayout>

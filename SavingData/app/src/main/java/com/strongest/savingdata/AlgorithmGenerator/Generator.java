@@ -8,7 +8,7 @@ import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.Database.Exercise.Sets;
+import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 
@@ -205,16 +205,16 @@ public class Generator {
     //saves the generated exercise to the new array
     private void injectExercise(Beans sets, Muscle muscle, Beans exercise, Beans reps, Beans rest,
                                 WorkoutLayoutTypes type) {
-        Sets beansHolder = new Sets();
+        ExerciseSet beansHolder = new ExerciseSet();
         beansHolder.setExercise(exercise);
-        beansHolder.setRep(reps);
+       // beansHolder.setRep(reps);
         // beansHolder.setMethod(method);
         beansHolder.setSets(sets);
-        beansHolder.setRest(rest);
+       // beansHolder.setRest(rest);
         beansHolder.setLoaded(true);
 
         beansHolder.setSuperset(new Beans());
-        layoutManager.drawExercise(muscle,layoutManager.getLayout(),type);
+        //layoutManager.drawExercise(muscle,layoutManager.getLayout(),type);
         dm.getExerciseDataManager().removeByName(TABLE_EXERCISES_GENERATOR, exercise.getName());
 
         //     p.setRepsId(reps.getWorkoutId());

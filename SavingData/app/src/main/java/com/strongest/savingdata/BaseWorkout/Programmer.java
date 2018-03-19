@@ -105,9 +105,8 @@ public class Programmer implements Serializable {
         layoutManager.dbName = program.getDbName();
         dataManager.getPrefsEditor().putString(HomeActivity.CURRENT_PROGRAM_DBNAME, program.getDbName()).commit();
         dataManager.getProgramDataManager().insertData(
-                DBProgramHelper.TABLE_PROGRAM_REFERENCE, new ContentValues[]{
-                dataManager.getProgramDataManager().getProgramContentValues(program)
-        });
+                DBProgramHelper.TABLE_PROGRAM_REFERENCE,
+                dataManager.getProgramDataManager().getProgramContentValues(program));
         dataManager.getProgramDataManager().insertTables(false, layoutManager);
     }
 

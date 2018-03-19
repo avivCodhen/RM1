@@ -8,13 +8,16 @@
    >
 
     <android.support.v7.widget.CardView
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         android:paddingRight="90dp"
         android:backgroundTint="#fff"
         android:background="@drawable/aviv_exercise_placeholder_left_margin"
         android:layout_marginLeft="40dp"
         android:gravity="center_vertical"
         android:layout_height="30dp"
-        android:id="@+id/exerciseView_data_layout"
+        android:id="@+id/recycler_view_set_card"
         android:layout_width="match_parent"
         app:cardElevation="3dp"
         >

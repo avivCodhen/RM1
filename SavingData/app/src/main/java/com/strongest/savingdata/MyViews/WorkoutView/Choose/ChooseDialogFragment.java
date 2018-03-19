@@ -26,7 +26,7 @@ import com.strongest.savingdata.AlgorithmLayout.ReactLayoutManager;
 import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.Database.Exercise.Sets;
+import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.MyViews.MySelector.MySelectorOnBeansHolderChange;
 import com.strongest.savingdata.MyViews.WorkoutView.OnExerciseChangeListener;
@@ -58,6 +58,10 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     private int exercisePosition;
 
     private RecyclerView.ViewHolder vh;
+
+    private int currentRecyclerPosition;
+    private int currentTab;
+    private boolean initiated;
 
     public static ChooseDialogFragment getInstance(OnExerciseChangeListener onExerciseChangeListener,
                                                    int position,
@@ -105,6 +109,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         nestedScrollView = (NestedScrollView) v.findViewById(R.id.fragment_choose_nestedscrollview);
         mLayout = new ArrayList<>();
         makeLayout(exerciseProfile);
+        currentRecyclerPosition = exercisePosition;
         dataManager = new DataManager(getContext());
         // i = getArguments();
         mReactLayoutManager = ReactLayoutManager.newInstance(
@@ -113,7 +118,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
                 exerciseProfile
 
         );
-        ((MyExpandableAdapter.ExerciseViewHolder) vh).layout.setOnClickListener(null);
+        ((MyExpandableAdapter.ExerciseViewHolder) vh).card.setOnClickListener(null);
         final ChooseAdapter adapter = new ChooseAdapter(getChildFragmentManager(), mLayout);
         viewPager = (ViewPager) v.findViewById(R.id.choose_dialog_viewpager);
         viewPager.setOffscreenPageLimit(2);
@@ -124,7 +129,19 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                ((HomeActivity) getActivity()).workoutView.scrollToPositionCallBack(vh, tab.getPosition());
+                int tabsDec = (tab.getPosition() - currentTab);
+                if (tabsDec == 1) {
+                    currentRecyclerPosition++;
+                } else if (tabsDec == -1) {
+                    currentRecyclerPosition--;
+                } else if (tabsDec < -1) {
+                    currentRecyclerPosition -= tabsDec;
+                } else if (tabsDec > 1) {
+                    currentRecyclerPosition += tabsDec;
+
+                }
+                ((HomeActivity) getActivity()).workoutView.scrollToPositionCallBack(currentRecyclerPosition);
+                currentTab = tab.getPosition();
             }
 
             @Override
@@ -141,12 +158,17 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         v.findViewById(R.id.choose_add_set).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Sets> set = new ArrayList<>();
-                Sets aSet = new Sets();
-                set.add(new Sets());
-                exerciseProfile.getSets().add(set);
-                PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(aSet);
+                ArrayList<ExerciseSet> set = new ArrayList<>();
+                ExerciseSet aSet = new ExerciseSet();
+                set.add(new ExerciseSet());
+               // exerciseProfile.getSets().add(set);
+                PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(exerciseProfile,aSet);
                 mLayout.add(mLayout.size() - 1, setsPLObject);
+                ((HomeActivity) getActivity()).
+                        workoutView.addSet(
+                        exercisePosition + exerciseProfile.getSets().size(),
+                        setsPLObject);
+
                 //makeLayout(exerciseProfile);
                 adapter.notifyDataSetChanged();
             }
@@ -159,10 +181,10 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
                 ep.setInnerType(WorkoutLayoutTypes.IntraExerciseProfile);
                 exerciseProfile.getExerciseProfiles().add(ep);
                 ep.setTag(LayoutManager.intraWorkoutsLetters[exerciseProfile.getExerciseProfiles().size()]);
-                ArrayList<Sets> set = new ArrayList<>();
-                Sets aSet = new Sets();
-                set.add(new Sets());
-                ep.setIntraSets(set);
+                ArrayList<ExerciseSet> set = new ArrayList<>();
+                ExerciseSet aSet = new ExerciseSet();
+                set.add(new ExerciseSet());
+            //    ep.setIntraSets(set);
                 mLayout.add(exerciseProfile.getExerciseProfiles().size(), ep);
                 adapter.notifyDataSetChanged();
                 viewPager.setCurrentItem(exerciseProfile.getExerciseProfiles().size());
@@ -190,8 +212,8 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
             mLayout.add(ep.getExerciseProfiles().get(j));
         }
         for (int j = 0; j < ep.getSets().size(); j++) {
-            PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(ep.getSets().get(j).get(0));
-            mLayout.add(setsPLObject);
+          //  PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(exerciseProfile,ep.getSets().get(j).get(0));
+     //       mLayout.add(setsPLObject);
         }
     }
 
@@ -202,7 +224,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     @Override
     public void onClick(View v) {
-        ArrayList<Sets> mBH = new ArrayList<>();
+        ArrayList<ExerciseSet> mBH = new ArrayList<>();
 
 
     }

@@ -145,7 +145,7 @@ public class CreateFragment extends BaseCreateProgramFragment implements View.On
             layoutManager = generator.generate();
         } else {
             layoutManager = new LayoutManager(getContext(),dm,programTemplate);
-            layoutManager.createNewLayoutFromTemplate(programTemplate);
+         //   layoutManager.createNewLayoutFromTemplate(programTemplate);
             //newProgrammer.createLayoutFromTemplate(programTemplate);
         }
 

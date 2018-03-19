@@ -109,7 +109,7 @@ public class ChooseContainerFragment extends BaseCreateProgramFragment {
             if(type.equals(INTRA_EXERCISE)){
                 return exerciseProfile.getExerciseProfiles().size()+1;
             }else if(type.equals(SET)){
-                return exerciseProfile.getSets().get(pos).size();
+                return exerciseProfile.getSets().get(pos).getIntraSets().size();
             }
             return -1;
         }

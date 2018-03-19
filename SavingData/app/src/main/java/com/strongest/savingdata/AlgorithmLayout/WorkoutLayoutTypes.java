@@ -16,13 +16,14 @@ public enum WorkoutLayoutTypes {
 
     ProgressPLObject,
 
-    BeansHolderLeftMargin,
-
-    BeansHolderRightMargin,
 
     IntraSet,
 
     IntraExerciseProfile,
+
+    SuperSetIntraSet,
+
+    IntraSetNormal,
 
     AddExercise,
 

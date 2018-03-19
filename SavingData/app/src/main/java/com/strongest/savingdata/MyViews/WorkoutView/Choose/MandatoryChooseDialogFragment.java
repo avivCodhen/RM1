@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.Database.Exercise.Sets;
+import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.MyViews.MySelector.ChooseSelectorAdapter;
 import com.strongest.savingdata.MyViews.MySelector.MySelector;
@@ -38,8 +38,8 @@ public class MandatoryChooseDialogFragment extends Fragment {
 
     private Bundle i;
     private Intent intent;
-    private ArrayList<Sets> sets;
-    private Sets set;
+    private ArrayList<ExerciseSet> sets;
+    private ExerciseSet set;
     private Muscle muscle;
 
     private DataManager dataManager;
@@ -70,7 +70,7 @@ public class MandatoryChooseDialogFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            sets = (ArrayList<com.strongest.savingdata.Database.Exercise.Sets>) getArguments().getSerializable("beans_holder");
+            sets = (ArrayList<ExerciseSet>) getArguments().getSerializable("beans_holder");
 
         }
     }
@@ -103,24 +103,24 @@ public class MandatoryChooseDialogFragment extends Fragment {
 
         MySelector.CheckedHolder[] checkerHolders;
         if (sets == null) {
-            set = new Sets();
+            set = new ExerciseSet();
         } else {
             set = sets.get(0);
         }
-        checkerHolders = new MySelector.CheckedHolder[]{
+        /*checkerHolders = new MySelector.CheckedHolder[]{
                 new MySelector.CheckedHolder(set.getExercise()),
                 new MySelector.CheckedHolder(set.getSets()),
                 new MySelector.CheckedHolder(set.getRep()),
                 new MySelector.CheckedHolder(set.getRest())
-        };
+        };*/
 
-        adapter = new ChooseSelectorAdapter(beansHolderChange, getFragmentManager(), getContext(), muscle, checkerHolders,
+       /* adapter = new ChooseSelectorAdapter(beansHolderChange, getFragmentManager(), getContext(), muscle, checkerHolders,
                 Exercise,
                 Sets,
                 Reps,
                 Rest
-                /*Method*/);
-        mySelector.setAdapter(adapter);
+                *//*Method*//*);
+        mySelector.setAdapter(adapter);*/
 
 
     }
@@ -139,10 +139,10 @@ public class MandatoryChooseDialogFragment extends Fragment {
 
     }
 
-    public com.strongest.savingdata.Database.Exercise.Sets getMandatoryBeansHolder() {
-        initBeans();
+    public ExerciseSet getMandatoryBeansHolder() {
+ /*       initBeans();
         if (sets == null) {
-            set = new Sets();
+            set = new ExerciseSet();
         }
         MySelector.CheckedHolder[] checkHolder = adapter.getCheckedHolders();
 
@@ -169,7 +169,8 @@ public class MandatoryChooseDialogFragment extends Fragment {
 
             }
         }
-        return set;
+        return set;*/
+ return null;
     }
 
     private boolean vaildate(MySelector.CheckedHolder[] checkHolder) {
