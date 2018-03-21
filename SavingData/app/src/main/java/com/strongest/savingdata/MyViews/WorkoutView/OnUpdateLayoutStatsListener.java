@@ -11,5 +11,5 @@ import java.util.ArrayList;
 
 public interface OnUpdateLayoutStatsListener {
 
-    ArrayList<PLObjects> updateLayoutStats(LayoutManager.UpdateComponents updateComponents);
+    ArrayList<PLObjects> updateLayout(LayoutManager.UpdateComponents updateComponents);
 }

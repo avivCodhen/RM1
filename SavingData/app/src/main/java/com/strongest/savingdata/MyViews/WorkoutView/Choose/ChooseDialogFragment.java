@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.AlgorithmLayout.PLObjects;
 import com.strongest.savingdata.AlgorithmLayout.ReactLayoutManager;
 import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
+import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
@@ -62,6 +64,8 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     private int currentRecyclerPosition;
     private int currentTab;
     private boolean initiated;
+    private RecyclerView mRecyclerView;
+    private MyExpandableAdapter myExpandableAdapter;
 
     public static ChooseDialogFragment getInstance(OnExerciseChangeListener onExerciseChangeListener,
                                                    int position,
@@ -92,9 +96,9 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
             }
         }, 500);
         ((HomeActivity) getActivity()).begoneTabLayout();
-        Drawable d = new ColorDrawable(Color.BLACK);
+        /*Drawable d = new ColorDrawable(Color.BLACK);
         d.setAlpha(100);
-
+*/
         View v = inflater.inflate(R.layout.fragment_choose, container, false);
         return v;
     }
@@ -118,6 +122,24 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
                 exerciseProfile
 
         );
+
+
+        ArrayList<PLObjects> layout = new ArrayList<>();
+        layout.add(exerciseProfile);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.fragment_choose_recyclerview);
+        LinearLayoutManager lm = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(lm);
+        mRecyclerView.setAlpha(0f);
+        MyJavaAnimator.fadeIn(mRecyclerView);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+            }
+        },200);
+        myExpandableAdapter = new MyExpandableAdapter(layout, getContext(), null, null, null);
+        mRecyclerView.setAdapter(myExpandableAdapter);
+
+
         ((MyExpandableAdapter.ExerciseViewHolder) vh).card.setOnClickListener(null);
         final ChooseAdapter adapter = new ChooseAdapter(getChildFragmentManager(), mLayout);
         viewPager = (ViewPager) v.findViewById(R.id.choose_dialog_viewpager);
@@ -161,8 +183,8 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
                 ArrayList<ExerciseSet> set = new ArrayList<>();
                 ExerciseSet aSet = new ExerciseSet();
                 set.add(new ExerciseSet());
-               // exerciseProfile.getSets().add(set);
-                PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(exerciseProfile,aSet);
+                // exerciseProfile.getSets().add(set);
+                PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(exerciseProfile, aSet);
                 mLayout.add(mLayout.size() - 1, setsPLObject);
                 ((HomeActivity) getActivity()).
                         workoutView.addSet(
@@ -184,7 +206,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
                 ArrayList<ExerciseSet> set = new ArrayList<>();
                 ExerciseSet aSet = new ExerciseSet();
                 set.add(new ExerciseSet());
-            //    ep.setIntraSets(set);
+                //    ep.setIntraSets(set);
                 mLayout.add(exerciseProfile.getExerciseProfiles().size(), ep);
                 adapter.notifyDataSetChanged();
                 viewPager.setCurrentItem(exerciseProfile.getExerciseProfiles().size());
@@ -212,8 +234,8 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
             mLayout.add(ep.getExerciseProfiles().get(j));
         }
         for (int j = 0; j < ep.getSets().size(); j++) {
-          //  PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(exerciseProfile,ep.getSets().get(j).get(0));
-     //       mLayout.add(setsPLObject);
+            //  PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(exerciseProfile,ep.getSets().get(j).get(0));
+            //       mLayout.add(setsPLObject);
         }
     }
 

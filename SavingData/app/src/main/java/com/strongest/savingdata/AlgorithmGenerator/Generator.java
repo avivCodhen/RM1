@@ -99,7 +99,7 @@ public class Generator {
         // programManager.updateRecyclerLayout(newExArray);
         // programManager.setStats();
 
-        layoutManager.finish(true);
+       // layoutManager.finish(true);
         return layoutManager;
     }
 

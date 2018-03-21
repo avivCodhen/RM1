@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
+import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.BaseWorkout.Program;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
@@ -390,16 +391,18 @@ public class ProgramDataManager extends DataManager {
                     break;
                 case ExerciseProfile:
                     PLObjects.ExerciseProfile exerciseProfile = (PLObjects.ExerciseProfile) ep;
-
+                    if(exerciseProfile.getInnerType() == WorkoutLayoutTypes.IntraExerciseProfile){
+                        break;
+                    }
                     contentValues.add(saveExercise(exerciseProfile)) ;
 
                     for (int j = 0; j < exerciseProfile.getExerciseProfiles().size(); j++) {
                         PLObjects.ExerciseProfile superset = exerciseProfile.getExerciseProfiles().get(j);
                         contentValues.add(saveExercise(superset));
 
-                        for (int k = 0; k < superset.getSets().size(); k++) {
-                            PLObjects.SetsPLObject setsPLObject = superset.getSets().get(k);
-                            contentValues.add(saveSets(setsPLObject));
+                        for (int k = 0; k < superset.getIntraSets().size(); k++) {
+                            PLObjects.IntraSetPLObject intraSetPLObject = superset.getIntraSets().get(k);
+                            contentValues.add(saveSets(intraSetPLObject));
                         }
                     }
 
@@ -408,7 +411,8 @@ public class ProgramDataManager extends DataManager {
                         PLObjects.SetsPLObject setsPLObject = exerciseProfile.getSets().get(j);
                         contentValues.add(saveSets(setsPLObject));
                         for (int k = 0; k < setsPLObject.getIntraSets().size(); k++) {
-                            contentValues.add(saveSets(setsPLObject));
+                            PLObjects.IntraSetPLObject intraSet = setsPLObject.getIntraSets().get(k);
+                            contentValues.add(saveSets(intraSet));
                         }
                     }
                     break;
@@ -419,6 +423,20 @@ public class ProgramDataManager extends DataManager {
     }
 
     private ContentValues saveSets(PLObjects.SetsPLObject setsPLObject) {
+        ContentValues supersetIntraCV;
+        supersetIntraCV = new ContentValues();
+        supersetIntraCV.put(DBExercisesHelper.TYPE, setsPLObject.getType().ordinal());
+        supersetIntraCV.put(DBProgramHelper.WORKOUT_ID, setsPLObject.getWorkoutId());
+        supersetIntraCV.put(DBExercisesHelper.TYPE, setsPLObject.getType().ordinal());
+        supersetIntraCV.put(INNER_TYPE, setsPLObject.getInnerType().ordinal());
+        supersetIntraCV.put(DBProgramHelper.WORKOUT_ID, setsPLObject.getWorkoutId());
+        supersetIntraCV.put(REP_ID, setsPLObject.getExerciseSet().getRep());
+        supersetIntraCV.put(REST, setsPLObject.getExerciseSet().getRest());
+        supersetIntraCV.put(WEIGHT, setsPLObject.getExerciseSet().getWeight());
+        return supersetIntraCV;
+    }
+
+    private ContentValues saveSets(PLObjects.IntraSetPLObject setsPLObject) {
         ContentValues supersetIntraCV;
         supersetIntraCV = new ContentValues();
         supersetIntraCV.put(DBExercisesHelper.TYPE, setsPLObject.getType().ordinal());

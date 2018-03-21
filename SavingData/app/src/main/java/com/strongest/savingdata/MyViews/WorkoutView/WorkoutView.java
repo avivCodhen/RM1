@@ -2,7 +2,9 @@ package com.strongest.savingdata.MyViews.WorkoutView;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.style.UpdateLayout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,23 +51,22 @@ import com.strongest.savingdata.DragNDrop.DragAndDrop;
 import com.strongest.savingdata.MyViews.WorkoutViewOnWorkoutListener;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
-import com.strongest.savingdata.createProgramFragments.Create.OnPositionViewListener;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
 
+import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.DELETE_EXERCISE;
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.DELETE_WORKOUT;
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.DRAW_DIVIDER;
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.NEW_EXERCISE;
-import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.NEW_EXERCISE_FLIPPED;
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.NEW_WORKOUT;
 
 /**
  * Created by Cohen on 12/16/2017.
  */
 
-public class WorkoutView extends LinearLayout implements View.OnClickListener, WorkoutViewOnWorkoutListener,
+public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutListener,
         OnUpdateLayoutStatsListener, OnProgramToolsActionListener, OnEnterExitChooseFragment {
 
     //private ItemTouchHelper mTouchHelper;
@@ -270,23 +272,12 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
     }
 
     @Override
-    public void onClick(View v) {
-
-
-    }
-
-
-    @Override
     public void updateWorkoutPosition(int workoutPosition) {
         this.workoutPosition = workoutPosition;
     }
 
-    public void setProgressorManager(ProgressorManager progressorManager) {
-        this.progressorManager = progressorManager;
-    }
-
     @Override
-    public ArrayList<PLObjects> updateLayoutStats(LayoutManager.UpdateComponents updateComponents) {
+    public ArrayList<PLObjects> updateLayout(LayoutManager.UpdateComponents updateComponents) {
         updateComponents.setWorkoutPosition(mViewPager.getCurrentItem());
         layoutManager.updateLayout(updateComponents);
 
@@ -297,7 +288,7 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
             mAdapter.setUpdate(false);
 
         }
-        return layoutManager.getSplitRecyclerWorkouts(true).get(mViewPager.getCurrentItem());
+        return layoutManager.getSplitRecyclerWorkouts().get(mViewPager.getCurrentItem());
 
     }
 
@@ -314,23 +305,26 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
         LayoutManager.UpdateComponents upd;
 
         switch (command) {
+
             case NEW_EXERCISE:
-                f.addRow(f.exArray.size(), WorkoutLayoutTypes.ExerciseProfile);
-                break;
-            case NEW_EXERCISE_FLIPPED:
-                f.addRow(f.exArray.size(), WorkoutLayoutTypes.ExerciseProfile);
+                int position = f.exArray.size();
+                LayoutManager.UpdateComponents uc = new LayoutManager.UpdateComponents(LayoutManager.NEW_EXERCISE);
+                uc.setInsertPosition(position);
+                uc.setInnerType(WorkoutLayoutTypes.ExerciseProfile);
+                f.setExArray(updateLayout(uc));
+                f.adapter.myNotifyItemInserted(f.exArray, position);
+                f.scrollToPosition(position, true, false);
+                //  f.addRow(f.exArray.size(), WorkoutLayoutTypes.ExerciseProfile);
                 break;
             case NEW_WORKOUT:
                 upd = new LayoutManager.UpdateComponents(NEW_WORKOUT);
                 upd.setUpdate(true);
-                updateLayoutStats(upd);
+                updateLayout(upd);
                 mAdapter.setmProgramLayout(layoutManager.getLayout());
-                // mAdapter.notifyDataSetChanged();
                 mViewPager.setCurrentItem(workoutViewFragments.size() - 1);
-                //f.adapter.notifyItemInserted(0);
                 break;
             case DELETE_WORKOUT:
-                if (layoutManager.getWorkouts(false).size() == 1) {
+                if (layoutManager.getWorkouts().size() == 1) {
                     Toast.makeText(context, "You cannot delete the only workout", Toast.LENGTH_SHORT).show();
                 } else {
                     final LayoutManager.UpdateComponents updt = new LayoutManager.UpdateComponents(DELETE_WORKOUT);
@@ -339,7 +333,7 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
                         @Override
                         public void run() {
                             updt.setUpdate(true);
-                            updateLayoutStats(updt);
+                            updateLayout(updt);
                             mViewPager.setCurrentItem(mViewPager.getCurrentItem());
                         }
                     }, 300);
@@ -358,25 +352,35 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
 
     }
 
-    public void addSet(int position, PLObjects.SetsPLObject setsPLObject){
+    public void addSet(int position, PLObjects.SetsPLObject setsPLObject) {
         WorkoutViewFragment f = workoutViewFragments.get(mViewPager.getCurrentItem());
         f.exArray.add(position, setsPLObject);
         f.adapter.notifyItemInserted(position);
     }
 
     @Override
-    public void onEnterChooseFragment(RecyclerView.ViewHolder vh) {
+    public void onEnterChooseFragment(final RecyclerView.ViewHolder vh) {
         WorkoutViewFragment f = workoutViewFragments.get(mViewPager.getCurrentItem());
         ExerciseProfile ep = (ExerciseProfile) f.exArray.get(vh.getAdapterPosition());
+        vh.itemView.animate().alpha(0f).setDuration(500);
+        /*new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                vh.itemView.setAlpha(0f);
+            }
+        }, 100);*/
+        //MyJavaAnimator.fadeOut(vh.itemView);
 //        f.getAdapter().deTailExpand(vh);
     }
 
     @Override
-    public void onExitChooseFragment(RecyclerView.ViewHolder vh, boolean isCollapsed) {
+    public void onExitChooseFragment(final RecyclerView.ViewHolder vh, boolean isCollapsed) {
         if (!isCollapsed) {
             WorkoutViewFragment f = workoutViewFragments.get(mViewPager.getCurrentItem());
             f.getAdapter().detailCollapse(vh);
+            f.scrollToPosition(vh.getAdapterPosition(), true, false);
         }
+      vh.itemView.animate().alpha(1f).setDuration(500);
 //        layoutManager.saveLayoutToDataBase(true);
 
     }
@@ -428,7 +432,7 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
 
         @Override
         public int getCount() {
-            return plm.getWorkouts(false).size();
+            return plm.getWorkouts().size();
         }
 
         @Override
@@ -444,8 +448,8 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
         @Override
         public Fragment getItem(int position) {
             WorkoutViewFragment frag = null;
-            mProgramLayout = plm.getSplitRecyclerWorkouts(true).get(position);
-            frag = WorkoutViewFragment.getInstance(onEnterExitChooseFragment, workoutViewModes, onUpdateListener,
+            mProgramLayout = plm.getSplitRecyclerWorkouts().get(position);
+            frag = WorkoutViewFragment.getInstance(onEnterExitChooseFragment, onUpdateListener,
                     mProgramLayout);
             frag.setOnUpdateLayoutStatsListener(onUpdateListener);
             return frag;
@@ -464,7 +468,7 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
 
      /*   public void notiftyMyItemRemoved(int fragment, int position) {
             WorkoutViewFragment f = list.get(fragment);
-            //f.updateView(programLayoutManager.getSplitRecyclerWorkouts().get(workoutPosition));
+            //f.updateView(programLayoutManager.initRecyclerMatrixLayout().get(workoutPosition));
             f.notifyItemRemoved(position);
         }
 
@@ -493,9 +497,9 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
         callbacks include: drag&drop, onclick, on long click.
      */
 
-    public static class WorkoutViewFragment extends Fragment implements com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener, ScrollToPositionListener
-            , OnPositionViewListener,
-            OnExerciseProfileEditClick, OnExerciseChangeListener, OnMoreClickListener {
+    public static class WorkoutViewFragment extends Fragment implements com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener,
+            ScrollToPositionListener,
+            OnExerciseProfileEditClick, OnExerciseChangeListener, OnWorkoutViewInterfaceClicksListener {
 
         private RecyclerView recycler;
         //private WorkoutAdapter adapter;
@@ -515,11 +519,10 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
         private OnEnterExitChooseFragment onEnterExitChooseFragment;
 
 
-        public static WorkoutViewFragment getInstance(OnEnterExitChooseFragment onEnterExitChooseFragment, ProgramToolsView.WorkoutViewModes workoutViewModes,
+        public static WorkoutViewFragment getInstance(OnEnterExitChooseFragment onEnterExitChooseFragment,
                                                       OnUpdateLayoutStatsListener onUpdateListener,
                                                       ArrayList<PLObjects> exArray) {
             WorkoutViewFragment frag = new WorkoutViewFragment();
-            frag.setWorkoutViewModes(workoutViewModes);
             frag.setExArray(exArray);
             frag.setOnUpdateLayoutStatsListener(onUpdateListener);
             frag.setOnEnterExitChooseFragment(onEnterExitChooseFragment);
@@ -547,8 +550,7 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
                     getContext(),
                     this,
                     this,
-                    this,
-                    workoutViewModes
+                    this
             );
             adapter.setOnExerciseProfileEditClick(this);
             if (adapter != null) {
@@ -556,17 +558,6 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
             } else {
                 Log.d("aviv", "initViews:  trouble in workoutviewfragment");
             }
-        }
-
-        @Override
-        public void onSaveInstanceState(Bundle outState) {
-            super.onSaveInstanceState(outState);
-
-        }
-
-        @Override
-        public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-            super.onViewStateRestored(savedInstanceState);
         }
 
         private void configurateRecycler() {
@@ -612,7 +603,7 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
             touchHelper.startDrag(viewHolder);
             if (onUpdateLayoutStatsListener != null) {
                 LayoutManager.UpdateComponents uc = new LayoutManager.UpdateComponents(LayoutManager.SWAP);
-                onUpdateLayoutStatsListener.updateLayoutStats(uc);
+                onUpdateLayoutStatsListener.updateLayout(uc);
 
             }
 
@@ -625,7 +616,7 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
                 LayoutManager.UpdateComponents uc = new LayoutManager.UpdateComponents(LayoutManager.NEW_EXERCISE);
                 uc.setInsertPosition(position);
                 uc.setInnerType(innerType);
-                exArray = onUpdateLayoutStatsListener.updateLayoutStats(uc);
+                exArray = onUpdateLayoutStatsListener.updateLayout(uc);
             }
             adapter.myNotifyItemInserted(exArray, position);
             scrollToPosition(position, true, false);
@@ -634,17 +625,11 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
         public void addBodyView(int position, LayoutManager.UpdateComponents upd) {
             if (onUpdateLayoutStatsListener != null) {
                 upd.setInsertPosition(position);
-                exArray = onUpdateLayoutStatsListener.updateLayoutStats(upd);
+                exArray = onUpdateLayoutStatsListener.updateLayout(upd);
             }
             adapter.myNotifyItemInserted(exArray, position);
             scrollToPosition(position, true, false);
         }
-
-        @Override
-        public void longClick(View v, int pos) {
-
-        }
-
 
         public void setOnEnterExitChooseFragment(OnEnterExitChooseFragment onEnterExitChooseFragment) {
             this.onEnterExitChooseFragment = onEnterExitChooseFragment;
@@ -700,17 +685,243 @@ public class WorkoutView extends LinearLayout implements View.OnClickListener, W
             MyJavaAnimator.fadeOut(mainView);
         }
 
-        public ProgramToolsView.WorkoutViewModes getWorkoutViewModes() {
-            return workoutViewModes;
-        }
-
-        public void setWorkoutViewModes(ProgramToolsView.WorkoutViewModes workoutViewModes) {
-            this.workoutViewModes = workoutViewModes;
+        @Override
+        public void onExerciseClick(MyExpandableAdapter.ExerciseViewHolder vh) {
+            ExerciseProfile exerciseProfile = (ExerciseProfile) exArray.get(vh.getAdapterPosition());
+            if (exerciseProfile.isMoreOn()) {
+                vh.card.animate().x(0);
+                exerciseProfile.setMoreOn(false);
+            }
+            if (exerciseProfile.isExpand()) {
+                adapter.onCollapse(vh);
+            } else {
+                adapter.onExpand(vh);
+            }
         }
 
         @Override
-        public void showMoreMenu(RecyclerView.ViewHolder vh) {
+        public void onLongSupersetClick(final RecyclerView.ViewHolder vh, boolean delete) {
+            ExerciseProfile ep = null;
+            final int position = vh.getAdapterPosition();
+            ep = ((ExerciseProfile) exArray.get(position));
+            if (delete) {
+                int length = ep.getParent().getExerciseProfiles().size() + ep.getParent().getSets().size();
+                boolean isExpand = ep.getParent().isExpand();
 
+                ep.getParent().getExerciseProfiles().remove(ep);
+                LayoutManager.UpdateComponents updateComponents = new LayoutManager.UpdateComponents(DELETE_EXERCISE);
+                updateComponents.setPlObject(ep);
+                updateComponents.setRemovePosition(position);
+                exArray = onUpdateLayoutStatsListener.updateLayout(updateComponents);
+
+                adapter.setExArray(exArray);
+                adapter.notifyItemRemoved(position);
+                if (isExpand) {
+
+                    for (int i = position; i < exArray.size(); i++) {
+                        for (int j = 0; j < ep.getParent().getSets().size(); j++) {
+                            if (exArray.get(i).type == WorkoutLayoutTypes.IntraSet && ep.getIntraSets().get(j) == exArray.get(i)) {
+                                exArray.remove(i);
+                                adapter.notifyItemRemoved(i);
+                            }
+                        }
+                    }
+                }
+                int start = 0;
+                int end = 0;
+                for (int i = position; i < exArray.size(); i++) {
+                    if (exArray.get(i).getType() == WorkoutLayoutTypes.SetsPLObject) {
+                        break;
+                    } else {
+                        start++;
+                    }
+                }
+
+                //adapter.notifyItemRangeRemoved(position+start, ep.getParent().getSets().size()*2);
+
+                return;
+            }
+
+            new AlertDialog.Builder(getContext())
+                    .setCancelable(true)
+                    .setMessage("Delete this Exercise and all it's data?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onLongSupersetClick(vh, true);
+
+                        }
+                    }).setNegativeButton("No", null).show();
+        }
+
+        @Override
+        public void onLongClick(final RecyclerView.ViewHolder vh, boolean delete) {
+
+            boolean isExpand = false;
+            ExerciseProfile ep = null;
+            final int position = vh.getAdapterPosition();
+            ep = ((ExerciseProfile) exArray.get(position));
+            isExpand = ep.isExpand();
+
+
+            if (delete) {
+                int length = 1;
+                if (isExpand) {
+                    adapter.onCollapse((MyExpandableAdapter.ExerciseViewHolder) vh);
+                }
+                LayoutManager.UpdateComponents updateComponents = new LayoutManager.UpdateComponents(DELETE_EXERCISE);
+                updateComponents.setPlObject(ep);
+                updateComponents.setRemovePosition(position);
+                exArray = onUpdateLayoutStatsListener.updateLayout(updateComponents);
+                adapter.setExArray(exArray);
+                adapter.notifyItemRangeRemoved(position, ep.getExerciseProfiles().size() + 1);
+                return;
+            }
+
+            new AlertDialog.Builder(getContext())
+                    .setCancelable(true)
+                    .setMessage("Delete this Exercise and all it's data?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onLongClick(vh, true);
+
+                        }
+                    }).setNegativeButton("No", null).show();
+        }
+
+        @Override
+        public void onSetsDoubleClick(RecyclerView.ViewHolder vh, int childPosition) {
+            int position = vh.getAdapterPosition();
+            PLObjects.SetsPLObject setsPLObject = (PLObjects.SetsPLObject) exArray.get(position);
+            PLObjects.SetsPLObject newSetsPLObject = new PLObjects.SetsPLObject(
+                    setsPLObject.getParent(),
+                    setsPLObject.getExerciseSet());
+            newSetsPLObject.setInnerType(WorkoutLayoutTypes.SetsPLObject);
+            setsPLObject.getParent().getSets().add(childPosition + 1, newSetsPLObject);
+            int count = 1;
+            int setBlockLength = setsPLObject.getIntraSets().size() + setsPLObject.getParent().getExerciseProfiles().size();
+            int newPosition = position + 1 + setBlockLength;
+            exArray.add(newPosition, newSetsPLObject);
+            for (int i = 0; i < setsPLObject.getParent().getExerciseProfiles().size(); i++) {
+                exArray.add(newPosition + 1 + i, new PLObjects.IntraSetPLObject(
+                        setsPLObject.getParent().getExerciseProfiles().get(i),
+                        setsPLObject.getExerciseSet(),
+                        WorkoutLayoutTypes.SuperSetIntraSet,
+                        setsPLObject
+                ));
+                count++;
+                setsPLObject.getParent().getExerciseProfiles().get(i).getIntraSets().add(childPosition + 1, (PLObjects.IntraSetPLObject) exArray.get(newPosition + 1 + i));
+            }
+
+            for (int i = 0; i < setsPLObject.getIntraSets().size(); i++) {
+                exArray.add(newPosition + count, new PLObjects.IntraSetPLObject(
+                        setsPLObject.getParent(),
+                        setsPLObject.getExerciseSet(),
+                        WorkoutLayoutTypes.IntraSetNormal,
+                        setsPLObject
+                ));
+                setsPLObject.getIntraSets().add((PLObjects.IntraSetPLObject) exArray.get(newPosition + count));
+                count++;
+
+            }
+            adapter.notifyItemRangeInserted(position + 1, count);
+            int numOfSupersets = setsPLObject.getParent().getExerciseProfiles().size();
+            int numOfMainExerciseSet = setsPLObject.getParent().getSets().size();
+            int numOfBlock = 0;
+            for (int i = position; i < exArray.size(); i++) {
+                if (exArray.get(i).getType() != WorkoutLayoutTypes.ExerciseProfile) {
+                    numOfBlock++;
+                } else {
+                    break;
+                }
+            }
+            int blockLength = (numOfSupersets * numOfMainExerciseSet) * 2 - childPosition;
+            adapter.notifyItemRangeChanged(position + 1, numOfBlock);
+        }
+
+        @Override
+        public void onSetsLongClick(final RecyclerView.ViewHolder vh, final int childPosition, boolean delete) {
+            int position = vh.getAdapterPosition();
+            int count = 0;
+            PLObjects.SetsPLObject setsPLObject = (PLObjects.SetsPLObject) exArray.get(position);
+            if (setsPLObject.getParent().getSets().size() == 1) {
+                Toast.makeText(getContext(), "You cannot delete the only set.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (delete) {
+                setsPLObject.getParent().getSets().remove(childPosition);
+                for (int i = 0; i < setsPLObject.getParent().getExerciseProfiles().size(); i++) {
+                    count++;
+                    setsPLObject.getParent().getExerciseProfiles().get(i).getIntraSets().remove(childPosition);
+                    exArray.remove(position);
+                }
+                for (int i = 0; i < setsPLObject.getIntraSets().size() + 1; i++) {
+                    exArray.remove(position);
+                    count++;
+                }
+                adapter.notifyItemRangeRemoved(position, count);
+                adapter.notifyItemRangeChanged(position, setsPLObject.getParent().getSets().size());
+                return;
+            }
+            new AlertDialog.Builder(getContext())
+                    .setCancelable(true)
+                    .setMessage("Delete this set?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onSetsLongClick(vh, childPosition, true);
+
+                        }
+                    }).setNegativeButton("No", null).show();
+        }
+
+        @Override
+        public void onMoreClick(RecyclerView.ViewHolder vh) {
+            View v = null;
+            View expandV = null;
+            if (vh instanceof MyExpandableAdapter.ExerciseViewHolder) {
+                v = ((MyExpandableAdapter.ExerciseViewHolder) vh).card;
+                expandV = ((MyExpandableAdapter.ExerciseViewHolder) vh).expandableLayout;
+            } else if (vh instanceof MyExpandableAdapter.SetsViewHolder) {
+                v = ((MyExpandableAdapter.SetsViewHolder) vh).card;
+                // expandV = ((MyExpandableAdapter.SetsViewHolder) vh).expandableLayout;
+
+
+            }
+            ExerciseProfile exerciseProfile = (ExerciseProfile) exArray.get(vh.getAdapterPosition());
+            if (exerciseProfile.isMoreOn()) {
+                v.animate().x(0);
+
+                exerciseProfile.setMoreOn(false);
+            } else {
+                exerciseProfile.setMoreOn(true);
+                v.animate().x(-expandV.getWidth());
+            }
+        }
+
+        @Override
+        public void onSettingsClick(RecyclerView.ViewHolder vh) {
+            View v = null;
+            if (vh instanceof MyExpandableAdapter.ExerciseViewHolder) {
+                v = ((MyExpandableAdapter.ExerciseViewHolder) vh).card;
+            } else if (vh instanceof MyExpandableAdapter.SetsViewHolder) {
+                v = ((MyExpandableAdapter.SetsViewHolder) vh).card;
+            }
+            ExerciseProfile exerciseProfile = (ExerciseProfile) exArray.get(vh.getAdapterPosition());
+            if (exerciseProfile.isMoreOn()) {
+                v.animate().x(0);
+                exerciseProfile.setMoreOn(false);
+            }
+            if (exerciseProfile.isEditMode()) {
+                adapter.detailCollapse(vh);
+                exerciseProfile.setEditMode(false);
+
+            } else {
+                exerciseProfile.setEditMode(true);
+                adapter.deTailExpand(vh);
+            }
         }
     }
 }

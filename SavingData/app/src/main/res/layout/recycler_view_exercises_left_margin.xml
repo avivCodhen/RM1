@@ -4,7 +4,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="96dp"
+    android:layout_height="wrap_content"
     android:foreground="?attr/selectableItemBackground"
     android:focusable="true"
 
@@ -25,7 +25,7 @@
             android:focusable="true"
             android:id="@+id/exercise_main_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:foreground="?attr/selectableItemBackground"
             android:background="@drawable/aviv_exercise_placeholder_left_margin"
             android:paddingTop="3dp">
@@ -33,22 +33,19 @@
 
             <TextView
                 android:id="@+id/exerciseView_muscleTV"
-                android:layout_width="@dimen/muscle_name_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ex1"
-                android:layout_marginTop="10dp"
-                android:background="@color/background_color"
                 android:fontFamily="assets/varela_round_regular"
-                android:gravity="top"
-                android:padding="3dp"
                 android:text="Anterior Shoulder"
                 android:textAlignment="center"
                 android:textAllCaps="true"
+                android:layout_marginLeft="70dp"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/muscle_name_gray"
-                android:textSize="@dimen/muscle_name_textsize" />
+                android:textSize="10sp" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-
+                android:layout_centerVertical="true"
                 android:id="@+id/ex1"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -65,11 +62,12 @@
 
 
             <ImageView
+                android:layout_marginRight="45dp"
                 android:id="@+id/ex_choose"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/ex_more"
+                android:layout_alignParentRight="true"
                 android:padding="5dp"
                 android:src="@drawable/settings_24px_gray" />
 
@@ -77,142 +75,180 @@
                 android:id="@+id/ex_more"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/ex_choose"
                 android:padding="5dp"
                 android:src="@drawable/menu_vertical_darg_gray_24px" />
 
             <TextView
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:id="@+id/exerciseView_nameTV"
-                android:layout_width="wrap_content"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="85dp"
-                android:layout_marginTop="5dp"
-                android:text="Barbell Bench Press"
+                android:layout_marginLeft="70dp"
+                android:layout_marginTop="20dp"
+                android:text="Wide Grip Machine Row With A Dildo And t"
                 android:textSize="15sp"
-
                 />
 
             <ImageView
                 android:id="@+id/ex_arrow"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_toRightOf="@+id/exerciseView_nameTV"
+                android:layout_marginRight="90dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="1dp"
                 android:src="@drawable/collapse_arrow_24px" />
 
-
-            <LinearLayout
-                android:id="@+id/recycler_view_set_card"
-                android:layout_width="match_parent"
-                android:layout_height="17dp"
-                android:layout_marginLeft="85dp"
-                android:layout_marginRight="17dp"
-                android:layout_marginTop="32dp">
-
-                <TextView
-
-                    android:id="@+id/exerciseView_setsTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="12dp"
-                    android:text="Ttl Sets: 12"
-                    android:textSize="12sp" />
-
-
-                <TextView
-                    android:id="@+id/exerciseView_repsTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="12dp"
-                    android:text="Ttl Reps: 30"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/exerciseView_restTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="12dp"
-                    android:text="Ttl Rest: 03:00"
-                    android:textSize="12sp" />
-
-
-                <TextView
-                    android:id="@+id/exerciseView_weightTV"
-
-                    android:layout_width="@dimen/recyclerview_exercises_stats_width"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="12dp"
-                    android:text="-"
-
-                    android:textAlignment="center"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-
-                android:id="@+id/exerciseView_data_layout2"
-                android:layout_width="match_parent"
-                android:layout_height="17dp"
-                android:layout_marginLeft="85dp"
-                android:layout_marginRight="17dp"
-                android:layout_marginTop="53dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="12dp"
-                    android:text="Volume: 1080 kg"
-                    android:textSize="12sp" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:background="@color/colorAccent"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
-                    android:text="intra exercise"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="10sp"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:background="@color/colorAccent"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
-                    android:text="intra set"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="10sp" />
-
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:background="@color/colorAccent"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
-                    android:text="mainLift"
-
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="10sp" />
-
-            </LinearLayout>
 
 
         </RelativeLayout>
 
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/recycler_view_set_card"
+            android:layout_width="match_parent"
+            android:layout_height="17dp"
+            android:layout_marginLeft="85dp"
+            android:layout_marginRight="17dp"
+            android:layout_marginTop="92dp">
+<!--
+
+            <TextView
+
+                android:id="@+id/exerciseView_setsTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12dp"
+                android:text="Ttl Sets: 12"
+                android:textSize="12sp" />
+-->
+
+
+
+
+            <TextView
+                android:id="@+id/exerciseView_restTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12dp"
+                android:text="Ttl Rest: 03:00"
+                android:textSize="12sp" />
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+
+            android:id="@+id/exerciseView_data_layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="45dp">
+
+            <TextView
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:backgroundTint="@color/colorAccent"
+                android:background="@drawable/aviv_circle_placeholder"
+                android:id="@+id/exerciseView_setsTV"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="12dp"
+                android:text="1"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:textSize="10sp" />
+
+            <ImageView
+                android:layout_gravity="center"
+                android:id="@+id/exerciseView_repIV"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:src="@drawable/sync_24px_black"
+                android:layout_marginRight="6dp"
+               />
+
+            <TextView
+                android:gravity="center_vertical"
+                android:id="@+id/exerciseView_repsTV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="12dp"
+                android:text="30"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:layout_gravity="center"
+                android:id="@+id/exerciseView_weightIV"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:src="@drawable/weight_24px_black"
+                android:layout_marginRight="6dp"
+                android:text=""
+                android:textSize="12sp" />
+
+
+            <TextView
+                android:id="@+id/exerciseView_weightTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12dp"
+                android:text="1080 kg"
+
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:background="@color/colorAccent"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:text="intra exercise"
+                android:textColor="@color/colorPrimary"
+                android:textSize="10sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:background="@color/colorAccent"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:text="intra set"
+                android:textColor="@color/colorPrimary"
+                android:textSize="10sp" />
+
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:background="@color/colorAccent"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:text="mainLift"
+
+                android:textColor="@color/colorPrimary"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+
 
     </android.support.v7.widget.CardView>
+
+
 
 
     <LinearLayout

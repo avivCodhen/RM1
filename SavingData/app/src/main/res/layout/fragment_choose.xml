@@ -3,7 +3,6 @@
     android:id="@+id/choose_dialog_fragment_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -59,7 +58,6 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_marginTop="40dp"
-        android:background="@android:color/transparent"
         android:id="@+id/fragment_choose_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,7 +68,6 @@
 
         <android.support.design.widget.CollapsingToolbarLayout
 
-            android:background="@android:color/transparent"
             android:id="@+id/activity_home_collapsingtoolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -79,6 +76,7 @@
             app:contentScrim="?attr/colorAccent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             >
+
 
 
             <android.support.design.widget.TabLayout
@@ -92,8 +90,15 @@
                 app:tabSelectedTextColor="@color/colorPrimary"
                 app:tabTextColor="@color/background_color">
 
+
             </android.support.design.widget.TabLayout>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_choose_recyclerview"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>

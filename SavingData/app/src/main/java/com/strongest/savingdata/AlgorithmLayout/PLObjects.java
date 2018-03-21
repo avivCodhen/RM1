@@ -126,6 +126,7 @@ public class PLObjects implements Aba, Serializable {
         private String tag;
         private boolean moreOn;
         private ExerciseProfile parent;
+        private boolean shadowExpand;
 
         public ExerciseProfile(Muscle muscle, int workoutId, int bodyId, int exerciseProfileId) {
             //    this.mSets = mSets;
@@ -239,6 +240,14 @@ public class PLObjects implements Aba, Serializable {
         public void setParent(ExerciseProfile parent) {
             this.parent = parent;
         }
+
+        public boolean isShadowExpand() {
+            return shadowExpand;
+        }
+
+        public void setShadowExpand(boolean shadowExpand) {
+            this.shadowExpand = shadowExpand;
+        }
     }
 
     public static class SetsPLObject extends PLObjects implements Ben {
@@ -288,10 +297,12 @@ public class PLObjects implements Aba, Serializable {
         private ExerciseProfile parent;
         private ExerciseSet exerciseSet;
         private WorkoutLayoutTypes innerType;
-        public IntraSetPLObject(ExerciseProfile parent, ExerciseSet exerciseSet, WorkoutLayoutTypes innerType){
+        private SetsPLObject parentSet;
+        public IntraSetPLObject(ExerciseProfile parent, ExerciseSet exerciseSet, WorkoutLayoutTypes innerType, SetsPLObject parentSet){
             this.innerType = innerType;
             this.parent = parent;
             this.exerciseSet = exerciseSet;
+            this.parentSet = parentSet;
             type = WorkoutLayoutTypes.IntraSet;
         }
 
@@ -317,6 +328,14 @@ public class PLObjects implements Aba, Serializable {
 
         public void setInnerType(WorkoutLayoutTypes innerType) {
             this.innerType = innerType;
+        }
+
+        public SetsPLObject getParentSet() {
+            return parentSet;
+        }
+
+        public void setParentSet(SetsPLObject parentSet) {
+            this.parentSet = parentSet;
         }
     }
 

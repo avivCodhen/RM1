@@ -288,7 +288,7 @@ public class CreateFragment extends BaseCreateProgramFragment implements View.On
             exerciseProfile.setBeansHolder((BeansHolder) bundle.getSerializable("beans_holder"));
             ExerciseProfileEventMessage eventM = new ExerciseProfileEventMessage(exerciseProfile, pos);
             EventBus.getDefault().post(eventM);
-            //  programmer.getProgramLayoutManager().updateLayoutStats(true);
+            //  programmer.getProgramLayoutManager().updateLayout(true);
             adapter.notifyDataSetChanged();
 
         }

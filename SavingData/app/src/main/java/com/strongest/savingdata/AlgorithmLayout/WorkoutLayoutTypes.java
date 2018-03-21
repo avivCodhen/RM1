@@ -16,7 +16,6 @@ public enum WorkoutLayoutTypes {
 
     ProgressPLObject,
 
-
     IntraSet,
 
     IntraExerciseProfile,

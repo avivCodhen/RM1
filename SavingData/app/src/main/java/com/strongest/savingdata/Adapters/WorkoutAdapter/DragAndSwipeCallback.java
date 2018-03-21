@@ -102,6 +102,9 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
         if (viewHolder instanceof MainAdapter.MuscleViewHolder) {
             MainAdapter.MuscleViewHolder itemViewHolder = (MainAdapter.MuscleViewHolder) viewHolder;
             itemViewHolder.onItemClear();
+        }else if(viewHolder instanceof MyExpandableAdapter.ExerciseViewHolder){
+            MyExpandableAdapter.ExerciseViewHolder itemViewHolder = (MyExpandableAdapter.ExerciseViewHolder) viewHolder;
+            itemViewHolder.onItemClear();
         }
     }
 
