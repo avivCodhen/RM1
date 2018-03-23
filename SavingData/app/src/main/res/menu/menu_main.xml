@@ -14,7 +14,7 @@
         android:title="Your Progress"/>
 -->
     <item android:id="@+id/menu_save_program"
-        android:icon="@android:drawable/ic_input_add"
+        android:icon="@android:drawable/ic_menu_save"
         android:title="Save"/>
 
 
@@ -23,7 +23,7 @@
         android:title="My Programs"/>
 
     <item android:id="@+id/menu_create_program"
-        android:icon="@android:drawable/ic_input_add"
+        android:icon="@drawable/create_24px_gray"
         android:title="Create Program"/>
 
 </menu>

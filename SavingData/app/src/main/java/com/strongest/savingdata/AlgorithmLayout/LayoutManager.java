@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.strongest.savingdata.AlgorithmLayout.PLObjects.ExerciseProfile;
+import com.strongest.savingdata.AlgorithmLayout.PLObject.ExerciseProfile;
 import com.strongest.savingdata.AlgorithmStats.StatsCalculatorManager;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
@@ -42,11 +42,11 @@ public class LayoutManager {
         return dbName;
     }
 
-    public ArrayList<PLObjects> getWorkouts(){
+    public ArrayList<PLObject> getWorkouts(){
         return workouts;
     }
-    private ArrayList<PLObjects> initWorkouts() {
-        ArrayList<PLObjects> arr = new ArrayList<>();
+    private ArrayList<PLObject> initWorkouts() {
+        ArrayList<PLObject> arr = new ArrayList<>();
         for (int i = 0; i < layout.size(); i++) {
             if (layout.get(i).getType() == WorkoutLayoutTypes.WorkoutView) {
                 arr.add(layout.get(i));
@@ -89,14 +89,14 @@ public class LayoutManager {
 
     private ArrayList<ArrayList<String>> bodyTemplate = new ArrayList<>();
     private ArrayList<String> workoutsNames = new ArrayList<>();
-    private ArrayList<PLObjects.BodyText> allBodys;
+    private ArrayList<PLObject.BodyText> allBodys;
     public Context context;
-    private ArrayList<PLObjects> layout = new ArrayList<>();
+    private ArrayList<PLObject> layout = new ArrayList<>();
     private ProgramTemplate programTemplate;
-    private ArrayList<ArrayList<PLObjects>> splitRecyclerWorkouts;
-    private ArrayList<ArrayList<PLObjects>> splitCleanWorkouts;
-    private ArrayList<ArrayList<PLObjects>> exercisesPerWorkouts;
-    private ArrayList<PLObjects> workouts;
+    private ArrayList<ArrayList<PLObject>> splitRecyclerWorkouts;
+    private ArrayList<ArrayList<PLObject>> splitCleanWorkouts;
+    private ArrayList<ArrayList<PLObject>> exercisesPerWorkouts;
+    private ArrayList<PLObject> workouts;
     // private ArrayList<PLObjects> splitCleanWorkout;
     private StatsCalculatorManager statsCalculator;
 
@@ -146,19 +146,19 @@ public class LayoutManager {
 */
 
 
-    public void drawWorkout(ArrayList<PLObjects> toLayout, String workoutName) {
+    public void drawWorkout(ArrayList<PLObject> toLayout, String workoutName) {
         ++numOfWorkouts;
         if (workoutName == null || workoutName.equals("")) {
             workoutName = ProgramTemplate.ProgramTemplateFactory.WhatsYourWorkoutName(numOfWorkouts - 1);
         }
-        toLayout.add(new PLObjects.WorkoutText(numOfWorkouts - 1, workoutName));
+        toLayout.add(new PLObject.WorkoutText(numOfWorkouts - 1, workoutName));
     }
 
-    public void drawBody(ArrayList<PLObjects> toLayout, String title) {
-        toLayout.add(new PLObjects.BodyText(numOfWorkouts - 1, numOfBodyParts, null, title));
+    public void drawBody(ArrayList<PLObject> toLayout, String title) {
+        toLayout.add(new PLObject.BodyText(numOfWorkouts - 1, numOfBodyParts, null, title));
     }
 
-    public ExerciseProfile drawExercise(Muscle m, ArrayList<PLObjects> toLayout, WorkoutLayoutTypes innerType,
+    public ExerciseProfile drawExercise(Muscle m, ArrayList<PLObject> toLayout, WorkoutLayoutTypes innerType,
                                         boolean isNew) {
         if (toLayout == this.layout) {
             ++numOfExercises;
@@ -167,7 +167,7 @@ public class LayoutManager {
         ExerciseSet set = new ExerciseSet();
         ExerciseProfile ep = new ExerciseProfile(m, numOfWorkouts - 1, numOfBodyParts, numOfExercises);
         if (isNew) {
-            PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(ep, set);
+            PLObject.SetsPLObject setsPLObject = new PLObject.SetsPLObject(ep, set);
             setsPLObject.setInnerType(SetsPLObject);
             ep.getSets().add(setsPLObject);
         }
@@ -178,8 +178,8 @@ public class LayoutManager {
         return ep;
     }
 
-    public PLObjects.SetsPLObject createSetsPlObject(ExerciseProfile parent, ExerciseSet exerciseSet, WorkoutLayoutTypes innerType) {
-        PLObjects.SetsPLObject setsPLObject = new PLObjects.SetsPLObject(parent, exerciseSet);
+    public PLObject.SetsPLObject createSetsPlObject(ExerciseProfile parent, ExerciseSet exerciseSet, WorkoutLayoutTypes innerType) {
+        PLObject.SetsPLObject setsPLObject = new PLObject.SetsPLObject(parent, exerciseSet);
         setsPLObject.setInnerType(innerType);
         return setsPLObject;
 
@@ -265,7 +265,7 @@ public class LayoutManager {
                         exerciseSet.setRep(rep);
                         exerciseSet.setRep(rest);
                         exerciseSet.setWeight(weight);
-                        PLObjects.SetsPLObject setsPLObjectSet = new PLObjects.SetsPLObject(setParent, exerciseSet);
+                        PLObject.SetsPLObject setsPLObjectSet = new PLObject.SetsPLObject(setParent, exerciseSet);
                         setsPLObjectSet.setInnerType(innerType);
                         setParent.getSets().add(setsPLObjectSet);
                         break;
@@ -284,7 +284,7 @@ public class LayoutManager {
                                 exerciseSet.setRep(rep);
                                 exerciseSet.setRep(rest);
                                 exerciseSet.setWeight(weight);
-                                PLObjects.IntraSetPLObject intra = new PLObjects.IntraSetPLObject(
+                                PLObject.IntraSetPLObject intra = new PLObject.IntraSetPLObject(
                                         ep,
                                         exerciseSet,
                                         innerType, null);
@@ -302,7 +302,7 @@ public class LayoutManager {
                                 exerciseSet.setWeight(weight);
                                 int position = ep.getSets().size();
 
-                                PLObjects.IntraSetPLObject setsPLObjectIntraSet = new PLObjects.IntraSetPLObject(
+                                PLObject.IntraSetPLObject setsPLObjectIntraSet = new PLObject.IntraSetPLObject(
                                         ep, exerciseSet, innerType, ep.getSets().get(position));
                                 ep.getSets().get(position).getIntraSets().add(setsPLObjectIntraSet);
                                 break;
@@ -333,6 +333,7 @@ public class LayoutManager {
                     Collections.swap(getSplitRecyclerWorkouts().get(workoutPosition), updateComponents.fromPosition, updateComponents.toPosition);
                     break;
                 case NEW_EXERCISE:
+                    getSplitRecyclerWorkouts().set(workoutPosition, updateComponents.getLayout());
                     drawExercise(null,
                             getSplitRecyclerWorkouts().get(workoutPosition),
                             updateComponents.innerType, true);
@@ -341,7 +342,7 @@ public class LayoutManager {
                 case NEW_SUPERSET:
 
                 case NEW_WORKOUT:
-                    initRecyclerMatrixLayout().add(new ArrayList<PLObjects>());
+                    initRecyclerMatrixLayout().add(new ArrayList<PLObject>());
                     drawWorkout(getWorkouts(), "");
                     drawExercise(null, getSplitRecyclerWorkouts().get(getSplitRecyclerWorkouts().size() - 1),
                             WorkoutLayoutTypes.ExerciseProfile, true);
@@ -350,7 +351,7 @@ public class LayoutManager {
                     getSplitRecyclerWorkouts().get(workoutPosition).remove(updateComponents.removePosition);
                     break;
                 case DELETE_WORKOUT:
-                    PLObjects workout = getWorkouts().get(workoutPosition);
+                    PLObject workout = getWorkouts().get(workoutPosition);
                     getWorkouts().remove(workout);
                     getSplitRecyclerWorkouts().remove(workoutPosition);
                     break;
@@ -377,7 +378,7 @@ public class LayoutManager {
         for (int i = 0; i < layout.size(); i++) {
             if (layout.get(i).getType() == WorkoutLayoutTypes.BodyView) {
 
-                PLObjects.BodyText bt = (PLObjects.BodyText) layout.get(i);
+                PLObject.BodyText bt = (PLObject.BodyText) layout.get(i);
                 bt.setStatsHolder(statsCalculator.calculateStatsHolder(bt.getMuscle(), i, haveStatsHolder));
                 bodyPos++;
             }
@@ -407,7 +408,7 @@ public class LayoutManager {
         return 0;
     }
 
-    public ArrayList<PLObjects> getLayout() {
+    public ArrayList<PLObject> getLayout() {
         return layout;
     }
 
@@ -434,16 +435,16 @@ public class LayoutManager {
     }
 
     //
-    public ArrayList<PLObjects> getCleanSplitWorkout(int index) {
+    public ArrayList<PLObject> getCleanSplitWorkout(int index) {
         return getSplitBodys().get(index);
 
     }
 
-    public ArrayList<ArrayList<PLObjects>> getCleanWorkout() {
-        ArrayList<ArrayList<PLObjects>> split = getSplitRecyclerWorkouts();
-        ArrayList<ArrayList<PLObjects>> arr = new ArrayList<>();
+    public ArrayList<ArrayList<PLObject>> getCleanWorkout() {
+        ArrayList<ArrayList<PLObject>> split = getSplitRecyclerWorkouts();
+        ArrayList<ArrayList<PLObject>> arr = new ArrayList<>();
         for (int i = 0; i < split.size(); i++) {
-            arr.add(new ArrayList<PLObjects>());
+            arr.add(new ArrayList<PLObject>());
             for (int j = 0; j < split.get(i).size(); j++) {
                 if (split.get(i).get(j).getType() != WorkoutLayoutTypes.BodyView) {
                     arr.get(i).add(split.get(i).get(j));
@@ -454,16 +455,16 @@ public class LayoutManager {
         return arr;
     }
 
-    public ArrayList<ArrayList<PLObjects>> getSplitRecyclerWorkouts() {
+    public ArrayList<ArrayList<PLObject>> getSplitRecyclerWorkouts() {
         return splitRecyclerWorkouts;
     }
 
     //must start with 1 as 0 = first workout
-    private ArrayList<ArrayList<PLObjects>> initRecyclerMatrixLayout() {
-        ArrayList<ArrayList<PLObjects>> arr = new ArrayList<>();
+    private ArrayList<ArrayList<PLObject>> initRecyclerMatrixLayout() {
+        ArrayList<ArrayList<PLObject>> arr = new ArrayList<>();
         int j = 1;
         for (int i = 0; i < getNumOfWorkouts(); i++) {
-            arr.add(new ArrayList<PLObjects>());
+            arr.add(new ArrayList<PLObject>());
             if (layout.size() == 0) {
                 return splitRecyclerWorkouts;
             }
@@ -484,8 +485,8 @@ public class LayoutManager {
 
 
     public void requestSplitToLayout() {
-        ArrayList<ArrayList<PLObjects>> arr = getSplitRecyclerWorkouts();
-        ArrayList<PLObjects> workoutsArr = getWorkouts();
+        ArrayList<ArrayList<PLObject>> arr = getSplitRecyclerWorkouts();
+        ArrayList<PLObject> workoutsArr = getWorkouts();
         layout.clear();
         //String[] workoutNames = ProgramTemplate.WhatsYourName(arr.size());
         for (int i = 0; i < arr.size(); i++) {
@@ -497,14 +498,14 @@ public class LayoutManager {
 
     }
 
-    public ArrayList<PLObjects.BodyText> getAllBodys() {
+    public ArrayList<PLObject.BodyText> getAllBodys() {
         if (allBodys != null) {
             return allBodys;
         }
         allBodys = new ArrayList<>();
         for (int i = 0; i < layout.size(); i++) {
             if (layout.get(i).getType() == WorkoutLayoutTypes.BodyView) {
-                allBodys.add((PLObjects.BodyText) layout.get(i));
+                allBodys.add((PLObject.BodyText) layout.get(i));
             }
         }
         return allBodys;
@@ -524,16 +525,16 @@ public class LayoutManager {
 
     //must start with 1 as 1 = body
     //gives layout of each body
-    public ArrayList<ArrayList<PLObjects>> getSplitBodys() {
+    public ArrayList<ArrayList<PLObject>> getSplitBodys() {
         splitCleanWorkouts = null;
         splitCleanWorkouts = new ArrayList<>();
         int j;
         int bodyCounter = 0;
-        ArrayList<ArrayList<PLObjects>> splitWorkouts = getSplitRecyclerWorkouts();
+        ArrayList<ArrayList<PLObject>> splitWorkouts = getSplitRecyclerWorkouts();
         for (int i = 0; i < splitWorkouts.size(); i++) {
             j = 1;
             for (int l = 0; l < programTemplate.getBodyPartsPerWorkout(i); l++) {
-                splitCleanWorkouts.add(new ArrayList<PLObjects>());
+                splitCleanWorkouts.add(new ArrayList<PLObject>());
                 while (j < splitWorkouts.get(i).size()) {
 
                     if (splitWorkouts.get(i).get(j).getType() == WorkoutLayoutTypes.BodyView) {
@@ -557,18 +558,18 @@ public class LayoutManager {
 
     }
 
-    public ArrayList<ArrayList<PLObjects>> getExercisesPerWorkout(boolean update) {
+    public ArrayList<ArrayList<PLObject>> getExercisesPerWorkout(boolean update) {
         if (update) {
             exercisesPerWorkouts = null;
         }
         if (exercisesPerWorkouts != null) {
             return exercisesPerWorkouts;
         } else {
-            ArrayList<ArrayList<PLObjects>> arr = new ArrayList<>();
+            ArrayList<ArrayList<PLObject>> arr = new ArrayList<>();
             int j = -1;
             for (int i = 0; i < layout.size(); i++) {
                 if (layout.get(i).getType() == WorkoutLayoutTypes.WorkoutView) {
-                    arr.add(new ArrayList<PLObjects>());
+                    arr.add(new ArrayList<PLObject>());
                     j++;
                     continue;
                 }
@@ -612,7 +613,7 @@ public class LayoutManager {
 
     public class Learn {
 
-        private ArrayList<PLObjects> layout;
+        private ArrayList<PLObject> layout;
         private ArrayList<ArrayList<String>> bodyTemplate;
         private LayoutManager pLayoutManager;
 
@@ -723,9 +724,10 @@ public class LayoutManager {
 
         private int insertPosition;
 
-        private PLObjects plObject;
+        private PLObject plObject;
         private String updateType;
         private boolean update;
+        private ArrayList<PLObject> layout;
         private WorkoutLayoutTypes innerType;
 
         public UpdateComponents(String updateType) {
@@ -778,11 +780,11 @@ public class LayoutManager {
             return updateType;
         }
 
-        public PLObjects getPlObject() {
+        public PLObject getPlObject() {
             return plObject;
         }
 
-        public void setPlObject(PLObjects plObject) {
+        public void setPlObject(PLObject plObject) {
             this.plObject = plObject;
         }
 
@@ -800,6 +802,14 @@ public class LayoutManager {
 
         public void setInnerType(WorkoutLayoutTypes innerType) {
             this.innerType = innerType;
+        }
+
+        public ArrayList<PLObject> getLayout() {
+            return layout;
+        }
+
+        public void setLayout(ArrayList<PLObject> layout) {
+            this.layout = layout;
         }
     }
 }

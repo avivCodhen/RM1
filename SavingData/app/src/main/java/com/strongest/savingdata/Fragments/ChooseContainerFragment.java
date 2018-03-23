@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AlgorithmLayout.ReactLayoutManager;
 import com.strongest.savingdata.MyViews.MyViewPager;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
@@ -31,14 +31,14 @@ public class ChooseContainerFragment extends BaseCreateProgramFragment {
     private MyViewPager myViewPager;
     private TabLayout mTabLayout;
 
-    private PLObjects.ExerciseProfile exerciseProfile;
+    private PLObject.ExerciseProfile exerciseProfile;
     private int pos;
     private SetsChooseAdapter adapter;
     private String type;
     private ReactLayoutManager reactLayoutManager;
 
 
-    public static ChooseContainerFragment getInstance(PLObjects.ExerciseProfile ep, int pos, String type) {
+    public static ChooseContainerFragment getInstance(PLObject.ExerciseProfile ep, int pos, String type) {
         ChooseContainerFragment f = new ChooseContainerFragment();
         Bundle b = new Bundle();
         b.putSerializable(ExerciseChooseFragment.EXERCISE_PROFILE, ep);
@@ -52,7 +52,7 @@ public class ChooseContainerFragment extends BaseCreateProgramFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            exerciseProfile = (PLObjects.ExerciseProfile) getArguments().getSerializable(ExerciseChooseFragment.EXERCISE_PROFILE);
+            exerciseProfile = (PLObject.ExerciseProfile) getArguments().getSerializable(ExerciseChooseFragment.EXERCISE_PROFILE);
             pos = getArguments().getInt(SET_POS);
             type = getArguments().getString(TYPE);
         }
@@ -95,12 +95,12 @@ public class ChooseContainerFragment extends BaseCreateProgramFragment {
 
         @Override
         public Fragment getItem(int position) {
-            if(type.equals(INTRA_EXERCISE)){
+           /* if(type.equals(INTRA_EXERCISE)){
 
                 return ExerciseChooseFragment.newInstance(exerciseProfile);
             }else if(type.equals(SET)){
                 return SetsChooseSingleFragment.getInstance(exerciseProfile, pos, 1);
-            }
+            }*/
             return null;
         }
 

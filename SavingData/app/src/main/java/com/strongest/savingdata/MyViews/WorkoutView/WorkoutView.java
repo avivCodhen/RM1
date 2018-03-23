@@ -17,12 +17,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.style.UpdateLayout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,8 +42,8 @@ import com.strongest.savingdata.Adapters.WorkoutAdapter.ScrollToPositionListener
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.AlgorithmProgress.ProgressorManager;
 import com.strongest.savingdata.AlgorithmProgress.ProgressorObserver;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects.ExerciseProfile;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AlgorithmLayout.PLObject.ExerciseProfile;
 import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
@@ -61,6 +61,7 @@ import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.DELETE_WORK
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.DRAW_DIVIDER;
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.NEW_EXERCISE;
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.NEW_WORKOUT;
+import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.SWAP;
 
 /**
  * Created by Cohen on 12/16/2017.
@@ -115,39 +116,21 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
     private void createView() {
         workoutViewFragments = new ArrayList<>();
         inflate(context, R.layout.workout_view, this);
-        expandableLayout = (ExpandableLayout) findViewById(R.id.workoutview_expandable_layout);
-        lock = (ImageView) findViewById(R.id.workout_view_lock);
+       // expandableLayout = (ExpandableLayout) findViewById(R.id.workoutview_expandable_layout);
+        //lock = (ImageView) findViewById(R.id.workout_view_lock);
         programToolsView = (ProgramToolsView) findViewById(R.id.workout_view_program_tools);
         programToolsView.setOnProgramToolsActionListener(this);
-        programToolsView.setLayoutManager(layoutManager);
-
-
-        lock.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                programToolsView.toggleMode(true);
-
-
-                mAdapter.notifyDataSetChanged();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                }, 1350);
-            }
-        });
 
         instantiateViewPager();
-        progressButton = (Button) findViewById(R.id.progress_button);
-        DragAndDrop dragAndDrop = new DragAndDrop(context, currentRecyclerView, this);
-        RelativeLayout.LayoutParams laParams = new RelativeLayout.LayoutParams(150, 150);
-        progressButton.setLayoutParams(laParams);
+        //progressButton = (Button) findViewById(R.id.progress_button);
+      //  DragAndDrop dragAndDrop = new DragAndDrop(context, currentRecyclerView, this);
+       // RelativeLayout.LayoutParams laParams = new RelativeLayout.LayoutParams(150, 150);
+       // progressButton.setLayoutParams(laParams);
     }
 
 
     public void enterEditMode() {
-        programToolsView.toggleMode(true);
+        programToolsView.expand();
 
     }
 
@@ -161,8 +144,8 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
         mTabLayout.setupWithViewPager(mViewPager);
 
 
-        dropMenuButton = (ViewGroup) findViewById(R.id.workout_view_workoutmenubutton);
-        DroppyMenuPopup.Builder builder = new DroppyMenuPopup.Builder(getContext(), dropMenuButton);
+       // dropMenuButton = (ViewGroup) findViewById(R.id.workout_view_workoutmenubutton);
+       /* DroppyMenuPopup.Builder builder = new DroppyMenuPopup.Builder(getContext(), dropMenuButton);
         for (int i = 0; i < layoutManager.getNumOfWorkouts(); i++) {
             builder.addMenuItem(new DroppyMenuItem(ProgramTemplate.ProgramTemplateFactory.WhatsYourWorkoutName(i)));
         }
@@ -174,8 +157,8 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
                 mViewPager.setCurrentItem(id);
             }
         });
-        droppyMenuPopup = builder.build();
-
+//        droppyMenuPopup = builder.build();
+*/
 
         mAdapter = new WorkoutViewPagerAdapter(this,
                 programToolsView.getmWorkoutViewModes(),
@@ -217,13 +200,13 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                ((TextView) dropMenuButton.getChildAt(0))
+             /*   ((TextView) dropMenuButton.getChildAt(0))
                         .setText(ProgramTemplate.ProgramTemplateFactory
                                 .WhatsYourWorkoutName(position));
                 ObjectAnimator colorAnim = ObjectAnimator.ofInt(((TextView) dropMenuButton.getChildAt(0)), "textColor",
                         Color.RED, Color.WHITE);
                 colorAnim.setEvaluator(new ArgbEvaluator());
-                colorAnim.start();
+                colorAnim.start();*/
                 WorkoutViewFragment f = (WorkoutViewFragment) mAdapter.getItem(position);
                 currentRecyclerView = f.getRecycler();
             }
@@ -239,7 +222,7 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
             }
         });
 
-        expandableLayout.expand();
+//        expandableLayout.expand();
     }
 
 
@@ -277,7 +260,7 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
     }
 
     @Override
-    public ArrayList<PLObjects> updateLayout(LayoutManager.UpdateComponents updateComponents) {
+    public ArrayList<PLObject> updateLayout(LayoutManager.UpdateComponents updateComponents) {
         updateComponents.setWorkoutPosition(mViewPager.getCurrentItem());
         layoutManager.updateLayout(updateComponents);
 
@@ -308,7 +291,9 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
 
             case NEW_EXERCISE:
                 int position = f.exArray.size();
+
                 LayoutManager.UpdateComponents uc = new LayoutManager.UpdateComponents(LayoutManager.NEW_EXERCISE);
+                uc.setLayout(f.exArray);
                 uc.setInsertPosition(position);
                 uc.setInnerType(WorkoutLayoutTypes.ExerciseProfile);
                 f.setExArray(updateLayout(uc));
@@ -352,7 +337,7 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
 
     }
 
-    public void addSet(int position, PLObjects.SetsPLObject setsPLObject) {
+    public void addSet(int position, PLObject.SetsPLObject setsPLObject) {
         WorkoutViewFragment f = workoutViewFragments.get(mViewPager.getCurrentItem());
         f.exArray.add(position, setsPLObject);
         f.adapter.notifyItemInserted(position);
@@ -361,28 +346,27 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
     @Override
     public void onEnterChooseFragment(final RecyclerView.ViewHolder vh) {
         WorkoutViewFragment f = workoutViewFragments.get(mViewPager.getCurrentItem());
-        ExerciseProfile ep = (ExerciseProfile) f.exArray.get(vh.getAdapterPosition());
-        vh.itemView.animate().alpha(0f).setDuration(500);
-        /*new Handler().postDelayed(new Runnable() {
+//        ExerciseProfile ep = (ExerciseProfile) f.exArray.get(vh.getAdapterPosition());
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 vh.itemView.setAlpha(0f);
             }
-        }, 100);*/
+        }, 200);
         //MyJavaAnimator.fadeOut(vh.itemView);
 //        f.getAdapter().deTailExpand(vh);
     }
 
     @Override
     public void onExitChooseFragment(final RecyclerView.ViewHolder vh, boolean isCollapsed) {
-        if (!isCollapsed) {
-            WorkoutViewFragment f = workoutViewFragments.get(mViewPager.getCurrentItem());
+        WorkoutViewFragment f = workoutViewFragments.get(mViewPager.getCurrentItem());
+        if (f.exArray.get(vh.getAdapterPosition() + 1) instanceof PLObject.AddExercise) {
             f.getAdapter().detailCollapse(vh);
             f.scrollToPosition(vh.getAdapterPosition(), true, false);
         }
-      vh.itemView.animate().alpha(1f).setDuration(500);
-//        layoutManager.saveLayoutToDataBase(true);
-
+        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(200);
+        vh.itemView.startAnimation(anim);
     }
 
     public TabLayout getmTabLayout() {
@@ -399,7 +383,7 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
         private final FragmentManager fm;
         private WorkoutViewOnWorkoutListener listener;
         private ArrayList<WorkoutViewFragment> list = new ArrayList<>();
-        private ArrayList<PLObjects> mProgramLayout;
+        private ArrayList<PLObject> mProgramLayout;
         private LayoutManager plm;
         private OnUpdateLayoutStatsListener onUpdateListener;
         private boolean update;
@@ -422,7 +406,7 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
             this.listener = listener;
         }
 
-        public void setmProgramLayout(ArrayList<PLObjects> mProgramLayout) {
+        public void setmProgramLayout(ArrayList<PLObject> mProgramLayout) {
             this.mProgramLayout = mProgramLayout;
         }
 
@@ -505,7 +489,7 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
         //private WorkoutAdapter adapter;
         private MyExpandableAdapter adapter;
         private ItemTouchHelper touchHelper;
-        private ArrayList<PLObjects> exArray;
+        private ArrayList<PLObject> exArray;
         private WorkoutViewOnWorkoutListener listener;
         private boolean hideIcon;
         private boolean disable;
@@ -521,7 +505,7 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
 
         public static WorkoutViewFragment getInstance(OnEnterExitChooseFragment onEnterExitChooseFragment,
                                                       OnUpdateLayoutStatsListener onUpdateListener,
-                                                      ArrayList<PLObjects> exArray) {
+                                                      ArrayList<PLObject> exArray) {
             WorkoutViewFragment frag = new WorkoutViewFragment();
             frag.setExArray(exArray);
             frag.setOnUpdateLayoutStatsListener(onUpdateListener);
@@ -602,9 +586,8 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
         public void startDrag(RecyclerView.ViewHolder viewHolder) {
             touchHelper.startDrag(viewHolder);
             if (onUpdateLayoutStatsListener != null) {
-                LayoutManager.UpdateComponents uc = new LayoutManager.UpdateComponents(LayoutManager.SWAP);
-                onUpdateLayoutStatsListener.updateLayout(uc);
-
+                /*LayoutManager.UpdateComponents uc = new LayoutManager.UpdateComponents(LayoutManager.SWAP);
+                onUpdateLayoutStatsListener.updateLayout(uc);*/
             }
 
         }
@@ -635,7 +618,7 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
             this.onEnterExitChooseFragment = onEnterExitChooseFragment;
         }
 
-        public void setExArray(ArrayList<PLObjects> exArray) {
+        public void setExArray(ArrayList<PLObject> exArray) {
             this.exArray = exArray;
         }
 
@@ -658,13 +641,13 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
         }
 
         @Override
-        public void onEditExerciseClick(boolean enter, RecyclerView.ViewHolder vh, int position, ExerciseProfile ep) {
+        public void onEditExerciseClick(boolean enter, RecyclerView.ViewHolder vh, int position, PLObject plObject) {
             if (!enter) {
                 onEnterExitChooseFragment.onExitChooseFragment(vh, true);
                 getFragmentManager().popBackStack();
             } else {
 
-                f = ChooseDialogFragment.getInstance(this, position, ep, vh);
+                f = ChooseDialogFragment.getInstance(this, position, plObject, vh);
                 f.setTargetFragment(this, 0);
                 getFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
@@ -688,9 +671,9 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
         @Override
         public void onExerciseClick(MyExpandableAdapter.ExerciseViewHolder vh) {
             ExerciseProfile exerciseProfile = (ExerciseProfile) exArray.get(vh.getAdapterPosition());
-            if (exerciseProfile.isMoreOn()) {
+            if (exerciseProfile.isMore()) {
                 vh.card.animate().x(0);
-                exerciseProfile.setMoreOn(false);
+                exerciseProfile.setMore(false);
             }
             if (exerciseProfile.isExpand()) {
                 adapter.onCollapse(vh);
@@ -791,10 +774,28 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
         }
 
         @Override
+        public void onBodyViewLongClick(final RecyclerView.ViewHolder vh, boolean delete) {
+            if(delete){
+                exArray.remove(vh.getAdapterPosition());
+                adapter.notifyItemRemoved(vh.getAdapterPosition());
+            }
+            new AlertDialog.Builder(getContext())
+                    .setCancelable(true)
+                    .setMessage("Delete this Exercise and all it's data?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onLongClick(vh, true);
+
+                        }
+                    }).setNegativeButton("No", null).show();
+        }
+
+        @Override
         public void onSetsDoubleClick(RecyclerView.ViewHolder vh, int childPosition) {
             int position = vh.getAdapterPosition();
-            PLObjects.SetsPLObject setsPLObject = (PLObjects.SetsPLObject) exArray.get(position);
-            PLObjects.SetsPLObject newSetsPLObject = new PLObjects.SetsPLObject(
+            PLObject.SetsPLObject setsPLObject = (PLObject.SetsPLObject) exArray.get(position);
+            PLObject.SetsPLObject newSetsPLObject = new PLObject.SetsPLObject(
                     setsPLObject.getParent(),
                     setsPLObject.getExerciseSet());
             newSetsPLObject.setInnerType(WorkoutLayoutTypes.SetsPLObject);
@@ -804,24 +805,24 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
             int newPosition = position + 1 + setBlockLength;
             exArray.add(newPosition, newSetsPLObject);
             for (int i = 0; i < setsPLObject.getParent().getExerciseProfiles().size(); i++) {
-                exArray.add(newPosition + 1 + i, new PLObjects.IntraSetPLObject(
+                exArray.add(newPosition + 1 + i, new PLObject.IntraSetPLObject(
                         setsPLObject.getParent().getExerciseProfiles().get(i),
                         setsPLObject.getExerciseSet(),
                         WorkoutLayoutTypes.SuperSetIntraSet,
                         setsPLObject
                 ));
                 count++;
-                setsPLObject.getParent().getExerciseProfiles().get(i).getIntraSets().add(childPosition + 1, (PLObjects.IntraSetPLObject) exArray.get(newPosition + 1 + i));
+                setsPLObject.getParent().getExerciseProfiles().get(i).getIntraSets().add(childPosition + 1, (PLObject.IntraSetPLObject) exArray.get(newPosition + 1 + i));
             }
 
             for (int i = 0; i < setsPLObject.getIntraSets().size(); i++) {
-                exArray.add(newPosition + count, new PLObjects.IntraSetPLObject(
+                exArray.add(newPosition + count, new PLObject.IntraSetPLObject(
                         setsPLObject.getParent(),
                         setsPLObject.getExerciseSet(),
                         WorkoutLayoutTypes.IntraSetNormal,
                         setsPLObject
                 ));
-                setsPLObject.getIntraSets().add((PLObjects.IntraSetPLObject) exArray.get(newPosition + count));
+                setsPLObject.getIntraSets().add((PLObject.IntraSetPLObject) exArray.get(newPosition + count));
                 count++;
 
             }
@@ -844,7 +845,7 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
         public void onSetsLongClick(final RecyclerView.ViewHolder vh, final int childPosition, boolean delete) {
             int position = vh.getAdapterPosition();
             int count = 0;
-            PLObjects.SetsPLObject setsPLObject = (PLObjects.SetsPLObject) exArray.get(position);
+            PLObject.SetsPLObject setsPLObject = (PLObject.SetsPLObject) exArray.get(position);
             if (setsPLObject.getParent().getSets().size() == 1) {
                 Toast.makeText(getContext(), "You cannot delete the only set.", Toast.LENGTH_SHORT).show();
                 return;
@@ -861,8 +862,16 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
                     exArray.remove(position);
                     count++;
                 }
+                int end = 0;
+                for (int i = position; i < exArray.size(); i++) {
+                    if (exArray.get(i) instanceof ExerciseProfile) {
+                        break;
+                    } else {
+                        end++;
+                    }
+                }
                 adapter.notifyItemRangeRemoved(position, count);
-                adapter.notifyItemRangeChanged(position, setsPLObject.getParent().getSets().size());
+                adapter.notifyItemRangeChanged(position, end);
                 return;
             }
             new AlertDialog.Builder(getContext())
@@ -890,13 +899,13 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
 
 
             }
-            ExerciseProfile exerciseProfile = (ExerciseProfile) exArray.get(vh.getAdapterPosition());
-            if (exerciseProfile.isMoreOn()) {
+            PLObject plObject = exArray.get(vh.getAdapterPosition());
+            if (plObject.isMore()) {
                 v.animate().x(0);
 
-                exerciseProfile.setMoreOn(false);
+                plObject.setMore(false);
             } else {
-                exerciseProfile.setMoreOn(true);
+                plObject.setMore(true);
                 v.animate().x(-expandV.getWidth());
             }
         }
@@ -909,19 +918,27 @@ public class WorkoutView extends LinearLayout implements WorkoutViewOnWorkoutLis
             } else if (vh instanceof MyExpandableAdapter.SetsViewHolder) {
                 v = ((MyExpandableAdapter.SetsViewHolder) vh).card;
             }
-            ExerciseProfile exerciseProfile = (ExerciseProfile) exArray.get(vh.getAdapterPosition());
-            if (exerciseProfile.isMoreOn()) {
+            PLObject plObject = exArray.get(vh.getAdapterPosition());
+            if (plObject.isMore()) {
                 v.animate().x(0);
-                exerciseProfile.setMoreOn(false);
+                plObject.setMore(false);
+
             }
-            if (exerciseProfile.isEditMode()) {
+            if (plObject.isEditMode()) {
                 adapter.detailCollapse(vh);
-                exerciseProfile.setEditMode(false);
+                plObject.setEditMode(false);
+                // exerciseProfile.setEditMode(false);
 
             } else {
-                exerciseProfile.setEditMode(true);
+                plObject.setEditMode(true);
+                //  exerciseProfile.setEditMode(true);
                 adapter.deTailExpand(vh);
             }
+        }
+
+        @Override
+        public void onSwapExercise(int fromPosition, int toPosition) {
+
         }
     }
 }

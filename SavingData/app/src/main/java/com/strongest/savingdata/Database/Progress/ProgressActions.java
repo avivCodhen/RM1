@@ -1,6 +1,6 @@
 package com.strongest.savingdata.Database.Progress;
 
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 
 /**
@@ -30,9 +30,9 @@ public class ProgressActions {
 
     public static class Inject extends ProgressActions{
         private int position;
-        private PLObjects.ExerciseProfile exerciseProfile;
+        private PLObject.ExerciseProfile exerciseProfile;
 
-        public Inject(int position, PLObjects.ExerciseProfile exerciseProfile, int exerciseProfileId) {
+        public Inject(int position, PLObject.ExerciseProfile exerciseProfile, int exerciseProfileId) {
             super(exerciseProfileId);
             this.position = position;
             this.exerciseProfile = exerciseProfile;

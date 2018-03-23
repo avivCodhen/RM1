@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 
 import java.util.ArrayList;
 
@@ -18,14 +18,14 @@ public class oldWorkoutsAdapter extends FragmentStatePagerAdapter implements Vie
 
     private final int fragment;
     private Context context;
-    private ArrayList<ArrayList<PLObjects>> splitRecyclerWorkouts;
+    private ArrayList<ArrayList<PLObject>> splitRecyclerWorkouts;
     private String[] workouts;
     private boolean editMode;
 
     public static final int WORKOUT_TAB_FARGMENT = 0, CREATE_FRAGMENT = 1;
 
 
-    public oldWorkoutsAdapter(ArrayList<ArrayList<PLObjects>> splitRecyclerWorkouts, int fragment, FragmentManager fm, Context context, String[] workouts,
+    public oldWorkoutsAdapter(ArrayList<ArrayList<PLObject>> splitRecyclerWorkouts, int fragment, FragmentManager fm, Context context, String[] workouts,
                               boolean editMode) {
         super(fm);
         this.splitRecyclerWorkouts = splitRecyclerWorkouts;
@@ -71,7 +71,7 @@ public class oldWorkoutsAdapter extends FragmentStatePagerAdapter implements Vie
 
     }
 
-    public void updateList(ArrayList<ArrayList<PLObjects>> splitRecyclerWorkouts) {
+    public void updateList(ArrayList<ArrayList<PLObject>> splitRecyclerWorkouts) {
         this.splitRecyclerWorkouts = splitRecyclerWorkouts;
     }
 }

@@ -17,4 +17,5 @@
     <dimen name="muscle_name_width">70dp</dimen>
     <dimen name="muscle_name_textsize">8sp</dimen>
     <dimen name="muscle_icon_size">40dp</dimen>
+    <dimen name="program_menu_text_size">14dp</dimen>
 </resources>

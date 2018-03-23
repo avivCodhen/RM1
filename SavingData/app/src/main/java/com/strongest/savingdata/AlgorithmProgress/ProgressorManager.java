@@ -2,8 +2,8 @@ package com.strongest.savingdata.AlgorithmProgress;
 
 import android.content.Context;
 
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects.ExerciseProfile;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AlgorithmLayout.PLObject.ExerciseProfile;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
@@ -31,7 +31,7 @@ public class ProgressorManager implements ProgressorObserver{
     private LayoutManager fakeLayoutManager;
     private int currentPosition;
     private ArrayList<ProgressModelNode> progressModelsNodes = new ArrayList();
-    private ArrayList<ArrayList<PLObjects>> modelsList = new ArrayList();
+    private ArrayList<ArrayList<PLObject>> modelsList = new ArrayList();
     private int currentBlockPosition;
     private ProgressDataManager progressDataManager;
     private ProgressDataReader progressDataReader;
@@ -81,7 +81,7 @@ public class ProgressorManager implements ProgressorObserver{
     }
 
 
-    public ArrayList<PLObjects> CreateProgressModel() {
+    public ArrayList<PLObject> CreateProgressModel() {
         fakeLayoutManager = new LayoutManager(context, dataManager);
         //fakeLayoutManager.readLayoutFromDataBase(0);
         return fakeLayoutManager.getLayout();
@@ -128,11 +128,11 @@ public class ProgressorManager implements ProgressorObserver{
         this.currentPosition = currentPosition;
     }
 
-    public void saveModelList(ArrayList<ArrayList<PLObjects>> models){
+    public void saveModelList(ArrayList<ArrayList<PLObject>> models){
 
     }
 
-    public ArrayList<ArrayList<PLObjects>> requestModeList() {
+    public ArrayList<ArrayList<PLObject>> requestModeList() {
         //ArrayList<ArrayList<PLObjects>> arr = fakeLayoutManager.getCleanWorkout();
       //  progressModelsNodes = progressDataManager.readProgresModelNode(currentPosition);
         modelsList.add(fakeLayoutManager.getLayout());
@@ -168,7 +168,7 @@ public class ProgressorManager implements ProgressorObserver{
         ep.setBeansHolder(progressModelsNodes.get(position).getNewBeansHolder());
     }*/
 
-    public void deconstructProgressModels(ArrayList<ArrayList<PLObjects>> modelsList) {
+    public void deconstructProgressModels(ArrayList<ArrayList<PLObject>> modelsList) {
         modelsList.size();
     }
 

@@ -13,9 +13,9 @@ import com.strongest.savingdata.Adapters.WorkoutAdapter.ItemTouchHelperAdapter;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ItemTouchHelperListener;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ScrollToPositionListener;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects.BodyText;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects.WorkoutText;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AlgorithmLayout.PLObject.BodyText;
+import com.strongest.savingdata.AlgorithmLayout.PLObject.WorkoutText;
 import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.R;
 
@@ -32,11 +32,11 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private final int WORKOUT = 0;
     private final int MUSCLE = 1;
     private Context context;
-    private ArrayList<PLObjects> list;
+    private ArrayList<PLObject> list;
     private OnDragListener onDragListener;
     private ScrollToPositionListener scrollListener;
 
-    public MainAdapter(Context context, ArrayList<PLObjects> list, OnDragListener onDragListener,
+    public MainAdapter(Context context, ArrayList<PLObject> list, OnDragListener onDragListener,
                        ScrollToPositionListener scrollListener) {
         this.context = context;
         this.list = list;

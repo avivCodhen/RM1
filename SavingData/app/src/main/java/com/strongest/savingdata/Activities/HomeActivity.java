@@ -330,7 +330,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.edit_menu:
                 workoutView.enterEditMode();
                 return true;
-            case R.id.settings_menu:
+           /* case R.id.settings_menu:
                 if (settingsDrawer) {
                     getSupportFragmentManager().popBackStack();
                     settingsDrawer = false;
@@ -349,6 +349,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
                 }
 
                 return true;
+                */
 
         }
 

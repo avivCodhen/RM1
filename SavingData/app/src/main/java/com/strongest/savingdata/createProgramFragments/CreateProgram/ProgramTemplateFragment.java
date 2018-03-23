@@ -20,15 +20,12 @@ import com.strongest.savingdata.Adapters.WorkoutAdapter.ScrollToPositionListener
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Managers.DataManager;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
-import com.strongest.savingdata.Database.Managers.ProgramDataManager;
 import com.strongest.savingdata.Dialogs.DialogMuscleSelect;
 import com.strongest.savingdata.R;
 
 import java.util.ArrayList;
-
-import static com.strongest.savingdata.Database.Managers.ProgramDataManager.Tables.TEMPLATE;
 
 
 public class ProgramTemplateFragment extends BaseCreateProgramFragment implements OnMuscleClickListener, OnDragListener, View.OnClickListener, ScrollToPositionListener {
@@ -36,7 +33,7 @@ public class ProgramTemplateFragment extends BaseCreateProgramFragment implement
     private ItemTouchHelper touchHelper;
     private RecyclerView recyclerView;
     private MainAdapter adapter;
-    private ArrayList<PLObjects> list;
+    private ArrayList<PLObject> list;
     // private BoomMenuButton bmb;
     private EditText programName_ed;
     private DataManager dataManager;
@@ -70,7 +67,7 @@ public class ProgramTemplateFragment extends BaseCreateProgramFragment implement
         v.findViewById(R.id.fragment_template_add_muscle).setOnClickListener(this);
         // v.findViewById(R.id.fragment_template_add_muscle).setOnClickListener(this);
         list = new ArrayList<>();
-        list.add(new PLObjects.WorkoutText(i++, "A"));
+        list.add(new PLObject.WorkoutText(i++, "A"));
         adapter = new MainAdapter(getContext(), list, this, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView = (RecyclerView) v.findViewById(R.id.program_template_recycler_view);
@@ -151,10 +148,10 @@ public class ProgramTemplateFragment extends BaseCreateProgramFragment implement
         return val;
     }
 
-    public static ArrayList<ArrayList<String>> parsePLObjectStringToBodyTmeplate(ArrayList<PLObjects> list) {
+    public static ArrayList<ArrayList<String>> parsePLObjectStringToBodyTmeplate(ArrayList<PLObject> list) {
         ArrayList<ArrayList<String>> arr = new ArrayList<>();
         int i = 0;
-        for (PLObjects obj : list) {
+        for (PLObject obj : list) {
             if (obj.getType() == WorkoutLayoutTypes.WorkoutView) {
                 arr.add(new ArrayList<String>());
                 if (i != 0) {
@@ -163,7 +160,7 @@ public class ProgramTemplateFragment extends BaseCreateProgramFragment implement
                 }
             }
             if (obj.getType() == WorkoutLayoutTypes.BodyView) {
-                arr.get(i).add(((PLObjects.BodyText) obj).getMuscle().getMuscle_name());
+                arr.get(i).add(((PLObject.BodyText) obj).getMuscle().getMuscle_name());
             }
         }
         return arr;
@@ -177,7 +174,7 @@ public class ProgramTemplateFragment extends BaseCreateProgramFragment implement
 
             case R.id.fragment_template_add_workout:
                 String wN = ProgramTemplate.ProgramTemplateFactory.WhatsYourWorkoutName(i);
-                list.add(new PLObjects.WorkoutText(i++, wN));
+                list.add(new PLObject.WorkoutText(i++, wN));
                 adapter.notifyItemInserted(list.size() - 1);
                 recyclerView.scrollToPosition(list.size() - 1);
                 break;
@@ -235,7 +232,7 @@ public class ProgramTemplateFragment extends BaseCreateProgramFragment implement
 
     private boolean validate() {
         int count = 0;
-        for (PLObjects plObj : list) {
+        for (PLObject plObj : list) {
             if (plObj.getType() == WorkoutLayoutTypes.BodyView)
                 count++;
         }
@@ -290,7 +287,7 @@ public class ProgramTemplateFragment extends BaseCreateProgramFragment implement
     public void sendMuscleName(String muscleString) {
         String muscle = parseString(muscleString);
         Muscle m = Muscle.createMuscle(dataManager.getMuscleDataManager(), muscleString);
-        list.add(new PLObjects.BodyText(1, -1, null, ""));
+        list.add(new PLObject.BodyText(1, -1, null, ""));
         adapter.notifyItemInserted(list.size() - 1);
         recyclerView.scrollToPosition(list.size() - 1);
     }

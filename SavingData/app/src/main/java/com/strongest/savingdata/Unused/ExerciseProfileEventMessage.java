@@ -1,6 +1,6 @@
 package com.strongest.savingdata.Unused;
 
-import com.strongest.savingdata.AlgorithmLayout.PLObjects.ExerciseProfile;
+import com.strongest.savingdata.AlgorithmLayout.PLObject.ExerciseProfile;
 
 /**
  * Created by Cohen on 11/28/2017.

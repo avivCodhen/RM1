@@ -9,9 +9,7 @@ import com.strongest.savingdata.AlgorithmStats.ExerciseStats;
 import com.strongest.savingdata.AlgorithmStats.ProgressStats;
 import com.strongest.savingdata.AlgorithmStats.StatsHolder;
 import com.strongest.savingdata.BaseWorkout.Programmer;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects.BodyText;
-import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
+import com.strongest.savingdata.AlgorithmLayout.PLObject.BodyText;
 import com.strongest.savingdata.R;
 
 import java.util.ArrayList;

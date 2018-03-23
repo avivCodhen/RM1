@@ -12,8 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.strongest.savingdata.Activities.HomeActivity;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
-import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.R;
@@ -31,7 +30,7 @@ public class ManagerFragment extends BaseCreateProgramFragment {
     private RecyclerView recyclerView;
 
     private ArrayList<Muscle> muscles;
-    private ArrayList<PLObjects> layout;
+    private ArrayList<PLObject> layout;
     private ArrayList<Muscle.MuscleStatObject> muscleStatObjects;
     private DataManager dataManager;
 

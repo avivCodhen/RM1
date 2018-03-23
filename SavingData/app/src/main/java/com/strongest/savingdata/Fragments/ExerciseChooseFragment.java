@@ -13,7 +13,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.strongest.savingdata.Activities.HomeActivity;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AlgorithmLayout.ReactLayoutManager;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
@@ -41,13 +41,13 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
     private GridView mGridView;
     private GridViewAdapter mGridViewAdapter;
     private RecyclerView recyclerView;
-    private PLObjects.ExerciseProfile exerciseProfile;
+    private PLObject.ExerciseProfile exerciseProfile;
     public static final String EXERCISE_PROFILE = "exercise_profile";
     private ArrayList<Beans> exerciseBeans = new ArrayList<>();
 
     private ReactLayoutManager reactLayoutManager;
 
-    public static ExerciseChooseFragment newInstance(PLObjects.ExerciseProfile exerciseProfile) {
+    public static ExerciseChooseFragment newInstance(PLObject.ExerciseProfile exerciseProfile) {
         ExerciseChooseFragment f = new ExerciseChooseFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(EXERCISE_PROFILE, exerciseProfile);
@@ -59,7 +59,7 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            exerciseProfile = (PLObjects.ExerciseProfile) getArguments().getSerializable(EXERCISE_PROFILE);
+            exerciseProfile = (PLObject.ExerciseProfile) getArguments().getSerializable(EXERCISE_PROFILE);
         }
     }
 
@@ -76,7 +76,7 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
     }
 
     private void initViews(View v) {
-        reactLayoutManager = ((ChooseContainerFragment) getParentFragment()).getReactLayoutManager();
+      //  reactLayoutManager = ((ChooseContainerFragment) getParentFragment()).getReactLayoutManager();
         mCircleMuscleIcon = (CircleImageView) v.findViewById(R.id.muscle_icon);
         mMuscleText = (TextView) v.findViewById(R.id.muscle_tv);
         mExpandable = (ExpandableLayout) v.findViewById(R.id.expandable);
@@ -93,9 +93,9 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
         mAdapter = new ExerciseChooseFragmentAdapter();
         recyclerView.setLayoutManager(lm);
         recyclerView.setAdapter(mAdapter);
-        ChooseContainerFragment chooseContainerFragment = (ChooseContainerFragment) getParentFragment();
-        ChooseDialogFragment chooseDialogFragment = (ChooseDialogFragment) chooseContainerFragment.getParentFragment();
-        ViewCompat.setNestedScrollingEnabled(chooseDialogFragment.getNestedScrollView(), false);
+  //      ChooseContainerFragment chooseContainerFragment = (ChooseContainerFragment) getParentFragment();
+//        ChooseDialogFragment chooseDialogFragment = (ChooseDialogFragment) chooseContainerFragment.getParentFragment();
+        ViewCompat.setNestedScrollingEnabled(((ChooseDialogFragment)getParentFragment()).getNestedScrollView(), false);
         v.findViewById(R.id.choose_change_Tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

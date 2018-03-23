@@ -1,6 +1,6 @@
 package com.strongest.savingdata.AlgorithmLayout;
 
-import com.strongest.savingdata.AlgorithmLayout.PLObjects.ExerciseProfile;
+import com.strongest.savingdata.AlgorithmLayout.PLObject.ExerciseProfile;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 
 /**

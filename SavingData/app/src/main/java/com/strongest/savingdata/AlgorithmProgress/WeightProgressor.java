@@ -1,9 +1,7 @@
 package com.strongest.savingdata.AlgorithmProgress;
 
 import com.strongest.savingdata.Database.Managers.DataManager;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects.ExerciseProfile;
-import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 
 import java.util.ArrayList;
 
@@ -15,10 +13,10 @@ public class WeightProgressor {
 
 
     private DataManager dataManager;
-    private ArrayList<ArrayList<PLObjects>> layout;
+    private ArrayList<ArrayList<PLObject>> layout;
     private static int counter;
 
-    public WeightProgressor(DataManager dataManager,  ArrayList<ArrayList<PLObjects>> layout) {
+    public WeightProgressor(DataManager dataManager,  ArrayList<ArrayList<PLObject>> layout) {
         this.dataManager = dataManager;
 
         this.layout = layout;

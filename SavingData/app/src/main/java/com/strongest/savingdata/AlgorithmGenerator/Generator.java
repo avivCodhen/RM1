@@ -10,7 +10,7 @@ import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -39,7 +39,7 @@ public class Generator {
 
     private Load load; //recieves exercise level, volume, reps and complexity
     private String[] bodyParts; //body parts of the specific routine
-    private ArrayList<PLObjects> exArray; //stores the layout array
+    private ArrayList<PLObject> exArray; //stores the layout array
     private ArrayList<Object> newExArray; // loads the new generated layout array
     int numOfExercises;
 

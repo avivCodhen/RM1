@@ -1,20 +1,28 @@
 package com.strongest.savingdata.MyViews.WorkoutView;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
-import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.R;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
+import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.*;
-import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.ATTACH_DROPSET;
-import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.ATTACH_SUPERSET;
 
 /**
  * Created by Cohen on 2/17/2018.
@@ -26,7 +34,7 @@ public class ProgramToolsView extends LinearLayout {
 
 
     private View openProgramToolsIV;
-    private ExpandableLayout openProgramToolsEL, showExpandedToolsButton;
+    private ExpandableLayout openProgramToolsEL /*, showExpandedToolsButton*/;
     private View addExercise;
     private View addExerciseSplit;
     private View attachSuperset;
@@ -34,6 +42,9 @@ public class ProgramToolsView extends LinearLayout {
     private View addWorkout;
     private View deleteWorkout;
     private View drawDivider;
+
+    private RecyclerView mRecyclerview;
+    private ArrayList<ProgramButton> buttons;
 
     private WorkoutViewModes mWorkoutViewModes;
 
@@ -63,100 +74,21 @@ public class ProgramToolsView extends LinearLayout {
     }
 
     private void initProgramToolsViews() {
-        showExpandedToolsButton = (ExpandableLayout) findViewById(R.id.workout_view_show_program_tools_expand);
-        addExercise = findViewById(R.id.workout_view_add_exercise);
-        addExercise.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onProgramToolsActionListener != null) {
-                    onProgramToolsActionListener.onProgramToolsAction(NEW_EXERCISE);
-                }
-            }
-        });
-        addExerciseSplit = findViewById(R.id.workout_view_add_exercise_split);
-        addExerciseSplit.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onProgramToolsActionListener != null) {
-                    onProgramToolsActionListener.onProgramToolsAction(NEW_EXERCISE_FLIPPED);
-                }
-            }
-        });
-        attachSuperset = findViewById(R.id.workout_view_attach_superset);
-        attachSuperset.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onProgramToolsActionListener != null) {
-                    onProgramToolsActionListener.onProgramToolsAction(ATTACH_SUPERSET);
-                }
-            }
-        });
-        attachDropset = findViewById(R.id.workout_view_attach_dropset);
-        attachDropset.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onProgramToolsActionListener != null) {
-                    onProgramToolsActionListener.onProgramToolsAction(ATTACH_DROPSET);
-                }
-            }
-        });
-        addWorkout = findViewById(R.id.workout_view_add_workout);
-        addWorkout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onProgramToolsActionListener != null) {
-                    onProgramToolsActionListener.onProgramToolsAction(NEW_WORKOUT);
-                }
-            }
-        });
-        deleteWorkout = findViewById(R.id.workout_view_delete_workout);
-        deleteWorkout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onProgramToolsActionListener != null) {
-                    onProgramToolsActionListener.onProgramToolsAction(DELETE_WORKOUT);
-                }
-            }
-        });
-        drawDivider = findViewById(R.id.workout_view_add_divider);
-        drawDivider.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onProgramToolsActionListener != null) {
-                    onProgramToolsActionListener.onProgramToolsAction(DRAW_DIVIDER);
-                }
-            }
-        });
+        buttons = new ArrayList<>();
+        int green = ContextCompat.getColor(context,R.color.green_dark);
+        int red = ContextCompat.getColor(context, R.color.red);
+        int plusIcon = R.drawable.plus_16px;
+        buttons.add(new ProgramButton(green,NEW_EXERCISE,"Exercise", plusIcon));
+        buttons.add(new ProgramButton(green,DRAW_DIVIDER,"Divider", plusIcon));
+        buttons.add(new ProgramButton(green,NEW_WORKOUT,"Workout", plusIcon));
+        buttons.add(new ProgramButton(red,DELETE_WORKOUT,"Workout", R.drawable.minus_white_24px));
+        buttons.add(new ProgramButton(Color.WHITE,"advanced","Advanced", R.drawable.settings_24px_gray));
+        mRecyclerview = (RecyclerView) findViewById(R.id.program_tools_view_recyclerview);
+        RecyclerView.LayoutManager lm = new LinearLayoutManager(context);
+        ProgramToolsAdapter adapter = new ProgramToolsAdapter();
+        mRecyclerview.setLayoutManager(lm);
+        mRecyclerview.setAdapter(adapter);
         openProgramToolsEL = (ExpandableLayout) findViewById(R.id.workout_view_program_tools_expandable);
-        openProgramToolsIV = findViewById(R.id.workout_view_open_program_tools);
-        openProgramToolsIV.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openProgramToolsEL.toggle();
-                if (openProgramToolsEL.isExpanded()) {
-                    MyJavaAnimator.rotateView(openProgramToolsIV, 180, 225);
-                    MyJavaAnimator.fadeIn(addExercise,
-                            addExerciseSplit,
-                            drawDivider,
-                            attachSuperset,
-                            attachDropset,
-                            addWorkout,
-                            deleteWorkout);
-
-                } else {
-                    MyJavaAnimator.rotateView(openProgramToolsIV, 225, 180);
-
-                    MyJavaAnimator.fadeOut(addExercise,
-                            addExerciseSplit,
-                            attachSuperset,
-                            attachDropset,
-                            addWorkout,
-                            deleteWorkout);
-                }
-
-            }
-        });
-
     }
 
     public void toggleMode(boolean changeMode) {
@@ -170,60 +102,19 @@ public class ProgramToolsView extends LinearLayout {
             }
         }
 
-        toggleShowToolsButton();
 
     }
 
-    public void showAll() {
-        showExpandedToolsButton.expand();
-        openProgramToolsEL.expand();
-    }
-
-    private void toggleShowToolsButton() {
-        if (mWorkoutViewModes.isEdit()) {
-          //expand(showExpandedToolsButton);
-            showExpandedToolsButton.expand();
-        } else {
-            //collapse(openProgramToolsEL);
-            //collapse(showExpandedToolsButton);
-
-            openProgramToolsEL.collapse();
-            showExpandedToolsButton.collapse();
-            MyJavaAnimator.rotateView(openProgramToolsIV, 225, 180);
-        }
-    }
 
     public void setOnProgramToolsActionListener(OnProgramToolsActionListener onProgramToolsActionListener) {
         this.onProgramToolsActionListener = onProgramToolsActionListener;
     }
 
-   /* private void expand(ExpandableLayout el){
-        if(el == showExpandedToolsButton){
-         expandedToolsButtonOn = true;
-        }
-        if(el == openProgramToolsEL){
-            programToolsOn = true;
-        }
-        el.expand();
+    public void expand(){
+        openProgramToolsEL.toggle();
     }
 
-    private void collapse(ExpandableLayout el){
-        if(el == showExpandedToolsButton){
-            expandedToolsButtonOn = false;
-        }
-        if(el == openProgramToolsEL){
-            programToolsOn = false;
-        }
-        el.collapse();
-    }*/
 
-    public void getState(){
-       // expandedToolsButtonOn == true ? expand(showExpandedToolsButton) : coll;
-    }
-
-    public void setmWorkoutViewModes(WorkoutViewModes mWorkoutViewModes) {
-        this.mWorkoutViewModes = mWorkoutViewModes;
-    }
 
     public WorkoutViewModes getmWorkoutViewModes() {
         return mWorkoutViewModes;
@@ -273,6 +164,63 @@ public class ProgramToolsView extends LinearLayout {
 
         public void setNone(boolean none) {
             this.none = none;
+        }
+    }
+
+    private class ProgramToolsAdapter extends RecyclerView.Adapter<ProgramToolsAdapter.ViewHolder>{
+
+        @Override
+        public ProgramToolsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View v = inflater.inflate(R.layout.recycler_view_program_menu_button, parent, false);
+            return new ViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(ProgramToolsAdapter.ViewHolder holder, int position) {
+            final ProgramButton pBtn = buttons.get(position);
+            holder.circleImageView.setImageResource(buttons.get(position).image);
+            holder.circleImageView.setCircleBackgroundColor(buttons.get(position).color);
+            holder.tv.setText(buttons.get(position).tv_name);
+            holder.itemView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(pBtn.type.equals("advanced")){
+
+                    }else{
+                        onProgramToolsActionListener.onProgramToolsAction(pBtn.type);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return buttons.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            private CircleImageView circleImageView;
+            private TextView tv;
+            public ViewHolder(View itemView) {
+                super(itemView);
+                circleImageView = (CircleImageView) itemView.findViewById(R.id.program_menu_image);
+                tv = (TextView) itemView.findViewById(R.id.program_menu_tv);
+            }
+        }
+    }
+
+     class ProgramButton {
+        String tv_name;
+        String type;
+        int color;
+        int image;
+        ProgramButton(int color, String type, String tv_name, int image){
+
+            this.color = color;
+            this.type = type;
+            this.tv_name = tv_name;
+            this.image = image;
         }
     }
 

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 
 import java.util.ArrayList;
 
@@ -205,16 +205,16 @@ public class Calculator extends StatsConstants {
 
         public void calculateBlock(int index) {
             exerciseStats = new ExerciseStats();
-            ArrayList<PLObjects> cleanLayout = layoutManager.getCleanSplitWorkout(index);
+            ArrayList<PLObject> cleanLayout = layoutManager.getCleanSplitWorkout(index);
             for (int i = 0; i < cleanLayout.size(); i++) {
-                PLObjects.ExerciseProfile ep = (PLObjects.ExerciseProfile) cleanLayout.get(i);
+                PLObject.ExerciseProfile ep = (PLObject.ExerciseProfile) cleanLayout.get(i);
                 getBeansStats(ep, exerciseStats);
             }
         }
 
 
         //0 = damage, 1 = metabolic, 3 = mechanical
-        private void getBeansStats(PLObjects.ExerciseProfile ep, ExerciseStats exerciseStats) {
+        private void getBeansStats(PLObject.ExerciseProfile ep, ExerciseStats exerciseStats) {
             //  ExerciseProfileView epv = ep.getExerciseProfileView();
             if (ep.getSets() == null || ep.getSets().get(0) == null) {
                 return;

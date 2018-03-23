@@ -10,16 +10,16 @@ public class ReactLayoutManager {
 
     private final LayoutManager layoutManager;
     private final WorkoutView.WorkoutViewFragment workoutViewFragment;
-    private PLObjects.ExerciseProfile exerciseProfile;
+    private PLObject.ExerciseProfile exerciseProfile;
 
     public static ReactLayoutManager newInstance(LayoutManager layoutManager,
                                                  WorkoutView.WorkoutViewFragment workoutViewFragment,
-                                                 PLObjects.ExerciseProfile exerciseProfile) {
+                                                 PLObject.ExerciseProfile exerciseProfile) {
         return new ReactLayoutManager(layoutManager, workoutViewFragment, exerciseProfile);
     }
 
     private ReactLayoutManager(LayoutManager layoutManager,
-                               WorkoutView.WorkoutViewFragment workoutViewFragment, PLObjects.ExerciseProfile exerciseProfile) {
+                               WorkoutView.WorkoutViewFragment workoutViewFragment, PLObject.ExerciseProfile exerciseProfile) {
 
         this.layoutManager = layoutManager;
         this.workoutViewFragment = workoutViewFragment;

@@ -21,4 +21,8 @@ public interface OnWorkoutViewInterfaceClicksListener {
     void onMoreClick(RecyclerView.ViewHolder vh);
 
     void onSettingsClick(RecyclerView.ViewHolder vh);
+
+    void onSwapExercise(int fromPosition, int toPosition);
+
+    void onBodyViewLongClick(RecyclerView.ViewHolder vh, boolean delete);
 }

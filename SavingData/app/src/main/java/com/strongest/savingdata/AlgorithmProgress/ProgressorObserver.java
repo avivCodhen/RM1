@@ -1,6 +1,6 @@
 package com.strongest.savingdata.AlgorithmProgress;
 
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 
 /**
@@ -10,7 +10,7 @@ import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 public interface ProgressorObserver {
 
     void notifyProgressorChanged(ExerciseSet prev, ExerciseSet next);
-    void notifyProgressorInserted(int pos, PLObjects.ExerciseProfile ep);
+    void notifyProgressorInserted(int pos, PLObject.ExerciseProfile ep);
     void notifyProgressorRemoved(int pos);
     void notifyProgressorSwap(int from, int to);
 }

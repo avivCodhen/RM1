@@ -18,7 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.MyViews.WorkoutView.WorkoutView;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.createProgramFragments.Unused.BaseDialogFragment;
@@ -37,7 +37,7 @@ public class ProgressDialogFragment extends BaseDialogFragment implements View.O
 
 
     private ProgressorManager progressorManager;
-    private ArrayList<ArrayList<PLObjects>> progressModels = new ArrayList<>();
+    private ArrayList<ArrayList<PLObject>> progressModels = new ArrayList<>();
     private int numOfModels = 1;
     String TAG = "aviv";
 
@@ -54,7 +54,7 @@ public class ProgressDialogFragment extends BaseDialogFragment implements View.O
 
     private WorkoutView.WorkoutViewPagerAdapter workoutViewPagerAdapter;
     private ProgressAdapter progressAdapter;
-    private ArrayList<PLObjects> workout;
+    private ArrayList<PLObject> workout;
     private int position;
     private boolean disable;
 
@@ -129,11 +129,11 @@ public class ProgressDialogFragment extends BaseDialogFragment implements View.O
         dismiss();
     }
 
-    public void setWorkout(ArrayList<PLObjects> workout) {
+    public void setWorkout(ArrayList<PLObject> workout) {
         this.workout = workout;
     }
 
-    public ArrayList<PLObjects> getWorkout() {
+    public ArrayList<PLObject> getWorkout() {
         return workout;
     }
 

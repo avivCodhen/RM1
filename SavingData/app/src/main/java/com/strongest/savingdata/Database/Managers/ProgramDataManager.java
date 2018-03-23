@@ -13,7 +13,7 @@ import com.strongest.savingdata.BaseWorkout.Program;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
 import com.strongest.savingdata.Database.Program.DBProgramHelper;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -262,7 +262,7 @@ public class ProgramDataManager extends DataManager {
     }
 
 
-    public Collection<PLObjects> parse(String tableNale, Cursor c) {
+    public Collection<PLObject> parse(String tableNale, Cursor c) {
         return null;
     }
 
@@ -364,18 +364,18 @@ public class ProgramDataManager extends DataManager {
         return v;
     }
 
-    public ArrayList<ContentValues> getPLObjectsContentValues(ArrayList<PLObjects> p) {
+    public ArrayList<ContentValues> getPLObjectsContentValues(ArrayList<PLObject> p) {
         ArrayList<ContentValues> contentValues = new ArrayList<>();
         ContentValues v;
         int i = 0;
-        for (PLObjects ep : p) {
+        for (PLObject ep : p) {
             v = new ContentValues();
 
             switch (ep.getType()) {
                 case WorkoutView:
                     v.put(DBExercisesHelper.TYPE, ep.getType().ordinal());
                     v.put(DBProgramHelper.WORKOUT_ID, ep.getWorkoutId());
-                    PLObjects.WorkoutText workoutText = (PLObjects.WorkoutText) ep;
+                    PLObject.WorkoutText workoutText = (PLObject.WorkoutText) ep;
                     v.put(DBProgramHelper.NAME, workoutText.getWorkoutName());
                     contentValues.add(v);
 
@@ -384,34 +384,34 @@ public class ProgramDataManager extends DataManager {
                 case BodyView:
                     v.put(DBExercisesHelper.TYPE, ep.getType().ordinal());
                     v.put(DBProgramHelper.WORKOUT_ID, ep.getWorkoutId());
-                    PLObjects.BodyText bodyText = (PLObjects.BodyText) ep;
+                    PLObject.BodyText bodyText = (PLObject.BodyText) ep;
                     v.put(DBExercisesHelper.NAME, (bodyText.getTitle()));
                     contentValues.add(v);
                     //    v.put(DBProgramHelper.workou);
                     break;
                 case ExerciseProfile:
-                    PLObjects.ExerciseProfile exerciseProfile = (PLObjects.ExerciseProfile) ep;
+                    PLObject.ExerciseProfile exerciseProfile = (PLObject.ExerciseProfile) ep;
                     if(exerciseProfile.getInnerType() == WorkoutLayoutTypes.IntraExerciseProfile){
                         break;
                     }
                     contentValues.add(saveExercise(exerciseProfile)) ;
 
                     for (int j = 0; j < exerciseProfile.getExerciseProfiles().size(); j++) {
-                        PLObjects.ExerciseProfile superset = exerciseProfile.getExerciseProfiles().get(j);
+                        PLObject.ExerciseProfile superset = exerciseProfile.getExerciseProfiles().get(j);
                         contentValues.add(saveExercise(superset));
 
                         for (int k = 0; k < superset.getIntraSets().size(); k++) {
-                            PLObjects.IntraSetPLObject intraSetPLObject = superset.getIntraSets().get(k);
+                            PLObject.IntraSetPLObject intraSetPLObject = superset.getIntraSets().get(k);
                             contentValues.add(saveSets(intraSetPLObject));
                         }
                     }
 
 
                     for (int j = 0; j < exerciseProfile.getSets().size(); j++) {
-                        PLObjects.SetsPLObject setsPLObject = exerciseProfile.getSets().get(j);
+                        PLObject.SetsPLObject setsPLObject = exerciseProfile.getSets().get(j);
                         contentValues.add(saveSets(setsPLObject));
                         for (int k = 0; k < setsPLObject.getIntraSets().size(); k++) {
-                            PLObjects.IntraSetPLObject intraSet = setsPLObject.getIntraSets().get(k);
+                            PLObject.IntraSetPLObject intraSet = setsPLObject.getIntraSets().get(k);
                             contentValues.add(saveSets(intraSet));
                         }
                     }
@@ -422,7 +422,7 @@ public class ProgramDataManager extends DataManager {
         return contentValues;
     }
 
-    private ContentValues saveSets(PLObjects.SetsPLObject setsPLObject) {
+    private ContentValues saveSets(PLObject.SetsPLObject setsPLObject) {
         ContentValues supersetIntraCV;
         supersetIntraCV = new ContentValues();
         supersetIntraCV.put(DBExercisesHelper.TYPE, setsPLObject.getType().ordinal());
@@ -436,7 +436,7 @@ public class ProgramDataManager extends DataManager {
         return supersetIntraCV;
     }
 
-    private ContentValues saveSets(PLObjects.IntraSetPLObject setsPLObject) {
+    private ContentValues saveSets(PLObject.IntraSetPLObject setsPLObject) {
         ContentValues supersetIntraCV;
         supersetIntraCV = new ContentValues();
         supersetIntraCV.put(DBExercisesHelper.TYPE, setsPLObject.getType().ordinal());
@@ -450,7 +450,7 @@ public class ProgramDataManager extends DataManager {
         return supersetIntraCV;
     }
 
-    private ContentValues saveExercise(PLObjects.ExerciseProfile exerciseProfile) {
+    private ContentValues saveExercise(PLObject.ExerciseProfile exerciseProfile) {
         ContentValues epCV = new ContentValues();
         epCV.put(DBExercisesHelper.TYPE, exerciseProfile.getType().ordinal());
         epCV.put(DBProgramHelper.WORKOUT_ID, exerciseProfile.getWorkoutId());

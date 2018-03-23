@@ -170,7 +170,7 @@
                 android:id="@+id/exerciseView_repIV"
                 android:layout_width="19dp"
                 android:layout_height="19dp"
-                android:src="@drawable/sync_24px_black"
+                android:src="@drawable/reps_color_accent_icon"
                 android:layout_marginRight="6dp"
                />
 

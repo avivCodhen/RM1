@@ -17,4 +17,6 @@
     <color name="orangeColor">#FF9933</color>
     <color name="orangeColor2">#ffa500</color>
     <color name="muscle_name_gray">#7E7E7E</color>
+    <color name="red">#CC0000</color>
+
 </resources>

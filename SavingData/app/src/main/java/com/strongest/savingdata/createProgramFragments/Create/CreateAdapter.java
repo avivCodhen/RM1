@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.strongest.savingdata.AlgorithmStats.ProgressStats;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.R;
 
@@ -31,7 +31,7 @@ public class CreateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     // private final int TITLE = 0, BODY = 1, EXERCISE = 2;
     private Context context;
     private View.OnClickListener listener;
-    private List<PLObjects> programLayout;
+    private List<PLObject> programLayout;
     private boolean showStats;
     private int[][] stats;
     private ProgressStats progressProgressStats;
@@ -40,7 +40,7 @@ public class CreateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private boolean loadStats = true;
 
 
-    public CreateAdapter(ArrayList<PLObjects> programLayout, View.OnClickListener listener, Context context,
+    public CreateAdapter(ArrayList<PLObject> programLayout, View.OnClickListener listener, Context context,
                          OnPositionViewListener lonListener) {
         this.context = context;
         this.lonListener = lonListener;
@@ -118,7 +118,7 @@ public class CreateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private void configureViewHolder2(final MuscleViewHolder vh2, int position) {
-        final PLObjects.BodyText bodyText = (PLObjects.BodyText) programLayout.get(position);
+        final PLObject.BodyText bodyText = (PLObject.BodyText) programLayout.get(position);
         vh2.bodyTv.setText(bodyText.getMuscle().getMuscle_display());
 
 
@@ -142,7 +142,7 @@ public class CreateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         Log.d("aviv", "metabolic max fragment_manager: "+ vh2.metabolic.getMax());*/
     }
 
-    private int determineColorForDamage(ProgressBar pb, PLObjects.BodyText b) {
+    private int determineColorForDamage(ProgressBar pb, PLObject.BodyText b) {
         float p = pb.getProgress();
 
 
@@ -156,7 +156,7 @@ public class CreateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    private int determineColorForMechanical(ProgressBar pb, PLObjects.BodyText b) {
+    private int determineColorForMechanical(ProgressBar pb, PLObject.BodyText b) {
         float p = pb.getProgress();
 
         if (p >= b.getStatsHolder().getProgressStats().getMaxMechanical()) {
@@ -169,7 +169,7 @@ public class CreateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    private int determineColorForMetabolic(ProgressBar pb, PLObjects.BodyText b) {
+    private int determineColorForMetabolic(ProgressBar pb, PLObject.BodyText b) {
         float p = pb.getProgress();
 
 
@@ -187,7 +187,7 @@ public class CreateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private void configureViewHolder1(WorkoutViewHolder vh1, final int position) {
 
 
-        PLObjects.WorkoutText workoutText = (PLObjects.WorkoutText) programLayout.get(position);
+        PLObject.WorkoutText workoutText = (PLObject.WorkoutText) programLayout.get(position);
         vh1.workoutTv.setText(workoutText.getWorkoutName());
 
 

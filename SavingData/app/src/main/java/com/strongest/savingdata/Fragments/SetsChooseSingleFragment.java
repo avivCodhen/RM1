@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.strongest.savingdata.Adapters.SingleChoiceAdapter;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.NumberChooseManager;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.RangeNumberChooseView;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
@@ -28,18 +28,21 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment {
     private RecyclerView mRepRecycler, mRestRecycler;
     private SingleChoiceAdapter mRepAdapter, mRestAdapter;
 
-    private PLObjects.ExerciseProfile exerciseProfile;
-    private int setPos;
-    private int intraSetPos;
+    private PLObject.ExerciseProfile exerciseProfile;
+    private PLObject plObject;
+    private PLObject.SetsPLObject setsPLObject;
+    private PLObject.IntraSetPLObject intraSetPLObject;
+    //   private int setPos;
+ //   private int intraSetPos;
 
     public static final String SET_POS = "set_pos", INTRA_SET_POS = "intra_set_pos";
 
-    public static SetsChooseSingleFragment getInstance(PLObjects.ExerciseProfile ep, int setPos, int intraSetPos) {
+    public static SetsChooseSingleFragment getInstance(PLObject setsPLObject) {
         SetsChooseSingleFragment f = new SetsChooseSingleFragment();
         Bundle b = new Bundle();
-        b.putSerializable(ExerciseChooseFragment.EXERCISE_PROFILE, ep);
-        b.putInt(SET_POS, setPos);
-        b.putInt(INTRA_SET_POS, intraSetPos);
+        b.putSerializable(ChooseDialogFragment.PLOBJECT, setsPLObject);
+        /*b.putInt(SET_POS, setPos);
+        b.putInt(INTRA_SET_POS, intraSetPos);*/
         f.setArguments(b);
         return f;
     }
@@ -48,9 +51,14 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            exerciseProfile = (PLObjects.ExerciseProfile) getArguments().getSerializable(ExerciseChooseFragment.EXERCISE_PROFILE);
-            setPos = getArguments().getInt(SET_POS);
-            intraSetPos = getArguments().getInt(INTRA_SET_POS);
+            plObject = (PLObject) getArguments().getSerializable(ChooseDialogFragment.PLOBJECT);
+            if(plObject instanceof PLObject.SetsPLObject){
+                setsPLObject = (PLObject.SetsPLObject) plObject;
+            }else{
+                intraSetPLObject = (PLObject.IntraSetPLObject) plObject;
+            }
+            /*setPos = getArguments().getInt(SET_POS);
+            intraSetPos = getArguments().getInt(INTRA_SET_POS);*/
         }
     }
 

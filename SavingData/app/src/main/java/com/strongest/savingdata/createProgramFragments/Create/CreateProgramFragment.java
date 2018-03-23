@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.strongest.savingdata.Adapters.oldWorkoutsAdapter;
 import com.strongest.savingdata.ArtificialInteligence.ArtificialIntelligence;
 import com.strongest.savingdata.ArtificialInteligence.ArtificialIntelligenceObserver;
 import com.strongest.savingdata.BaseWorkout.Programmer;
@@ -19,7 +18,7 @@ import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.Unused.ExerciseProfileEventMessage;
-import com.strongest.savingdata.AlgorithmLayout.PLObjects;
+import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 import com.strongest.savingdata.tabFragments.WorkoutFragment;
@@ -153,7 +152,7 @@ public class CreateProgramFragment extends BaseCreateProgramFragment implements 
 
     @Subscribe
     public void onEvent(ExerciseProfileEventMessage eventMessage) {
-        PLObjects.ExerciseProfile exerciseProfile = eventMessage.getExerciseProfile();
+        PLObject.ExerciseProfile exerciseProfile = eventMessage.getExerciseProfile();
        /* programmer.getLayoutManager().getSplitRecyclerWorkouts().get(position).set(eventMessage.getPosition(), exerciseProfile);
         programmer.getLayoutManager().updateLayout(true);*/
     }
