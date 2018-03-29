@@ -33,7 +33,7 @@ public class CreateRepsViewController {
 
     public void instantiate(Context context) {
         this.context = context;
-        mNumberChooseManager = new NumberChooseManager();
+       // mNumberChooseManager = new NumberChooseManager();
     }
 
     public void updateSection(int position) {

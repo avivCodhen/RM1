@@ -151,6 +151,7 @@ public class PLObject implements Aba, Serializable {
         private String tag;
         private ExerciseProfile parent;
         private boolean shadowExpand;
+        public int rawPosition;
 
         public ExerciseProfile(Muscle muscle, int workoutId, int bodyId, int exerciseProfileId) {
             //    this.mSets = mSets;

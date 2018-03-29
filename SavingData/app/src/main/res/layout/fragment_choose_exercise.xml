@@ -1,20 +1,14 @@
 <RelativeLayout android:layout_height="match_parent"
+    android:clipToPadding="true"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp"
     android:orientation="vertical"
     android:background="@color/background_color"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <TextView
-        android:text="Muscle:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
   <include layout="@layout/recycler_view_muscle"
       android:id="@+id/choose_muscle_include"
-      android:layout_marginTop="30dp"
+      android:layout_marginTop="20dp"
       android:layout_height="wrap_content"
       android:layout_width="wrap_content"></include>
 
@@ -60,6 +54,9 @@
         android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
+        android:layout_marginBottom="10dp"
+        android:padding="2dp"
+        android:clipToPadding="true"
         android:layout_below="@id/my_selector_exercise_expand_layout"
         android:id="@+id/choose_recyclerview"
         android:layout_width="match_parent"

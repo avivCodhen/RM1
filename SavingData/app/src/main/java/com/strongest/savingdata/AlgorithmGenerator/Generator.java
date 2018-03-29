@@ -93,7 +93,7 @@ public class Generator {
         // programManager.createProgramLayout();
         // exArray = programManager.getProgramLayoutManager().getLayout();
         // int length = workout.getAllBodyPartsLength();
-        layoutManager = new LayoutManager(context, dm, programTemplate);
+     //   layoutManager = new LayoutManager(context, dm, programTemplate);
         fillProgram();
         //   programManager.setProgramLayoutManager(programLayoutManager);
         // programManager.updateRecyclerLayout(newExArray);

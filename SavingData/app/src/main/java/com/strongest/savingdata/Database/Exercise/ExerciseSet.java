@@ -13,15 +13,16 @@ import java.io.Serializable;
 public class ExerciseSet implements Serializable, Ben {
 
     private Beans exercise;
-    private String rep;
+    private String rep = "0";
     private String method;
     private Beans superset;
     private Beans sets;
-    private String rest;
-    private double weight;
+    private String rest = "00:00";
+    private double weight = 0;
     private boolean isLoaded;
     private boolean hasmethod;
     private String tag;
+    private boolean customWeight;
 
     private boolean intraSet;
     //progressor stuff
@@ -30,44 +31,14 @@ public class ExerciseSet implements Serializable, Ben {
 
     public ExerciseSet() {
     }
-/*
 
-    public static boolean compareBeansHolders(Sets one, Sets two) {
-        if(one == null){
-            return true;
-        }
-        if (one.getExercise().getId() != two.getExercise().getId()) {
-            return true;
-        }
-        if (one.getRep().getId() != two.getRep().getId()) {
-            return true;
-        }
-        if (one.getMethod() != two.getMethod() && one.getMethod().getId() != two.getMethod().getId()) {
-            return true;
-        }
-        if (one.getRest().getId() != two.getRest().getId()) {
-            return true;
-        }
-        if (one.getSets() != two.getSets()) {
-            return true;
-        }
-        if (one.getWeight() != two.getWeight()) {
-            return true;
-        }
-        return false;
+    public ExerciseSet(ExerciseSet clone){
+        this.exercise = clone.exercise;
+        this.rep = clone.rep;
+        this.rest = clone.rest;
+        this.weight = clone.weight;
+        this.tag = clone.tag;
     }
-*/
-
-   /* public static BeansHolder defaultBeansHolder(){
-        BeansHolder beansHolder = new BeansHolder();
-        beansHolder.setExercise(new Beans());
-        beansHolder.setRep(new Beans());
-        beansHolder.setMethod(new Beans());
-        beansHolder.setSuperset(new Beans());
-        beansHolder.setSets(3);
-        return beansHolder;
-    }*/
-
 
     public void setHasmethod(boolean hasmethod) {
         this.hasmethod = hasmethod;
@@ -171,5 +142,13 @@ public class ExerciseSet implements Serializable, Ben {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public boolean isCustomWeight() {
+        return customWeight;
+    }
+
+    public void setCustomWeight(boolean customWeight) {
+        this.customWeight = customWeight;
     }
 }

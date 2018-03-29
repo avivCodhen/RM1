@@ -98,7 +98,7 @@ public class WorkoutFragment extends BaseCreateProgramFragment implements TabLay
         programmer = ((HomeActivity) getActivity()).getProgrammer();
         // saveBtn = (Button) v.findViewById(R.id.workout_fragment_save_btn);
         backBtn.setOnClickListener(this);
-        workoutView = (WorkoutView) v.findViewById(R.id.fragment_workout_workoutview);
+        //workoutView = (WorkoutView) v.findViewById(R.id.fragment_workout_workoutview);
         /*if (programmer.isHasProgram()) {
             workoutView.instantiate(-1, getChildFragmentManager(), true, programmer.getLayoutManager());
             //toInitiateWorkout = false;
@@ -117,9 +117,9 @@ public class WorkoutFragment extends BaseCreateProgramFragment implements TabLay
         }
         navLayout.setVisibility(GONE);
 
-        workoutView.setVisibility(View.VISIBLE);
+        //workoutView.setVisibility(View.VISIBLE);
 
-        workoutView.instantiate(-1, getChildFragmentManager(), true, programmer.getLayoutManager());
+      //  workoutView.instantiate(-1, getChildFragmentManager(), true, programmer.getLayoutManager());
 
     }
 
@@ -206,7 +206,7 @@ public class WorkoutFragment extends BaseCreateProgramFragment implements TabLay
         fragmentsList.add(LimitFragment.getInstance(this));
         //fragmentsList.add(new ManagerView());
         newAdapter.notifyDataSetChanged();
-        workoutView.setVisibility(GONE);
+       // workoutView.setVisibility(GONE);
         viewPager.setVisibility(View.VISIBLE);
         viewPager.setAdapter(newAdapter);
         viewPager.setCurrentItem(fragmentsList.size() - 1);

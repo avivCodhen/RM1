@@ -4,19 +4,26 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.AlgorithmLayout.PLObject.ExerciseProfile;
 import com.strongest.savingdata.AlgorithmStats.StatsCalculatorManager;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
+import com.strongest.savingdata.Fragments.ExerciseChooseFragment;
+import com.strongest.savingdata.Fragments.SetsChooseSingleFragment;
+import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 
 import static com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes.IntraExerciseProfile;
+import static com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes.IntraSet;
+import static com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes.IntraSetNormal;
 import static com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes.SetsPLObject;
+import static com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes.SuperSetIntraSet;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.*;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TYPE;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.EXERCISE_ID;
@@ -42,9 +49,10 @@ public class LayoutManager {
         return dbName;
     }
 
-    public ArrayList<PLObject> getWorkouts(){
+    public ArrayList<PLObject> getWorkouts() {
         return workouts;
     }
+
     private ArrayList<PLObject> initWorkouts() {
         ArrayList<PLObject> arr = new ArrayList<>();
         for (int i = 0; i < layout.size(); i++) {
@@ -100,17 +108,18 @@ public class LayoutManager {
     // private ArrayList<PLObjects> splitCleanWorkout;
     private StatsCalculatorManager statsCalculator;
 
+    public LayoutManagerHelper mLayoutManagerHelper;
     private Learn learn;
 
     private DataManager dataManager;
 
-    public LayoutManager(Context context, DataManager dataManager, ProgramTemplate programTemplate) {
+/*    public LayoutManager(Context context, DataManager dataManager, ProgramTemplate programTemplate) {
         this.programTemplate = programTemplate;
         this.context = context;
         this.dataManager = dataManager;
         learn = new Learn(this);
         statsCalculator = new StatsCalculatorManager(this);
-    }
+    }*/
 
     public void finish() {
         initRecyclerMatrixLayout();
@@ -122,6 +131,8 @@ public class LayoutManager {
         this.dataManager = dataManager;
         learn = new Learn(this);
         statsCalculator = new StatsCalculatorManager(this);
+        mLayoutManagerHelper = new LayoutManagerHelper();
+
     }
 
     public static LayoutManager getDefaultLayoutManagerInstance(Context context, DataManager dataManager) {
@@ -218,7 +229,7 @@ public class LayoutManager {
                         drawBody(layout, c.getString(c.getColumnIndex(NAME)));
                         break;
                     case ExerciseProfile:
-                        ExerciseProfile parent = null;
+                     //   ExerciseProfile parent = null;
                         innerType = WorkoutLayoutTypes
                                 .getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
 
@@ -229,60 +240,60 @@ public class LayoutManager {
                             Log.d("aviv", "readLayoutFromDataBase: either null or no muscle");
                         }
 
-                        if (innerType == IntraExerciseProfile) {
-                            if(((ExerciseProfile) layout.get(layout.size()-1)).getParent() != null){
-                                parent = ((ExerciseProfile) layout.get(layout.size()-1)).getParent();
-                            }else{
-                                parent = ((ExerciseProfile) layout.get(layout.size()-1));
+                     /*   if (innerType == IntraExerciseProfile) {
+                            if (((ExerciseProfile) layout.get(layout.size() - 1)).getParent() != null) {
+                                parent = ((ExerciseProfile) layout.get(layout.size() - 1)).getParent();
+                            } else {
+                                parent = ((ExerciseProfile) layout.get(layout.size() - 1));
 
                             }
-                        }
+                        }*/
                         ep = drawExercise(muscle, layout, innerType, false);
 
                         String exId = c.getString(c.getColumnIndex(EXERCISE_ID));
                         if (exId != null) {
                             ep.setExercise(dataManager.getExerciseDataManager().fetchByName(muscle.getMuscle_name(), exId));
                         }
-                        if (parent != null) {
+                      /*  if (parent != null) {
                             parent.getExerciseProfiles().add(ep);
                             ep.setParent(parent);
-                        }
+                        }*/
                         break;
                     case SetsPLObject:
 
                         innerType = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
-                        ep = ((ExerciseProfile) layout.get(layout.size()-1));
-                       ExerciseProfile setParent = null;
-                        if(ep.getParent() != null){
+                        ep = ((ExerciseProfile) layout.get(layout.size() - 1));
+                        ExerciseProfile setParent = null;
+                        if (ep.getParent() != null) {
                             setParent = ep.getParent();
-                        }else{
+                        } else {
                             setParent = ep;
                         }
-                        rep = c.getColumnName(c.getColumnIndex(REP_ID));
-                        rest = c.getColumnName(c.getColumnIndex(REST));
+                        rep = c.getString(c.getColumnIndex(REP_ID));
+                        rest = c.getString(c.getColumnIndex(REST));
                         weight = c.getDouble(c.getColumnIndex(WEIGHT));
                         exerciseSet = new ExerciseSet();
                         exerciseSet.setRep(rep);
-                        exerciseSet.setRep(rest);
+                        exerciseSet.setRest(rest);
                         exerciseSet.setWeight(weight);
                         PLObject.SetsPLObject setsPLObjectSet = new PLObject.SetsPLObject(setParent, exerciseSet);
                         setsPLObjectSet.setInnerType(innerType);
                         setParent.getSets().add(setsPLObjectSet);
                         break;
                     case IntraSet:
-                        ep = ((ExerciseProfile) layout.get(layout.size()-1));
+                        ep = ((ExerciseProfile) layout.get(layout.size() - 1));
                         innerType = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
                         switch (innerType) {
 
                             case SuperSetIntraSet:
                                 //exerciseprofile is a superset
 
-                                rep = c.getColumnName(c.getColumnIndex(REP_ID));
-                                rest = c.getColumnName(c.getColumnIndex(REST));
+                                rep = c.getString(c.getColumnIndex(REP_ID));
+                                rest = c.getString(c.getColumnIndex(REST));
                                 weight = c.getDouble(c.getColumnIndex(WEIGHT));
                                 exerciseSet = new ExerciseSet();
                                 exerciseSet.setRep(rep);
-                                exerciseSet.setRep(rest);
+                                exerciseSet.setRest(rest);
                                 exerciseSet.setWeight(weight);
                                 PLObject.IntraSetPLObject intra = new PLObject.IntraSetPLObject(
                                         ep,
@@ -293,14 +304,14 @@ public class LayoutManager {
 
                             case IntraSetNormal:
                                 //exerciseprofile is normal
-                                rep = c.getColumnName(c.getColumnIndex(REP_ID));
-                                rest = c.getColumnName(c.getColumnIndex(REST));
+                                rep = c.getString(c.getColumnIndex(REP_ID));
+                                rest = c.getString(c.getColumnIndex(REST));
                                 weight = c.getDouble(c.getColumnIndex(WEIGHT));
                                 exerciseSet = new ExerciseSet();
                                 exerciseSet.setRep(rep);
-                                exerciseSet.setRep(rest);
+                                exerciseSet.setRest(rest);
                                 exerciseSet.setWeight(weight);
-                                int position = ep.getSets().size();
+                                int position = ep.getSets().size()-1;
 
                                 PLObject.IntraSetPLObject setsPLObjectIntraSet = new PLObject.IntraSetPLObject(
                                         ep, exerciseSet, innerType, ep.getSets().get(position));
@@ -311,6 +322,7 @@ public class LayoutManager {
 
                 }
             } while (c.moveToNext());
+            mLayoutManagerHelper.reArrangeFathers(layout);
             initRecyclerMatrixLayout();
             initWorkouts();
             return true;
@@ -326,7 +338,7 @@ public class LayoutManager {
 
             switch (updateComponents.getUpdateType()) {
                 case DELETE_EXERCISE:
-                    for (int i = 0; i < ((ExerciseProfile)updateComponents.getPlObject()).getExerciseProfiles().size()+1; i++) {
+                    for (int i = 0; i < ((ExerciseProfile) updateComponents.getPlObject()).getExerciseProfiles().size() + 1; i++) {
                         getSplitRecyclerWorkouts().get(workoutPosition).remove(updateComponents.getRemovePosition());
                     }
                 case SWAP:
@@ -812,4 +824,231 @@ public class LayoutManager {
             this.layout = layout;
         }
     }
+
+    public class LayoutManagerHelper {
+
+        private MyExpandableAdapter adapter;
+        private ArrayList<PLObject> layout;
+
+        public void setUpWithLayout(MyExpandableAdapter adapter, ArrayList<PLObject> layout) {
+            this.adapter = adapter;
+            this.layout = layout;
+        }
+
+        private LayoutManagerHelper(MyExpandableAdapter adapter) {
+
+            this.adapter = adapter;
+        }
+
+        private LayoutManagerHelper() {
+
+        }
+
+        public void onChange(String change, PLObject plObject) {
+            int position = findPLObjectPosition(plObject, layout);
+            if (position != -1) {
+                adapter.notifyItemChanged(position);
+            }
+        }
+/*
+
+        public void onItemChange(){
+            adapter.notifyItemChanged(0);
+        }
+*/
+
+        public void onExerciseSetChange() {
+            adapter.notifyItemChanged(0);
+        }
+
+        public int findPLObjectPosition(PLObject plObject, ArrayList<PLObject> layout) {
+            for (int i = 0; i < layout.size(); i++) {
+                PLObject current = layout.get(i);
+                if (current == plObject) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public int countExerciseRangeChange(int position, ArrayList<PLObject> layout) {
+            int count = 1;
+            for (int i = position + 1; i < layout.size(); i++) {
+                if (layout.get(i).getType() != WorkoutLayoutTypes.ExerciseProfile &&
+                        layout.get(i).getInnerType() != WorkoutLayoutTypes.IntraExerciseProfile) {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        public int findSetPosition(PLObject.SetsPLObject setsPLObject) {
+            for (int i = 0; i < setsPLObject.getParent().getSets().size(); i++) {
+                PLObject.SetsPLObject temp = setsPLObject.getParent().getSets().get(i);
+                if (setsPLObject == temp) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public int findIntraSetPosition(PLObject.IntraSetPLObject intraPLObject) {
+            if (intraPLObject.innerType == WorkoutLayoutTypes.SuperSetIntraSet) {
+                for (int i = 0; i < intraPLObject.getParent().getIntraSets().size(); i++) {
+                    if (intraPLObject.getParent().getIntraSets().get(i) == intraPLObject) {
+                        return i;
+                    }
+                }
+            } else if (intraPLObject.innerType == WorkoutLayoutTypes.IntraSet) {
+                for (int i = 0; i < intraPLObject.getParentSet().getIntraSets().size(); i++) {
+                    PLObject.IntraSetPLObject temp = intraPLObject.getParentSet().getIntraSets().get(i);
+                    if (intraPLObject == temp) {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        }
+
+        public int findExercisePosition(ExerciseProfile ep, ArrayList<PLObject> layout){
+            int count=1;
+            for (int i = 0; i < layout.size(); i++) {
+                if(layout.get(i) != ep){
+                    WorkoutLayoutTypes type = layout.get(i).getType();
+                    WorkoutLayoutTypes innerType = layout.get(i).getInnerType();
+                    if( type== WorkoutLayoutTypes.ExerciseProfile && innerType != IntraExerciseProfile){
+                        count++;
+                    }
+                }else{
+                    return count;
+                }
+            }
+            return -1;
+        }
+
+        public String writeTitle(PLObject plObject){
+            PLObject.ExerciseProfile exerciseProfile;
+            PLObject.SetsPLObject setsPLObject;
+            PLObject.IntraSetPLObject intraSetPLObject;
+            String title = "";
+            if (plObject instanceof PLObject.ExerciseProfile) {
+                exerciseProfile = (PLObject.ExerciseProfile) plObject;
+                if (exerciseProfile.innerType == WorkoutLayoutTypes.IntraExerciseProfile) {
+                    title = "Exercise "
+                            + exerciseProfile.getParent().rawPosition
+                            + ", " + "Superset " + exerciseProfile.getTag();
+                }else{
+                    title = "Exercise "+exerciseProfile.rawPosition;
+                }
+                return title;
+
+            } else if (plObject instanceof PLObject.SetsPLObject) {
+                setsPLObject = (PLObject.SetsPLObject) plObject;
+                exerciseProfile = setsPLObject.getParent();
+                String set = findSetPosition(setsPLObject) == 0 ? "First set" : "Set "+(findSetPosition(setsPLObject)+1);
+                String exerciseName = exerciseProfile.getExercise() != null? ", "+ exerciseProfile.getExercise().getName()
+                        :"";
+                title = set+ exerciseName ;
+                return title;
+
+            } else if (plObject instanceof PLObject.IntraSetPLObject) {
+                intraSetPLObject = (PLObject.IntraSetPLObject) plObject;
+
+                if(intraSetPLObject.innerType == WorkoutLayoutTypes.SuperSetIntraSet){
+                    exerciseProfile = intraSetPLObject.getParent();
+                    String exerciseName = exerciseProfile.getExercise() != null? ", "+exerciseProfile.getExercise().getName() : "";
+                    title = "Intra-Set "+exerciseProfile.getTag()+", "+"set "+(1+findIntraSetPosition(intraSetPLObject))
+                            +exerciseName;
+                }else{
+                    exerciseProfile = intraSetPLObject.getParentSet().getParent();
+                    String exerciseName = exerciseProfile.getExercise() != null? ", "+ exerciseProfile.getExercise().getName() : "";
+                    title = "Intra-Set "
+                            +findIntraSetPosition(intraSetPLObject)
+                            +", "+"set "+(findSetPosition(intraSetPLObject.getParentSet())+1)
+                            +exerciseName;
+                }
+            }
+            return title;
+        }
+
+        public void reArrangeFathers( ArrayList<PLObject> layout) {
+            for (int i = 0; i < layout.size() ; i++) {
+                if(layout.get(i).innerType == WorkoutLayoutTypes.IntraExerciseProfile){
+                    if(i-1 < 0 || layout.get(i-1).innerType == WorkoutLayoutTypes.ExerciseProfile){
+                        ((ExerciseProfile) layout.get(i)).setParent(null);
+                    }
+                }
+                if(layout.get(i).getType() == WorkoutLayoutTypes.ExerciseProfile){
+                    ExerciseProfile parent = (ExerciseProfile) layout.get(i);
+                    parent.getExerciseProfiles().clear();
+                    if(layout.size() > i+1 && layout.get(i+1).innerType == IntraExerciseProfile){
+
+                        innerloop:
+                        for (int j = i+1; j <layout.size() ; j++) {
+                            if(layout.get(j).innerType == IntraExerciseProfile){
+                                ExerciseProfile superset = (ExerciseProfile) layout.get(j);
+                                parent.getExerciseProfiles().add(superset);
+                                superset.setParent(parent);
+                                i++;
+                            }else{
+                                break innerloop;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+        public ArrayList<ExerciseProfile> getAllExerciseProfiles(ArrayList<PLObject> layout){
+            ArrayList<ExerciseProfile> arr = new ArrayList<>();
+            for (int i = 0; i < layout.size(); i++) {
+                if(layout.get(i).getType()==WorkoutLayoutTypes.ExerciseProfile){
+                    arr.add((ExerciseProfile) layout.get(i));
+                }
+            }
+            return arr;
+        }
+
+        public WorkoutLayoutTypes findPLObjectDefaultType(PLObject plObject){
+            WorkoutLayoutTypes type = null;
+            if(plObject.getType() == WorkoutLayoutTypes.ExerciseProfile){
+                ExerciseProfile ep =(ExerciseProfile) plObject;
+                if(ep.innerType == WorkoutLayoutTypes.IntraExerciseProfile){
+                    type = WorkoutLayoutTypes.IntraExerciseProfile;
+                }else{
+                    type = WorkoutLayoutTypes.ExerciseProfile;
+                }
+            }
+            if(plObject.getType() == SetsPLObject){
+                    type = SetsPLObject;
+                }if(plObject.getType() == IntraSet){
+                    if(plObject.innerType == WorkoutLayoutTypes.SuperSetIntraSet){
+                        type = WorkoutLayoutTypes.SuperSetIntraSet;
+                    }else{
+                        type = IntraSetNormal;
+                    }
+                }
+                return type;
+            }
+
+
+
+        public void attachSupersetIntraSetsByParent(ExerciseProfile superset){
+            int sets = superset.getParent().getSets().size();
+            int intraSets = superset.getIntraSets().size();
+            int length =  sets-intraSets;
+            if(length > 0){
+                for (int i = 0; i <length ; i++) {
+                    superset.getIntraSets().add(new PLObject.IntraSetPLObject(superset,new ExerciseSet(),SuperSetIntraSet, null));
+                }
+            }
+
+        }
+
+
+        }
+
+
+
 }

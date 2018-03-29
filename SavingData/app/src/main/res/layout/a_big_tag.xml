@@ -1,11 +1,11 @@
 <LinearLayout android:layout_height="match_parent"
     android:layout_width="wrap_content"
     android:id="@+id/tag_big_layout"
-    android:background="@color/colorAccent"
     android:elevation="1dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
+        android:background="@color/colorAccent"
         android:gravity="center_vertical"
         android:id="@+id/big_tag_tv"
         android:textStyle="bold"

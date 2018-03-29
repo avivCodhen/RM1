@@ -144,13 +144,13 @@ public class CreateFragment extends BaseCreateProgramFragment implements View.On
             Generator generator = new Generator(getContext(), programTemplate, dm);
             layoutManager = generator.generate();
         } else {
-            layoutManager = new LayoutManager(getContext(),dm,programTemplate);
+        //    layoutManager = new LayoutManager(getContext(),dm,programTemplate);
          //   layoutManager.createNewLayoutFromTemplate(programTemplate);
             //newProgrammer.createLayoutFromTemplate(programTemplate);
         }
 
         programmer.createProgramTable();
-        layoutManager.saveLayoutToDataBase(false);
+       // layoutManager.saveLayoutToDataBase(false);
         dm.closeDataBases();
         dm.getPrefsEditor().putBoolean(WorkoutFragment.HASWORKOUT, true).commit();
         Handler uiHandler = new Handler();

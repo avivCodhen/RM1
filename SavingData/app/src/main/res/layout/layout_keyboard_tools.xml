@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/weight_tools_add_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/plus_16px"
+            android:id="@+id/weight_tools_add_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/orangeColor"
+            android:padding="12dp"
+             />
+
+        <LinearLayout
+            android:layout_marginLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/weight_tools_add_btn">
+
+            <net.cachapa.expandablelayout.ExpandableLayout
+                android:id="@+id/keyboard_tools_expandable"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:el_duration="500"
+                app:el_expanded="true"
+                app:el_parallax="1">
+
+
+            </net.cachapa.expandablelayout.ExpandableLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/keyboard_tools_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/weight_tools_add_layout"
+        android:background="@android:color/transparent"
+        android:numColumns="5"
+        android:stretchMode="columnWidth"></GridView>
+</RelativeLayout>

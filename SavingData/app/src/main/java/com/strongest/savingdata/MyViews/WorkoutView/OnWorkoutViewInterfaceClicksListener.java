@@ -15,7 +15,9 @@ public interface OnWorkoutViewInterfaceClicksListener {
     void onLongClick(RecyclerView.ViewHolder vh, boolean delete);
 
     void onLongSupersetClick(RecyclerView.ViewHolder vh, boolean delete);
+
     void onSetsDoubleClick(RecyclerView.ViewHolder vh, int childPosition);
+
     void onSetsLongClick(RecyclerView.ViewHolder vh, int childPosition, boolean delete);
 
     void onMoreClick(RecyclerView.ViewHolder vh);
@@ -25,4 +27,22 @@ public interface OnWorkoutViewInterfaceClicksListener {
     void onSwapExercise(int fromPosition, int toPosition);
 
     void onBodyViewLongClick(RecyclerView.ViewHolder vh, boolean delete);
+
+    void collapseExercise(MyExpandableAdapter.ExerciseViewHolder vh);
+
+    void expandExercise(MyExpandableAdapter.ExerciseViewHolder vh);
+
+    void collapseExercise(int adapterPosition);
+
+    void expandExercise(int adapterPosition);
+
+    void onScrollPosition(int position, boolean enableScroll, boolean lastVisible);
+
+    void onLongClickMenuAddSuperset(RecyclerView.ViewHolder vh);
+
+    void onLongClickHideMenu();
+
+    void onAddNormalIntraSet(RecyclerView.ViewHolder vh);
+
+    void deleteItem(int position, boolean delete);
 }

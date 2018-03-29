@@ -104,7 +104,7 @@ public class PyramidNumberChooseView extends LinearLayout implements NumberChoos
 
         public PyramidLayoutHolder(Context context, NumberChooseManager numberChooseManager) {
             singleNumberChooseView = new SingleNumberChooseView(context);
-            singleNumberChooseView.setUpWithNumberChooseManager(numberChooseManager);
+          //  singleNumberChooseView.setUpWithNumberChooseManager(numberChooseManager);
             this.context = context;
             initsetsTV();
         }

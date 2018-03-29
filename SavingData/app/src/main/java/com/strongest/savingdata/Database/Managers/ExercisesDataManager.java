@@ -120,6 +120,18 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
         db.delete("SQLITE_SEQUENCE", "NAME = ?", new String[]{table});
     }
 
+    public ArrayList<String> readListByTable(String table){
+        ArrayList<String> arr = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ table, null);
+        if(cursor != null && cursor.moveToFirst()){
+            do{
+              arr.add(cursor.getString(cursor.getColumnIndex(NAME)));
+            }while ((cursor.moveToNext()));
+        }
+        return arr;
+    }
+
+
 
     public Collection<Beans> readByBParams(String tableName, BParams... p) {
         String[] s = new String[p.length];
@@ -285,6 +297,17 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
                 getBeansContentValues(tableName, b)
         );
     }
+
+    public void insertData(String tableName, String s) {
+        ContentValues c = new ContentValues();
+        c.put(NAME, s);
+
+        db.insert(tableName,
+                null,
+                c
+        );
+    }
+
 
     public void query(String[] colums) {
 

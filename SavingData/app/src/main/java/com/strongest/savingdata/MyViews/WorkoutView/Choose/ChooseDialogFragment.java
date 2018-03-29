@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.strongest.savingdata.Activities.BaseActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
@@ -36,6 +37,8 @@ import com.strongest.savingdata.MyViews.WorkoutView.WorkoutView;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class ChooseDialogFragment extends BaseCreateProgramFragment implements View.OnClickListener,
@@ -43,13 +46,14 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     public static final String PLOBJECT = "plobject";
     public static final String POSITION = "position";
+    public static final String OLD_POSITION = "old_position";
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Bundle i;
     private ArrayList<PLObject> mLayout;
     private DataManager dataManager;
     public AppBarLayout appBarLayout;
-    private NestedScrollView nestedScrollView;
+ //   private NestedScrollView nestedScrollView;
 
     private PLObject plObject;
     private PLObject.ExerciseProfile exerciseProfile;
@@ -70,16 +74,20 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     private int currentTab;
     private boolean initiated;
     private RecyclerView mRecyclerView;
-    private MyExpandableAdapter myExpandableAdapter;
+    public MyExpandableAdapter myExpandableAdapter;
     private ChooseAdapter adapter;
+    private LayoutManager.LayoutManagerHelper helper;
+    private int setPosition;
+    private String title = "";
 
     public static ChooseDialogFragment getInstance(OnExerciseChangeListener onExerciseChangeListener,
-                                                   int position,
+                                                   int oldPosition, int position,
                                                    PLObject plObject, RecyclerView.ViewHolder vh) {
         ChooseDialogFragment f = new ChooseDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(PLOBJECT, plObject);
         bundle.putInt(POSITION, position);
+        bundle.putInt(OLD_POSITION, oldPosition);
         f.setOnExerciseChangeListener(onExerciseChangeListener);
         f.setVh(vh);
         f.setArguments(bundle);
@@ -90,10 +98,13 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            helper = ((BaseActivity) getActivity()).getProgrammer().layoutManager.mLayoutManagerHelper;
             plObject = (PLObject) getArguments().getSerializable(PLOBJECT);
+            title = helper.writeTitle(plObject);
             if (plObject instanceof PLObject.ExerciseProfile) {
                 exerciseProfile = (PLObject.ExerciseProfile) plObject;
                 adapter = new ChooseAdapter(getChildFragmentManager(), ExerciseChooseFragment.newInstance(exerciseProfile));
+
             } else if (plObject instanceof PLObject.SetsPLObject) {
                 setsPLObject = (PLObject.SetsPLObject) plObject;
                 exerciseProfile = setsPLObject.getParent();
@@ -114,11 +125,11 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                getActionBar().show();
+//                getActionBar().show();
 
             }
         }, 500);
-        ((HomeActivity) getActivity()).begoneTabLayout();
+        // ((HomeActivity) getActivity()).begoneTabLayout();
         View v = inflater.inflate(R.layout.fragment_choose, container, false);
         return v;
     }
@@ -130,9 +141,9 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     }
 
     private void initView(View v) {
-        nestedScrollView = (NestedScrollView) v.findViewById(R.id.fragment_choose_nestedscrollview);
+    //    nestedScrollView = (NestedScrollView) v.findViewById(R.id.fragment_choose_nestedscrollview);
         mLayout = new ArrayList<>();
-      //  makeLayout(exerciseProfile);
+        //  makeLayout(exerciseProfile);
         currentRecyclerPosition = plObjectPosition;
         dataManager = new DataManager(getContext());
         // i = getArguments();
@@ -158,16 +169,15 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         }, 200);
         myExpandableAdapter = new MyExpandableAdapter(layout, getContext(), null, null, this);
         mRecyclerView.setAdapter(myExpandableAdapter);
-
-
-       // ((MyExpandableAdapter.ExerciseViewHolder) vh).card.setOnClickListener(null);
+        ((BaseActivity) getActivity()).programmer.layoutManager.mLayoutManagerHelper.setUpWithLayout(myExpandableAdapter, layout);
+        // ((MyExpandableAdapter.ExerciseViewHolder) vh).card.setOnClickListener(null);
         viewPager = (ViewPager) v.findViewById(R.id.choose_dialog_viewpager);
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
-        tabLayout = (TabLayout) v.findViewById(R.id.fragment_choose_tablayout);
+     //   tabLayout = (TabLayout) v.findViewById(R.id.fragment_choose_tablayout);
 
-        tabLayout.setupWithViewPager(viewPager, true);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+ //       tabLayout.setupWithViewPager(viewPager, true);
+      /*  tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int tabsDec = (tab.getPosition() - currentTab);
@@ -194,49 +204,16 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });
+        });*/
+        TextView title_tv = (TextView) v.findViewById(R.id.choose_add_set);
+        title_tv.setText(title);
 
-        v.findViewById(R.id.choose_add_set).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<ExerciseSet> set = new ArrayList<>();
-                ExerciseSet aSet = new ExerciseSet();
-                set.add(new ExerciseSet());
-                // exerciseProfile.getSets().add(set);
-                PLObject.SetsPLObject setsPLObject = new PLObject.SetsPLObject(exerciseProfile, aSet);
-                mLayout.add(mLayout.size() - 1, setsPLObject);
-                ((HomeActivity) getActivity()).
-                        workoutView.addSet(
-                        plObjectPosition + exerciseProfile.getSets().size(),
-                        setsPLObject);
 
-                //makeLayout(exerciseProfile);
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-        v.findViewById(R.id.choose_add_intra_exercise).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PLObject.ExerciseProfile ep = new PLObject.ExerciseProfile(null, 0, 0, 0);
-                ep.setInnerType(WorkoutLayoutTypes.IntraExerciseProfile);
-                exerciseProfile.getExerciseProfiles().add(ep);
-                ep.setTag(LayoutManager.intraWorkoutsLetters[exerciseProfile.getExerciseProfiles().size()]);
-                ArrayList<ExerciseSet> set = new ArrayList<>();
-                ExerciseSet aSet = new ExerciseSet();
-                set.add(new ExerciseSet());
-                //    ep.setIntraSets(set);
-                mLayout.add(exerciseProfile.getExerciseProfiles().size(), ep);
-                adapter.notifyDataSetChanged();
-                viewPager.setCurrentItem(exerciseProfile.getExerciseProfiles().size());
-
-            }
-        });
         v.findViewById(R.id.fragment_choose_back_iv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeActivity) getActivity()).workoutView.onExitChooseFragment(vh, false);
-                ((HomeActivity) getActivity()).reviveTabLayout();
+                ((HomeActivity) getActivity()).workoutView.onExitChooseFragment(vh, getArguments().getInt(OLD_POSITION));
+                // ((HomeActivity) getActivity()).reviveTabLayout();
 
                 plObject.setEditMode(false);
                 getFragmentManager().popBackStack();
@@ -270,9 +247,6 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     }
 
-    public NestedScrollView getNestedScrollView() {
-        return nestedScrollView;
-    }
 
     public AppBarLayout getAppBarLayout() {
         return appBarLayout;
@@ -392,6 +366,51 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     @Override
     public void onBodyViewLongClick(RecyclerView.ViewHolder vh, boolean delete) {
+
+    }
+
+    @Override
+    public void collapseExercise(MyExpandableAdapter.ExerciseViewHolder vh) {
+
+    }
+
+    @Override
+    public void expandExercise(MyExpandableAdapter.ExerciseViewHolder vh) {
+
+    }
+
+    @Override
+    public void collapseExercise(int adapterPosition) {
+
+    }
+
+    @Override
+    public void expandExercise(int adapterPosition) {
+
+    }
+
+    @Override
+    public void onScrollPosition(int position, boolean enableScroll, boolean lastVisible) {
+
+    }
+
+    @Override
+    public void onLongClickMenuAddSuperset(RecyclerView.ViewHolder vh) {
+
+    }
+
+    @Override
+    public void onLongClickHideMenu() {
+
+    }
+
+    @Override
+    public void onAddNormalIntraSet(RecyclerView.ViewHolder vh) {
+
+    }
+
+    @Override
+    public void deleteItem(int position, boolean delete) {
 
     }
     /*  @Subscribe

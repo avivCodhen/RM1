@@ -70,7 +70,6 @@ public class Programmer implements Serializable {
 
 
     public void tryInitProgram() {
-        try {
             String dbName = dataManager.getPrefs().getString(HomeActivity.CURRENT_PROGRAM_DBNAME, "no_program");
             if (!dbName.equals("no_program")) {
                 program = dataManager.getProgramDataManager().readProgramTable(dbName);
@@ -78,16 +77,8 @@ public class Programmer implements Serializable {
                     layoutManager = new LayoutManager(context, dataManager);
                     layoutManager.readLayoutFromDataBase(dbName);
                 } else {
-                    throw new Throwable("program is null");
                 }
-
             }
-        } catch (Exception e) {
-            Log.d("aviv", "tryInitProgram: " + e.toString());
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
-
 
     }
 

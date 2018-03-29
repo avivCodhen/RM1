@@ -1,0 +1,109 @@
+<LinearLayout android:background="@color/colorAccent"
+    android:layout_width="match_parent"
+    android:visibility="visible"
+    android:layout_height="40dp"
+    android:elevation="0dp"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/longclick_menu_back"
+        android:src="@drawable/back_arrow_24px"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+
+
+        <ImageView
+            android:layout_marginRight="20dp"
+            android:id="@+id/longclick_menu_delete"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/delete_24dp_white"
+            android:layout_width="23dp"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:layout_toLeftOf="@id/longclick_menu_delete"
+            android:layout_marginRight="20dp"
+            android:id="@+id/longclick_menu_transfer"
+            android:src="@drawable/transfer_24dp_white"
+            android:layout_width="18dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:textColor="@color/colorPrimary"
+
+            android:id="@+id/longclick_menu_superset"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/longclick_menu_transfer"
+            android:textStyle="bold"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="+ Superset"
+            android:src="@drawable/ic_delete_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:textColor="@color/colorPrimary"
+
+            android:id="@+id/longclick_menu_set"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/longclick_menu_superset"
+            android:textStyle="bold"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="+ Set"
+            android:src="@drawable/ic_delete_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/longclick_menu_intraSet"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/longclick_menu_set"
+            android:textStyle="bold"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="+ Intraset"
+            android:src="@drawable/ic_delete_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+
+    </RelativeLayout>
+   <!-- <LinearLayout
+        android:layout_weight="1"
+
+        android:layout_width="match_parent"
+        android:layout_height="25dp">
+
+        <Button
+            android:textColor="@color/colorPrimary"
+            android:background="@color/textGrayColor"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="Add Superset"
+            android:src="@drawable/ic_delete_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>-->
+</LinearLayout>

@@ -17,6 +17,7 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
 
     private MainAdapter mainAdapter;
     private MyExpandableAdapter workoutAdapter;
+    private boolean onTheMove;
 
     public DragAndSwipeCallback(MainAdapter adapter) {
         mainAdapter = adapter;
@@ -58,9 +59,8 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
         if (mainAdapter != null) {
             mainAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         } else {
-            workoutAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+            workoutAdapter.onItemMove(viewHolder, target);
         }
-
         return true;
     }
 
@@ -81,7 +81,7 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder,
                                   int actionState) {
         // We only want the active item
-        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE ) {
             if (viewHolder instanceof MainAdapter.MuscleViewHolder) {
                     MainAdapter.MuscleViewHolder itemViewHolder = (MainAdapter.MuscleViewHolder) viewHolder;
                     itemViewHolder.onItemSelected();
@@ -90,7 +90,6 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
                 itemViewHolder.onItemSelected();
             }
         }
-
         super.onSelectedChanged(viewHolder, actionState);
     }
 

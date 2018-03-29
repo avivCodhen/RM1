@@ -2,6 +2,7 @@ package com.strongest.savingdata.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +13,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.strongest.savingdata.Activities.BaseActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
+import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AlgorithmLayout.ReactLayoutManager;
 import com.strongest.savingdata.BaseWorkout.Muscle;
@@ -44,6 +47,7 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
     private PLObject.ExerciseProfile exerciseProfile;
     public static final String EXERCISE_PROFILE = "exercise_profile";
     private ArrayList<Beans> exerciseBeans = new ArrayList<>();
+    private LayoutManager.LayoutManagerHelper helper;
 
     private ReactLayoutManager reactLayoutManager;
 
@@ -76,7 +80,8 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
     }
 
     private void initViews(View v) {
-      //  reactLayoutManager = ((ChooseContainerFragment) getParentFragment()).getReactLayoutManager();
+        helper =  ((BaseActivity) getActivity()).programmer.layoutManager.mLayoutManagerHelper;
+        //  reactLayoutManager = ((ChooseContainerFragment) getParentFragment()).getReactLayoutManager();
         mCircleMuscleIcon = (CircleImageView) v.findViewById(R.id.muscle_icon);
         mMuscleText = (TextView) v.findViewById(R.id.muscle_tv);
         mExpandable = (ExpandableLayout) v.findViewById(R.id.expandable);
@@ -93,24 +98,21 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
         mAdapter = new ExerciseChooseFragmentAdapter();
         recyclerView.setLayoutManager(lm);
         recyclerView.setAdapter(mAdapter);
-  //      ChooseContainerFragment chooseContainerFragment = (ChooseContainerFragment) getParentFragment();
+        //      ChooseContainerFragment chooseContainerFragment = (ChooseContainerFragment) getParentFragment();
 //        ChooseDialogFragment chooseDialogFragment = (ChooseDialogFragment) chooseContainerFragment.getParentFragment();
-        ViewCompat.setNestedScrollingEnabled(((ChooseDialogFragment)getParentFragment()).getNestedScrollView(), false);
+      //  ViewCompat.setNestedScrollingEnabled(((ChooseDialogFragment) getParentFragment()).getNestedScrollView(), false);
         v.findViewById(R.id.choose_change_Tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mExpandable.toggle();
             }
         });
-
-
-
     }
 
-    private void initExerciseBeans(Muscle m){
-            exerciseBeans = (ArrayList<Beans>) ((HomeActivity) getActivity()).
-                    dataManager.getExerciseDataManager().
-                    readByTable(m.getMuscle_name());
+    private void initExerciseBeans(Muscle m) {
+        exerciseBeans = (ArrayList<Beans>) ((HomeActivity) getActivity()).
+                dataManager.getExerciseDataManager().
+                readByTable(m.getMuscle_name());
     }
 
     private void onMuscleChange(GridViewAdapter.MusclesContentHolder mch) {
@@ -119,7 +121,8 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
         mAdapter.notifyDataSetChanged();
         mCircleMuscleIcon.setImageResource(mch.icon);
         mMuscleText.setText(mch.text);
-
+        exerciseProfile.setMuscle(mch.m);
+        helper.onChange("", exerciseProfile);
     }
 
 
@@ -133,7 +136,7 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
         }
 
         @Override
-        public void onBindViewHolder(ExerciseChooseFragmentAdapter.ViewHolder holder, final int position) {
+        public void onBindViewHolder(final ExerciseChooseFragmentAdapter.ViewHolder holder, final int position) {
 
             holder.exercise.setText(exerciseBeans.get(position).getName());
 
@@ -141,13 +144,13 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
             String[] muscles = Muscle.parseMuscles(exerciseBeans.get(position).getMuscles());
             int index = 0;
             for (String m : muscles) {
-                muscle +=m;
-                if(index == 0 || index != muscle.length() && index != 0){
-                    muscle+= ", ";
+                muscle += m;
+                if (index == 0 || index != muscle.length() && index != 0) {
+                    muscle += ", ";
                 }
                 index++;
-                if(index == muscle.length()){
-                    muscle = muscle.substring(0, muscle.length()-2);
+                if (index == muscle.length()) {
+                    muscle = muscle.substring(0, muscle.length() - 2);
                 }
             }
             holder.muscles.setText(muscle);
@@ -156,7 +159,9 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                 //   reactLayoutManager.updateExercise(exerciseBeans.get(position));
+                    exerciseProfile.setExercise(exerciseBeans.get(position));
+                    holder.itemView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                    helper.onChange("",exerciseProfile);
                 }
             });
 
@@ -164,7 +169,7 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
 
         @Override
         public int getItemCount() {
-           return exerciseBeans.size();
+            return exerciseBeans.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -172,7 +177,7 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
 
             public ViewHolder(View itemView) {
                 super(itemView);
-               exercise = (TextView) itemView.findViewById(R.id.exercise_tv);
+                exercise = (TextView) itemView.findViewById(R.id.exercise_tv);
                 muscles = (TextView) itemView.findViewById(R.id.exercise_muscles_tv);
                 type = (TextView) itemView.findViewById(R.id.choose_type);
             }

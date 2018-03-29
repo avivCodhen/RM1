@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -26,7 +27,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.roughike.bottombar.BottomBar;
-import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.ArtificialInteligence.ArtificialIntelligenceObserver;
 import com.strongest.savingdata.BaseWorkout.Programmer;
 import com.strongest.savingdata.Database.Articles.ArticleObj;
@@ -35,8 +35,8 @@ import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.Database.Muscles.DBMuscleHelper;
 import com.strongest.savingdata.Fragments.MyProgramsFragment;
 import com.strongest.savingdata.Fragments.NewProgramFragment;
-import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
-import com.strongest.savingdata.MyViews.MyViewPager;
+import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
+import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
 import com.strongest.savingdata.MyViews.WorkoutView.WorkoutView;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.Server.Download;
@@ -56,9 +56,6 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_BACK;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_CHEST;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_LEGS;
-import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_REPS;
-import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_REST;
-import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_SETS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_SHOULDERS;
 // import com.roughike.bottombar.OnMenuTabClickListener;
 
@@ -80,6 +77,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView mNavigationView;
+    private LongClickMenuView longClickMenuView;
     /*@Inject
     public Programmer programmer;
     @Inject
@@ -94,7 +92,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             new ManagerFragment()
     };
 
-    private MyViewPager viewPager;
+    private ViewPager viewPager;
     private TabLayout tabLayout;
 
     //private NavigationTabBar navigationTabBar;
@@ -120,24 +118,21 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-      /*  Download d = new Download(this);
+        Download d = new Download(this);
         try {
 
             d.refreshData(
                     DBMuscleHelper.DB_TABLE_NAME,
-                    TABLE_REPS,
                     TABLE_CHEST,
                     TABLE_BACK,
                     TABLE_LEGS,
                     TABLE_SHOULDERS,
-                    TABLE_ARMS,
-                    TABLE_SETS,
-                    TABLE_REST
+                    TABLE_ARMS
             );
         } catch (Exception e) {
             Log.d("aviv", "downloadExercises: " + e.toString());
             // dm.getPrefsEditor().putBoolean("download", true).commit();
-        }*/
+        }
 
 
         setContentView(R.layout.activity_home);
@@ -151,6 +146,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
         }
+        longClickMenuView = (LongClickMenuView) findViewById(R.id.activity_home_longclick_menu);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.activity_home_app_bar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.activity_home_drawer_layout);
         mDrawerLayout.setScrimColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
@@ -165,139 +161,35 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         dataManager.getPrefsEditor();
         toolbar.setTitleTextColor(Color.WHITE);
 
-
-        workoutView = (WorkoutView) findViewById(R.id.fragment_workout_workoutview);
-        if (programmer.getProgram() != null) {
-            workoutView.instantiate(-1, getSupportFragmentManager(), true, programmer.getLayoutManager());
-            //toInitiateWorkout = false;
-        } else {
+        viewPager = (ViewPager) findViewById(R.id.activity_home_viewpager);
+        tabLayout = (TabLayout) findViewById(R.id.activity_home_tablayout);
+        ProgramToolsView programToolsView = (ProgramToolsView) findViewById(R.id.activity_programtoolsview);
+        workoutView = new WorkoutView();
+        if (programmer.getProgram() == null) {
             programmer.createNewProgram();
-            workoutView.instantiate(-1, getSupportFragmentManager(), true, programmer.getLayoutManager());
         }
+        workoutView.instantiate(this, getSupportFragmentManager(), programmer.getLayoutManager(), viewPager, tabLayout);
+        workoutView.setProgramToolsView(programToolsView);
+        workoutView.setmAppBarLayout(mAppBarLayout);
+        longClickMenuView.instantiate();
+        workoutView.setLongClickMenu(longClickMenuView);
         toolbar.setTitle(programmer.getProgram().programName);
 
-        // dataManager = new DataManager(this);
-//        fab = (FloatingActionButton) findViewById(R.id.workout_fab_create);
-        /*fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragments[1] = new ManagerFragment();
-                adapter.notifyDataSetChanged();
+    }
 
-            }
-        });*/
-
-        if (getPrefs().getBoolean(TO_REFRESH, true)) {
-
+    /*@Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            float per = Math.abs(mAppBarLayout.getY()) / mAppBarLayout.getTotalScrollRange();
+            boolean setExpanded = (per <= 0.5F);
+            mAppBarLayout.setExpanded(setExpanded, true);
         }
-        /*tabLayout = (TabLayout) findViewById(R.id.home_actiity_tablayout);
-        for (int i = 0; i < 5 ; i++) {
-            TabLayout.Tab tab = tabLayout.newTab();
-            tab.setText("Workout "+i);
-            tabLayout.addTab(tab);
-        }*/
-        //  viewPager = (MyViewPager) findViewById(R.id.activity_home_viewpager);
-        // viewPager.setOffscreenPageLimit(defaultIcons.length);
-        // navigationTabBar = (NavigationTabBar) findViewById(R.id.activity_home_navigationbar);
-        //  initUI();
-        // initModels();
-
-    }
-
-
-    private void initUI() {
-        adapter = new HomeAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
-        for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            if (i == 0) {
-                tabLayout.getTabAt(i).setIcon(activeColors[i]);
-
-            } else {
-                tabLayout.getTabAt(i).setIcon(defaultIcons[i]);
-
-            }
-        }
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                tab.setIcon(activeColors[tab.getPosition()]);
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                tab.setIcon(defaultIcons[tab.getPosition()]);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-        tabLayout.setSelectedTabIndicatorHeight(0);
-
-
-    }
-
-    private void initModels() {
-    /*    models.add(
-                new NavigationTabBar.Model.Builder(
-                        ResourcesCompat.getDrawable(getResources(), R.drawable.ic_home_black_24dp, null),
-                        Color.parseColor(colors[0])
-                )
-
-                        .title("Heart")
-                        .badgeTitle("Home")
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        ResourcesCompat.getDrawable(getResources(), R.drawable.ic_content_paste_black_24dp, null),
-                        Color.parseColor(colors[1])
-                ).title("Cup")
-                        .badgeTitle("Workout")
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        ResourcesCompat.getDrawable(getResources(), R.drawable.ic_assessment_black_24dp, null),
-                        Color.parseColor(colors[2])
-                ).title("Progress")
-                        .badgeTitle("state")
-                        .build()
-        );
-        navigationTabBar.setTitleMode(NavigationTabBar.TitleMode.ACTIVE);
-
-        navigationTabBar.setModels(models);
-        navigationTabBar.setViewPager(viewPager);
-        navigationTabBar.setBackgroundColor(
-                ResourcesCompat.getColor(getResources(), R.color.background_color, null)
-        );*/
-    }
+        return super.dispatchTouchEvent(event);
+    }*/
 
     @Override
     public void onClick(View v) {
         startActivityForResult(new Intent(this, CreateWorkoutActivity.class), COME_BACK_WITH_PROGRAM);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == COME_BACK_WITH_PROGRAM) {
-            if (resultCode == RESULT_OK) {
-                /*LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
-                Intent i = new Intent("TAG_REFRESH");
-                lbm.sendBroadcast(i);*/
-                //   initUI();
-              /*  programmer.updateLayout();
-                ((WorkoutFragment) fragments[1]).updateAdapter();
-                adapter.notifyDataSetChanged();
-                navigationTabBar.setModelIndex(1);
-                viewPager.setCurrentItem(1);*/
-                // dataManager.closeDataBases();
-            }
-        }
     }
 
     public void begoneTabLayout() {

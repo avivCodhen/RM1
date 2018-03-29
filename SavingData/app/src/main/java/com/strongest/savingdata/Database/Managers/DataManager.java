@@ -49,6 +49,7 @@ public class DataManager {
     private StatsDataManager statsDataManager;
     private ProgressDataManager progressDataManager;
     private MusclesDataManager musclesDataManager;
+    private WeightToolsDataManager weightToolsDataManager;
 
     @Inject
     public Context context;
@@ -123,6 +124,17 @@ public class DataManager {
 
     }
 
+    public WeightToolsDataManager getWeightToolsDataManager(){
+        if(weightToolsDataManager != null){
+            return weightToolsDataManager;
+        }else{
+            weightToolsDataManager= new WeightToolsDataManager(context);
+            return weightToolsDataManager;
+        }
+
+    }
+
+
     public void closeDataBases() {
         if (exerciseDataManager != null) {
             exerciseDataManager.close();
@@ -140,6 +152,13 @@ public class DataManager {
             articleDataManager.close();
             articleDataManager = null;
         }
+
+        if (weightToolsDataManager != null) {
+            weightToolsDataManager.close();
+            weightToolsDataManager = null;
+        }
+
+
 
     }
 

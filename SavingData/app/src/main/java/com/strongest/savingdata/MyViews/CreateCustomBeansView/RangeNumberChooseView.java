@@ -15,13 +15,15 @@ import com.strongest.savingdata.R;
  * Created by Cohen on 1/18/2018.
  */
 
-public class RangeNumberChooseView extends LinearLayout implements NumberChoose, OnRangeNumberChooseControl, CompoundButton.OnCheckedChangeListener {
+public class RangeNumberChooseView extends LinearLayout implements CompoundButton.OnCheckedChangeListener,
+        OnNumberInject {
 
     private Context context;
 
     private SingleNumberChooseView lowerNumView, higherNumView;
     private NumberChooseManager mNumberChooseManager;
     private CheckBox checkBox;
+    public String rep;
 
     public SingleNumberChooseView getLowerNumView() {
         return lowerNumView;
@@ -46,19 +48,28 @@ public class RangeNumberChooseView extends LinearLayout implements NumberChoose,
     }
 
     public void initViews() {
-        checkBox = (CheckBox)  findViewById(R.id.choose_number_range_checkbox);
+        checkBox = (CheckBox) findViewById(R.id.choose_number_range_checkbox);
         checkBox.setOnCheckedChangeListener(this);
-        mNumberChooseManager.setOnRangeNumberChooseControl(this);
+        //mNumberChooseManager.setOnRangeNumberChooseControl(this);
         lowerNumView = (SingleNumberChooseView) findViewById(R.id.lower_number_choose_view);
-        lowerNumView.setUpWithNumberChooseManager(mNumberChooseManager);
+        lowerNumView.setUpWithNumberChooseManager(mNumberChooseManager, this);
         higherNumView = (SingleNumberChooseView) findViewById(R.id.higher_number_choose_view);
-        higherNumView.setUpWithNumberChooseManager(mNumberChooseManager);
+        higherNumView.setUpWithNumberChooseManager(mNumberChooseManager, this);
         higherNumView.setText("10");
         higherNumView.setEnabled(false);
+        String repetition = mNumberChooseManager.getExerciseSet().getRep();
+        if(repetition.contains("-")){
+            String[] reps = repetition.split("-");
+            lowerNumView.setText(reps[0]);
+            higherNumView.setText(reps[1]);
+            checkBox.setChecked(true);
+        }else{
+            lowerNumView.setText(repetition);
+        }
 
     }
 
-    @Override
+   /* @Override
     public boolean isLowerSmaller(SingleNumberChooseView view, boolean action) {
         switch (view.getId()){
             case R.id.lower_number_choose_view:
@@ -78,10 +89,9 @@ public class RangeNumberChooseView extends LinearLayout implements NumberChoose,
         }
         return false;
     }
+*/
 
 
-
-    @Override
     public void setUpWithNumberChooseManager(NumberChooseManager numberChooseManager) {
         this.mNumberChooseManager = numberChooseManager;
         inflate(context, R.layout.choose_number_range, this);
@@ -89,28 +99,26 @@ public class RangeNumberChooseView extends LinearLayout implements NumberChoose,
     }
 
     @Override
-    public Beans createRepBeans() {
-        String range = lowerNumView.getText()+"-"+higherNumView.getText();
-        return mNumberChooseManager.createBeans(this, NumberChooseManager.Type.RangeRep, range);
-    }
-
-    @Override
-    public View getView( ) {
-        return this;
-    }
-
-    @Override
-    public boolean hasManager() {
-        return mNumberChooseManager != null;
-    }
-
-    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(isChecked){
+        if (isChecked) {
             higherNumView.setEnabled(true);
-        }else{
+            rep = String.valueOf(String.valueOf(lowerNumView.getText() + "-" + higherNumView.getText()));
+            mNumberChooseManager.injectRep(rep);
+        } else {
             higherNumView.setEnabled(false);
-
+            rep = String.valueOf(lowerNumView.getText());
+            mNumberChooseManager.injectRep(rep);
         }
+
+    }
+
+    @Override
+    public void onInject(String num) {
+        if (checkBox.isChecked()) {
+            rep = String.valueOf(String.valueOf(lowerNumView.getText() + "-" + higherNumView.getText()));
+        } else {
+            rep = String.valueOf(lowerNumView.getText());
+        }
+        mNumberChooseManager.injectRep(rep);
     }
 }

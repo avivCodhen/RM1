@@ -75,11 +75,11 @@ public class CreateRepsDialog extends BaseDialogFragment implements View.OnClick
                 dismiss();
             }
         });
-        list = new NumberChoose[]{
+     /*   list = new NumberChoose[]{
                 new SingleNumberChooseView(getContext()),
                 new RangeNumberChooseView(getContext()),
                 new PyramidNumberChooseView(getContext())
-        };
+        };*/
         tabLayout = (TabLayout) v.findViewById(R.id.dialog_create_reps_tablayout);
         viewPager = (MyViewPager) v.findViewById(R.id.dialog_create_reps_section_viewpager);
         viewPager.setPageTransformer(false, new FadePageTransformer());
@@ -142,7 +142,7 @@ public class CreateRepsDialog extends BaseDialogFragment implements View.OnClick
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             if (!list[position].hasManager()) {
-                list[position].setUpWithNumberChooseManager(new NumberChooseManager());
+             //   list[position].setUpWithNumberChooseManager(new NumberChooseManager());
             }
             container.addView(list[position].getView(), lp);
             //return super.instantiateItem(container, position);

@@ -38,7 +38,7 @@ public class ExerciseProfileStats {
         double totalVolume = 0;
         for (int i = 0; i <ep.getSets().size() ; i++) {
             totalVolume += calcSetVolume(ep.getSets().get(i).getExerciseSet());
-            for (int j = 0; j < ep.getSets().get(j).getIntraSets().size(); j++) {
+            for (int j = 0; j < ep.getSets().get(i).getIntraSets().size(); j++) {
                 totalVolume += calcSetVolume(ep.getSets().get(i).getIntraSets().get(j).getExerciseSet());
             }
         }
@@ -97,6 +97,9 @@ public class ExerciseProfileStats {
         int totalReps = 0;
         for (int i = 0; i < ep.getSets().size(); i++) {
             String setRep = ep.getSets().get(i).getExerciseSet().getRep();
+            if (setRep == null){
+                return 0;
+            }
             totalReps += calcRep(setRep);
             for (int j = 0; j < ep.getSets().get(i).getIntraSets().size(); j++) {
                 String intraRep = ep.getSets().get(i).getIntraSets().get(j).getExerciseSet().getRep();

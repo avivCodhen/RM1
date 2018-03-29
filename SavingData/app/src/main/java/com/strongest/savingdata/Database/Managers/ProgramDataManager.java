@@ -395,6 +395,14 @@ public class ProgramDataManager extends DataManager {
                         break;
                     }
                     contentValues.add(saveExercise(exerciseProfile)) ;
+                    for (int j = 0; j < exerciseProfile.getSets().size(); j++) {
+                        PLObject.SetsPLObject setsPLObject = exerciseProfile.getSets().get(j);
+                        contentValues.add(saveSets(setsPLObject));
+                        for (int k = 0; k < setsPLObject.getIntraSets().size(); k++) {
+                            PLObject.IntraSetPLObject intraSet = setsPLObject.getIntraSets().get(k);
+                            contentValues.add(saveSets(intraSet));
+                        }
+                    }
 
                     for (int j = 0; j < exerciseProfile.getExerciseProfiles().size(); j++) {
                         PLObject.ExerciseProfile superset = exerciseProfile.getExerciseProfiles().get(j);
@@ -403,16 +411,6 @@ public class ProgramDataManager extends DataManager {
                         for (int k = 0; k < superset.getIntraSets().size(); k++) {
                             PLObject.IntraSetPLObject intraSetPLObject = superset.getIntraSets().get(k);
                             contentValues.add(saveSets(intraSetPLObject));
-                        }
-                    }
-
-
-                    for (int j = 0; j < exerciseProfile.getSets().size(); j++) {
-                        PLObject.SetsPLObject setsPLObject = exerciseProfile.getSets().get(j);
-                        contentValues.add(saveSets(setsPLObject));
-                        for (int k = 0; k < setsPLObject.getIntraSets().size(); k++) {
-                            PLObject.IntraSetPLObject intraSet = setsPLObject.getIntraSets().get(k);
-                            contentValues.add(saveSets(intraSet));
                         }
                     }
                     break;

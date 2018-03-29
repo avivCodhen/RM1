@@ -22,8 +22,8 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
 
 
     //DB fields
-    public static final String DB_NAME = "exercises.db";
-    //public static final String DB_NAME = "exercisesdb.db";
+    //public static final String DB_NAME = "exercises.db";
+    public static final String DB_NAME = "exercisesdb.db";
     public static final int DB_VERSION = 1;
 
     //main fields
@@ -221,7 +221,7 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
 
-        if (context != null) {
+        /*if (context != null) {
             for (String t : muscleTables){
                 String command = COMMAND_ALL.replace(TABLE_EXERCISES_ALL, t);
                 db.execSQL(command);
@@ -231,16 +231,16 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
             db.execSQL(MAIN_REPS_COMMAND);
             db.execSQL(GENERATOR_EXERCISE_COMMAND);
            // db.execSQL(GENERATOR_METHOD_COMMAND);
-          //  db.execSQL(GENERATOR_REPS_COMMAND);
-            db.execSQL(STATS_COMMAND);
+           // db.execSQL(GENERATOR_REPS_COMMAND);
+           // db.execSQL(STATS_COMMAND);
             db.execSQL(REST_COMMAND);
-            db.execSQL(SETS_COMMAND);
+           // db.execSQL(SETS_COMMAND);
            // db.execSQL(PROGRAM_CREATE_COMMAND);
 
         } else {
 
         }
-
+*/
     }
 
 

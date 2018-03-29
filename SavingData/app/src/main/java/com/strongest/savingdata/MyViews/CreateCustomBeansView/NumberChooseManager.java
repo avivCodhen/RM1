@@ -2,7 +2,9 @@ package com.strongest.savingdata.MyViews.CreateCustomBeansView;
 
 import android.view.View;
 
+import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.Database.Exercise.Beans;
+import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 
 /**
  * Created by Cohen on 1/18/2018.
@@ -10,8 +12,19 @@ import com.strongest.savingdata.Database.Exercise.Beans;
 
 public class NumberChooseManager {
 
+    private LayoutManager.LayoutManagerHelper helper;
+    private ExerciseSet exerciseSet;
+
+    public LayoutManager.LayoutManagerHelper getHelper() {
+        return helper;
+    }
+
     public enum Type {
         SingleRep, RangeRep, PyramidRep, Sets, Rest
+    }
+
+    public ExerciseSet getExerciseSet() {
+        return exerciseSet;
     }
 
     //high intensity is if it is higher than 10
@@ -19,8 +32,10 @@ public class NumberChooseManager {
 
     private OnRangeNumberChooseControl onRangeNumberChooseControl;
 
-    public NumberChooseManager() {
+    public NumberChooseManager(LayoutManager.LayoutManagerHelper helper, ExerciseSet exerciseSet) {
 
+        this.helper = helper;
+        this.exerciseSet = exerciseSet;
     }
 
     public int calculateRepsIntensity(int num) {
@@ -32,6 +47,16 @@ public class NumberChooseManager {
             }
         }
         return 2;
+    }
+
+    public void injectRest(String rest){
+        exerciseSet.setRest(rest);
+        helper.onExerciseSetChange();
+    }
+
+    public void injectRep(String rep){
+        exerciseSet.setRep(rep);
+        helper.onExerciseSetChange();
     }
 
 

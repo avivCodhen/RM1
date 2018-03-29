@@ -150,7 +150,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         return list.size();
     }
 
-    @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         if(toPosition == 0 || fromPosition == 0){
             return false;
@@ -166,6 +165,11 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
         notifyItemMoved(fromPosition, toPosition);
         return true;
+    }
+
+    @Override
+    public boolean onItemMove(RecyclerView.ViewHolder fromVh, RecyclerView.ViewHolder toVh) {
+        return false;
     }
 
     @Override
