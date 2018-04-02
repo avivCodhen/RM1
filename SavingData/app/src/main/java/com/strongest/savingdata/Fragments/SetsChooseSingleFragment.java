@@ -17,6 +17,7 @@ import android.widget.ImageView;
 
 import com.strongest.savingdata.Activities.BaseActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
+import com.strongest.savingdata.Adapters.OnSingleChoiceAdapterOnclickListener;
 import com.strongest.savingdata.Adapters.SingleChoiceAdapter;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.AlgorithmLayout.PLObject;
@@ -41,7 +42,7 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE
  * Created by Cohen on 3/15/2018.
  */
 
-public class SetsChooseSingleFragment extends BaseCreateProgramFragment {
+public class SetsChooseSingleFragment extends BaseCreateProgramFragment implements OnSingleChoiceAdapterOnclickListener{
 
     private RangeNumberChooseView mRangeNumberChoose;
     private RecyclerView mRepRecycler, mRestRecycler;
@@ -118,8 +119,8 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment {
         mRestChooseView.setUpWithManager(numberChooseManager);
         mRangeNumberChoose = (RangeNumberChooseView) v.findViewById(R.id.fragment_sets_choose_rangenumberview);
         mRangeNumberChoose.setUpWithNumberChooseManager(numberChooseManager);
-        RecyclerView.LayoutManager lmRep = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        RecyclerView.LayoutManager lmRest = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView.LayoutManager lmRep = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, true);
+        RecyclerView.LayoutManager lmRest = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, true);
 
         mRepRecycler = (RecyclerView) v.findViewById(R.id.fragment_sets_choose_recycler_repetitions);
         mRestRecycler = (RecyclerView) v.findViewById(R.id.fragment_sets_choose_recycler_rest);
@@ -128,8 +129,8 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment {
         listRep = dataManager.getExerciseDataManager().readListByTable(TABLE_REPS);
 
         listRest = dataManager.getExerciseDataManager().readListByTable(DBExercisesHelper.TABLE_REST);
-        mRepAdapter = new SingleChoiceAdapter(getContext(), listRep);
-        mRestAdapter = new SingleChoiceAdapter(getContext(), listRest);
+        mRepAdapter = new SingleChoiceAdapter(getContext(), listRep, this,"rep");
+        mRestAdapter = new SingleChoiceAdapter(getContext(), listRest,this,"rest");
         mRestRecycler.setLayoutManager(lmRep);
         mRepRecycler.setLayoutManager(lmRest);
         mRepRecycler.setAdapter(mRepAdapter);
@@ -222,5 +223,15 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment {
     public void insertData(String tableName, String name){
         dataManager.getExerciseDataManager().insertData(tableName, name);
 
+    }
+
+    @Override
+    public void onClick(String object, String type) {
+        if(type.equals("rep")){
+            exerciseSet.setRep(object);
+        }else if(type.equals("rest")){
+            exerciseSet.setRest(object);
+        }
+        helper.onOnlyItemChange();
     }
 }

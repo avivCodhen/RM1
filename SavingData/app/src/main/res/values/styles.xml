@@ -25,7 +25,6 @@
         <item name="android:textAppearanceButton">@style/TextAppearance.AppCompat.Button.Custom
     </item>
     -->
-        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="android:buttonStyle">@style/RobotoTextViewStyle</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>

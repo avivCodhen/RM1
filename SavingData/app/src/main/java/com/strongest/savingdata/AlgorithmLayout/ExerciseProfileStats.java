@@ -3,6 +3,8 @@ package com.strongest.savingdata.AlgorithmLayout;
 import com.strongest.savingdata.AlgorithmLayout.PLObject.ExerciseProfile;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 
+import java.util.ArrayList;
+
 /**
  * Created by Cohen on 3/21/2018.
  */
@@ -13,6 +15,7 @@ public class ExerciseProfileStats {
     private int totalReps;
     private String totalRest;
     private double totalVolume;
+    private String allReps;
 
     public static ExerciseProfileStats getInstance(ExerciseProfile ep) {
         ExerciseProfileStats epStats = new ExerciseProfileStats();
@@ -20,6 +23,7 @@ public class ExerciseProfileStats {
         epStats.totalReps = calculateTotalReps(ep);
         epStats.totalRest = calculateTotalRest(ep);
         epStats.totalVolume = calculateTotalVolume(ep);
+        epStats.allReps = writeAllReps(ep);
         return epStats;
     }
 
@@ -27,16 +31,44 @@ public class ExerciseProfileStats {
 
     }
 
-    public static double calcSetVolume(ExerciseSet exerciseSet){
+    public static String writeAllReps(ExerciseProfile ep) {
+        String all_reps = "";
+        ArrayList<String> repsList = new ArrayList<>();
+        for (int i = 0; i < ep.getSets().size(); i++) {
+            String rep = ep.getSets().get(i).getExerciseSet().getRep();
+            all_reps += rep;
+            all_reps += ", ";
+            repsList.add(rep);
+        }
+        boolean notSame = false;
+        for (int j = 1; j < repsList.size(); j++) {
+            if(repsList.get(j-1).equals(repsList.get(j))){
+
+            }else{
+                notSame = true;
+                break;
+            }
+        }
+        if(!notSame){
+            if(repsList.size() != 0)
+            all_reps = repsList.get(0);
+        }else{
+            all_reps = all_reps.substring(0, all_reps.length() - 2);
+        }
+
+        return all_reps;
+    }
+
+    public static double calcSetVolume(ExerciseSet exerciseSet) {
         double totalSetVolume = 0;
         int rep = calcRep(exerciseSet.getRep());
-        totalSetVolume = rep*exerciseSet.getWeight();
+        totalSetVolume = rep * exerciseSet.getWeight();
         return totalSetVolume;
     }
 
-    public static double calculateTotalVolume(ExerciseProfile ep){
+    public static double calculateTotalVolume(ExerciseProfile ep) {
         double totalVolume = 0;
-        for (int i = 0; i <ep.getSets().size() ; i++) {
+        for (int i = 0; i < ep.getSets().size(); i++) {
             totalVolume += calcSetVolume(ep.getSets().get(i).getExerciseSet());
             for (int j = 0; j < ep.getSets().get(i).getIntraSets().size(); j++) {
                 totalVolume += calcSetVolume(ep.getSets().get(i).getIntraSets().get(j).getExerciseSet());
@@ -97,7 +129,7 @@ public class ExerciseProfileStats {
         int totalReps = 0;
         for (int i = 0; i < ep.getSets().size(); i++) {
             String setRep = ep.getSets().get(i).getExerciseSet().getRep();
-            if (setRep == null){
+            if (setRep == null) {
                 return 0;
             }
             totalReps += calcRep(setRep);
@@ -137,5 +169,13 @@ public class ExerciseProfileStats {
 
     public int getTotalSets() {
         return totalSets;
+    }
+
+    public String getAllReps() {
+        return allReps;
+    }
+
+    public void setAllReps(String allReps) {
+        this.allReps = allReps;
     }
 }

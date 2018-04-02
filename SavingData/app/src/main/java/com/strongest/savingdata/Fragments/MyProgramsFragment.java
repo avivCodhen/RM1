@@ -55,7 +55,7 @@ public class MyProgramsFragment extends BaseCreateProgramFragment{
         initProgramsList();
 
         recyclerView = (RecyclerView) v.findViewById(R.id.fragment_my_program_recyclerview);
-        RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
         MyProgramsAdapter adapter = new MyProgramsAdapter();
         recyclerView.setLayoutManager(lm);
         recyclerView.setAdapter(adapter);
@@ -94,6 +94,9 @@ public class MyProgramsFragment extends BaseCreateProgramFragment{
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.progName.setText(programs.get(position).programName);
+            holder.date.setText(programs.get(position).programDate+", "+programs.get(position).time);
+
 
         }
 
@@ -104,8 +107,21 @@ public class MyProgramsFragment extends BaseCreateProgramFragment{
 
         public class ViewHolder extends RecyclerView.ViewHolder {
 
+            TextView progName, date;
             public ViewHolder(View itemView) {
                 super(itemView);
+
+                progName = (TextView) itemView.findViewById(R.id.program_name);
+                date = (TextView) itemView.findViewById(R.id.program_date);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((HomeActivity)getActivity()).programmer.setProgram(programs.get(getAdapterPosition()));
+                        ((HomeActivity)getActivity()).finish();
+                        ((HomeActivity)getActivity()).startActivity( ((HomeActivity)getActivity()).getIntent());
+                        getFragmentManager().popBackStack();
+                    }
+                });
             }
         }
 

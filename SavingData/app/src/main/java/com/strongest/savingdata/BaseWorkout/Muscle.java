@@ -195,31 +195,33 @@ public class Muscle implements Serializable {
         String m = muscle.getMuscle_name();
         switch (m) {
             case "chest":
-                return new MuscleUI(R.color.color_chest, R.drawable.muscle_chest);
+                return new MuscleUI(R.color.color_chest, R.drawable.chest);
             case "back":
-                return new MuscleUI(R.color.color_back, R.drawable.muscle_back);
+                return new MuscleUI(R.color.color_back, R.drawable.back);
             case "shoulders":
-                return new MuscleUI(R.color.color_shoulders, R.drawable.muscle_shoulders);
+                return new MuscleUI(R.color.color_shoulders, R.drawable.shoulders);
             case "anterior_shoulders":
-                return new MuscleUI(R.color.color_shoulders, R.drawable.muscle_shoulders);
+                return new MuscleUI(R.color.color_shoulders, R.drawable.shoulders);
             case "middle_shoulders":
-                return new MuscleUI(R.color.color_shoulders, R.drawable.muscle_shoulders);
+                return new MuscleUI(R.color.color_shoulders, R.drawable.shoulders);
             case "legs":
-                return new MuscleUI(R.color.color_legs, R.drawable.muscle_legs);
+                return new MuscleUI(R.color.color_legs, R.drawable.legs);
             case "quadriceps":
-                return new MuscleUI(R.color.color_legs, R.drawable.muscle_legs);
+                return new MuscleUI(R.color.color_legs, R.drawable.legs);
             case "hip":
-                return new MuscleUI(R.color.color_legs, R.drawable.muscle_legs);
+                return new MuscleUI(R.color.color_legs, R.drawable.legs);
             case "hamstring":
-                return new MuscleUI(R.color.color_legs, R.drawable.muscle_legs);
+                return new MuscleUI(R.color.color_legs, R.drawable.legs);
             case "calf":
-                return new MuscleUI(R.color.color_legs, R.drawable.muscle_legs);
+                return new MuscleUI(R.color.color_legs, R.drawable.legs);
             case "arms":
-                return new MuscleUI(R.color.color_arms, R.drawable.muscle_arms);
+                return new MuscleUI(R.color.color_arms, R.drawable.arms);
             case "biceps":
-                return new MuscleUI(R.color.color_arms, R.drawable.muscle_arms);
+                return new MuscleUI(R.color.color_arms, R.drawable.arms);
             case "triceps":
-                return new MuscleUI(R.color.color_arms, R.drawable.muscle_arms);
+                return new MuscleUI(R.color.color_arms, R.drawable.arms);
+            case "core":
+                return new MuscleUI(R.color.color_arms, R.drawable.core);
 
         }
         return null;

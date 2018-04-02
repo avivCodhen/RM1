@@ -57,7 +57,40 @@ public class Beans implements Serializable {
 
     }
 
-    public static Beans createReps(int defaultInt,int id, String name, int intensity, String detail, int pyramid, int mec, int met) {
+    public static ArrayList<Beans> sortByAccessory(ArrayList<Beans> original) {
+        ArrayList<Beans> sortedList = new ArrayList<>();
+        String[] acs = {
+                "Barbell",
+                "Dumbbell",
+                "Cable",
+                "Machine"
+        };
+        ArrayList<ArrayList<Beans>> matrix = new ArrayList<>();
+        for (int i = 0; i <acs.length+1 ; i++) {
+            matrix.add(new ArrayList<Beans>());
+        }
+        for (int i = 0; i <original.size(); i++) {
+            boolean flag = true;
+            innerloop:
+            for (int j = 0; j < acs.length; j++) {
+                if(original.get(i).getName().contains(acs[j])){
+                    matrix.get(j).add(original.get(i));
+                    flag = false;
+                    break innerloop;
+                }
+            }
+            if(flag)
+                matrix.get(matrix.size()-1).add(original.get(i));
+        }
+        for (int i = 0; i < matrix.size(); i++) {
+            for (int j = 0; j < matrix.get(i).size(); j++) {
+                sortedList.add(matrix.get(i).get(j));
+            }
+        }
+        return sortedList;
+    }
+
+    public static Beans createReps(int defaultInt, int id, String name, int intensity, String detail, int pyramid, int mec, int met) {
         Beans beans = new Beans();
         beans.setDefault_int(defaultInt);
         beans.setId(id);
@@ -90,7 +123,7 @@ public class Beans implements Serializable {
         return beans;
     }
 
-    public static Beans createExercise(String muscles,String primaryMuscle,int id, String name, String type,
+    public static Beans createExercise(String muscles, String primaryMuscle, int id, String name, String type,
                                        int level, String detail, Muscle muscle, String image,
                                        double weight,
                                        int m_a_s, int m_r_s, int m_biceps, int m_triceps,
@@ -137,9 +170,9 @@ public class Beans implements Serializable {
         return sortedList;
     }
 
-    public static String parsePrimaryMuscle(String muscles){
-        for (int i = 0; i <muscles.length() ; i++) {
-            if(muscles.charAt(i) == '$'){
+    public static String parsePrimaryMuscle(String muscles) {
+        for (int i = 0; i < muscles.length(); i++) {
+            if (muscles.charAt(i) == '$') {
                 return muscles.substring(0, i);
             }
 
@@ -312,7 +345,7 @@ public class Beans implements Serializable {
     }
 
     public void setMuscle(Muscle muscle) {
-        this.muscle= muscle;
+        this.muscle = muscle;
     }
 
 

@@ -5,10 +5,15 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.shehabic.droppy.DroppyClickCallbackInterface;
+import com.shehabic.droppy.DroppyMenuItem;
+import com.shehabic.droppy.DroppyMenuPopup;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
@@ -30,6 +35,8 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     private WorkoutLayoutTypes currentType;
     private OnWorkoutViewInterfaceClicksListener onWorkoutViewInterfaceClicksListener;
     private Button supersetBtn, setBtn, intrasetBtn;
+    private ImageView more;
+    private int viewPosition;
 
 
     public LongClickMenuView(Context context) {
@@ -52,35 +59,39 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
         findViewById(R.id.longclick_menu_back).setOnClickListener(this);
         supersetBtn = (Button) findViewById(R.id.longclick_menu_superset);
         intrasetBtn = (Button) findViewById(R.id.longclick_menu_intraSet);
+        more = (ImageView) findViewById(R.id.longclick_menu_more);
+        //more.setOnClickListener(this);
         setBtn = (Button) findViewById(R.id.longclick_menu_set);
         setBtn.setOnClickListener(this);
         intrasetBtn.setOnClickListener(this);
         supersetBtn.setOnClickListener(this);
         findViewById(R.id.longclick_menu_delete).setOnClickListener(this);
+        initDropMenu();
     }
 
     private void enableDisableBtns() {
-        if(currentType == WorkoutLayoutTypes.ExerciseProfile){
+        if (currentType == WorkoutLayoutTypes.ExerciseProfile) {
             enableBtns(supersetBtn, setBtn);
-        }else{
+        } else {
             disableBtns(supersetBtn, setBtn);
         }
-        if(currentType == WorkoutLayoutTypes.SetsPLObject){
-           enableBtns(intrasetBtn);
-        }else{
+        if (currentType == WorkoutLayoutTypes.SetsPLObject) {
+            enableBtns(intrasetBtn);
+        } else {
             disableBtns(intrasetBtn);
         }
     }
 
-    public void disableBtns(View...v){
-        for (View vi : v){
+    public void disableBtns(View... v) {
+        for (View vi : v) {
 
             vi.setAlpha(0.5f);
             vi.setEnabled(false);
         }
     }
-    public void enableBtns(View...v){
-        for (View vi : v){
+
+    public void enableBtns(View... v) {
+        for (View vi : v) {
 
             vi.setAlpha(1f);
             vi.setEnabled(true);
@@ -89,54 +100,55 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
 
 
     public void onShowMenu(MyExpandableAdapter.MyExpandableViewHolder vh, WorkoutLayoutTypes type) {
-            if (currentView != null) {
-                onHideDragLayout();
+        if (currentView != null) {
+            onHideDragLayout();
+        }
+        currentType = type;
+        currentView = vh.dragLayout;
+        currentVH = vh;
+        viewPosition = vh.getAdapterPosition();
+        setVisibility(VISIBLE);
+        currentView.setVisibility(VISIBLE);
+        currentView.animate().alpha(0.8f).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
             }
-            currentType = type;
-            currentView = vh.dragLayout;
-            currentVH = vh;
-            setVisibility(VISIBLE);
-            currentView.setVisibility(VISIBLE);
-            currentView.animate().alpha(0.8f).setListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
 
-                }
+            @Override
+            public void onAnimationEnd(Animator animation) {
+            }
 
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                }
+            @Override
+            public void onAnimationCancel(Animator animation) {
 
-                @Override
-                public void onAnimationCancel(Animator animation) {
+            }
 
-                }
+            @Override
+            public void onAnimationRepeat(Animator animation) {
 
-                @Override
-                public void onAnimationRepeat(Animator animation) {
+            }
+        });
+        animate().alpha(1f).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
 
-                }
-            });
-            animate().alpha(1f).setListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
+            }
 
-                }
+            @Override
+            public void onAnimationEnd(Animator animation) {
+            }
 
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                }
+            @Override
+            public void onAnimationCancel(Animator animation) {
 
-                @Override
-                public void onAnimationCancel(Animator animation) {
+            }
 
-                }
+            @Override
+            public void onAnimationRepeat(Animator animation) {
 
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
-                }
-            });
+            }
+        });
 
         enableDisableBtns();
 
@@ -174,30 +186,33 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
             }
         });
 
-        currentView.animate().alpha(0f).setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
+        if (currentView != null) {
+            currentView.animate().alpha(0f).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
 
-            }
+                }
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                currentView.setVisibility(GONE);
-                currentView = null;
-                currentType = null;
-                currentVH = null;
-            }
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    currentView.setVisibility(GONE);
+                    currentView = null;
+                    currentType = null;
+                    currentVH = null;
+                }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
+                @Override
+                public void onAnimationCancel(Animator animation) {
 
-            }
+                }
 
-            @Override
-            public void onAnimationRepeat(Animator animation) {
+                @Override
+                public void onAnimationRepeat(Animator animation) {
 
-            }
-        });
+                }
+            });
+        }
+
 
     }
 
@@ -206,6 +221,7 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
         switch (v.getId()) {
             case R.id.longclick_menu_back:
                 onHideMenu();
+                onWorkoutViewInterfaceClicksListener.notifyExerciseChanged(currentVH.getAdapterPosition());
                 break;
             case R.id.longclick_menu_superset:
                 onWorkoutViewInterfaceClicksListener.onLongClickMenuAddSuperset(currentVH);
@@ -214,12 +230,41 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
                 onWorkoutViewInterfaceClicksListener.deleteItem(currentVH.getAdapterPosition(), false);
                 break;
             case R.id.longclick_menu_intraSet:
-            onWorkoutViewInterfaceClicksListener.onAddNormalIntraSet(currentVH);
+                onWorkoutViewInterfaceClicksListener.onAddNormalIntraSet(currentVH);
+                break;
+            case R.id.longclick_menu_set:
+                onWorkoutViewInterfaceClicksListener.onSetsDoubleClick(currentVH);
+                break;
         }
+
+    }
+
+    public void initDropMenu(){
+
+        DroppyMenuPopup.Builder droppyBuilder = new DroppyMenuPopup.Builder(context, more);
+
+// Add normal items (text only)
+        droppyBuilder.addMenuItem(new DroppyMenuItem("Duplicate"))
+                .addSeparator();
+
+
+// Set Callback handler
+        droppyBuilder.setOnClick(new DroppyClickCallbackInterface() {
+            @Override
+            public void call(View v, int id) {
+                onWorkoutViewInterfaceClicksListener.duplicateItem(currentVH, currentType);
+            }
+        });
+
+        DroppyMenuPopup droppyMenu = droppyBuilder.build();
 
     }
 
     public void setOnWorkoutViewInterfaceClicksListener(OnWorkoutViewInterfaceClicksListener onWorkoutViewInterfaceClicksListener) {
         this.onWorkoutViewInterfaceClicksListener = onWorkoutViewInterfaceClicksListener;
+    }
+
+    public int getViewPosition() {
+        return viewPosition;
     }
 }

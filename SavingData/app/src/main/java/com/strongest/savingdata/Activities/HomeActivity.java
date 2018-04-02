@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -55,6 +56,7 @@ import java.util.ArrayList;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_ARMS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_BACK;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_CHEST;
+import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_CORE;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_LEGS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_SHOULDERS;
 // import com.roughike.bottombar.OnMenuTabClickListener;
@@ -118,7 +120,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Download d = new Download(this);
+  /*      Download d = new Download(this);
         try {
 
             d.refreshData(
@@ -127,29 +129,25 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
                     TABLE_BACK,
                     TABLE_LEGS,
                     TABLE_SHOULDERS,
-                    TABLE_ARMS
+                    TABLE_ARMS,
+                    TABLE_CORE
             );
         } catch (Exception e) {
             Log.d("aviv", "downloadExercises: " + e.toString());
             // dm.getPrefsEditor().putBoolean("download", true).commit();
         }
-
+*/
 
         setContentView(R.layout.activity_home);
         toolbar = (Toolbar) findViewById(R.id.activity_home_toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("My Program");
-            getSupportActionBar().setElevation(0);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
-        }
+
         longClickMenuView = (LongClickMenuView) findViewById(R.id.activity_home_longclick_menu);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.activity_home_app_bar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.activity_home_drawer_layout);
         mDrawerLayout.setScrimColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
+        //mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mNavigationView = (NavigationView) findViewById(R.id.home_activity_navigationview);
         mDrawerLayout.addDrawerListener(mToggle);
@@ -167,6 +165,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         workoutView = new WorkoutView();
         if (programmer.getProgram() == null) {
             programmer.createNewProgram();
+        }else{
+            programmer.tryInitProgram();
         }
         workoutView.instantiate(this, getSupportFragmentManager(), programmer.getLayoutManager(), viewPager, tabLayout);
         workoutView.setProgramToolsView(programToolsView);
@@ -174,6 +174,15 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         longClickMenuView.instantiate();
         workoutView.setLongClickMenu(longClickMenuView);
         toolbar.setTitle(programmer.getProgram().programName);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(programmer.getProgram().programName);
+            getSupportActionBar().setElevation(0);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
+        }
 
     }
 

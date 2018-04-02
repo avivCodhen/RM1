@@ -113,6 +113,7 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
         exerciseBeans = (ArrayList<Beans>) ((HomeActivity) getActivity()).
                 dataManager.getExerciseDataManager().
                 readByTable(m.getMuscle_name());
+        exerciseBeans = Beans.sortByAccessory(exerciseBeans);
     }
 
     private void onMuscleChange(GridViewAdapter.MusclesContentHolder mch) {
@@ -122,7 +123,7 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
         mCircleMuscleIcon.setImageResource(mch.icon);
         mMuscleText.setText(mch.text);
         exerciseProfile.setMuscle(mch.m);
-        helper.onChange("", exerciseProfile);
+        helper.onChange(exerciseProfile);
     }
 
 
@@ -161,7 +162,7 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
                 public void onClick(View v) {
                     exerciseProfile.setExercise(exerciseBeans.get(position));
                     holder.itemView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-                    helper.onChange("",exerciseProfile);
+                    helper.onChange(exerciseProfile);
                 }
             });
 

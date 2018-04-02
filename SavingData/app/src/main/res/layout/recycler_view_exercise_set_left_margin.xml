@@ -3,18 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="38dp"
+    android:layout_height="35dp"
+    android:background="@color/background_color"
 
-   >
+    >
+
     <FrameLayout
         android:id="@+id/recyclerview_exercise_drag_layout"
         android:visibility="gone"
         android:elevation="5dp"
         android:layout_width="match_parent"
-        android:layout_height="90dp">
+        android:layout_height="match_parent">
 
         <View
-            android:alpha="0.5"
             android:background="@color/colorAccent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></View>
@@ -22,25 +23,23 @@
 
     </FrameLayout>
 
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:paddingRight="90dp"
         android:backgroundTint="#fff"
-        android:background="@drawable/aviv_exercise_placeholder_left_margin"
-        android:layout_marginLeft="20dp"
         android:gravity="center_vertical"
-        android:layout_height="30dp"
+        android:layout_height="match_parent"
         android:id="@+id/recycler_view_set_card"
         android:layout_width="match_parent"
-        app:cardElevation="3dp"
         >
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:alpha="0.7"
+            android:background="@color/textGrayColor"></View>
         <LinearLayout
-            android:backgroundTint="#fff"
-            android:background="@drawable/aviv_exercise_placeholder_left_margin"
-
             android:gravity="center_vertical"
             android:layout_height="match_parent"
             android:id="@+id/exerciseView_data_linearlayout"
@@ -54,11 +53,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:textColor="#888888"
                     android:id="@+id/recycler_view_exercise_details_sets_tv"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:textStyle="bold"
-                    android:textColor="#fff"
                     android:textSize="11sp"
                     android:text="1"
                     android:textAlignment="center"
@@ -66,8 +65,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <android.support.design.widget.FloatingActionButton
-                    app:elevation="1dp"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    app:civ_fill_color="@color/background_color"
+                    app:civ_border_color="#CCCCCC"
+                    app:civ_border_width="1dp"
+                    android:src="@android:color/transparent"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:id="@+id/recycler_view_exercise_details_fab"
@@ -107,21 +109,15 @@
 
         </LinearLayout>
         <ImageView
-            android:layout_marginRight="5dp"
-            android:layout_gravity="right"
-            android:src="@drawable/menu_vertical_darg_gray_24px"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-        <ImageView
+            android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
             android:id="@+id/sets_settings"
             android:padding="5dp"
-            android:layout_marginRight="35dp"
             android:layout_gravity="right"
-            android:src="@drawable/settings_24px_gray"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-    </android.support.v7.widget.CardView>
+            android:src="@drawable/arrow_right_24px_gray"
+            android:layout_width="23dp"
+            android:layout_height="30dp"  />
+    </RelativeLayout>
 
 
 </RelativeLayout>

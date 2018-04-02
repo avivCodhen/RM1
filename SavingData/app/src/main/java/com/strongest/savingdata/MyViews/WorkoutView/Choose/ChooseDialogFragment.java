@@ -325,6 +325,21 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     }
 
     @Override
+    public void duplicateExercise(RecyclerView.ViewHolder vh) {
+
+    }
+
+    @Override
+    public void duplicateItem(RecyclerView.ViewHolder vh, WorkoutLayoutTypes type) {
+
+    }
+
+    @Override
+    public void notifyExerciseChanged(int position) {
+
+    }
+
+    @Override
     public void onExerciseClick(MyExpandableAdapter.ExerciseViewHolder vh) {
 
     }
@@ -334,13 +349,20 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     }
 
+
     @Override
-    public void onLongSupersetClick(RecyclerView.ViewHolder vh, boolean delete) {
+    public void onLongSupersetClick(int position, boolean delete) {
 
     }
 
     @Override
-    public void onSetsDoubleClick(RecyclerView.ViewHolder vh, int childPosition) {
+    public void onSetsDoubleClick(RecyclerView.ViewHolder vh) {
+
+    }
+
+
+    @Override
+    public void onExerciseDoubleClick(PLObject.ExerciseProfile ep, int position) {
 
     }
 
@@ -411,6 +433,11 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     @Override
     public void deleteItem(int position, boolean delete) {
+
+    }
+
+    @Override
+    public void deleteExercise(int position) {
 
     }
     /*  @Subscribe

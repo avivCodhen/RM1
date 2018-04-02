@@ -220,8 +220,8 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-
-        /*if (context != null) {
+/*
+        if (context != null) {
             for (String t : muscleTables){
                 String command = COMMAND_ALL.replace(TABLE_EXERCISES_ALL, t);
                 db.execSQL(command);
@@ -239,8 +239,7 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
 
         } else {
 
-        }
-*/
+        }*/
     }
 
 
