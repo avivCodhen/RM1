@@ -375,8 +375,8 @@ public class ProgramDataManager extends DataManager {
                 case WorkoutView:
                     v.put(DBExercisesHelper.TYPE, ep.getType().ordinal());
                     v.put(DBProgramHelper.WORKOUT_ID, ep.getWorkoutId());
-                    PLObject.WorkoutText workoutText = (PLObject.WorkoutText) ep;
-                    v.put(DBProgramHelper.NAME, workoutText.getWorkoutName());
+                    PLObject.WorkoutPLObject workoutPLObject = (PLObject.WorkoutPLObject) ep;
+                    v.put(DBProgramHelper.NAME, workoutPLObject.getWorkoutName());
                     contentValues.add(v);
 
                     //       v.put(DBProgramHelper.WORKOUT_ID, workoutText.getWorkoutId());

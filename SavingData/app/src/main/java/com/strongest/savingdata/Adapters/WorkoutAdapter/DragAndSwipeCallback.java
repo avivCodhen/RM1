@@ -42,7 +42,7 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         int swipeFlags;
-        if (viewHolder.getLayoutPosition() != 0 && viewHolder instanceof MainAdapter.MuscleViewHolder) {
+        if (viewHolder.getLayoutPosition() != 0 && viewHolder instanceof MainAdapter.WorkoutViewHolder) {
             swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
         } else {
             swipeFlags = 0;
@@ -82,9 +82,9 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
                                   int actionState) {
         // We only want the active item
         if (actionState != ItemTouchHelper.ACTION_STATE_IDLE ) {
-            if (viewHolder instanceof MainAdapter.MuscleViewHolder) {
-                    MainAdapter.MuscleViewHolder itemViewHolder = (MainAdapter.MuscleViewHolder) viewHolder;
-                    itemViewHolder.onItemSelected();
+            if (viewHolder instanceof MainAdapter.WorkoutViewHolder) {
+                    MainAdapter.WorkoutViewHolder itemViewHolder = (MainAdapter.WorkoutViewHolder) viewHolder;
+                 //   itemViewHolder.onItemSelected();
             }else if(viewHolder instanceof MyExpandableAdapter.ExerciseViewHolder){
                 MyExpandableAdapter.ExerciseViewHolder itemViewHolder = (MyExpandableAdapter.ExerciseViewHolder) viewHolder;
                 itemViewHolder.onItemSelected();
@@ -98,9 +98,9 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
                           RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
 
-        if (viewHolder instanceof MainAdapter.MuscleViewHolder) {
-            MainAdapter.MuscleViewHolder itemViewHolder = (MainAdapter.MuscleViewHolder) viewHolder;
-            itemViewHolder.onItemClear();
+        if (viewHolder instanceof MainAdapter.WorkoutViewHolder) {
+            MainAdapter.WorkoutViewHolder itemViewHolder = (MainAdapter.WorkoutViewHolder) viewHolder;
+         //   itemViewHolder.onItemClear();
         }else if(viewHolder instanceof MyExpandableAdapter.ExerciseViewHolder){
             MyExpandableAdapter.ExerciseViewHolder itemViewHolder = (MyExpandableAdapter.ExerciseViewHolder) viewHolder;
             itemViewHolder.onItemClear();

@@ -22,6 +22,7 @@ import java.util.ArrayList;
  * Created by Cohen on 1/25/2018.
  */
 
+@Deprecated
 public class CreateBeansHolderView extends LinearLayout {
 
     private ViewGroup parent = this;
@@ -77,11 +78,11 @@ public class CreateBeansHolderView extends LinearLayout {
         private TextView set, reps, rest, weight;
         private Button saveBtn;
         private ViewPager viewPager;
-        private final int customView = R.layout.choose_number_pyramid_set;
+      //  private final int customView = R.layout.choose_number_pyramid_set;
         private View v;
 
         public CustomSetViewHolder() {
-            LayoutInflater li = LayoutInflater.from(context);
+           /* LayoutInflater li = LayoutInflater.from(context);
             v = li.inflate(customView, parent, false);
             outerLayout = (ViewGroup) v.findViewById(R.id.choose_number_pyramid_linear_layout);
             viewPagerLayout = (ExpandableLayout) v.findViewById(R.id.choose_sets_expandable);
@@ -89,7 +90,7 @@ public class CreateBeansHolderView extends LinearLayout {
             reps = (TextView) v.findViewById(R.id.choose_reps_tv);
             rest = (TextView) v.findViewById(R.id.choose_rest_tv);
             weight = (TextView) v.findViewById(R.id.choose_weight_tv);
-
+*/
             reps.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

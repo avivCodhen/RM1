@@ -162,7 +162,7 @@ public class Muscle implements Serializable {
 
             }
         }
-        if(muList.size() < 3){
+        if(muList.size() > 3){
             muList.remove(0);
         }
         String[] arr = new String[muList.size()];

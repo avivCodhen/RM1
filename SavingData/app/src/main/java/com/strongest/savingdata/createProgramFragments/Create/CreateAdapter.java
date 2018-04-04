@@ -187,8 +187,8 @@ public class CreateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private void configureViewHolder1(WorkoutViewHolder vh1, final int position) {
 
 
-        PLObject.WorkoutText workoutText = (PLObject.WorkoutText) programLayout.get(position);
-        vh1.workoutTv.setText(workoutText.getWorkoutName());
+        PLObject.WorkoutPLObject workoutPLObject = (PLObject.WorkoutPLObject) programLayout.get(position);
+        vh1.workoutTv.setText(workoutPLObject.getWorkoutName());
 
 
     }

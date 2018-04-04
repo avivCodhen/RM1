@@ -1,17 +1,28 @@
 <LinearLayout android:elevation="10dp"
     android:background="@color/colorAccent"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="50dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
-        android:id="@+id/my_program_back_iv"
+        android:id="@+id/toolbar_back"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:layout_gravity="center_vertical"
         android:src="@drawable/back_arrow_24px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tool_bar_title"
+        android:layout_gravity="center_vertical"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:text="My Program"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

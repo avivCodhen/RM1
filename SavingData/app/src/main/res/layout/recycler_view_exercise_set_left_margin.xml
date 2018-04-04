@@ -4,13 +4,14 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="35dp"
-    android:background="@color/background_color"
+
+    android:background="@color/colorPrimary"
 
     >
 
     <FrameLayout
-        android:id="@+id/recyclerview_exercise_drag_layout"
         android:visibility="gone"
+        android:id="@+id/recyclerview_exercise_drag_layout"
         android:elevation="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,18 +27,18 @@
     <RelativeLayout
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:backgroundTint="#fff"
+        android:background="#F6F6F6"
         android:gravity="center_vertical"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/recycler_view_set_card"
         android:layout_width="match_parent"
+        android:foreground="?attr/selectableItemBackground"
         >
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:alpha="0.7"
+            android:alpha="0.6"
             android:background="@color/textGrayColor"></View>
         <LinearLayout
             android:gravity="center_vertical"
@@ -48,7 +49,7 @@
             <RelativeLayout
                 android:gravity="center"
                 android:layout_marginRight="12dp"
-                android:layout_marginLeft="6dp"
+                android:layout_marginLeft="16dp"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -66,6 +67,7 @@
                     android:layout_height="wrap_content" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
+
                     app:civ_fill_color="@color/background_color"
                     app:civ_border_color="#CCCCCC"
                     app:civ_border_width="1dp"
@@ -112,11 +114,12 @@
             android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
             android:id="@+id/sets_settings"
-            android:padding="5dp"
+            android:padding="13.5dp"
             android:layout_gravity="right"
-            android:src="@drawable/arrow_right_24px_gray"
-            android:layout_width="23dp"
-            android:layout_height="30dp"  />
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_more_vert_24px"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"  />
     </RelativeLayout>
 
 

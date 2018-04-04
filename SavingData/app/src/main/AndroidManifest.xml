@@ -8,12 +8,13 @@
     <application
         android:name=".DependencyInjection.MainApplication"
         android:allowBackup="true"
-        android:icon="@drawable/logo"
-        android:label="Strongest"
-        android:roundIcon="@drawable/logo"
-        android:supportsRtl="true"
+        android:icon="@drawable/rm1_logo"
+        android:label="rm1"
+        android:roundIcon="@drawable/rm1_logo"
+        android:supportsRtl="false"
         android:theme="@style/newAppTheme"
-        tools:replace="android:label">
+        tools:replace="android:label, supportsRtl">
+
         <activity android:name=".Activities.MainActivity" />
         <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.RegisterActivity" />

@@ -150,10 +150,8 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
                     muscle += ", ";
                 }
                 index++;
-                if (index == muscle.length()) {
-                    muscle = muscle.substring(0, muscle.length() - 2);
-                }
             }
+            muscle = muscle.substring(0, muscle.length()-2);
             holder.muscles.setText(muscle);
 
             holder.type.setText(exerciseBeans.get(position).getType());

@@ -24,7 +24,6 @@ import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.Create.ArtificialIntelligenceDialog;
 import com.strongest.savingdata.tabFragments.WorkoutFragment;
 
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE
  * Created by Cohen on 5/6/2017.
  */
 
+@Deprecated
 public class CreateFragment extends BaseCreateProgramFragment implements View.OnClickListener {
 
 
@@ -185,7 +185,7 @@ public class CreateFragment extends BaseCreateProgramFragment implements View.On
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()) {
+    /*    switch (v.getId()) {
             case R.id.fragment_create_fab:
                 ArtificialIntelligenceDialog csf = new ArtificialIntelligenceDialog();
                 csf.setParentFab(fab);
@@ -200,12 +200,12 @@ public class CreateFragment extends BaseCreateProgramFragment implements View.On
                 //dm.closeDataBases();
                 //dm.getPrefsEditor().putBoolean(WorkoutFragment.HASWORKOUT, true).commit();
                // onCreateProgramListener.createProgramUI(new WorkoutFragment());
-                /*getActivity().setResult(Activity.RESULT_OK);
-                getActivity().finish();*/
+                *//*getActivity().setResult(Activity.RESULT_OK);
+                getActivity().finish();*//*
                 break;
 
         }
-
+*/
     }
 
 

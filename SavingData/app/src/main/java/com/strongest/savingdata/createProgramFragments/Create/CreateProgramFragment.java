@@ -174,7 +174,7 @@ public class CreateProgramFragment extends BaseCreateProgramFragment implements 
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()) {
+      /*  switch (v.getId()) {
             case R.id.fragment_create_fab:
                 ArtificialIntelligenceDialog csf = new ArtificialIntelligenceDialog();
                 csf.setParentFab(fab);
@@ -193,7 +193,7 @@ public class CreateProgramFragment extends BaseCreateProgramFragment implements 
                 break;
 
         }
-
+*/
     }
 /*
     @Override

@@ -9,6 +9,7 @@ import com.strongest.savingdata.MyViews.WorkoutView.OnUpdateLayoutStatsListener;
 import com.strongest.savingdata.MyViews.WorkoutView.OnWorkoutViewInterfaceClicksListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.DELETE_EXERCISE;
 
@@ -71,8 +72,15 @@ public class LayoutManagerOperator {
 
         //copies the intrasets from the supersets, if any
         for (int i = 0; i < setsPLObject.getParent().getExerciseProfiles().size(); i++) {
-            if(childPosition < setsPLObject.getParent().getExerciseProfiles().get(i).getIntraSets().size()){
+            ArrayList<PLObject.IntraSetPLObject> intras = setsPLObject.getParent().getExerciseProfiles().get(i).getIntraSets();
+            if(setsPLObject.getParent().getSets().size() < intras.size()){
                 block.add(setsPLObject.getParent().getExerciseProfiles().get(i).getIntraSets().get(childPosition));
+
+                if(intras.size() < childPosition && childPosition > 0){
+                    for (int j = 0; j <intras.size()+2; j++) {
+                        Collections.swap(intras,i+1,i+2);
+                    }
+                }
             }else{
 
                 PLObject.IntraSetPLObject newIntra = new PLObject.IntraSetPLObject(
@@ -179,9 +187,10 @@ public class LayoutManagerOperator {
         }
 
 
-        public void deleteIntraSet(PLObject.IntraSetPLObject intraSetPLObject, ArrayList<PLObject> layout){
+        public int deleteIntraSet(PLObject.IntraSetPLObject intraSetPLObject, ArrayList<PLObject> layout){
             intraSetPLObject.getParentSet().getIntraSets().remove(intraSetPLObject);
             int pos = helper.findPLObjectPosition(intraSetPLObject, layout);
             layout.remove(pos);
+            return pos;
         }
 }

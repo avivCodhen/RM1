@@ -67,7 +67,7 @@ public class ProgramTemplateFragment extends BaseCreateProgramFragment implement
         v.findViewById(R.id.fragment_template_add_muscle).setOnClickListener(this);
         // v.findViewById(R.id.fragment_template_add_muscle).setOnClickListener(this);
         list = new ArrayList<>();
-        list.add(new PLObject.WorkoutText(i++, "A"));
+        list.add(new PLObject.WorkoutPLObject(i++, "A"));
         adapter = new MainAdapter(getContext(), list, this, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView = (RecyclerView) v.findViewById(R.id.program_template_recycler_view);
@@ -174,7 +174,7 @@ public class ProgramTemplateFragment extends BaseCreateProgramFragment implement
 
             case R.id.fragment_template_add_workout:
                 String wN = ProgramTemplate.ProgramTemplateFactory.WhatsYourWorkoutName(i);
-                list.add(new PLObject.WorkoutText(i++, wN));
+                list.add(new PLObject.WorkoutPLObject(i++, wN));
                 adapter.notifyItemInserted(list.size() - 1);
                 recyclerView.scrollToPosition(list.size() - 1);
                 break;

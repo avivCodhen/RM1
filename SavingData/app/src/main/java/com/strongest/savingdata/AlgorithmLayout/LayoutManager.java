@@ -11,9 +11,6 @@ import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
-import com.strongest.savingdata.Fragments.ExerciseChooseFragment;
-import com.strongest.savingdata.Fragments.SetsChooseSingleFragment;
-import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,7 +73,10 @@ public class LayoutManager {
             ATTACH_DROPSET = "attach_dropset",
             DELETE_WORKOUT = "delete_workout",
             SWAP = "swap",
-            REMOVE = "remove";
+            REMOVE = "remove",
+            SWAP_WORKOUTS = "swap_workouts"
+
+        ;
 
     public static String[] intraWorkoutsLetters = new String[]{
             "A",
@@ -163,7 +163,7 @@ public class LayoutManager {
         if (workoutName == null || workoutName.equals("")) {
             workoutName = ProgramTemplate.ProgramTemplateFactory.WhatsYourWorkoutName(numOfWorkouts - 1);
         }
-        toLayout.add(new PLObject.WorkoutText(numOfWorkouts - 1, workoutName));
+        toLayout.add(new PLObject.WorkoutPLObject(numOfWorkouts - 1, workoutName));
     }
 
     public void drawBody(ArrayList<PLObject> toLayout, String title) {
@@ -379,7 +379,12 @@ public class LayoutManager {
                 case DRAW_DIVIDER:
                     drawBody(getSplitRecyclerWorkouts().get(workoutPosition), "New Divider...");
                     break;
+                case SWAP_WORKOUTS:
+                    Collections.swap(getSplitRecyclerWorkouts(), updateComponents.fromPosition, updateComponents.toPosition);
+                    break;
             }
+
+
             onLayoutChange();
             numOfWorkouts = 0;
             numOfBodyParts = 0;

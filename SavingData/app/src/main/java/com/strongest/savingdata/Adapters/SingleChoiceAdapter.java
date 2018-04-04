@@ -50,12 +50,8 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceAdapte
     @Override
     public void onBindViewHolder(SingleChoiceAdapter.ViewHolder holder, final int position) {
         holder.item.setText(list.get(position));
-        holder.item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickListener.onClick(list.get(position), type);
-            }
-        });
+
+
     }
 
     @Override
@@ -69,6 +65,20 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceAdapte
         public ViewHolder(View itemView) {
             super(itemView);
             item = (TextView) itemView.findViewById(R.id.single_choice_tv);
+            item.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    list.remove(getAdapterPosition());
+                    notifyItemRemoved(getAdapterPosition());
+                    return true;
+                }
+            });
+            item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickListener.onClick(list.get(getAdapterPosition()), type);
+                }
+            });
         }
     }
 

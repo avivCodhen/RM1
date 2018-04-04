@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_height="wrap_content"
     android:id="@+id/recycler_view_muscle_card_layout"
-    android:layout_width="wrap_content"
+    android:layout_width="80dp"
     android:orientation="vertical"
     android:layout_margin="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -18,7 +18,7 @@
         android:fontFamily="assets/varela_round_regular"
         android:textColor="@color/muscle_name_gray"
         android:textAllCaps="true"
-
+        android:gravity="center"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:textStyle="bold"

@@ -2,22 +2,27 @@ package com.strongest.savingdata.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ItemTouchHelperAdapter;
-import com.strongest.savingdata.Adapters.WorkoutAdapter.ItemTouchHelperListener;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ScrollToPositionListener;
+import com.strongest.savingdata.AlgorithmLayout.LayoutManagerAlertdialog;
+import com.strongest.savingdata.AlgorithmLayout.OnLayoutManagerDialogPress;
 import com.strongest.savingdata.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AlgorithmLayout.PLObject.BodyText;
-import com.strongest.savingdata.AlgorithmLayout.PLObject.WorkoutText;
-import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
+import com.strongest.savingdata.Fragments.OnProgramSettingChange;
+import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
+import com.strongest.savingdata.MyViews.WorkoutTextView;
 import com.strongest.savingdata.R;
+import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,15 +31,15 @@ import java.util.Collections;
  * Created by Cohen on 10/27/2017.
  */
 
-public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter {
+public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter{
 
 
-    private final int WORKOUT = 0;
-    private final int MUSCLE = 1;
+
     private Context context;
     private ArrayList<PLObject> list;
     private OnDragListener onDragListener;
     private ScrollToPositionListener scrollListener;
+    private OnProgramSettingChange onProgramChangeListener;
 
     public MainAdapter(Context context, ArrayList<PLObject> list, OnDragListener onDragListener,
                        ScrollToPositionListener scrollListener) {
@@ -47,113 +52,124 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        RecyclerView.ViewHolder viewHolder;
-        View v;
-        switch (viewType) {
-            case WORKOUT:
-                v = inflater.inflate(R.layout.template_workout, parent, false);
-                viewHolder = new WorkoutViewHolder(v);
-                return viewHolder;
-            case MUSCLE:
-                v = inflater.inflate(R.layout.template_muscle, parent, false);
-                viewHolder = new MuscleViewHolder(v);
-                return viewHolder;
-            default:
-                return null;
-        }
+        View v = inflater.inflate(R.layout.recyclerview_settings_workout, parent, false);
+
+       return new WorkoutViewHolder(v);
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (list.get(position).getType() == WorkoutLayoutTypes.WorkoutView) {
-            return WorkoutLayoutTypes.WorkoutView.ordinal();
-        } else if (list.get(position).getType() == WorkoutLayoutTypes.BodyView) {
-            return WorkoutLayoutTypes.BodyView.ordinal();
-        }
-        return -1;
-    }
 
-    private class WorkoutViewHolder extends RecyclerView.ViewHolder {
-        private TextView textView;
-        public WorkoutViewHolder(View itemView) {
-            super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.template_workout_text_view);
-        }
-    }
 
-    public static class MuscleViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperListener {
-        private TextView textView;
-        private ImageView navigator;
-
-        public MuscleViewHolder(View itemView) {
-            super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.template_muscle_text_view);
-            navigator = (ImageView) itemView.findViewById(R.id.template_muscle_nav_image_view);
-        }
-
-        @Override
-        public void onItemSelected() {
-            navigator.setImageResource(R.drawable.ball_green_24px);
-        }
-
-        @Override
-        public void onItemClear() {
-            navigator.setImageResource(R.drawable.ball_red_24px);
-
-        }
-    }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder.getItemViewType() == WORKOUT){
-            WorkoutViewHolder vh = (WorkoutViewHolder) holder;
-            configWorkout(vh, position);
-        }
-        if(holder.getItemViewType() == MUSCLE){
-            MuscleViewHolder vh = (MuscleViewHolder) holder;
-            configBody(vh, position);
-        }
+        configWorkout((WorkoutViewHolder) holder, position);
     }
 
     private void configWorkout(WorkoutViewHolder holder, int position) {
-       WorkoutText workText = (WorkoutText) list.get(position);
-        workText.setWorkoutName(workoutName(position));
-      holder.textView.setText(workoutName(position));
+        holder.editText.setText(((PLObject.WorkoutPLObject)list.get(position)).getWorkoutName());
     }
 
-    private void configBody(final MuscleViewHolder holder, int position) {
-        BodyText bodyText = (BodyText) list.get(position);
-        holder.textView.setText(bodyText.getMuscle().getMuscle_display());
-
-        holder.navigator.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                onDragListener.startDrag(holder);
-                return true;
-            }
-        });
-    }
-
-    public String workoutName(int position){
-        int counter = 0;
-        for (int i = position; i > 0 ; i--) {
-            if(list.get(i).getType() == WorkoutLayoutTypes.WorkoutView){
-                counter++;
-            }
-        }
-        String workoutName = "Workout "+ counter;
-        return workoutName;
-    }
 
     @Override
     public int getItemCount() {
         return list.size();
     }
 
-    public boolean onItemMove(int fromPosition, int toPosition) {
-        if(toPosition == 0 || fromPosition == 0){
-            return false;
+    public void setOnProgramChangeListener(OnProgramSettingChange onProgramChangeListener) {
+        this.onProgramChangeListener = onProgramChangeListener;
+    }
+
+
+    public class WorkoutViewHolder extends RecyclerView.ViewHolder implements OnLayoutManagerDialogPress {
+        private EditText editText;
+        private ImageView delete, drag, edit;
+        private WorkoutViewHolder _this = this;
+        private EasyFlipView easyFlipView;
+        public WorkoutViewHolder(View itemView) {
+            super(itemView);
+            editText = (EditText) itemView.findViewById(R.id.recyclerview_workout_tv);
+            drag = (ImageView) itemView.findViewById(R.id.recyclerview_workout_drag_iv);
+            delete = (ImageView) itemView.findViewById(R.id.recyclerview_workout_delete_iv);
+            edit = (ImageView) itemView.findViewById(R.id.recycler_view_workouts_edit_iv);
+            easyFlipView = (EasyFlipView) itemView.findViewById(R.id.recycler_view_workouts_flipView);
+
+
+            drag.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    onDragListener.startDrag(_this);
+                    return true;
+                }
+            });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LayoutManagerAlertdialog.getAlertDialog(context,WorkoutViewHolder.this, getAdapterPosition());
+
+                }
+            });
+
+            easyFlipView.setOnFlipListener(new EasyFlipView.OnFlipAnimationListener() {
+                @Override
+                public void onViewFlipCompleted(EasyFlipView easyFlipView, EasyFlipView.FlipState newCurrentSide) {
+                    InputMethodManager imm = (InputMethodManager) context
+                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (!easyFlipView.isBackSide()) {
+
+                        imm.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        editText.setSelected(false);
+                        editText.setFocusable(false);
+                        editText.setFocusableInTouchMode(true);
+                        editText.clearFocus();
+                        //vh2.dummy.requestFocus();
+                        editText.setClickable(false);
+                        editText.setEnabled(false);
+                        ((PLObject.WorkoutPLObject) list.get(getAdapterPosition())).setWorkoutName(editText.getText().toString());
+                        onProgramChangeListener.onEdit(getAdapterPosition());
+                    } else {
+                        editText.setEnabled(true);
+
+                        //vh2.bodyTv.setClickable(false);
+                        editText.requestFocus();
+                        editText.setSelected(true);
+                        editText.setFocusable(true);
+                        editText.setFocusableInTouchMode(true);
+                        imm.showSoftInput(editText, 0);
+                    }
+
+
+                }
+            });
+
+            editText.setOnKeyListener(new View.OnKeyListener() {
+                public boolean onKey(View view, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                        editText.setFocusable(false);
+                        editText.setFocusableInTouchMode(true);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
         }
+
+
+        @Override
+        public void onLMDialogOkPressed(int viewHolderPosition) {
+            onProgramChangeListener.onDelete(getAdapterPosition());
+            //list.remove(getAdapterPosition());
+            notifyItemRemoved(getAdapterPosition());
+        }
+
+
+    }
+
+    public boolean onItemMove(int fromPosition, int toPosition) {
+
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(list, i, i + 1);
@@ -164,6 +180,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             }
         }
         notifyItemMoved(fromPosition, toPosition);
+        onProgramChangeListener.onSwap(fromPosition, toPosition);
         return true;
     }
 
@@ -174,13 +191,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void onItemDismiss(int position) {
-        if(list.get(position).getType() == WorkoutLayoutTypes.WorkoutView){
-            WorkoutText workText =(WorkoutText) list.get(position);
-            workText.setWorkoutName(workoutName(position));
-            notifyDataSetChanged();
-        }
-         list.remove(position);
-        notifyItemRemoved(position);
+
     }
 
 }

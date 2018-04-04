@@ -2,18 +2,18 @@
 <LinearLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="20dp"
-    android:background="@color/colorAccent"
-    android:layout_marginLeft="100dp"
-    android:layout_marginTop="45dp"
-
+    android:padding="10dp"
+    android:orientation="vertical"
+    android:background="@color/background_color"
     android:elevation="10dp">
 
+    <include layout="@layout/tool_bar_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"></include>
 
     <EditText
+        android:maxLines="1"
         android:padding="20dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@color/colorPrimary"
         android:id="@+id/program_settings_program_name_ED"
         android:layout_marginTop="20dp"
         android:text="My Program"
@@ -21,6 +21,10 @@
         android:layout_height="wrap_content" />
 
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/program_settings_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
 
 

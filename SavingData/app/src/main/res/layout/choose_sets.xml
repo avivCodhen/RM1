@@ -199,23 +199,5 @@
 
     </LinearLayout>
 
-
-
-    <Button
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/colorPrimary"
-        android:backgroundTint="@android:color/holo_red_light"
-        android:background="@drawable/rm1_buttons"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:text="Delete This Set"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingLeft="18dp"
-        android:paddingRight="18dp"
-        android:gravity="center_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
 </LinearLayout>
 </ScrollView>

@@ -5,7 +5,7 @@
     android:layout_height="50dp"
     android:foreground="?attr/selectableItemBackground"
     android:focusable="true"
-
+    android:background="#F6F6F6"
     >
 
     <include layout="@layout/a_big_tag"
@@ -79,7 +79,6 @@
                 android:layout_height="32dp"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="15dp"
-                android:src="@drawable/plus_gray_24px"
 
                 />
 

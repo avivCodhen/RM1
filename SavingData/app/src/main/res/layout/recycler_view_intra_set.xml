@@ -2,16 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="25dp"
-    android:background="@color/color_intra_background"
-    android:orientation="horizontal">
+    android:layout_height="35dp"
+    android:orientation="horizontal"
+    android:background="#EFEFEF"
+
+    >
 
     <include
         android:id="@+id/intra_set_superset_tag"
 
         layout="@layout/a_big_tag"
         android:layout_width="15dp"
-        android:layout_height="match_parent"
+        android:layout_height="35dp"
         android:layout_alignParentLeft="true"></include>
 
 
@@ -29,6 +31,11 @@
 
 
     </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:alpha="0.6"
+        android:background="@color/textGrayColor"></View>
 
     <RelativeLayout
         android:layout_marginLeft="8dp"
@@ -36,30 +43,24 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/intra_set_superset_tag"
-        android:backgroundTint="#fff"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center_vertical">
 
         <TextView
+            android:layout_marginLeft="5dp"
             android:id="@+id/intra_set_tv"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
             android:fontFamily="assets/varela_round_regular"
             android:text="superset"
             android:textColor="#7E7E7E"
             android:textSize="12sp"
-            android:textStyle="italic" />
+             />
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:alpha="0.7"
-            android:background="@color/textGrayColor"></View>
 
         <LinearLayout
             android:layout_toLeftOf="@+id/sets_settings"
@@ -78,6 +79,7 @@
                 android:gravity="center">
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/recycler_view_exercise_details_sets_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,6 +93,7 @@
                     android:textStyle="bold" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:visibility="gone"
                     android:id="@+id/recycler_view_exercise_details_fab"
                     android:layout_width="19dp"
                     android:layout_height="19dp"
@@ -109,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="12dp"
                 android:text="Reps: "
-                android:textSize="11sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/exerciseView_restTV"
@@ -118,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="12dp"
                 android:text="Rest: "
-                android:textSize="11sp" />
+                android:textSize="12sp" />
 
 
             <TextView
@@ -128,19 +131,21 @@
                 android:layout_marginRight="12dp"
 
                 android:text="Wgh:"
-                android:textSize="11sp" />
+                android:textSize="12sp" />
 
 
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/sets_settings"
-            android:layout_width="23dp"
-            android:layout_height="30dp"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:id="@+id/sets_settings"
+            android:padding="13.5dp"
             android:layout_gravity="right"
-            android:padding="5dp"
-            android:src="@drawable/arrow_right_24px_gray" />
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_more_vert_24px"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"  />
     </RelativeLayout>
 
 

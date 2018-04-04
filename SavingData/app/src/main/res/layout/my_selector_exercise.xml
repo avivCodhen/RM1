@@ -40,7 +40,6 @@
         <net.cachapa.expandablelayout.ExpandableLayout
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="@drawable/strongest_expand_layout"
             android:backgroundTint="@color/colorAccent"
             android:orientation="horizontal"
             app:el_duration="500"

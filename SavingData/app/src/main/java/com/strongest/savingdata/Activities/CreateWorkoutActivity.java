@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.strongest.savingdata.ArtificialInteligence.ArtificialIntelligenceObserver;
 import com.strongest.savingdata.MyViews.TimeLineTabLayout;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.Create.ArtificialIntelligenceDialog;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.CreateFragment;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.DetailsFragment;
@@ -24,6 +23,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Observer;
 
+@Deprecated
 public class CreateWorkoutActivity extends BaseActivity implements View.OnClickListener, OnDoneListener {
 
     private final String ROUTINE = "routine";
@@ -100,11 +100,11 @@ public class CreateWorkoutActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
 
-        ArtificialIntelligenceDialog csf = new ArtificialIntelligenceDialog();
+     /*   ArtificialIntelligenceDialog csf = new ArtificialIntelligenceDialog();
         csf.setParentFab(fab);
         //notifyAI(workoutView.getWorkoutPosition());
         csf.setAi(ai);
-        csf.show(getSupportFragmentManager(), csf.getTag());
+        csf.show(getSupportFragmentManager(), csf.getTag());*/
 
     }
 

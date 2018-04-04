@@ -73,12 +73,12 @@ public class PLObject implements Aba, Serializable {
         return type;
     }
 
-    public static class WorkoutText extends PLObject {
+    public static class WorkoutPLObject extends PLObject {
 
         private Context context;
         private String workoutName;
 
-        public WorkoutText(int id, String workoutName) {
+        public WorkoutPLObject(int id, String workoutName) {
             workoutId = id;
             this.context = context;
             this.workoutName = workoutName;

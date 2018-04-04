@@ -28,6 +28,10 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     public static final String EXERCISE = "exercise", SET = "set",
             INTRA_SET = "intra_set", INTRA_SUPERSET = "intra_superset", INTRA_EXERCISE = "intra_exercise";
 
+    public enum Action{
+        Delete, Back, Superset, Intraset, Set, Duplicate;
+    }
+
     private final Context context;
     private View back;
     private View currentView;
@@ -37,7 +41,7 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     private Button supersetBtn, setBtn, intrasetBtn;
     private ImageView more;
     private int viewPosition;
-
+    private OnLongClickMenuActionListener listener;
 
     public LongClickMenuView(Context context) {
         super(context);
@@ -49,7 +53,8 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
         this.context = context;
     }
 
-    public void instantiate() {
+    public void instantiate(OnLongClickMenuActionListener callback) {
+        this.listener = callback;
         inflate(context, R.layout.layout_longclick_menu, this);
         initViews();
 
@@ -220,20 +225,22 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.longclick_menu_back:
-                onHideMenu();
-                onWorkoutViewInterfaceClicksListener.notifyExerciseChanged(currentVH.getAdapterPosition());
+                listener.onAction(Action.Back, currentVH, currentType);
                 break;
             case R.id.longclick_menu_superset:
-                onWorkoutViewInterfaceClicksListener.onLongClickMenuAddSuperset(currentVH);
+                listener.onAction(Action.Superset, currentVH, currentType);
+
                 break;
             case R.id.longclick_menu_delete:
-                onWorkoutViewInterfaceClicksListener.deleteItem(currentVH.getAdapterPosition(), false);
+                listener.onAction(Action.Delete, currentVH, currentType);
                 break;
             case R.id.longclick_menu_intraSet:
-                onWorkoutViewInterfaceClicksListener.onAddNormalIntraSet(currentVH);
+                listener.onAction(Action.Intraset, currentVH, currentType);
+
                 break;
             case R.id.longclick_menu_set:
-                onWorkoutViewInterfaceClicksListener.onSetsDoubleClick(currentVH);
+                listener.onAction(Action.Set, currentVH, currentType);
+
                 break;
         }
 
@@ -252,7 +259,7 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
         droppyBuilder.setOnClick(new DroppyClickCallbackInterface() {
             @Override
             public void call(View v, int id) {
-                onWorkoutViewInterfaceClicksListener.duplicateItem(currentVH, currentType);
+                listener.onAction(Action.Duplicate, currentVH, currentType);
             }
         });
 

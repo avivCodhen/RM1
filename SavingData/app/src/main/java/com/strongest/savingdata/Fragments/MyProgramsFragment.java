@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,6 @@ import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.BaseWorkout.Program;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -45,7 +42,7 @@ public class MyProgramsFragment extends BaseCreateProgramFragment{
 
     private void initViews(View v) {
         currentProgram = ((HomeActivity)getActivity()).programmer.getProgram();
-        v.findViewById(R.id.my_program_back_iv).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.toolbar_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();

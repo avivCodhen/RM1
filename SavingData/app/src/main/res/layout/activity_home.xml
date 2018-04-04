@@ -9,6 +9,7 @@
 
     <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -21,6 +22,7 @@
             android:layout_height="wrap_content"
             app:elevation="10dp"
             android:id="@+id/activity_home_app_bar"
+            android:background="@color/background_color"
 
             >
 
@@ -28,7 +30,7 @@
                 app:layout_scrollFlags="scroll|enterAlways|snap"
 
                 android:gravity="top"
-                app:elevation="0dp"
+                app:elevation="10dp"
                 android:id="@+id/activity_home_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -89,7 +91,17 @@
 
         </com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView>
 
-         </android.support.design.widget.CoordinatorLayout>
+        <com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView
+            android:layout_marginTop="40dp"
+            android:visibility="gone"
+            android:id="@+id/activity_programtoolsview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:elevation="10dp"></com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView>
+
+
+    </android.support.design.widget.CoordinatorLayout>
 
 
 
@@ -102,13 +114,6 @@
 
     </FrameLayout>
 
-    <com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView
-        android:layout_marginTop="40dp"
-        android:id="@+id/activity_programtoolsview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:elevation="10dp"></com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/home_activity_navigationview"

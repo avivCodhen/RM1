@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.roughike.swipeselector.SwipeItem;
-import com.roughike.swipeselector.SwipeSelector;
 import com.strongest.savingdata.Activities.CreateWorkoutActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Activities.OnCreateProgramListener;
@@ -17,12 +15,13 @@ import com.strongest.savingdata.R;
 import com.strongest.savingdata.tabFragments.WorkoutFragment;
 
 
+@Deprecated
 public class GeneratorFragment2 extends BaseCreateProgramFragment implements View.OnClickListener {
 
-    private SwipeSelector exerciseSelector;
+  /*  private SwipeSelector exerciseSelector;
     private SwipeSelector complexitySelector;
     private SwipeSelector volumeSelector;
-    private SwipeSelector routineSelector;
+    private SwipeSelector routineSelector;*/
     private DataManager dm;
     private EditText et;
     private OnCreateProgramListener onCreateProgramListener;
@@ -55,7 +54,7 @@ public class GeneratorFragment2 extends BaseCreateProgramFragment implements Vie
 
     private void initView(View v) {
         dm = ((HomeActivity) getActivity()).getDataManager();
-        exerciseSelector = (SwipeSelector) v.findViewById(R.id.exercise_difficulty_selector);
+      /*  exerciseSelector = (SwipeSelector) v.findViewById(R.id.exercise_difficulty_selector);
         volumeSelector = (SwipeSelector) v.findViewById(R.id.workout_volume_selector);
         complexitySelector = (SwipeSelector) v.findViewById(R.id.complexity_selector);
         routineSelector = (SwipeSelector) v.findViewById(R.id.exercise_routine_selector);
@@ -86,27 +85,27 @@ public class GeneratorFragment2 extends BaseCreateProgramFragment implements Vie
                 new SwipeItem(3, "ABCDE", "")
         );
         v.findViewById(R.id.fragment_generator_create_button).setOnClickListener(this);
-
+*/
 
     }
 
     @Override
     public void onClick(View v) {
-        getPrefsEditor().putBoolean(MODE_CUSTOM, false).commit();
+       /* getPrefsEditor().putBoolean(MODE_CUSTOM, false).commit();
         dm.getPrefsEditor().putInt(LOAD_EXERCISE_LEVEL, (int) exerciseSelector.getSelectedItem().value)
                 .putInt(LOAD_INTENSITY, (int) volumeSelector.getSelectedItem().value)
                 .putInt(LOAD_COMPLEXITY, (int) complexitySelector.getSelectedItem().value)
                 .putInt(ROUTINE, (int) routineSelector.getSelectedItem().value)
                 .putBoolean(MODE_GENERATED_PROGRAM, true)
                 .commit();
-
+*/
 
         //String s = dm.getProgramDataManager().readByTable(DBProgramHelper.TABLE_TEMPLATES);
         // dm.getProgramDataManager().createUserTemplate();
         Bundle bundle = new Bundle();
         bundle.putBoolean(MODE_GENERATED_PROGRAM, true);
         String routine = "";
-        switch ((int) routineSelector.getSelectedItem().value) {
+     /*   switch ((int) routineSelector.getSelectedItem().value) {
             case 0:
                 routine = "fbw";
                 break;
@@ -120,7 +119,7 @@ public class GeneratorFragment2 extends BaseCreateProgramFragment implements Vie
                 routine = "abcde";
                 break;
 
-        }
+        }*/
         bundle.putString(ROUTINE, routine );
         onCreateProgramListener.createProgramUI(CreateFragment.newInstance(onCreateProgramListener, bundle));
 //        onCreateProgramListener.createProgramUI(new WorkoutFragment());

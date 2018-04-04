@@ -21,5 +21,5 @@
        android:layout_marginTop="10dp"
        android:layout_width="30dp"
        android:layout_height="3dp"
-       android:background="@color/bb_tabletRightBorderDark"></View>
+       ></View>
 </LinearLayout>

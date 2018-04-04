@@ -26,14 +26,15 @@
         <EditText
             android:textColor="@color/textGrayColor"
             android:enabled="false"
+            android:clickable="false"
+
             android:maxLines="1"
             android:inputType="text"
+            android:background="#F2EEF3"
             android:layout_marginLeft="10dp"
-            android:clickable="false"
             android:id="@+id/recycler_view_body_parts_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#F2EEF3"
             android:text="Chest"
             android:textAlignment="center"
             android:textSize="14sp" />

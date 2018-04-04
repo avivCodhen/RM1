@@ -27,7 +27,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.roughike.bottombar.BottomBar;
 import com.strongest.savingdata.ArtificialInteligence.ArtificialIntelligenceObserver;
 import com.strongest.savingdata.BaseWorkout.Programmer;
 import com.strongest.savingdata.Database.Articles.ArticleObj;
@@ -71,7 +70,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     private AppBarLayout mAppBarLayout;
     private static final String TO_REFRESH = "refresh";
     private static final int COME_BACK_WITH_PROGRAM = 0;
-    private BottomBar bottomBar;
 
     private ManagerFragment managerFragment;
     private HomeFragment homeFragment;
@@ -120,7 +118,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-  /*      Download d = new Download(this);
+      /*  Download d = new Download(this);
         try {
 
             d.refreshData(
@@ -135,8 +133,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         } catch (Exception e) {
             Log.d("aviv", "downloadExercises: " + e.toString());
             // dm.getPrefsEditor().putBoolean("download", true).commit();
-        }
-*/
+        }*/
 
         setContentView(R.layout.activity_home);
         toolbar = (Toolbar) findViewById(R.id.activity_home_toolbar);
@@ -171,14 +168,13 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         workoutView.instantiate(this, getSupportFragmentManager(), programmer.getLayoutManager(), viewPager, tabLayout);
         workoutView.setProgramToolsView(programToolsView);
         workoutView.setmAppBarLayout(mAppBarLayout);
-        longClickMenuView.instantiate();
         workoutView.setLongClickMenu(longClickMenuView);
         toolbar.setTitle(programmer.getProgram().programName);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(programmer.getProgram().programName);
-            getSupportActionBar().setElevation(0);
+          //  getSupportActionBar().setElevation(0);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));

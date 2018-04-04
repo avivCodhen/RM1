@@ -1,16 +1,19 @@
-<RelativeLayout android:elevation="10dp"
+<net.cachapa.expandablelayout.ExpandableLayout android:elevation="10dp"
+    android:layout_gravity="right"
     android:layout_marginLeft="10dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/workout_view_program_tools_expandable"
+    app:el_expanded="false"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <net.cachapa.expandablelayout.ExpandableLayout
+    <RelativeLayout
+        android:layout_marginTop="40dp"
+        android:layout_gravity="right"
         android:background="@color/colorAccent"
         android:layout_alignParentRight="true"
-        android:id="@+id/workout_view_program_tools_expandable"
-        app:el_expanded="false"
-        android:layout_width="wrap_content"
+        android:layout_width="135dp"
         android:layout_height="wrap_content"
         android:padding="18dp">
 
@@ -18,7 +21,7 @@
             android:layout_gravity="center_horizontal"
             android:id="@+id/program_tools_view_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
      <!--   <LinearLayout
             android:padding="5dp"
             android:gravity="center_horizontal"
@@ -97,6 +100,6 @@
 
         </LinearLayout>
 -->
-    </net.cachapa.expandablelayout.ExpandableLayout>
+    </RelativeLayout>
 
-</RelativeLayout>
+</net.cachapa.expandablelayout.ExpandableLayout>

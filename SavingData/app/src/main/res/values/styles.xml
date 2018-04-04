@@ -57,13 +57,6 @@
     <style name="MyTheme" parent="@android:style/Theme.Light">
     </style>
 
-    <!--for fabolous-->
-    <style
-        name="dialog_animation_fade" >
-        <item name="android:windowEnterAnimation">@anim/bottomsheet_enter</item>
-        <item name="android:windowExitAnimation">@anim/bottomsheet_exit</item>
-    </style>
-
     <style name="TransparentAppCompatTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:background">#11000000</item> <!--change color transparency-->

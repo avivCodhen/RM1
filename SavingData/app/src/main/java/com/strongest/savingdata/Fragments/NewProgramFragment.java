@@ -2,12 +2,9 @@ package com.strongest.savingdata.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.R;
@@ -35,7 +32,7 @@ public class NewProgramFragment extends BaseCreateProgramFragment {
 
     private void initViews(View v) {
 
-        v.findViewById(R.id.my_program_back_iv).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.toolbar_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();
