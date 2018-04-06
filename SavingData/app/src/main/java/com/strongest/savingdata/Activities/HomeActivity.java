@@ -118,7 +118,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-      /*  Download d = new Download(this);
+       /* Download d = new Download(this);
         try {
 
             d.refreshData(
@@ -134,7 +134,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             Log.d("aviv", "downloadExercises: " + e.toString());
             // dm.getPrefsEditor().putBoolean("download", true).commit();
         }*/
-
         setContentView(R.layout.activity_home);
         toolbar = (Toolbar) findViewById(R.id.activity_home_toolbar);
         setSupportActionBar(toolbar);

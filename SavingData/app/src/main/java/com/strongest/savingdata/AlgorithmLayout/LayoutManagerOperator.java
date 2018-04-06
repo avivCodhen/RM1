@@ -21,13 +21,12 @@ public class LayoutManagerOperator {
 
     private Context context;
     private MyExpandableAdapter adapter;
-    private LayoutManager.LayoutManagerHelper helper;
+    //private LayoutManager.LayoutManagerHelper helper;
 
-    public LayoutManagerOperator(Context context, MyExpandableAdapter adapter, LayoutManager.LayoutManagerHelper helper) {
+    public LayoutManagerOperator(Context context, MyExpandableAdapter adapter) {
         this.context = context;
         this.adapter = adapter;
 
-        this.helper = helper;
     }
 
     public PLObject.SetsPLObject injectNewSet(PLObject.SetsPLObject setsPLObject) {
@@ -36,7 +35,7 @@ public class LayoutManagerOperator {
                 new ExerciseSet(setsPLObject.getExerciseSet()));
 
         newSetsPLObject.setInnerType(WorkoutLayoutTypes.SetsPLObject);
-        int childPosition = helper.findSetPosition(setsPLObject);
+        int childPosition = LayoutManagerHelper.findSetPosition(setsPLObject);
         setsPLObject.getParent().getSets().add(childPosition + 1, newSetsPLObject);
 
         return newSetsPLObject;
@@ -55,7 +54,7 @@ public class LayoutManagerOperator {
 
     public ArrayList<PLObject> injectCopySet(PLObject.SetsPLObject setsPLObject) {
         ArrayList<PLObject> block = new ArrayList<>();
-        int childPosition = helper.findSetPosition(setsPLObject);
+        int childPosition = LayoutManagerHelper.findSetPosition(setsPLObject);
         PLObject.SetsPLObject newSetsPLObject = injectNewSet(setsPLObject);
         block.add(newSetsPLObject);
         //copy the intrasets of this specific set (if it has any)
@@ -155,13 +154,13 @@ public class LayoutManagerOperator {
 */
 
     public void deleteSet(PLObject.SetsPLObject setsPLObject, ArrayList<PLObject> layout){
-        int position = helper.findPLObjectPosition(setsPLObject, layout);
+        int position = LayoutManagerHelper.findPLObjectPosition(setsPLObject, layout);
         if (setsPLObject.getParent().getSets().size() == 1) {
             Toast.makeText(context, "You cannot delete the only set.", Toast.LENGTH_SHORT).show();
             return;
         }
             int count = 0;
-        int childPosition = helper.findSetPosition(setsPLObject);
+        int childPosition = LayoutManagerHelper.findSetPosition(setsPLObject);
             setsPLObject.getParent().getSets().remove(childPosition);
             for (int i = 0; i < setsPLObject.getParent().getExerciseProfiles().size(); i++) {
                 count++;
@@ -182,14 +181,14 @@ public class LayoutManagerOperator {
             }
             adapter.notifyItemRangeRemoved(position, count);
             adapter.notifyItemRangeChanged(position, end);
-            adapter.notifyItemChanged(helper.findPLObjectPosition(setsPLObject.getParent(), layout));
+            adapter.notifyItemChanged(LayoutManagerHelper.findPLObjectPosition(setsPLObject.getParent(), layout));
             return;
         }
 
 
         public int deleteIntraSet(PLObject.IntraSetPLObject intraSetPLObject, ArrayList<PLObject> layout){
             intraSetPLObject.getParentSet().getIntraSets().remove(intraSetPLObject);
-            int pos = helper.findPLObjectPosition(intraSetPLObject, layout);
+            int pos = LayoutManagerHelper.findPLObjectPosition(intraSetPLObject, layout);
             layout.remove(pos);
             return pos;
         }

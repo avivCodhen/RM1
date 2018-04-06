@@ -7,4 +7,6 @@ package com.strongest.savingdata.Adapters;
 public interface OnSingleChoiceAdapterOnclickListener {
 
     void onClick(String object, String type);
+
+    void onLongclick(String object, String type);
 }

@@ -72,7 +72,7 @@ public class ChooseContainerFragment extends BaseCreateProgramFragment {
     }
 
     private void initViews(View v) {
-        reactLayoutManager = ((ChooseDialogFragment) getParentFragment()).getmReactLayoutManager();
+        //reactLayoutManager = ((ChooseDialogFragment) getParentFragment()).getmReactLayoutManager();
         myViewPager = (MyViewPager) v.findViewById(R.id.fragment_sets_choose_myviewpager);
         mTabLayout = (TabLayout) v.findViewById(R.id.fragment_sets_choose_tablayout);
         mTabLayout.setupWithViewPager(myViewPager);

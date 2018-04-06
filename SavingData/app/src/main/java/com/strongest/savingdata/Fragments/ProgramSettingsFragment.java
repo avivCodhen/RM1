@@ -39,7 +39,7 @@ public class ProgramSettingsFragment extends BaseCreateProgramFragment implement
     private String titleText;
     private TextWatcher textWatcher = null;
     private RecyclerView mRecyclerView;
-    ArrayList<PLObject> list;
+    ArrayList<PLObject> list = new ArrayList<>();
     private ItemTouchHelper itemTouchHelper;
     private TextView toolbarTitle;
     private ImageView toolbarIv;
@@ -71,7 +71,10 @@ public class ProgramSettingsFragment extends BaseCreateProgramFragment implement
         layoutManager = ((BaseActivity) getActivity()).getProgrammer().layoutManager;
         mRecyclerView = (RecyclerView) v.findViewById(R.id.program_settings_recyclerview);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
-        list = layoutManager.getWorkouts();
+
+        for (int i = 0; i < layoutManager.getWorkouts().size(); i++) {
+            list.add(layoutManager.getWorkouts().get(i));
+        }
         MainAdapter adapter = new MainAdapter(getContext(),list, this, null);
         adapter.setOnProgramChangeListener(this);
         ItemTouchHelper.Callback callback = new DragAndSwipeCallback(adapter);
@@ -86,7 +89,7 @@ public class ProgramSettingsFragment extends BaseCreateProgramFragment implement
         toolbarIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onProgramToolsActionListener.onProgramToolsAction("notify");
+              //  onProgramToolsActionListener.onProgramToolsAction("notify");
                 getFragmentManager().popBackStack();
             }
         });
@@ -132,7 +135,7 @@ public class ProgramSettingsFragment extends BaseCreateProgramFragment implement
         LayoutManager.UpdateComponents updateComponents = new LayoutManager.UpdateComponents(LayoutManager.DELETE_WORKOUT);
         updateComponents.setWorkoutPosition(position);
         layoutManager.updateLayout(updateComponents);
-        onProgramToolsActionListener.onProgramToolsAction("notify");
+        onProgramToolsActionListener.onProgramToolsAction("notify", null);
     }
 
     @Override
@@ -141,13 +144,14 @@ public class ProgramSettingsFragment extends BaseCreateProgramFragment implement
         updateComponents.setFromPosition(fromPosition);
         updateComponents.setToPosition(toPosition);
         layoutManager.updateLayout(updateComponents);
-        onProgramToolsActionListener.onProgramToolsAction("notify");
+        onProgramToolsActionListener.onProgramToolsAction("notify", updateComponents);
 
     }
 
+
     @Override
     public void onEdit(int position) {
-        onProgramToolsActionListener.onProgramToolsAction("notify");
+        onProgramToolsActionListener.onProgramToolsAction("notify", null);
     }
 
     public void setOnProgramToolsActionListener(OnProgramToolsActionListener onProgramToolsActionListener) {

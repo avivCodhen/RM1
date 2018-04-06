@@ -28,6 +28,7 @@ public class RestChooseView extends LinearLayout implements View.OnClickListener
     private Context context;
     public int minutes;
     public int seconds;
+    public String rest;
 
 
     public RestChooseView(Context context) {
@@ -55,13 +56,17 @@ public class RestChooseView extends LinearLayout implements View.OnClickListener
         plus_5.setOnClickListener(this);
         plus_10.setOnClickListener(this);
 
-        String rest = mNumberManager.getExerciseSet().getRest();
-        singleNumberChooseView.setText(
-                rest.charAt(0) == '0' ? rest.substring(1,2) : rest.substring(0,2));
-        secondsET.setText(rest.substring(3, rest.length()));
-        seconds = Integer.parseInt(rest.substring(3, rest.length()));
+        String restTime = mNumberManager.getExerciseSet().getRest();
+       initRest(restTime);
     }
 
+    public void initRest(String restTime){
+        singleNumberChooseView.setText(
+                restTime.charAt(0) == '0' ? restTime.substring(1,2) : restTime.substring(0,2));
+        secondsET.setText(restTime.substring(3, restTime.length()));
+        seconds = Integer.parseInt(restTime.substring(3, restTime.length()));
+        rest = ExerciseProfileStats.restToString(60 * singleNumberChooseView.getIntNum() + seconds);
+    }
 
     public void setUpWithManager(NumberChooseManager numberChooseManager) {
         mNumberManager = numberChooseManager;
@@ -108,7 +113,8 @@ public class RestChooseView extends LinearLayout implements View.OnClickListener
 
         }
         setText();
-        mNumberManager.injectRest(ExerciseProfileStats.restToString(60 * singleNumberChooseView.getIntNum() + seconds));
+        rest = ExerciseProfileStats.restToString(60 * singleNumberChooseView.getIntNum() + seconds);
+        mNumberManager.injectRest(rest);
     }
 
     private void setText() {

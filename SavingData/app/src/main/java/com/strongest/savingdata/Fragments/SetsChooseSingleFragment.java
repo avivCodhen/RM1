@@ -20,7 +20,9 @@ import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Adapters.OnSingleChoiceAdapterOnclickListener;
 import com.strongest.savingdata.Adapters.SingleChoiceAdapter;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
+import com.strongest.savingdata.AlgorithmLayout.LayoutManagerHelper;
 import com.strongest.savingdata.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
@@ -28,6 +30,7 @@ import com.strongest.savingdata.MyViews.CreateCustomBeansView.NumberChooseManage
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.RangeNumberChooseView;
 import com.strongest.savingdata.MyViews.RestChooseView;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
+import com.strongest.savingdata.MyViews.WorkoutView.Choose.OnExerciseSetChange;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 
@@ -42,7 +45,7 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE
  * Created by Cohen on 3/15/2018.
  */
 
-public class SetsChooseSingleFragment extends BaseCreateProgramFragment implements OnSingleChoiceAdapterOnclickListener{
+public class SetsChooseSingleFragment extends BaseCreateProgramFragment implements OnSingleChoiceAdapterOnclickListener {
 
     private RangeNumberChooseView mRangeNumberChoose;
     private RecyclerView mRepRecycler, mRestRecycler;
@@ -55,14 +58,15 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
 
     private ExerciseSet exerciseSet;
 
-    private PLObject.ExerciseProfile exerciseProfile;
     private PLObject plObject;
     private PLObject.SetsPLObject setsPLObject;
+    PLObject.ExerciseProfile parent;
     private PLObject.IntraSetPLObject intraSetPLObject;
-    private LayoutManager.LayoutManagerHelper helper;
+    // private LayoutManager.LayoutManagerHelper helper;
     private NumberChooseManager numberChooseManager;
     private DataManager dataManager;
     ArrayList<String> listRep;
+    private OnExerciseSetChange onExerciseSetChange;
 
     ArrayList<String> listRest;
 
@@ -72,12 +76,11 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
 
     public static final String SET_POS = "set_pos", INTRA_SET_POS = "intra_set_pos";
 
-    public static SetsChooseSingleFragment getInstance(PLObject setsPLObject) {
+    public static SetsChooseSingleFragment getInstance(PLObject setsPLObject, OnExerciseSetChange onExerciseSetChange) {
         SetsChooseSingleFragment f = new SetsChooseSingleFragment();
         Bundle b = new Bundle();
         b.putSerializable(ChooseDialogFragment.PLOBJECT, setsPLObject);
-        /*b.putInt(SET_POS, setPos);
-        b.putInt(INTRA_SET_POS, intraSetPos);*/
+        f.setOnExerciseSetChange(onExerciseSetChange);
         f.setArguments(b);
         return f;
     }
@@ -85,14 +88,17 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        helper = ((BaseActivity) getActivity()).programmer.layoutManager.mLayoutManagerHelper;
+        //  helper = ((BaseActivity) getActivity()).programmer.layoutManager.mLayoutManagerHelper;
         if (getArguments() != null) {
             plObject = (PLObject) getArguments().getSerializable(ChooseDialogFragment.PLOBJECT);
             if (plObject instanceof PLObject.SetsPLObject) {
                 setsPLObject = (PLObject.SetsPLObject) plObject;
                 exerciseSet = setsPLObject.getExerciseSet();
+                parent = setsPLObject.getParent();
             } else {
                 intraSetPLObject = (PLObject.IntraSetPLObject) plObject;
+                parent = intraSetPLObject.getParent();
+
                 exerciseSet = intraSetPLObject.getExerciseSet();
             }
             /*setPos = getArguments().getInt(SET_POS);
@@ -114,7 +120,7 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
     }
 
     private void initViews(View v) {
-        numberChooseManager = new NumberChooseManager(helper, exerciseSet);
+        numberChooseManager = new NumberChooseManager(onExerciseSetChange, exerciseSet);
         mRestChooseView = (RestChooseView) v.findViewById(R.id.sets_choose_restchooseview);
         mRestChooseView.setUpWithManager(numberChooseManager);
         mRangeNumberChoose = (RangeNumberChooseView) v.findViewById(R.id.fragment_sets_choose_rangenumberview);
@@ -129,8 +135,8 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
         listRep = dataManager.getExerciseDataManager().readListByTable(TABLE_REPS);
 
         listRest = dataManager.getExerciseDataManager().readListByTable(DBExercisesHelper.TABLE_REST);
-        mRepAdapter = new SingleChoiceAdapter(getContext(), listRep, this,"rep");
-        mRestAdapter = new SingleChoiceAdapter(getContext(), listRest,this,"rest");
+        mRepAdapter = new SingleChoiceAdapter(getContext(), listRep, this, "rep");
+        mRestAdapter = new SingleChoiceAdapter(getContext(), listRest, this, "rest");
         mRestRecycler.setLayoutManager(lmRep);
         mRepRecycler.setLayoutManager(lmRest);
         mRepRecycler.setAdapter(mRepAdapter);
@@ -138,14 +144,92 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
 
         weightLayout = v.findViewById(R.id.choose_sets_weight_layout);
         initWeightViews(v);
-
+        initApplyBtns(v);
 
 
     }
 
-    private void initWeightViews(View v){
+    private void initApplyBtns(View v) {
+        v.findViewById(R.id.choose_sets_reps_apply).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String rep = mRangeNumberChoose.rep;
+                applyForAll(rep, "rep");
+
+
+            }
+        });
+
+        v.findViewById(R.id.choose_sets_rest_apply).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String rest = exerciseSet.getRest();
+                applyForAll(rest, "rest");
+            }
+        });
+
+        v.findViewById(R.id.choose_sets_weight_apply).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double weight = exerciseSet.getWeight();
+                applyForAll(String.valueOf(weight), "weight");
+            }
+        });
+    }
+
+    private void applyForAll(String object, String type) {
+        if (intraSetPLObject != null) {
+            if (intraSetPLObject.innerType == WorkoutLayoutTypes.SuperSetIntraSet) {
+                for (int i = 0; i < intraSetPLObject.getParent().getIntraSets().size(); i++) {
+                    if (type.equals("rep")) {
+                        intraSetPLObject.getParent().getIntraSets().get(i).getExerciseSet().setRep(object);
+                    }
+                    if (type.equals("rest")) {
+                        intraSetPLObject.getParent().getIntraSets().get(i).getExerciseSet().setRest(object);
+                    }
+                    if (type.equals("weight")) {
+                        intraSetPLObject.getParent().getIntraSets().get(i).getExerciseSet().
+                                setWeight(Double.parseDouble(object));
+
+                    }
+                }
+            } else {
+                int dropsetPosition = LayoutManagerHelper.findIntraSetPosition(intraSetPLObject);
+                for (int i = 0; i < intraSetPLObject.getParent().getSets().size(); i++) {
+                    PLObject.SetsPLObject set = intraSetPLObject.getParent().getSets().get(i);
+                    if (dropsetPosition < set.getIntraSets().size()) {
+                        if (type.equals("rep")) {
+                            set.getIntraSets().get(dropsetPosition).getExerciseSet().setRep(object);
+                        }
+                        if (type.equals("rest")) {
+                            set.getIntraSets().get(dropsetPosition).getExerciseSet().setRest(object);
+                        }
+                        if (type.equals("weight")) {
+                            set.getIntraSets().get(dropsetPosition).getExerciseSet().
+                                    setWeight(Double.parseDouble(object));
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < setsPLObject.getParent().getSets().size(); i++) {
+                if (type.equals("rep")) {
+                    setsPLObject.getParent().getSets().get(i).getExerciseSet().setRep(object);
+                }
+                if (type.equals("rest")) {
+                    setsPLObject.getParent().getSets().get(i).getExerciseSet().setRest(object);
+                }
+                if (type.equals("weight")) {
+                    setsPLObject.getParent().getSets().get(i).getExerciseSet().
+                            setWeight(Double.parseDouble(object));
+                }
+            }
+        }
+    }
+
+    private void initWeightViews(View v) {
         weightET = (EditText) v.findViewById(R.id.choose_sets_weight_et);
-        weightET.setText(exerciseSet.getWeight()+"");
+        weightET.setText(exerciseSet.getWeight() + "");
         keyboardIV = (ImageView) v.findViewById(R.id.choose_sets_keyboard_iv);
         customWeightCB = (CheckBox) v.findViewById(R.id.choose_sets_customweight);
         customWeightCB.setChecked(exerciseSet.isCustomWeight());
@@ -160,7 +244,7 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
             }
         });
 
-       TextWatcher textWatcher = new TextWatcher() {
+        TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -168,8 +252,8 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 double d = weightET.getText().toString().equals("") ? 0.0 : Double.parseDouble(weightET.getText().toString());
-               exerciseSet.setWeight(d);
-               helper.onExerciseSetChange();
+                exerciseSet.setWeight(d);
+                onExerciseSetChange.notifyExerciseSetChange();
             }
 
             @Override
@@ -178,7 +262,7 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
 
             }
         };
-       weightET.addTextChangedListener(textWatcher);
+        weightET.addTextChangedListener(textWatcher);
 
 
     }
@@ -193,45 +277,65 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
     private void saveIfNotExist() {
         boolean repFlag = false;
         boolean restFlag = false;
-        if(listRep.size() == 0){
+        if (listRep.size() == 0) {
             dataManager.getExerciseDataManager().insertData(TABLE_REPS, numberChooseManager.getExerciseSet().getRep());
             repFlag = true;
         }
-        if(listRest.size() == 0){
+        if (listRest.size() == 0) {
             dataManager.getExerciseDataManager().insertData(TABLE_REST, numberChooseManager.getExerciseSet().getRest());
             restFlag = true;
         }
 
-        for (String rep : listRep){
-            if(rep.equals(numberChooseManager.getExerciseSet().getRep())){
+        for (String rep : listRep) {
+            if (rep.equals(numberChooseManager.getExerciseSet().getRep())) {
                 repFlag = true;
             }
         }
-        for (String rest : listRest){
-            if(rest.equals(numberChooseManager.getExerciseSet().getRest())){
+        for (String rest : listRest) {
+            if (rest.equals(numberChooseManager.getExerciseSet().getRest())) {
                 restFlag = true;
             }
         }
-        if(!repFlag){
+        if (!repFlag) {
             insertData(TABLE_REPS, numberChooseManager.getExerciseSet().getRep());
         }
-        if(!restFlag){
+        if (!restFlag) {
             insertData(TABLE_REST, numberChooseManager.getExerciseSet().getRest());
         }
     }
 
-    public void insertData(String tableName, String name){
+    public void insertData(String tableName, String name) {
         dataManager.getExerciseDataManager().insertData(tableName, name);
 
     }
 
     @Override
     public void onClick(String object, String type) {
-        if(type.equals("rep")){
+        if (type.equals("rep")) {
             exerciseSet.setRep(object);
-        }else if(type.equals("rest")){
+            mRangeNumberChoose.initRep(exerciseSet.getRep());
+
+        } else if (type.equals("rest")) {
             exerciseSet.setRest(object);
+            mRestChooseView.initRest(exerciseSet.getRest());
         }
-        helper.onOnlyItemChange();
+        onExerciseSetChange.notifyExerciseSetChange();
+        // helper.onOnlyItemChange();
+    }
+
+    @Override
+    public void onLongclick(String object, String type) {
+        String table;
+        if (type.equals("rep")) {
+            table = TABLE_REPS;
+        } else {
+            table = TABLE_REST;
+        }
+        dataManager.getExerciseDataManager().removeByName(table, object);
+
+    }
+
+    public void setOnExerciseSetChange(OnExerciseSetChange onExerciseSetChange) {
+        this.onExerciseSetChange = onExerciseSetChange;
     }
 }

@@ -19,9 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
+import com.strongest.savingdata.AlgorithmLayout.LayoutManagerAlertdialog;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
 import com.strongest.savingdata.R;
+import com.strongest.savingdata.Utils.MyUtils;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -117,7 +119,7 @@ public class ProgramToolsView extends LinearLayout {
         buttons.add(new ProgramButton(green, NEW_EXERCISE, "Exercise", plusIcon));
         buttons.add(new ProgramButton(green, DRAW_DIVIDER, "Divider", plusIcon));
         buttons.add(new ProgramButton(green, NEW_WORKOUT, "Workout", plusIcon));
-        buttons.add(new ProgramButton(red, DELETE_WORKOUT, "Workout", R.drawable.minus_white_24px));
+      //  buttons.add(new ProgramButton(red, DELETE_WORKOUT, "Workout", R.drawable.minus_white_24px));
         buttons.add(new ProgramButton(Color.WHITE, "advanced", "Advanced", R.drawable.settings_24px_gray));
         mRecyclerview = (RecyclerView) findViewById(R.id.program_tools_view_recyclerview);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(context);
@@ -227,7 +229,7 @@ public class ProgramToolsView extends LinearLayout {
         }
 
         @Override
-        public void onBindViewHolder(ProgramToolsAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(final ProgramToolsAdapter.ViewHolder holder, int position) {
             final ProgramButton pBtn = buttons.get(position);
             holder.circleImageView.setImageResource(buttons.get(position).image);
             holder.circleImageView.setCircleBackgroundColor(buttons.get(position).color);
@@ -242,9 +244,15 @@ public class ProgramToolsView extends LinearLayout {
                                 .replace(R.id.activity_home_framelayout, f, "unique")
                                 .addToBackStack("unique")
                                 .commit();
-                    } else {
-                        onProgramToolsActionListener.onProgramToolsAction(pBtn.type);
+
+                        MyUtils.Interface.disableClick(holder.itemView, 1000);
+
                     }
+
+                    else{
+                            onProgramToolsActionListener.onProgramToolsAction(pBtn.type, null);
+                        }
+
                 }
             });
         }

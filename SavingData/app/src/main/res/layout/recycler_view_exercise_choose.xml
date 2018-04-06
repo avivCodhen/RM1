@@ -25,40 +25,13 @@
         android:layout_height="wrap_content"
         android:text="Barbell Bench Press" />
 
-    <TextView
-
-        android:layout_toRightOf="@id/choose_type"
-        android:layout_below="@id/exercise_choose_rm1_tag"
-        android:id="@+id/exercise_choose_rm1"
-        android:layout_marginTop="2dp"
-        android:text="123 kg "
-        android:textSize="12sp"
-        android:layout_marginRight="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingBottom="5dp"
-         />
 
     <ImageView
+        android:visibility="gone"
         android:layout_centerVertical="true"
         android:alpha="0.5"
         android:layout_alignParentRight="true"
         android:src="@drawable/info_24px_black"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:layout_marginTop="2dp"
-        android:layout_toRightOf="@id/exercise_choose_rm1"
-        android:layout_below="@+id/exercise_choose_rm1_tag"
-        android:gravity="center"
-        android:textColor="@color/colorPrimary"
-        android:background="@color/colorAccent"
-        android:textSize="10dp"
-        android:text="set"
-        android:textStyle="bold"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -89,29 +62,6 @@
         android:text="Quadriceps, Hamstring, Lower Back, Abs, Calfs"
         android:layout_alignParentRight="true"/>
 
-
-
-    <RelativeLayout
-        android:layout_toRightOf="@+id/choose_type"
-        android:id="@+id/exercise_choose_rm1_tag"
-        android:background="@color/background_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            android:layout_height="wrap_content"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:paddingRight="3dp"
-            android:paddingLeft="3dp"
-
-            android:text="rm1"
-            />
-
-    </RelativeLayout>
 
 
 

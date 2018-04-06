@@ -139,7 +139,6 @@ public class LayoutManager {
     public static LayoutManager getDefaultLayoutManagerInstance(Context context, DataManager dataManager) {
         LayoutManager layoutManager = new LayoutManager(context, dataManager);
         layoutManager.drawWorkout(layoutManager.layout, "Workout A");
-        layoutManager.drawBody(layoutManager.layout, "This Is A Title");
         layoutManager.drawExercise(null, layoutManager.layout, WorkoutLayoutTypes.ExerciseProfile, true);
         layoutManager.initRecyclerMatrixLayout();
         layoutManager.initWorkouts();
@@ -363,7 +362,7 @@ public class LayoutManager {
                     getSplitRecyclerWorkouts().get(workoutPosition).add(updateComponents.toPosition,ep);
                     break;
                 case NEW_WORKOUT:
-                    initRecyclerMatrixLayout().add(new ArrayList<PLObject>());
+                    getSplitRecyclerWorkouts().add(new ArrayList<PLObject>());
                     drawWorkout(getWorkouts(), "");
                     drawExercise(null, getSplitRecyclerWorkouts().get(getSplitRecyclerWorkouts().size() - 1),
                             WorkoutLayoutTypes.ExerciseProfile, true);
@@ -381,6 +380,7 @@ public class LayoutManager {
                     break;
                 case SWAP_WORKOUTS:
                     Collections.swap(getSplitRecyclerWorkouts(), updateComponents.fromPosition, updateComponents.toPosition);
+                    Collections.swap(getWorkouts(), updateComponents.fromPosition, updateComponents.toPosition);
                     break;
             }
 
@@ -392,6 +392,8 @@ public class LayoutManager {
             numOfExercises = 0;
         }
     }
+
+
 
     private void onLayoutChange() {
         requestSplitToLayout();
@@ -839,7 +841,7 @@ public class LayoutManager {
             this.layout = layout;
         }
     }
-
+/*
     public class LayoutManagerHelper {
 
         private MyExpandableAdapter adapter;
@@ -951,7 +953,7 @@ public class LayoutManager {
             return -1;
         }
 
-        public String writeTitle(PLObject plObject) {
+        public static String writeTitle(PLObject plObject) {
             PLObject.ExerciseProfile exerciseProfile;
             PLObject.SetsPLObject setsPLObject;
             PLObject.IntraSetPLObject intraSetPLObject;
@@ -1086,7 +1088,7 @@ public class LayoutManager {
         }
 
 
-    }
+    }*/
 
 
 }

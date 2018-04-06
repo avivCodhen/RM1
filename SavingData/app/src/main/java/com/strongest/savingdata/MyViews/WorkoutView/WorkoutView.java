@@ -32,6 +32,7 @@ import com.strongest.savingdata.Adapters.WorkoutAdapter.OnExerciseProfileEditCli
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ScrollToPositionListener;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManagerAlertdialog;
+import com.strongest.savingdata.AlgorithmLayout.LayoutManagerHelper;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManagerOperator;
 import com.strongest.savingdata.AlgorithmLayout.OnLayoutManagerDialogPress;
 import com.strongest.savingdata.AlgorithmProgress.ProgressorManager;
@@ -51,6 +52,7 @@ import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.DELETE_EXERCISE;
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.DELETE_WORKOUT;
@@ -58,6 +60,7 @@ import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.DRAW_DIVIDE
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.NEW_EXERCISE;
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.NEW_SUPERSET;
 import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.NEW_WORKOUT;
+import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.SWAP;
 import static com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView.Action.Back;
 
 /**
@@ -95,7 +98,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
     private static ExpandableLayout expandableLayout;
 
     private static ProgramToolsView programToolsView;
-    private static LayoutManager.LayoutManagerHelper layoutManagerHelper;
+    // private static LayoutManager.LayoutManagerHelper layoutManagerHelper;
 
     public static View getLongClickMenu() {
         return longClickMenu;
@@ -133,7 +136,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
         //configurateRecycler();
         final RecyclerView.LayoutManager layM = new LinearLayoutManager(context);
         //   inflate(context, R.layout.workout_view, this);
-        layoutManagerHelper = layoutManager.mLayoutManagerHelper;
+        //   layoutManagerHelper = layoutManager.mLayoutManagerHelper;
         //  mViewPager = (ViewPager) findViewById(R.id.workoutview_viewpager);
 
         //  mTabLayout = (TabLayout) findViewById(R.id.workoutview_tablayout);
@@ -244,7 +247,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
         updateComponents.setWorkoutPosition(mViewPager.getCurrentItem());
         layoutManager.updateLayout(updateComponents);
 
-        mAdapter.setmProgramLayout(layoutManager.getLayout());
+        //mAdapter.setmProgramLayout(layoutManager.getLayout());
         if (updateComponents.isUpdate()) {
             mAdapter.setUpdate(true);
             mAdapter.notifyDataSetChanged();
@@ -263,7 +266,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
      * */
 
     @Override
-    public void onProgramToolsAction(String command) {
+    public void onProgramToolsAction(String command, LayoutManager.UpdateComponents updateComponents) {
         WorkoutViewFragment f = workoutViewFragments.get(mViewPager.getCurrentItem());
         LayoutManager.UpdateComponents upd;
 
@@ -284,7 +287,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
                 upd = new LayoutManager.UpdateComponents(NEW_WORKOUT);
                 upd.setUpdate(true);
                 updateLayout(upd);
-                mAdapter.setmProgramLayout(layoutManager.getLayout());
+                //  mAdapter.setmProgramLayout(layoutManager.getLayout());
                 mViewPager.setCurrentItem(workoutViewFragments.size() - 1);
                 break;
             case DELETE_WORKOUT:
@@ -307,7 +310,9 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
                 upd = new LayoutManager.UpdateComponents(DRAW_DIVIDER);
                 f.addBodyView(f.exArray.size(), upd);
                 break;
-
+            case SWAP:
+                Collections.swap(workoutViewFragments, updateComponents.getFromPosition(), updateComponents.getToPosition());
+                mAdapter.notifyDataSetChanged();
             case "notify":
                 mAdapter.notifyDataSetChanged();
                 break;
@@ -347,7 +352,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
             f.getAdapter().detailCollapse(vh);
             f.scrollToPosition(oldPosition, true, false);
         }
-        f.adapter.notifyItemRangeChanged(0, f.exArray.size());
+        f.adapter.notifyItemRangeChanged(0, f.exArray.size() + 1);
         //  f.adapter.notifyItemRangeChanged(vh.getAdapterPosition(), layoutManagerHelper.countExerciseRangeChange(vh.getAdapterPosition(), f.exArray));
         vh.itemView.setAlpha(1f);
     }
@@ -428,7 +433,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return ((PLObject.WorkoutPLObject)layoutManager.getWorkouts().get(position)).getWorkoutName();
+            return ((PLObject.WorkoutPLObject) layoutManager.getWorkouts().get(position)).getWorkoutName();
         }
 
         @Override
@@ -449,7 +454,11 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             WorkoutViewFragment f = (WorkoutViewFragment) super.instantiateItem(container, position);
-            workoutViewFragments.add(position, f);
+            if (workoutViewFragments.size() <= position) {
+                workoutViewFragments.add(position, f);
+            } else {
+                workoutViewFragments.set(position, f);
+            }
             return f;
         }
 
@@ -533,7 +542,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
                 Log.d("aviv", "initViews:  trouble in workoutviewfragment");
             }
             // longClickMenu.setOnWorkoutViewInterfaceClicksListener(this);
-            layoutManagerOperator = new LayoutManagerOperator(getContext(), adapter, layoutManagerHelper);
+            layoutManagerOperator = new LayoutManagerOperator(getContext(), adapter);
         }
 
         private void configurateRecycler() {
@@ -542,7 +551,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
             recycler.setAdapter(adapter);
             adapter.setOnDragListener(this);
             adapter.setScrollListener(this);
-            adapter.setHelper(layoutManagerHelper);
+            //   adapter.setHelper(layoutManagerHelper);
             ItemTouchHelper.Callback callback = new DragAndSwipeCallback(adapter);
             touchHelper = new ItemTouchHelper(callback);
             touchHelper.attachToRecyclerView(recycler);
@@ -694,7 +703,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
             LayoutManager.UpdateComponents updateComponents = new LayoutManager.UpdateComponents(NEW_EXERCISE);
             int toPosition = position;
             if (ep.isExpand()) {
-                toPosition += layoutManagerHelper.calcBlockLength(ep);
+                toPosition += LayoutManagerHelper.calcBlockLength(ep);
             } else {
                 toPosition += (ep.getExerciseProfiles().size());
             }
@@ -767,8 +776,8 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
                 }
                 int start = 0;
                 int end = 0;
-                int fatherPos = layoutManagerHelper.findPLObjectPosition(ep.getParent(), exArray);
-                adapter.notifyItemRangeChanged(fatherPos, layoutManagerHelper.calcBlockLength(ep.getParent()));
+                int fatherPos = LayoutManagerHelper.findPLObjectPosition(ep.getParent(), exArray);
+                adapter.notifyItemRangeChanged(fatherPos, LayoutManagerHelper.calcBlockLength(ep.getParent()));
                 //adapter.notifyItemRangeRemoved(position+start, ep.getParent().getSets().size()*2);
 
                 return;
@@ -781,38 +790,8 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
             View v = null;
 
             longClickMenu.onShowMenu((MyExpandableAdapter.MyExpandableViewHolder) vh,
-                    layoutManagerHelper.findPLObjectDefaultType(exArray.get(vh.getAdapterPosition())));
-       /*     boolean isExpand = false;
-            ExerciseProfile ep = null;
-            final int position = vh.getAdapterPosition();
-            ep = ((ExerciseProfile) exArray.get(position));
-            isExpand = ep.isExpand();
+                    LayoutManagerHelper.findPLObjectDefaultType(exArray.get(vh.getAdapterPosition())), delete);
 
-
-            if (delete) {
-                int length = 1;
-                if (isExpand) {
-                    adapter.onCollapse((MyExpandableAdapter.ExerciseViewHolder) vh);
-                }
-                LayoutManager.UpdateComponents updateComponents = new LayoutManager.UpdateComponents(DELETE_EXERCISE);
-                updateComponents.setPlObject(ep);
-                updateComponents.setRemovePosition(position);
-                exArray = onUpdateLayoutStatsListener.updateLayout(updateComponents);
-                adapter.setExArray(exArray);
-                adapter.notifyItemRangeRemoved(position, ep.getExerciseProfiles().size() + 1);
-                return;
-            }
-
-            new AlertDialog.Builder(getContext())
-                    .setCancelable(true)
-                    .setMessage("Delete this Exercise and all it's data?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            onLongClick(vh, true);
-
-                        }
-                    }).setNegativeButton("No", null).show();*/
         }
 
         @Override
@@ -892,17 +871,18 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
             PLObject.IntraSetPLObject intra = layoutManagerOperator.injectNewIntraSet(setsPLObject);
             exArray.add(vh.getAdapterPosition() + setsPLObject.getIntraSets().size(), intra);
             adapter.notifyItemInserted(vh.getAdapterPosition() + setsPLObject.getIntraSets().size());
+            int parentposition = LayoutManagerHelper.findPLObjectPosition(setsPLObject.getParent(), exArray);
+            adapter.notifyItemChanged(parentposition);
         }
 
         @Override
         public void deleteItem(int position, boolean delete) {
             if (delete) {
                 PLObject plObject = exArray.get(position);
-                WorkoutLayoutTypes type = layoutManagerHelper.findPLObjectDefaultType(plObject);
+                WorkoutLayoutTypes type = LayoutManagerHelper.findPLObjectDefaultType(plObject);
                 switch (type) {
                     case IntraExerciseProfile:
                         onLongSupersetClick(position, delete);
-
                         //layoutManagerOperator.deleteSuperset((ExerciseProfile) plObject, onUpdateLayoutStatsListener,this);
                         break;
                     case ExerciseProfile:
@@ -916,7 +896,12 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
                         adapter.notifyItemRemoved(
                                 layoutManagerOperator.deleteIntraSet((PLObject.IntraSetPLObject) plObject, exArray)
                         );
+                        int parentposition = LayoutManagerHelper.findPLObjectPosition(((PLObject.IntraSetPLObject) plObject).getParent(), exArray);
+                        adapter.notifyItemChanged(parentposition);
                         break;
+                    case BodyView:
+                        exArray.remove(position);
+                        adapter.notifyItemRemoved(position);
                 }
 
                 longClickMenu.onHideMenu();
@@ -949,7 +934,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
 
 
             ExerciseProfile ep = (ExerciseProfile) exArray.get(adapterPosition);
-            int block = layoutManagerHelper.calcBlockLength(ep);
+            int block = LayoutManagerHelper.calcBlockLength(ep);
             if (longClickMenu.getViewPosition() > adapterPosition && longClickMenu.getViewPosition() < block + 1) {
                 longClickMenu.onHideMenu();
             }
@@ -1013,7 +998,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
 
                     if (ep.getExerciseProfiles().size() != 0) {
                         for (int j = 0; j < ep.getExerciseProfiles().size(); j++) {
-                            layoutManagerHelper.attachSupersetIntraSetsByParent(ep.getExerciseProfiles().get(j));
+                            LayoutManagerHelper.attachSupersetIntraSetsByParent(ep.getExerciseProfiles().get(j));
                             block.add(ep.getExerciseProfiles().get(j).getIntraSets().get(i));
 
                         }
@@ -1039,42 +1024,41 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
         public void onSetsDoubleClick(final RecyclerView.ViewHolder vh) {
             int position = vh.getAdapterPosition();
             PLObject plObject = exArray.get(position);
-            boolean returnToMenu = false;
-            if (plObject.getInnerType() == WorkoutLayoutTypes.ExerciseProfile) {
-                ExerciseProfile ep = (ExerciseProfile) plObject;
-                if (!ep.isExpand()) {
-                    expandExercise(position);
+            if (plObject instanceof PLObject.SetsPLObject) {
+
+                boolean returnToMenu = false;
+                if (plObject.getInnerType() == WorkoutLayoutTypes.ExerciseProfile) {
+                    ExerciseProfile ep = (ExerciseProfile) plObject;
+                    if (!ep.isExpand()) {
+                        expandExercise(position);
+                    }
+                    position += (LayoutManagerHelper.calcBlockLength(ep) - 1);
+                    returnToMenu = true;
                 }
-                position += (layoutManagerHelper.calcBlockLength(ep) - 1);
-                returnToMenu = true;
-            }
 
 
-            PLObject.SetsPLObject setsPLObject = (PLObject.SetsPLObject) exArray.get(position);
-            int setBlockLength = setsPLObject.getIntraSets().size() + setsPLObject.getParent().getExerciseProfiles().size();
-            int newPosition = position + 1 + setBlockLength;
-            ArrayList<PLObject> block = layoutManagerOperator.injectCopySet(setsPLObject);
-            for (int i = 0; i < block.size(); i++) {
-                exArray.add(newPosition + i, block.get(i));
-                adapter.notifyItemInserted(newPosition + i);
-            }
-            int numOfBlock = 0;
-            for (int i = position; i < exArray.size(); i++) {
-                if (exArray.get(i).getType() != WorkoutLayoutTypes.ExerciseProfile) {
-                    numOfBlock++;
-                } else {
-                    break;
+                PLObject.SetsPLObject setsPLObject = (PLObject.SetsPLObject) exArray.get(position);
+                int setBlockLength = setsPLObject.getIntraSets().size() + setsPLObject.getParent().getExerciseProfiles().size();
+                int newPosition = position + 1 + setBlockLength;
+                ArrayList<PLObject> block = layoutManagerOperator.injectCopySet(setsPLObject);
+                for (int i = 0; i < block.size(); i++) {
+                    exArray.add(newPosition + i, block.get(i));
+                    adapter.notifyItemInserted(newPosition + i);
+                }
+                int numOfBlock = 0;
+                for (int i = position; i < exArray.size(); i++) {
+                    if (exArray.get(i).getType() != WorkoutLayoutTypes.ExerciseProfile) {
+                        numOfBlock++;
+                    } else {
+                        break;
+                    }
+                }
+                adapter.notifyItemRangeChanged(position + 1, numOfBlock);
+                if (!returnToMenu) {
+                    notifyExerciseChanged(LayoutManagerHelper.findPLObjectPosition(setsPLObject.getParent(), exArray));
                 }
             }
-            adapter.notifyItemRangeChanged(position + 1, numOfBlock);
-            if (!returnToMenu) {
-                notifyExerciseChanged(layoutManagerHelper.findPLObjectPosition(setsPLObject.getParent(), exArray));
-            }
-            //adapter.notifyItemChanged(layoutManagerHelper.findPLObjectPosition(setsPLObject.getParent(), exArray));
-/*
-            if(returnToMenu){
-                longClickMenu.onShowMenu((MyExpandableAdapter.MyExpandableViewHolder) vh, WorkoutLayoutTypes.ExerciseProfile);
-            }*/
+
         }
 
         @Override
@@ -1148,7 +1132,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
             if (vh instanceof MyExpandableAdapter.ExerciseViewHolder) {
                 v = ((MyExpandableAdapter.ExerciseViewHolder) vh).card;
                 ExerciseProfile ep = (ExerciseProfile) exArray.get(vh.getAdapterPosition());
-                ep.rawPosition = layoutManagerHelper.findExercisePosition(ep, exArray);
+                ep.rawPosition = LayoutManagerHelper.findExercisePosition(ep, exArray);
 
             } else if (vh instanceof MyExpandableAdapter.SetsViewHolder) {
                 v = ((MyExpandableAdapter.SetsViewHolder) vh).card;
@@ -1180,6 +1164,11 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
         @Override
         public void onLMDialogOkPressed(int viewHolderPosition) {
             deleteItem(viewHolderPosition, true);
+        }
+
+        @Override
+        public void onLMDialogOkPressed(String input) {
+
         }
     }
 }

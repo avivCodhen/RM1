@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="55dp"
     android:foreground="?attr/selectableItemBackground"
     android:focusable="true"
     android:background="#F6F6F6"
@@ -67,30 +67,87 @@
                 android:textAlignment="center"
                 android:layout_marginTop="7dp"
                 android:textColor="#888888"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:layout_marginLeft="70dp"
                />
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_centerVertical="true"
-                android:id="@+id/ex1"
-                android:elevation="1dp"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="15dp"
+            <com.wajahatkarim3.easyflipview.EasyFlipView
+                app:flipOnTouch="false"
 
-                />
+                android:id="@+id/recyclerview_exercise_flipview"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+
+                >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_gravity="center"
+
+                    android:id="@+id/recyclerview_exercise_drag_icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:civ_circle_background_color="@color/colorPrimary"
+                    android:src="@drawable/ic_drag_handle_black_24dp"
+                    android:backgroundTint="@color/background_color"
+                    />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_gravity="center"
+                    android:id="@+id/ex1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:elevation="5dp"
+                    app:civ_circle_background_color="@color/colorPrimary"
+
+
+                    />
+
+
+            </com.wajahatkarim3.easyflipview.EasyFlipView>
+
+
+            <TextView
+                android:id="@+id/ex_comment_tv"
+                android:gravity="end"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="7dp"
+                android:layout_toLeftOf="@+id/ex_icon_tag"
+                android:layout_toRightOf="@+id/exerciseView_muscleTV"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:text=""
+                android:textColor="#888888"
+                android:textSize="12sp"
+
+                android:textStyle="italic" />
+
+
+            <ImageView
+                android:visibility="invisible"
+                android:alpha="0.7"
+                android:layout_marginTop="7dp"
+                android:id="@+id/ex_icon_tag"
+                android:layout_toLeftOf="@+id/ex_choose"
+                android:src="@drawable/tag_icon_48px_purple"
+                android:layout_width="18dp"
+                android:layout_height="18dp" />
 
 
             <ImageView
                 android:id="@+id/ex_choose"
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:layout_alignParentTop="true"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:padding="5dp"
-                android:src="@drawable/tune_24px_gray" />
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:padding="18dp"
+                android:src="@drawable/ic_more_vert_24px" />
 
           <!--  <ImageView
                 android:id="@+id/ex_more"
@@ -107,12 +164,13 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:id="@+id/exerciseView_nameTV"
-                android:layout_width="160dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="70dp"
                 android:layout_marginTop="22dp"
                 android:text="Barbell Low Bar Squat"
-                android:textSize="12sp"
+                android:textSize="14sp"
+                android:textColor="@color/colorAccent"
                 />
 
 

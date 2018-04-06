@@ -28,7 +28,7 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     public static final String EXERCISE = "exercise", SET = "set",
             INTRA_SET = "intra_set", INTRA_SUPERSET = "intra_superset", INTRA_EXERCISE = "intra_exercise";
 
-    public enum Action{
+    public enum Action {
         Delete, Back, Superset, Intraset, Set, Duplicate;
     }
 
@@ -42,6 +42,7 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     private ImageView more;
     private int viewPosition;
     private OnLongClickMenuActionListener listener;
+    private boolean deleteMode = false;
 
     public LongClickMenuView(Context context) {
         super(context);
@@ -75,6 +76,9 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     }
 
     private void enableDisableBtns() {
+        if(deleteMode){
+            disableBtns(supersetBtn, setBtn,intrasetBtn,more);
+        }
         if (currentType == WorkoutLayoutTypes.ExerciseProfile) {
             enableBtns(supersetBtn, setBtn);
         } else {
@@ -104,36 +108,44 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     }
 
 
-    public void onShowMenu(MyExpandableAdapter.MyExpandableViewHolder vh, WorkoutLayoutTypes type) {
-        if (currentView != null) {
-            onHideDragLayout();
+    public void onShowMenu(MyExpandableAdapter.MyExpandableViewHolder vh, WorkoutLayoutTypes type, boolean deleteMode) {
+
+        this.deleteMode = deleteMode;
+        if(deleteMode){
+            enableDisableBtns();
         }
         currentType = type;
         currentView = vh.dragLayout;
         currentVH = vh;
         viewPosition = vh.getAdapterPosition();
         setVisibility(VISIBLE);
-        currentView.setVisibility(VISIBLE);
-        currentView.animate().alpha(0.8f).setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
+        if (currentView != null) {
+            onHideDragLayout();
+            currentView.setVisibility(VISIBLE);
 
-            }
+            currentView.animate().alpha(0.8f).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-            }
+                }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                }
 
-            }
+                @Override
+                public void onAnimationCancel(Animator animation) {
 
-            @Override
-            public void onAnimationRepeat(Animator animation) {
+                }
 
-            }
-        });
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+
+        }
+
         animate().alpha(1f).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -204,6 +216,7 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
                     currentView = null;
                     currentType = null;
                     currentVH = null;
+                    deleteMode = false;
                 }
 
                 @Override
@@ -216,6 +229,9 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
 
                 }
             });
+        }
+        if (currentType == WorkoutLayoutTypes.ExerciseProfile || currentType == WorkoutLayoutTypes.IntraExerciseProfile) {
+            ((MyExpandableAdapter.ExerciseViewHolder) currentVH).flipView.flipTheView();
         }
 
 
@@ -246,7 +262,7 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
 
     }
 
-    public void initDropMenu(){
+    public void initDropMenu() {
 
         DroppyMenuPopup.Builder droppyBuilder = new DroppyMenuPopup.Builder(context, more);
 

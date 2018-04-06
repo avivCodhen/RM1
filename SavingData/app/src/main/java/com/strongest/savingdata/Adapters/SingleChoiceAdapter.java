@@ -22,7 +22,7 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceAdapte
     private Context context;
     private ArrayList<String> list;
     private String type;
-    private LayoutManager.LayoutManagerHelper helper;
+    //private LayoutManager.LayoutManagerHelper helper;
     private OnSingleChoiceAdapterOnclickListener clickListener;
     private int currentPosition;
     private ArrayList<ItemHolder> items = new ArrayList<>();
@@ -33,7 +33,7 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceAdapte
         this.list = list;
         this.clickListener = clickListener;
         this.type = type;
-        this.helper = helper;
+       // this.helper = helper;
         for (int i = 0; i <list.size() ; i++) {
             items.add(new ItemHolder(list.get(i), false));
         }
@@ -50,7 +50,15 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceAdapte
     @Override
     public void onBindViewHolder(SingleChoiceAdapter.ViewHolder holder, final int position) {
         holder.item.setText(list.get(position));
-
+        holder.item.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                list.remove(position);
+                notifyItemRemoved(position);
+                clickListener.onLongclick(list.get(position), type);
+                return true;
+            }
+        });
 
     }
 
@@ -65,14 +73,7 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceAdapte
         public ViewHolder(View itemView) {
             super(itemView);
             item = (TextView) itemView.findViewById(R.id.single_choice_tv);
-            item.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    list.remove(getAdapterPosition());
-                    notifyItemRemoved(getAdapterPosition());
-                    return true;
-                }
-            });
+
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

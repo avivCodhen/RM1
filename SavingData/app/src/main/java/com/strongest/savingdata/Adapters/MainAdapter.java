@@ -31,8 +31,7 @@ import java.util.Collections;
  * Created by Cohen on 10/27/2017.
  */
 
-public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter{
-
+public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter {
 
 
     private Context context;
@@ -54,10 +53,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.recyclerview_settings_workout, parent, false);
 
-       return new WorkoutViewHolder(v);
+        return new WorkoutViewHolder(v);
     }
-
-
 
 
     @Override
@@ -66,7 +63,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     private void configWorkout(WorkoutViewHolder holder, int position) {
-        holder.editText.setText(((PLObject.WorkoutPLObject)list.get(position)).getWorkoutName());
+        holder.editText.setText(((PLObject.WorkoutPLObject) list.get(position)).getWorkoutName());
     }
 
 
@@ -84,14 +81,13 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         private EditText editText;
         private ImageView delete, drag, edit;
         private WorkoutViewHolder _this = this;
-        private EasyFlipView easyFlipView;
+
         public WorkoutViewHolder(View itemView) {
             super(itemView);
             editText = (EditText) itemView.findViewById(R.id.recyclerview_workout_tv);
             drag = (ImageView) itemView.findViewById(R.id.recyclerview_workout_drag_iv);
             delete = (ImageView) itemView.findViewById(R.id.recyclerview_workout_delete_iv);
             edit = (ImageView) itemView.findViewById(R.id.recycler_view_workouts_edit_iv);
-            easyFlipView = (EasyFlipView) itemView.findViewById(R.id.recycler_view_workouts_flipView);
 
 
             drag.setOnTouchListener(new View.OnTouchListener() {
@@ -105,54 +101,15 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LayoutManagerAlertdialog.getAlertDialog(context,WorkoutViewHolder.this, getAdapterPosition());
+                    LayoutManagerAlertdialog.getAlertDialog(context, WorkoutViewHolder.this, getAdapterPosition());
 
                 }
             });
 
-            easyFlipView.setOnFlipListener(new EasyFlipView.OnFlipAnimationListener() {
+            edit.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onViewFlipCompleted(EasyFlipView easyFlipView, EasyFlipView.FlipState newCurrentSide) {
-                    InputMethodManager imm = (InputMethodManager) context
-                            .getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (!easyFlipView.isBackSide()) {
-
-                        imm.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                        editText.setSelected(false);
-                        editText.setFocusable(false);
-                        editText.setFocusableInTouchMode(true);
-                        editText.clearFocus();
-                        //vh2.dummy.requestFocus();
-                        editText.setClickable(false);
-                        editText.setEnabled(false);
-                        ((PLObject.WorkoutPLObject) list.get(getAdapterPosition())).setWorkoutName(editText.getText().toString());
-                        onProgramChangeListener.onEdit(getAdapterPosition());
-                    } else {
-                        editText.setEnabled(true);
-
-                        //vh2.bodyTv.setClickable(false);
-                        editText.requestFocus();
-                        editText.setSelected(true);
-                        editText.setFocusable(true);
-                        editText.setFocusableInTouchMode(true);
-                        imm.showSoftInput(editText, 0);
-                    }
-
-
-                }
-            });
-
-            editText.setOnKeyListener(new View.OnKeyListener() {
-                public boolean onKey(View view, int keyCode, KeyEvent event) {
-                    if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-                        editText.setFocusable(false);
-                        editText.setFocusableInTouchMode(true);
-                        return true;
-                    } else {
-                        return false;
-                    }
+                public void onClick(View v) {
+                    LayoutManagerAlertdialog.getInputAlertDialog(context, WorkoutViewHolder.this, editText.getText().toString());
                 }
             });
         }
@@ -161,8 +118,15 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         @Override
         public void onLMDialogOkPressed(int viewHolderPosition) {
             onProgramChangeListener.onDelete(getAdapterPosition());
-            //list.remove(getAdapterPosition());
+            list.remove(viewHolderPosition);
             notifyItemRemoved(getAdapterPosition());
+        }
+
+        @Override
+        public void onLMDialogOkPressed(String input) {
+            editText.setText(input);
+            ((PLObject.WorkoutPLObject) list.get(getAdapterPosition())).setWorkoutName(input);
+            onProgramChangeListener.onEdit(getAdapterPosition());
         }
 
 
@@ -173,14 +137,15 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(list, i, i + 1);
+                onProgramChangeListener.onSwap(i, i + 1);
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
                 Collections.swap(list, i, i - 1);
+                onProgramChangeListener.onSwap(i, i - 1);
             }
         }
         notifyItemMoved(fromPosition, toPosition);
-        onProgramChangeListener.onSwap(fromPosition, toPosition);
         return true;
     }
 

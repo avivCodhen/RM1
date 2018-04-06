@@ -6,10 +6,10 @@
         <!--android:selector_text_view_="@android:selector_text_view_/transparent"-->
         <corners
 
-            android:bottomLeftRadius="5dp"
-            android:bottomRightRadius="5dp"
-            android:topLeftRadius="5dp"
-            android:topRightRadius="5dp" />
+            android:bottomLeftRadius="1dp"
+            android:bottomRightRadius="1dp"
+            android:topLeftRadius="1dp"
+            android:topRightRadius="1dp" />
     </shape></item>
 
     <item android:state_pressed="true"><shape>
@@ -19,10 +19,10 @@
         <corners
 
 
-            android:bottomLeftRadius="5dp"
-            android:bottomRightRadius="5dp"
-            android:topLeftRadius="5dp"
-            android:topRightRadius="5dp" />
+            android:bottomLeftRadius="1dp"
+            android:bottomRightRadius="1dp"
+            android:topLeftRadius="1dp"
+            android:topRightRadius="1dp" />
     </shape></item>
 
 </selector>

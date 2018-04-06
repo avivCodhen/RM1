@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/body_parts_linear_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="35dp"
     android:orientation="vertical"
     android:focusableInTouchMode="true"
     android:background="#EEEEEE"
@@ -11,6 +11,8 @@
     >
 
     <RelativeLayout
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         android:padding="7dp"
         android:layout_gravity="center_vertical"
         android:alpha="1"
@@ -40,6 +42,7 @@
             android:textSize="14sp" />
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/body_view_delete"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
@@ -47,37 +50,19 @@
             android:layout_width="16dp"
             android:layout_height="16dp" />
 
-        <com.wajahatkarim3.easyflipview.EasyFlipView
-            app:flipOnTouch="true"
-            app:flipEnabled="true"
-            android:id="@+id/body_part_edit"
-            android:layout_marginRight="40dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_width="16dp"
-            android:layout_height="16dp">
-
 
             <ImageView
+                android:id="@+id/body_view_edit_iv"
                 android:alpha="0.6"
-
-                android:background="@color/background_color"
-                android:src="@drawable/checkmark_black_24px"
-                android:layout_width="16dp"
-                android:layout_height="16dp" />
-
-            <ImageView
-                android:alpha="0.6"
-
-                android:background="@color/background_color"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
                 android:src="@drawable/ic_edit_black_18dp"
-                android:layout_width="16dp"
-                android:layout_height="16dp" />
-
-
-        </com.wajahatkarim3.easyflipview.EasyFlipView>
-
-
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
 
     </RelativeLayout>
 

@@ -58,6 +58,7 @@
             android:text="superset"
             android:textColor="#7E7E7E"
             android:textSize="12sp"
+            android:textStyle="bold"
              />
 
 

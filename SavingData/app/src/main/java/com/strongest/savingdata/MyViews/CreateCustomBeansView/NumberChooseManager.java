@@ -5,6 +5,8 @@ import android.view.View;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
+import com.strongest.savingdata.MyViews.RestChooseView;
+import com.strongest.savingdata.MyViews.WorkoutView.Choose.OnExerciseSetChange;
 
 /**
  * Created by Cohen on 1/18/2018.
@@ -12,12 +14,20 @@ import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 
 public class NumberChooseManager {
 
-    private LayoutManager.LayoutManagerHelper helper;
+   // private LayoutManager.LayoutManagerHelper helper;
     private ExerciseSet exerciseSet;
+    private OnExerciseSetChange onExerciseSetChange;
+    private RestChooseView restChooseView;
+    private SingleNumberChooseView singleNumberChooseView;
 
-    public LayoutManager.LayoutManagerHelper getHelper() {
-        return helper;
+    public void setRestChooseView(RestChooseView restChooseView) {
+        this.restChooseView = restChooseView;
     }
+
+    public void setSingleNumberChooseView(SingleNumberChooseView singleNumberChooseView) {
+        this.singleNumberChooseView = singleNumberChooseView;
+    }
+
 
     public enum Type {
         SingleRep, RangeRep, PyramidRep, Sets, Rest
@@ -32,9 +42,9 @@ public class NumberChooseManager {
 
     private OnRangeNumberChooseControl onRangeNumberChooseControl;
 
-    public NumberChooseManager(LayoutManager.LayoutManagerHelper helper, ExerciseSet exerciseSet) {
+    public NumberChooseManager(OnExerciseSetChange onExerciseSetChange, ExerciseSet exerciseSet) {
+        this.onExerciseSetChange = onExerciseSetChange;
 
-        this.helper = helper;
         this.exerciseSet = exerciseSet;
     }
 
@@ -51,12 +61,16 @@ public class NumberChooseManager {
 
     public void injectRest(String rest){
         exerciseSet.setRest(rest);
-        helper.onExerciseSetChange();
+        onExerciseSetChange.notifyExerciseSetChange();
     }
 
     public void injectRep(String rep){
         exerciseSet.setRep(rep);
-        helper.onExerciseSetChange();
+        onExerciseSetChange.notifyExerciseSetChange();
+
+    }
+
+    public void updateSingleNum(){
     }
 
 

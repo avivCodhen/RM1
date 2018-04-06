@@ -16,11 +16,13 @@ import android.widget.TextView;
 import com.strongest.savingdata.Activities.BaseActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
+import com.strongest.savingdata.AlgorithmLayout.LayoutManagerHelper;
 import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AlgorithmLayout.ReactLayoutManager;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
+import com.strongest.savingdata.MyViews.WorkoutView.Choose.OnExerciseSetChange;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 
@@ -36,6 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ExerciseChooseFragment extends BaseCreateProgramFragment {
 
+    private  OnExerciseSetChange onExerciseSetChange;
     private TextView mMuscleText;
     private CircleImageView mCircleMuscleIcon;
 
@@ -47,12 +50,13 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
     private PLObject.ExerciseProfile exerciseProfile;
     public static final String EXERCISE_PROFILE = "exercise_profile";
     private ArrayList<Beans> exerciseBeans = new ArrayList<>();
-    private LayoutManager.LayoutManagerHelper helper;
+    //private LayoutManager.LayoutManagerHelper helper;
 
     private ReactLayoutManager reactLayoutManager;
 
-    public static ExerciseChooseFragment newInstance(PLObject.ExerciseProfile exerciseProfile) {
+    public static ExerciseChooseFragment newInstance(PLObject.ExerciseProfile exerciseProfile, OnExerciseSetChange onExerciseSetChange) {
         ExerciseChooseFragment f = new ExerciseChooseFragment();
+        f.setOnExerciseSetChange(onExerciseSetChange);
         Bundle bundle = new Bundle();
         bundle.putSerializable(EXERCISE_PROFILE, exerciseProfile);
         f.setArguments(bundle);
@@ -80,7 +84,7 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
     }
 
     private void initViews(View v) {
-        helper =  ((BaseActivity) getActivity()).programmer.layoutManager.mLayoutManagerHelper;
+    //    helper =  ((BaseActivity) getActivity()).programmer.layoutManager.mLayoutManagerHelper;
         //  reactLayoutManager = ((ChooseContainerFragment) getParentFragment()).getReactLayoutManager();
         mCircleMuscleIcon = (CircleImageView) v.findViewById(R.id.muscle_icon);
         mMuscleText = (TextView) v.findViewById(R.id.muscle_tv);
@@ -123,7 +127,12 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
         mCircleMuscleIcon.setImageResource(mch.icon);
         mMuscleText.setText(mch.text);
         exerciseProfile.setMuscle(mch.m);
-        helper.onChange(exerciseProfile);
+        onExerciseSetChange.notifyExerciseSetChange();
+        //LayoutManagerHelper.onChange(exerciseProfile);
+    }
+
+    public void setOnExerciseSetChange(OnExerciseSetChange onExerciseSetChange) {
+        this.onExerciseSetChange = onExerciseSetChange;
     }
 
 
@@ -160,7 +169,7 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment {
                 public void onClick(View v) {
                     exerciseProfile.setExercise(exerciseBeans.get(position));
                     holder.itemView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-                    helper.onChange(exerciseProfile);
+                    onExerciseSetChange.notifyExerciseSetChange();
                 }
             });
 

@@ -58,15 +58,22 @@ public class RangeNumberChooseView extends LinearLayout implements CompoundButto
         higherNumView.setText("10");
         higherNumView.setEnabled(false);
         String repetition = mNumberChooseManager.getExerciseSet().getRep();
+        initRep(repetition);
+
+
+    }
+
+    public void initRep(String repetition){
         if(repetition.contains("-")){
             String[] reps = repetition.split("-");
             lowerNumView.setText(reps[0]);
             higherNumView.setText(reps[1]);
+            rep = lowerNumView.getText() + "-"+higherNumView.getText();
             checkBox.setChecked(true);
         }else{
             lowerNumView.setText(repetition);
+            rep = lowerNumView.getText();
         }
-
     }
 
    /* @Override

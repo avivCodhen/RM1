@@ -1,64 +1,52 @@
-<RelativeLayout android:layout_height="wrap_content"
-    android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="8dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:background="@color/background_color"
+    android:padding="8dp">
 
 
     <EditText
-        android:enabled="false"
-        android:clickable="false"
-        android:textSize="16sp"
-        android:textStyle="normal"
-        android:inputType="text"
-        android:background="#F2EEF3"
-        android:maxLines="1"
-        android:layout_centerVertical="true"
-        android:text="Upper Hypertrophy"
         android:id="@+id/recyclerview_workout_tv"
         android:layout_width="200dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="@color/background_color"
+        android:clickable="false"
+        android:enabled="false"
+        android:inputType="text"
+        android:maxLines="1"
+        android:text="Upper Hypertrophy"
+        android:textSize="16sp"
+        android:textStyle="normal" />
 
     <ImageView
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_drag_handle_black_24dp"
         android:id="@+id/recyclerview_workout_drag_iv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <com.wajahatkarim3.easyflipview.EasyFlipView
-        app:flipOnTouch="true"
-        app:flipEnabled="true"
-        android:id="@+id/recycler_view_workouts_flipView"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_drag_handle_black_24dp" />
+
+
+    <ImageView
+        android:id="@+id/recycler_view_workouts_edit_iv"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+
         android:layout_centerVertical="true"
         android:layout_marginRight="25dp"
         android:layout_toLeftOf="@+id/recyclerview_workout_drag_iv"
+        android:src="@drawable/ic_edit_black_18dp" />
 
-        >
-        <ImageView
-
-            android:id="@+id/recycler_view_workouts_edit_iv"
-            android:src="@drawable/ic_edit_black_18dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
-
-        <ImageView
-            android:src="@drawable/ic_done_black_24dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
-
-    </com.wajahatkarim3.easyflipview.EasyFlipView>
 
     <ImageView
         android:id="@+id/recyclerview_workout_delete_iv"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_centerVertical="true"
         android:layout_marginRight="25dp"
-        android:layout_toLeftOf="@+id/recycler_view_workouts_flipView"
-        android:src="@drawable/ic_delete_black_24dp"
-        android:layout_width="20dp"
-        android:layout_height="20dp" />
+        android:layout_toLeftOf="@+id/recycler_view_workouts_edit_iv"
+        android:src="@drawable/ic_delete_black_24dp" />
 
 </RelativeLayout>
