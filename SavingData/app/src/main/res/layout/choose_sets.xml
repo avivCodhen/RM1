@@ -90,6 +90,13 @@
         android:id="@+id/sets_choose_restchooseview"
         android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.RestChooseView>
 
+    <TextView
+        android:layout_marginLeft="8dp"
+        android:text="Repetitions Used"
+        android:layout_marginTop="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <android.support.v7.widget.RecyclerView
         android:layout_margin="8dp"
         android:layout_marginTop="10dp"

@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.strongest.savingdata.Activities.BaseActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
@@ -32,6 +33,7 @@ import com.strongest.savingdata.MyViews.RestChooseView;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.OnExerciseSetChange;
 import com.strongest.savingdata.R;
+import com.strongest.savingdata.Utils.MyUtils;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 
 import org.w3c.dom.Text;
@@ -155,7 +157,7 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
             public void onClick(View v) {
                 String rep = mRangeNumberChoose.rep;
                 applyForAll(rep, "rep");
-
+                cancelAndToast(v);
 
             }
         });
@@ -165,6 +167,8 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
             public void onClick(View v) {
                 String rest = exerciseSet.getRest();
                 applyForAll(rest, "rest");
+                cancelAndToast(v);
+
             }
         });
 
@@ -173,8 +177,14 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
             public void onClick(View v) {
                 double weight = exerciseSet.getWeight();
                 applyForAll(String.valueOf(weight), "weight");
+                cancelAndToast(v);
             }
         });
+    }
+
+    private void cancelAndToast(View v) {
+        Toast.makeText(getContext(), "Data applied to all sets", Toast.LENGTH_SHORT).show();
+        MyUtils.Interface.disableClick(v, 500);
     }
 
     private void applyForAll(String object, String type) {
@@ -225,6 +235,7 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
                 }
             }
         }
+
     }
 
     private void initWeightViews(View v) {
@@ -251,9 +262,12 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                double d = weightET.getText().toString().equals("") ? 0.0 : Double.parseDouble(weightET.getText().toString());
-                exerciseSet.setWeight(d);
-                onExerciseSetChange.notifyExerciseSetChange();
+                if (!weightET.getText().toString().equals(".")) {
+                    double d = weightET.getText().toString().equals("") ? 0.0 : Double.parseDouble(weightET.getText().toString());
+
+                    exerciseSet.setWeight(d);
+                    onExerciseSetChange.notifyExerciseSetChange();
+                }
             }
 
             @Override

@@ -21,13 +21,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:elevation="10dp"
+            android:paddingBottom="2dp"
             android:id="@+id/activity_home_app_bar"
             android:background="@color/background_color"
 
             >
 
             <android.support.v7.widget.Toolbar
-                app:layout_scrollFlags="scroll|enterAlways|snap"
 
                 android:gravity="top"
                 app:elevation="10dp"
@@ -57,8 +57,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorAccent"
-                    app:tabIndicatorColor="@color/colorPrimary"
+                    app:tabIndicatorColor="#000000"
                     app:tabMode="scrollable"
+                    app:tabIndicatorHeight="2dp"
                     app:tabSelectedTextColor="@color/colorPrimary"
                     app:tabTextColor="@color/background_color"></android.support.design.widget.TabLayout>
 
@@ -79,7 +80,7 @@
                 android:id="@+id/activity_home_viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"></android.support.v4.view.ViewPager>
+                ></android.support.v4.view.ViewPager>
 
         </android.support.v4.widget.NestedScrollView>
 

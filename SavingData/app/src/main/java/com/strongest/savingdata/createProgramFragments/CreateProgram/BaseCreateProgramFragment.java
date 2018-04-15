@@ -120,6 +120,7 @@ public abstract class BaseCreateProgramFragment extends Fragment{
     }
 */
 
+
     public void switchFragment(Fragment fragment, Bundle data) {
         if(data != null){
             fragment.setArguments(data);

@@ -24,6 +24,7 @@ import static com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes.SetsPL
 import static com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes.SuperSetIntraSet;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.*;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TYPE;
+import static com.strongest.savingdata.Database.Program.DBProgramHelper.COMMENT;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.EXERCISE_ID;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.INNER_TYPE;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.REP_ID;
@@ -74,9 +75,7 @@ public class LayoutManager {
             DELETE_WORKOUT = "delete_workout",
             SWAP = "swap",
             REMOVE = "remove",
-            SWAP_WORKOUTS = "swap_workouts"
-
-        ;
+            SWAP_WORKOUTS = "swap_workouts";
 
     public static String[] intraWorkoutsLetters = new String[]{
             "A",
@@ -85,7 +84,7 @@ public class LayoutManager {
             "D",
             "E",
             "F",
-            "G", "H", "I", "J", "K", "L", "M", "N", "P"
+            "G", "H", "I", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y"
     };
 
     public String dbName;
@@ -249,11 +248,17 @@ public class LayoutManager {
                             }
                         }*/
                         ep = drawExercise(muscle, layout, innerType, false);
-
                         String exId = c.getString(c.getColumnIndex(EXERCISE_ID));
-                        if (exId != null) {
-                            ep.setExercise(dataManager.getExerciseDataManager().fetchByName(muscle.getMuscle_name(), exId));
+                        int default_int = c.getInt(c.getColumnIndex(DEFAULT_INT));
+                        if (default_int == 1) {
+                            ep.setExercise(dataManager.getExerciseDataManager().fetchByName(TABLE_EXERCISES_CUSTOM, exId));
+
+                        } else {
+                            if (exId != null) {
+                                ep.setExercise(dataManager.getExerciseDataManager().fetchByName(muscle.getMuscle_name(), exId));
+                            }
                         }
+                        ep.comment = c.getString(c.getColumnIndex(COMMENT));
                       /*  if (parent != null) {
                             parent.getExerciseProfiles().add(ep);
                             ep.setParent(parent);
@@ -338,28 +343,28 @@ public class LayoutManager {
 
             switch (updateComponents.getUpdateType()) {
                 case DELETE_EXERCISE:
-                        getSplitRecyclerWorkouts().get(workoutPosition).remove(updateComponents.getRemovePosition());
+                    getSplitRecyclerWorkouts().get(workoutPosition).remove(updateComponents.getRemovePosition());
                     break;
                 case SWAP:
                     Collections.swap(getSplitRecyclerWorkouts().get(workoutPosition), updateComponents.fromPosition, updateComponents.toPosition);
                     break;
                 case NEW_EXERCISE:
-                 //   getSplitRecyclerWorkouts().set(workoutPosition, updateComponents.getLayout());
+                    //   getSplitRecyclerWorkouts().set(workoutPosition, updateComponents.getLayout());
                     ExerciseProfile epCopy = (ExerciseProfile) updateComponents.getPlObject();
                     int position = updateComponents.getToPosition();
-                 if(epCopy != null){
-                     getSplitRecyclerWorkouts().get(workoutPosition).add(updateComponents.getToPosition(), epCopy);
-                 }else{
-                     drawExercise(null,
-                             getSplitRecyclerWorkouts().get(workoutPosition),
-                             updateComponents.innerType, true);
-                 }
+                    if (epCopy != null) {
+                        getSplitRecyclerWorkouts().get(workoutPosition).add(updateComponents.getToPosition(), epCopy);
+                    } else {
+                        drawExercise(null,
+                                getSplitRecyclerWorkouts().get(workoutPosition),
+                                updateComponents.innerType, true);
+                    }
 
                     // initRecyclerMatrixLayout(false).get(workoutPosition).add(updateComponents.getInsertPosition(), updateComponents.getPlObject());
                     break;
                 case NEW_SUPERSET:
                     ExerciseProfile ep = (ExerciseProfile) updateComponents.getPlObject();
-                    getSplitRecyclerWorkouts().get(workoutPosition).add(updateComponents.toPosition,ep);
+                    getSplitRecyclerWorkouts().get(workoutPosition).add(updateComponents.toPosition, ep);
                     break;
                 case NEW_WORKOUT:
                     getSplitRecyclerWorkouts().add(new ArrayList<PLObject>());
@@ -392,7 +397,6 @@ public class LayoutManager {
             numOfExercises = 0;
         }
     }
-
 
 
     private void onLayoutChange() {

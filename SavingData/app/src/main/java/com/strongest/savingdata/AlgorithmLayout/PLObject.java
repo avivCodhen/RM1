@@ -142,6 +142,7 @@ public class PLObject implements Aba, Serializable {
 
     public static class ExerciseProfile extends PLObject {
 
+        public String comment = "";
         private ArrayList<SetsPLObject> sets = new ArrayList<>();
         private ArrayList<IntraSetPLObject> intraSets = new ArrayList<>();
         private ArrayList<ExerciseProfile> exerciseProfiles = new ArrayList<>();
@@ -152,7 +153,8 @@ public class PLObject implements Aba, Serializable {
         private ExerciseProfile parent;
         private boolean shadowExpand;
         public int rawPosition;
-
+        public boolean showComment;
+        private int defaultInt;
         public ExerciseProfile(Muscle muscle, int workoutId, int bodyId, int exerciseProfileId) {
             //    this.mSets = mSets;
             this.sets = sets;
@@ -240,6 +242,7 @@ public class PLObject implements Aba, Serializable {
 
         public void setExercise(Beans exercise) {
             this.exercise = exercise;
+            defaultInt = exercise.getDefault_int();
         }
 
         public ExerciseProfile getParent() {
@@ -257,6 +260,10 @@ public class PLObject implements Aba, Serializable {
         public void setShadowExpand(boolean shadowExpand) {
             this.shadowExpand = shadowExpand;
         }
+
+        public int getDefaultInt() {
+            return defaultInt;
+        }
     }
 
     public static class SetsPLObject extends PLObject implements Ben {
@@ -269,6 +276,7 @@ public class PLObject implements Aba, Serializable {
             this.ExerciseSet = ExerciseSet;
             type = WorkoutLayoutTypes.SetsPLObject;
             parent = father;
+            innerType = WorkoutLayoutTypes.SetsPLObject;
         }
 
         public WorkoutLayoutTypes getInnerType() {

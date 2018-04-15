@@ -40,6 +40,7 @@ public class DBProgramHelper extends SQLiteOpenHelper {
     public static final String FIRST_EXERCISE = "first_exercise";
     public static final String INNER_TYPE = "inner_type";
     public static final String COMMENT = "exercise_comment";
+    public static final String DEFAULT_INT= "default_int";
 
     //template fields
     public static final String BODY_TEMPLATE_STR = "body_template_str",
@@ -94,7 +95,7 @@ public class DBProgramHelper extends SQLiteOpenHelper {
             + SETS + " TEXT, " + SUPERSET + " INTEGER, " + INNER_TYPE+" INTEGER,"+ NAME + " TEXT," + WORKOUT_ID + " INTEGER," + EXERCISE_PROFILE_ID + " INTEGER, " + TYPE + " INTEGER, "
             + WEIGHT + " TEXT, " + REST + " TEXT, " + FIRST_EXERCISE + " INTEGER, "
             + EXERCISE_ID + " TEXT, "+ REP_ID + " TEXT," + METHOD_ID + " INTEGER DEFAULT -1, " + MUSCLE + " TEXT,"
-            + COMMENT +" , "
+            + COMMENT +" , " + DEFAULT_INT+" INTEGER, "
             + STATS_DAMAGE + " INTEGER," + STATS_MECHANICAL + " INTEGER, " + STATS_METABOLIC + " INTEGER )";
 
 

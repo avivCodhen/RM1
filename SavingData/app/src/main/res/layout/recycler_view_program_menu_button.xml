@@ -1,29 +1,23 @@
 <LinearLayout android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:orientation="horizontal"
-    android:layout_gravity="center_horizontal"
-    android:gravity="center_horizontal"
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/aviv_program_menu_button"
-    android:backgroundTint="@android:color/transparent"
+    android:background="@color/colorPrimary"
     >
 
     <LinearLayout
+        android:orientation="horizontal"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
-        android:background="@drawable/aviv_program_menu_button"
-        android:backgroundTint="@color/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/program_menu_image"
-            app:civ_circle_background_color="@android:color/holo_red_dark"
-            android:src="@drawable/minus_white_24px"
+            android:src="@drawable/plus_gray_24px"
             android:layout_width="15dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"/>
@@ -40,5 +34,11 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/textGrayColor"
+        />
 
 </LinearLayout>

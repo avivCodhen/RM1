@@ -111,7 +111,6 @@ public class ProgramDataManager extends DataManager {
 
         //inserts data to the new layout table
         insertData(lm.getDbName(), values);
-
         if (update) {
 
         }
@@ -266,6 +265,13 @@ public class ProgramDataManager extends DataManager {
         return null;
     }
 
+    public void updateProgramName(String progName,String dbName ){
+        ContentValues cv = new ContentValues();
+        cv.put(PROGRAM_NAME, progName);
+        db.update(TABLE_PROGRAM_REFERENCE, cv, LAYOUT_NAME + "= ?", new String[] {dbName});
+       /* db.rawQuery("UPDATE "+TABLE_PROGRAM_REFERENCE+" SET "+PROGRAM_NAME+"="+ progName +
+                " WHERE "+LAYOUT_NAME+"=?", new String[]{dbName});*/
+    }
     public ArrayList<Program> getAllPrograms() {
         ArrayList<Program> programs = new ArrayList<>();
         Cursor c = getDb(programHelper).rawQuery("Select * from " + TABLE_PROGRAM_REFERENCE, null);
@@ -434,18 +440,18 @@ public class ProgramDataManager extends DataManager {
         return supersetIntraCV;
     }
 
-    private ContentValues saveSets(PLObject.IntraSetPLObject setsPLObject) {
-        ContentValues supersetIntraCV;
-        supersetIntraCV = new ContentValues();
-        supersetIntraCV.put(DBExercisesHelper.TYPE, setsPLObject.getType().ordinal());
-        supersetIntraCV.put(DBProgramHelper.WORKOUT_ID, setsPLObject.getWorkoutId());
-        supersetIntraCV.put(DBExercisesHelper.TYPE, setsPLObject.getType().ordinal());
-        supersetIntraCV.put(INNER_TYPE, setsPLObject.getInnerType().ordinal());
-        supersetIntraCV.put(DBProgramHelper.WORKOUT_ID, setsPLObject.getWorkoutId());
-        supersetIntraCV.put(REP_ID, setsPLObject.getExerciseSet().getRep());
-        supersetIntraCV.put(REST, setsPLObject.getExerciseSet().getRest());
-        supersetIntraCV.put(WEIGHT, setsPLObject.getExerciseSet().getWeight());
-        return supersetIntraCV;
+    private ContentValues saveSets(PLObject.IntraSetPLObject intraSetPLObject) {
+        ContentValues intraCv;
+        intraCv = new ContentValues();
+        intraCv.put(DBExercisesHelper.TYPE, intraSetPLObject.getType().ordinal());
+        intraCv.put(DBProgramHelper.WORKOUT_ID, intraSetPLObject.getWorkoutId());
+        intraCv.put(DBExercisesHelper.TYPE, intraSetPLObject.getType().ordinal());
+        intraCv.put(INNER_TYPE, intraSetPLObject.getInnerType().ordinal());
+        intraCv.put(DBProgramHelper.WORKOUT_ID, intraSetPLObject.getWorkoutId());
+        intraCv.put(REP_ID, intraSetPLObject.getExerciseSet().getRep());
+        intraCv.put(REST, intraSetPLObject.getExerciseSet().getRest());
+        intraCv.put(WEIGHT, intraSetPLObject.getExerciseSet().getWeight());
+        return intraCv;
     }
 
     private ContentValues saveExercise(PLObject.ExerciseProfile exerciseProfile) {
@@ -459,6 +465,8 @@ public class ProgramDataManager extends DataManager {
             epCV.put(EXERCISE_ID, exerciseProfile.getExercise().getName());
         }
         epCV.put(INNER_TYPE, exerciseProfile.getInnerType().ordinal());
+        epCV.put(DBProgramHelper.COMMENT, exerciseProfile.comment);
+        epCV.put(DEFAULT_INT, exerciseProfile.getDefaultInt());
         return epCV;
     }
 

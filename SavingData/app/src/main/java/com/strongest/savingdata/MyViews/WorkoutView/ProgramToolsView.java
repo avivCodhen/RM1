@@ -10,17 +10,23 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shehabic.droppy.DroppyClickCallbackInterface;
+import com.shehabic.droppy.DroppyMenuItem;
+import com.shehabic.droppy.DroppyMenuPopup;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManagerAlertdialog;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
+import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.Utils.MyUtils;
@@ -53,6 +59,8 @@ public class ProgramToolsView extends LinearLayout {
     private View deleteWorkout;
     private View drawDivider;
 
+    ImageView programToolsBtn;
+
     private RecyclerView mRecyclerview;
     private ArrayList<ProgramButton> buttons;
 
@@ -75,10 +83,30 @@ public class ProgramToolsView extends LinearLayout {
         initViews();
     }
 
+    public void initDropMenu() {
+
+        DroppyMenuPopup.Builder droppyBuilder = new DroppyMenuPopup.Builder(context, programToolsBtn);
+
+        for (ProgramButton pbtn : buttons) {
+            droppyBuilder.addMenuItem(new DroppyMenuItem(pbtn.tv_name, R.drawable.plus_gray_24px))
+                    .addSeparator();
+        }
+
+// Set Callback handler
+        droppyBuilder.setOnClick(new DroppyClickCallbackInterface() {
+            @Override
+            public void call(View v, int id) {
+                Log.d("aviv", "call: "+id);
+            }
+        });
+
+        DroppyMenuPopup droppyMenu = droppyBuilder.build();
+
+    }
+
     private void initViews() {
         inflate(context, R.layout.layout_program_tools_view, this);
         initProgramToolsViews();
-
        setOnTouchListener(new OnTouchListener() {
            @Override
            public boolean onTouch(View v, MotionEvent event) {
@@ -115,10 +143,10 @@ public class ProgramToolsView extends LinearLayout {
         buttons = new ArrayList<>();
         int green = ContextCompat.getColor(context, R.color.green_dark);
         int red = ContextCompat.getColor(context, R.color.red);
-        int plusIcon = R.drawable.plus_16px;
-        buttons.add(new ProgramButton(green, NEW_EXERCISE, "Exercise", plusIcon));
-        buttons.add(new ProgramButton(green, DRAW_DIVIDER, "Divider", plusIcon));
-        buttons.add(new ProgramButton(green, NEW_WORKOUT, "Workout", plusIcon));
+        int plusIcon = R.drawable.plus_gray_24px;
+        buttons.add(new ProgramButton(green, NEW_EXERCISE, "New Exercise", plusIcon));
+        buttons.add(new ProgramButton(green, DRAW_DIVIDER, "New Divider", plusIcon));
+        buttons.add(new ProgramButton(green, NEW_WORKOUT, "New Workout", plusIcon));
       //  buttons.add(new ProgramButton(red, DELETE_WORKOUT, "Workout", R.drawable.minus_white_24px));
         buttons.add(new ProgramButton(Color.WHITE, "advanced", "Advanced", R.drawable.settings_24px_gray));
         mRecyclerview = (RecyclerView) findViewById(R.id.program_tools_view_recyclerview);
@@ -173,6 +201,11 @@ public class ProgramToolsView extends LinearLayout {
 
     public void setFragmentManager(android.support.v4.app.FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
+    }
+
+    public void setProgramToolsBtn(ImageView programToolsBtn) {
+        this.programToolsBtn = programToolsBtn;
+        initDropMenu();
     }
 
     public class WorkoutViewModes {
@@ -231,8 +264,8 @@ public class ProgramToolsView extends LinearLayout {
         @Override
         public void onBindViewHolder(final ProgramToolsAdapter.ViewHolder holder, int position) {
             final ProgramButton pBtn = buttons.get(position);
-            holder.circleImageView.setImageResource(buttons.get(position).image);
-            holder.circleImageView.setCircleBackgroundColor(buttons.get(position).color);
+            holder.imageView.setImageResource(buttons.get(position).image);
+            //holder.ImageView.setCircleBackgroundColor(buttons.get(position).color);
             holder.tv.setText(buttons.get(position).tv_name);
             holder.itemView.setOnClickListener(new OnClickListener() {
                 @Override
@@ -263,12 +296,12 @@ public class ProgramToolsView extends LinearLayout {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            private CircleImageView circleImageView;
+            private ImageView imageView;
             private TextView tv;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                circleImageView = (CircleImageView) itemView.findViewById(R.id.program_menu_image);
+                imageView = (ImageView) itemView.findViewById(R.id.program_menu_image);
                 tv = (TextView) itemView.findViewById(R.id.program_menu_tv);
             }
         }

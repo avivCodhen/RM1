@@ -76,8 +76,10 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     }
 
     private void enableDisableBtns() {
-        if(deleteMode){
-            disableBtns(supersetBtn, setBtn,intrasetBtn,more);
+        if (deleteMode) {
+            disableBtns(supersetBtn, setBtn, intrasetBtn, more);
+        }else{
+            enableBtns(more);
         }
         if (currentType == WorkoutLayoutTypes.ExerciseProfile) {
             enableBtns(supersetBtn, setBtn);
@@ -109,42 +111,39 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
 
 
     public void onShowMenu(MyExpandableAdapter.MyExpandableViewHolder vh, WorkoutLayoutTypes type, boolean deleteMode) {
-
-        this.deleteMode = deleteMode;
-        if(deleteMode){
-            enableDisableBtns();
+        if (currentView != null) {
+            onHideDragLayout();
         }
+        this.deleteMode = deleteMode;
         currentType = type;
         currentView = vh.dragLayout;
         currentVH = vh;
         viewPosition = vh.getAdapterPosition();
         setVisibility(VISIBLE);
-        if (currentView != null) {
-            onHideDragLayout();
-            currentView.setVisibility(VISIBLE);
 
-            currentView.animate().alpha(0.8f).setListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
+        currentView.setVisibility(VISIBLE);
 
-                }
+        currentView.animate().alpha(0.8f).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
 
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                }
+            }
 
-                @Override
-                public void onAnimationCancel(Animator animation) {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+            }
 
-                }
+            @Override
+            public void onAnimationCancel(Animator animation) {
 
-                @Override
-                public void onAnimationRepeat(Animator animation) {
+            }
 
-                }
-            });
+            @Override
+            public void onAnimationRepeat(Animator animation) {
 
-        }
+            }
+        });
+
 
         animate().alpha(1f).setListener(new Animator.AnimatorListener() {
             @Override
@@ -175,6 +174,8 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     public void onHideDragLayout() {
         if (currentView != null) {
             currentView.setVisibility(GONE);
+            if(currentVH instanceof MyExpandableAdapter.ExerciseViewHolder)
+            ((MyExpandableAdapter.ExerciseViewHolder) currentVH).flipView.flipTheView();
         }
     }
 
@@ -217,6 +218,7 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
                     currentType = null;
                     currentVH = null;
                     deleteMode = false;
+                    enableDisableBtns();
                 }
 
                 @Override
@@ -233,8 +235,6 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
         if (currentType == WorkoutLayoutTypes.ExerciseProfile || currentType == WorkoutLayoutTypes.IntraExerciseProfile) {
             ((MyExpandableAdapter.ExerciseViewHolder) currentVH).flipView.flipTheView();
         }
-
-
     }
 
     @Override

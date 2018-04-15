@@ -11,14 +11,12 @@
     <RelativeLayout
         android:layout_marginTop="40dp"
         android:layout_gravity="right"
-        android:background="@color/colorAccent"
         android:layout_alignParentRight="true"
         android:layout_width="135dp"
         android:layout_height="wrap_content"
-        android:padding="18dp">
+        >
 
         <android.support.v7.widget.RecyclerView
-            android:layout_gravity="center_horizontal"
             android:id="@+id/program_tools_view_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>

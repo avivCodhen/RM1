@@ -50,6 +50,7 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.PYRAM
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.P_ANTERIOR;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.P_POSTERIOR;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.SETS;
+import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_EXERCISES_CUSTOM;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_EXERCISES_GENERATOR;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_METHODS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_REPS;
@@ -374,6 +375,14 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
             return v;
         }
         boolean flag = false;
+        boolean custom = table.equals(TABLE_EXERCISES_CUSTOM);
+        if(custom){
+            v.put(NAME, e.getName());
+            v.put(MUSCLE, e.getPrimaryMuscle());
+            v.put(DEFAULT_INT, e.getDefault_int());
+            return v;
+
+        }
         for (String t : helper.muscleTables) {
             if (t.equals(table) || table.equals(TABLE_EXERCISES_GENERATOR)) {
                 flag = true;
@@ -518,10 +527,22 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
 
                 }
                 boolean flag = false;
+                boolean custom = table.equals(TABLE_EXERCISES_CUSTOM);
                 for (String t : helper.muscleTables) {
-                    if (t.equals(table) || table.equals(TABLE_EXERCISES_GENERATOR)) {
+                    if (t.equals(table) || table.equals(TABLE_EXERCISES_GENERATOR)){
                         flag = true;
                     }
+                }
+                if(custom){
+                    String name = c.getString(c.getColumnIndex(NAME));
+                    String primaryMuscle = c.getString((c.getColumnIndex(MUSCLE)));
+                    Muscle m = Muscle.createMuscle(parent.getMuscleDataManager(), primaryMuscle);
+                    int default_int = c.getInt(c.getColumnIndex(DEFAULT_INT));
+                    ex = new Beans();
+                    ex.name = name;
+                    ex.primaryMuscle = primaryMuscle;
+                    ex.muscle = m;
+                    ex.setDefault_int(default_int);
                 }
 
                 if (flag) {

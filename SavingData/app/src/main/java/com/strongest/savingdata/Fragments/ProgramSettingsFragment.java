@@ -22,6 +22,8 @@ import com.strongest.savingdata.Adapters.MainAdapter;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.DragAndSwipeCallback;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
+import com.strongest.savingdata.AlgorithmLayout.LayoutManagerAlertdialog;
+import com.strongest.savingdata.AlgorithmLayout.OnLayoutManagerDialogPress;
 import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.MyViews.WorkoutView.OnProgramToolsActionListener;
 import com.strongest.savingdata.R;
@@ -33,7 +35,8 @@ import java.util.ArrayList;
  * Created by Cohen on 3/9/2018.
  */
 
-public class ProgramSettingsFragment extends BaseCreateProgramFragment implements OnDragListener, OnProgramSettingChange {
+public class ProgramSettingsFragment extends BaseCreateProgramFragment implements OnDragListener,
+        OnLayoutManagerDialogPress, OnProgramSettingChange {
 
     private EditText editText;
     private String titleText;
@@ -118,9 +121,16 @@ public class ProgramSettingsFragment extends BaseCreateProgramFragment implement
         titleText = ((BaseActivity) getActivity()).getProgrammer().getProgram().programName;
         editText.setText(titleText);
         editText.addTextChangedListener(textWatcher);
+        v.findViewById(R.id.program_title_edit_iv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutManagerAlertdialog.getInputAlertDialog(getContext(), ProgramSettingsFragment.this, editText.getText().toString());
+            }
+        });
     }
 
     @Override
+
     public void startDrag(RecyclerView.ViewHolder viewHolder) {
         itemTouchHelper.startDrag(viewHolder);
     }
@@ -156,5 +166,20 @@ public class ProgramSettingsFragment extends BaseCreateProgramFragment implement
 
     public void setOnProgramToolsActionListener(OnProgramToolsActionListener onProgramToolsActionListener) {
         this.onProgramToolsActionListener = onProgramToolsActionListener;
+    }
+
+    @Override
+    public void onLMDialogOkPressed(int viewHolderPosition) {
+
+    }
+
+    @Override
+    public void onLMDialogOkPressed(String input) {
+        editText.setText(input);
+        toolbarTitle.setText(editText.getText());
+        ((HomeActivity) getActivity()).programmer.getProgram().programName = editText.getText().toString();
+        ((HomeActivity) getActivity()).dataManager.getProgramDataManager().updateProgramName(input,
+               layoutManager.getDbName() );
+
     }
 }

@@ -66,7 +66,6 @@ public class DataManager {
         this.context = context;
     }
 
-
     public ExercisesDataManager getExerciseDataManager() {
         if (exerciseDataManager == null) {
             exerciseDataManager = new ExercisesDataManager(this,context);

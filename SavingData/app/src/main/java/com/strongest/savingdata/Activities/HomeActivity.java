@@ -25,6 +25,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.strongest.savingdata.ArtificialInteligence.ArtificialIntelligenceObserver;
@@ -33,6 +34,7 @@ import com.strongest.savingdata.Database.Articles.ArticleObj;
 import com.strongest.savingdata.Database.Articles.DownloadImage;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.Database.Muscles.DBMuscleHelper;
+import com.strongest.savingdata.Fragments.CustomExerciseFragment;
 import com.strongest.savingdata.Fragments.MyProgramsFragment;
 import com.strongest.savingdata.Fragments.NewProgramFragment;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
@@ -78,6 +80,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     private ActionBarDrawerToggle mToggle;
     private NavigationView mNavigationView;
     private LongClickMenuView longClickMenuView;
+    private ImageView programToolsBtn;
     /*@Inject
     public Programmer programmer;
     @Inject
@@ -94,6 +97,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    ProgramToolsView programToolsView;
+
 
     //private NavigationTabBar navigationTabBar;
 
@@ -157,7 +162,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 
         viewPager = (ViewPager) findViewById(R.id.activity_home_viewpager);
         tabLayout = (TabLayout) findViewById(R.id.activity_home_tablayout);
-        ProgramToolsView programToolsView = (ProgramToolsView) findViewById(R.id.activity_programtoolsview);
+        programToolsView = (ProgramToolsView) findViewById(R.id.activity_programtoolsview);
         workoutView = new WorkoutView();
         if (programmer.getProgram() == null) {
             programmer.createNewProgram();
@@ -165,9 +170,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             programmer.tryInitProgram();
         }
         workoutView.instantiate(this, getSupportFragmentManager(), programmer.getLayoutManager(), viewPager, tabLayout);
-        workoutView.setProgramToolsView(programToolsView);
         workoutView.setmAppBarLayout(mAppBarLayout);
         workoutView.setLongClickMenu(longClickMenuView);
+        workoutView.setProgramToolsView(programToolsView);
         toolbar.setTitle(programmer.getProgram().programName);
 
         if (getSupportActionBar() != null) {
@@ -211,8 +216,16 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.aviv_menu_program, menu);
+       // programToolsBtn = (ImageView) menu.findItem(R.id.edit_menu);
+        //programToolsView.setProgramToolsBtn(programToolsBtn);
         return true;
     }
 
@@ -226,26 +239,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.edit_menu:
                 workoutView.enterEditMode();
                 return true;
-           /* case R.id.settings_menu:
-                if (settingsDrawer) {
-                    getSupportFragmentManager().popBackStack();
-                    settingsDrawer = false;
-                } else {
-                    ProgramSettingsFragment f;
-                    f = new ProgramSettingsFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("program_name", getSupportActionBar().getTitle().toString());
-                    f.setArguments(bundle);
-                    getSupportFragmentManager().beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.activity_home_framelayout, f, "workout")
-                            .addToBackStack("workout")
-                            .commit();
-                    settingsDrawer = true;
-                }
-
-                return true;
-                */
 
         }
 
@@ -294,9 +287,19 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
                         .commit();
                 mDrawerLayout.closeDrawer(Gravity.START);
                 break;
-            case R.id.menu_save_program:
+            case R.id.menu_custom_exercise:
+
+                CustomExerciseFragment fr1 = new CustomExerciseFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                        .replace(R.id.activity_home_framelayout, fr1, "custom_exercise")
+                        .addToBackStack("custom_exercise")
+                        .commit();
+                mDrawerLayout.closeDrawer(Gravity.START);
+                break;
+            /*case R.id.menu_save_program:
                 programmer.getLayoutManager().saveLayoutToDataBase(true);
-                Toast.makeText(this, "working", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "working", Toast.LENGTH_SHORT).show();*/
         }
 
 

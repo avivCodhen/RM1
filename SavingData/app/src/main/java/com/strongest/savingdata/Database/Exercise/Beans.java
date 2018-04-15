@@ -171,11 +171,14 @@ public class Beans implements Serializable {
     }
 
     public static String parsePrimaryMuscle(String muscles) {
-        for (int i = 0; i < muscles.length(); i++) {
-            if (muscles.charAt(i) == '$') {
-                return muscles.substring(0, i);
-            }
+        if(muscles != null){
 
+            for (int i = 0; i < muscles.length(); i++) {
+                if (muscles.charAt(i) == '$') {
+                    return muscles.substring(0, i);
+                }
+
+            }
         }
         return muscles;
     }

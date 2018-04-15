@@ -10,21 +10,23 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <include layout="@layout/recyclerview_body_parts"
-            android:id="@+id/current_program"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></include>
-
+       <TextView
+           android:layout_margin="5dp"
+           android:padding="8dp"
+           android:text="Current Program:"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
         <include layout="@layout/recycler_view_program_layout_leftmargin"
             android:id="@+id/my_program_view"></include>
 
-        <include layout="@layout/recyclerview_body_parts"
-            android:id="@+id/my_programs_title"
+        <TextView
+            android:layout_margin="5dp"
+            android:padding="8dp"
+            android:text="Other Programs:"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></include>
-
+            android:layout_height="wrap_content" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fragment_my_program_recyclerview"
             android:layout_width="match_parent"

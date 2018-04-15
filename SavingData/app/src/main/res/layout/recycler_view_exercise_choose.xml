@@ -23,7 +23,7 @@
         android:id="@+id/exercise_tv"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Barbell Bench Press" />
+       />
 
 
     <ImageView
@@ -45,7 +45,6 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="Compound"
         />
 
     <TextView
@@ -59,7 +58,6 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:paddingBottom="5dp"
-        android:text="Quadriceps, Hamstring, Lower Back, Abs, Calfs"
         android:layout_alignParentRight="true"/>
 
 

@@ -1,6 +1,7 @@
 package com.strongest.savingdata.Fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,16 +59,11 @@ public class MyProgramsFragment extends BaseCreateProgramFragment{
         recyclerView.setAdapter(adapter);
 
        initStaticViews(v);
+
+
     }
 
     private void initStaticViews(View v) {
-        View includeCurrent = v.findViewById(R.id.current_program);
-        View includeMyPrograms = v.findViewById(R.id.my_programs_title);
-        TextView currentTitle = (TextView) includeCurrent.findViewById(R.id.recycler_view_body_parts_TV);
-        currentTitle.setText("Current Program");
-        TextView myPrograms = (TextView) includeMyPrograms.findViewById(R.id.recycler_view_body_parts_TV);
-        myPrograms.setText("My Programs");
-
         View includeLeftMarginProgram = v.findViewById(R.id.my_program_view);
         TextView programTitle = (TextView) includeLeftMarginProgram.findViewById(R.id.program_name);
         TextView programTimeAndDate = (TextView) includeLeftMarginProgram.findViewById(R.id.program_date);

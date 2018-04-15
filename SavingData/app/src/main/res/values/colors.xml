@@ -22,8 +22,9 @@
     <color name="red">#CC0000</color>
     <color name="color_intra_background">#D3D3D3</color>
     <color name="colorRedTry">#FE6886</color>
-    <color name="colorGreenTry">#00D98F</color>
+    <color name="colorGreenTry">#28C590</color>
     <color name="dropset_tag_color">#CCCCCC</color>
+    <color name="textview_color">#888888</color>
 
 
 </resources>

@@ -8,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 
 public interface OnEnterExitChooseFragment {
 
-    void onEnterChooseFragment(RecyclerView.ViewHolder vh);
+    void onEnterChooseFragment(int position);
 
-    void onExitChooseFragment(RecyclerView.ViewHolder vh, int oldPosition);
+    void onExitChooseFragment(int position, int oldPosition);
 
 }

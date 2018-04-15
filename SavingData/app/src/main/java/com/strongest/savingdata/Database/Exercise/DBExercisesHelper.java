@@ -19,8 +19,6 @@ import java.io.OutputStream;
 public class DBExercisesHelper extends SQLiteOpenHelper {
 
 
-
-
     //DB fields
     //public static final String DB_NAME = "exercises.db";
     public static final String DB_NAME = "exercisesdb.db";
@@ -34,6 +32,7 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
     public static final String ID = "id";
     public static final String WEIGHT = "weight";
     public static final String DEFAULT_INT = "default_int";
+
 
     //exercise fields
 
@@ -70,7 +69,7 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
 
     public static final String PYRAMID = "pyramid";
     public static final String INTENSITY = "intensity";
-    public static final String SETS= "sets";
+    public static final String SETS = "sets";
 
     //method fields
 
@@ -97,7 +96,18 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
     //commands
     public final String MAIN_EXERCISE_COMMAND = "CREATE TABLE "
             + TABLE_EXERCISES_ALL + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + ID + " INTEGER, "
-            + WEIGHT + " INTEGER DEFAULT 0, " + MUSCLES + " TEXT,"  +  NAME + " TEXT, " + IMAGE + " INTEGER, " + DETAIL + " TEXT, "
+            + WEIGHT + " INTEGER DEFAULT 0, " + DEFAULT_INT + " INTEGER DEFAULT 0, " + MUSCLES + " TEXT," + NAME + " TEXT, " + IMAGE + " INTEGER, " + DETAIL + " TEXT, "
+            + TYPE + " INTEGER, " + LEVEL + " INTEGER, " + MUSCLE + " TEXT, " + D_BACK + " INTEGER, "
+            + D_CHEST + " INTEGER," + D_P_LEGS + " INTEGER, " + D_A_LEGS + " INTEGER, "
+            + D_A_SHOULDERS + " INTEGER, " + D_R_SHOULDERS + " INTEGER, " + D_WRIST + " INTEGER, "
+            + D_CALVES + " INTEGER, " + D_CORE + " INTEGER, " + D_LOWER_BACK + " INTEGER, "
+            + D_TRAPEZIUS + " INTEGER, " + D_BICEPS + " INTEGER, " + D_TRICEPS + "  INTEGER, "
+            + M_R_SHOULDERS + " INTEGER, " + M_A_SHOULDERS + " INTEGER, " + M_TRICEPS + " INTEGER, "
+            + M_BICEPS + " INTEGER," + P_ANTERIOR + " INTEGER, " + P_POSTERIOR + " INTEGER) ";
+
+    public final String USER_CUSTOM_EXERCISE = "CREATE TABLE "
+            + TABLE_EXERCISES_CUSTOM + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + ID + " INTEGER, "
+            + WEIGHT + " INTEGER DEFAULT 0, " + DEFAULT_INT + " INTEGER DEFAULT 0, " + MUSCLES + " TEXT," + NAME + " TEXT, " + IMAGE + " INTEGER, " + DETAIL + " TEXT, "
             + TYPE + " INTEGER, " + LEVEL + " INTEGER, " + MUSCLE + " TEXT, " + D_BACK + " INTEGER, "
             + D_CHEST + " INTEGER," + D_P_LEGS + " INTEGER, " + D_A_LEGS + " INTEGER, "
             + D_A_SHOULDERS + " INTEGER, " + D_R_SHOULDERS + " INTEGER, " + D_WRIST + " INTEGER, "
@@ -109,7 +119,7 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
 
     public final String GENERATOR_EXERCISE_COMMAND = "CREATE TABLE "
             + TABLE_EXERCISES_GENERATOR + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + ID+ " INTEGER, " + WEIGHT +" INTEGER DEFAULT 0,"+  MUSCLES + " TEXT,"  + NAME + " TEXT, "
+            + ID + " INTEGER, " + WEIGHT + " INTEGER DEFAULT 0," + MUSCLES + " TEXT," + NAME + " TEXT, "
             + IMAGE + " INTEGER, " + DETAIL + " TEXT, " + TYPE + " INTEGER, " + LEVEL + " INTEGER, "
             + MUSCLE + " TEXT, " + D_BACK + " INTEGER, " + D_CHEST + " INTEGER," + D_P_LEGS + " INTEGER, "
             + D_A_LEGS + " INTEGER, " + D_A_SHOULDERS + " INTEGER, " + D_R_SHOULDERS + " INTEGER, "
@@ -120,19 +130,18 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
             + P_POSTERIOR + " INTEGER) ";
 
 
-    public final String MAIN_REPS_COMMAND = "CREATE TABLE " + TABLE_REPS + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " + ID + " INTEGER,"+ SETS +" INTEGER,"+DEFAULT_INT+" INTEGER, " + NAME + " TEXT," + DETAIL + " TEXT, " + LEVEL + " INTEGER," + PYRAMID + " INTEGER, " + INTENSITY + " INTEGER, " + METABOLIC_STRESS + " INTEGER, " + MECHANICAL_STRESS + " INTEGER)";
+    public final String MAIN_REPS_COMMAND = "CREATE TABLE " + TABLE_REPS + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " + ID + " INTEGER," + SETS + " INTEGER," + DEFAULT_INT + " INTEGER, " + NAME + " TEXT," + DETAIL + " TEXT, " + LEVEL + " INTEGER," + PYRAMID + " INTEGER, " + INTENSITY + " INTEGER, " + METABOLIC_STRESS + " INTEGER, " + MECHANICAL_STRESS + " INTEGER)";
     //public final String GENERATOR_REPS_COMMAND = "CREATE TABLE " + TABLE_REPS_GENERATOR + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " + ID + " INTEGER," + SETS +" INTEGER,"+DEFAULT_INT+" INTEGER, " + NAME + " TEXT," + DETAIL + " TEXT, " + LEVEL + " INTEGER," + PYRAMID + " INTEGER, " + INTENSITY + " INTEGER, " + METABOLIC_STRESS + " INTEGER, " + MECHANICAL_STRESS + " INTEGER)";
-    public final String MAIN_METHOD_COMMAND = "CREATE TABLE " + TABLE_METHODS + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " + ID + " INTEGER," + NAME + " TEXT," + DETAIL + " TEXT, " +DEFAULT_INT+" INTEGER, " + LEVEL + " INTEGER)";
+    public final String MAIN_METHOD_COMMAND = "CREATE TABLE " + TABLE_METHODS + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " + ID + " INTEGER," + NAME + " TEXT," + DETAIL + " TEXT, " + DEFAULT_INT + " INTEGER, " + LEVEL + " INTEGER)";
     //public final String GENERATOR_METHOD_COMMAND = "CREATE TABLE " + TABLE_METHODS_GENERATOR + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " + ID + " INTEGER," + NAME + " TEXT," + DETAIL + " TEXT, " + LEVEL + " INTEGER)";
     public final String STATS_COMMAND = "CREATE TABLE " + TABLE_STATS + " (" + LEVEL + " INTEGER," + ROUTINE + " INTEGER," + MIN_EXERCISE + " INTEGER," + MAX_EXERCISE + " INTEGER," + MIN_B + " INTEGER," + MIN_S + " INTEGER," + MIN_C + " INTEGER," + MAX_B + " INTEGER," + MAX_S + " INTEGER," + MAX_METHOD + " INTEGER," + MAX_C + " INTEGER)";
-    public final String REST_COMMAND = "CREATE TABLE " + TABLE_REST + " (" + ID + " INTEGER, " +DEFAULT_INT+" INTEGER, " + TYPE + " INTEGER, "+ NAME+" TEXT)";
-    public final String SETS_COMMAND = "CREATE TABLE " + TABLE_SETS +"("+ ID + " INTEGER, "+DEFAULT_INT+" INTEGER, "  + NAME + " INTEGER, " +TYPE + " INTEGER)" ;
-
+    public final String REST_COMMAND = "CREATE TABLE " + TABLE_REST + " (" + ID + " INTEGER, " + DEFAULT_INT + " INTEGER, " + TYPE + " INTEGER, " + NAME + " TEXT)";
+    public final String SETS_COMMAND = "CREATE TABLE " + TABLE_SETS + "(" + ID + " INTEGER, " + DEFAULT_INT + " INTEGER, " + NAME + " INTEGER, " + TYPE + " INTEGER)";
 
 
     //muscleTables
 
-    public static final String TABLE_CHEST= "chest", TABLE_BACK = "back", TABLE_LEGS = "legs",
+    public static final String TABLE_CHEST = "chest", TABLE_BACK = "back", TABLE_LEGS = "legs",
             TABLE_SHOULDERS = "shoulders",
             TABLE_ARMS = "arms", TABLE_CORE = "core";
 
@@ -140,6 +149,7 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
     public static final String TABLE_REST = "rest";
     public static final String TABLE_STATS = "stats";
     public static final String TABLE_EXERCISES_ALL = "exercises";
+    public static final String TABLE_EXERCISES_CUSTOM = "custom_exercises";
     public static final String TABLE_EXERCISES_GENERATOR = "generator_exercises";
     public static final String TABLE_REPS = "reps";
     public static final String TABLE_REPS_GENERATOR = "generator_reps";
@@ -154,9 +164,6 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
     public static final String TABLE_REPS_GENERATOR = "repseng";
     public static final String TABLE_METHODS = "methodeng";
     public static final String TABLE_METHODS_GENERATOR = "methodeng";*/
-
-
-
 
 
     public final String COMMAND_ALL = MAIN_EXERCISE_COMMAND;
@@ -193,19 +200,16 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
     };
 
 
-
     private Context context;
     private String DB_PATH = "";
     private SQLiteDatabase db;
+
     public DBExercisesHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         this.context = context;
-
-      if(android.os.Build.VERSION.SDK_INT >= 17){
+        if (android.os.Build.VERSION.SDK_INT >= 17) {
             DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
-        }
-        else
-        {
+        } else {
             DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
         }
 
@@ -225,7 +229,9 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
                 String command = COMMAND_ALL.replace(TABLE_EXERCISES_ALL, t);
                 db.execSQL(command);
             }
-           // db.execSQL(COMMAND_ALL);
+            db.execSQL(USER_CUSTOM_EXERCISE);
+
+            // db.execSQL(COMMAND_ALL);
             //db.execSQL(MAIN_METHOD_COMMAND);
             db.execSQL(MAIN_REPS_COMMAND);
             db.execSQL(GENERATOR_EXERCISE_COMMAND);
@@ -242,49 +248,40 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
     }
 
 
-
-    public void createDataBase() throws IOException
-    {
+    public void createDataBase() throws IOException {
         //If the database does not exist, copy it from the assets.
 
         boolean mDataBaseExist = checkDataBase();
-        if(!mDataBaseExist)
-        {
+        if (!mDataBaseExist) {
             this.getWritableDatabase();
             this.close();
-            try
-            {
-                Log.d("aviv", "createDataBase: working!" );
+            try {
+                Log.d("aviv", "createDataBase: working!");
 
                 //Copy the database from assests
                 copyDataBase();
-            }
-            catch (IOException mIOException)
-            {
-                Log.d("aviv", "not working: "+ mIOException.toString());
+            } catch (IOException mIOException) {
+                Log.d("aviv", "not working: " + mIOException.toString());
                 throw new Error("ErrorCopyingDataBase");
             }
         }
     }
 
     //Check that the database exists here: /data/data/your package/databases/Da Name
-    private boolean checkDataBase()
-    {
+    private boolean checkDataBase() {
         File dbFile = new File(DB_PATH + DB_NAME);
         //Log.v("dbFile", dbFile + "   "+ dbFile.exists());
         return dbFile.exists();
     }
 
     //Copy the database from assets
-    private void copyDataBase() throws IOException
-    {
+    private void copyDataBase() throws IOException {
         InputStream mInput = context.getAssets().open(DB_NAME);
         String outFileName = DB_PATH + DB_NAME;
         OutputStream mOutput = new FileOutputStream(outFileName);
         byte[] mBuffer = new byte[1024];
         int mLength;
-        while ((mLength = mInput.read(mBuffer))>0)
-        {
+        while ((mLength = mInput.read(mBuffer)) > 0) {
             mOutput.write(mBuffer, 0, mLength);
         }
         mOutput.flush();
@@ -293,8 +290,7 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
     }
 
     //Open the database, so we can query it
-    public boolean openDataBase() throws SQLException
-    {
+    public boolean openDataBase() throws SQLException {
         String mPath = DB_PATH + DB_NAME;
         //Log.v("mPath", mPath);
         db = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
@@ -303,14 +299,11 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public synchronized void close()
-    {
-        if(db != null)
+    public synchronized void close() {
+        if (db != null)
             db.close();
         super.close();
     }
-
-
 
 
     @Override

@@ -10,6 +10,21 @@
 
     >
 
+    <FrameLayout
+        android:id="@+id/recyclerview_exercise_drag_layout"
+        android:visibility="gone"
+        android:elevation="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <View
+            android:alpha="0.5"
+            android:background="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></View>
+
+    </FrameLayout>
+
     <RelativeLayout
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
@@ -28,8 +43,6 @@
         <EditText
             android:textColor="@color/textGrayColor"
             android:enabled="false"
-            android:clickable="false"
-
             android:maxLines="1"
             android:inputType="text"
             android:background="#F2EEF3"

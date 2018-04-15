@@ -14,15 +14,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.strongest.savingdata.MyViews.WorkoutView.OnAddOrDeleteListener;
 import com.strongest.savingdata.R;
 
+@Deprecated
 public class AddOrDeleteFragment extends DialogFragment implements View.OnClickListener {
 
     private int pos;
     public static final String ARGS = "args";
     public static final String POS = "pos";
-    private OnAddOrDeleteListener addOrDeleteListener;
 
     public AddOrDeleteFragment() {
     }
@@ -97,12 +96,9 @@ public class AddOrDeleteFragment extends DialogFragment implements View.OnClickL
      /*   Intent i = new Intent();
        i.putExtra(ARGS, arg);
         i.putExtra(POS, pos);*/
-        addOrDeleteListener.addOrDeleteResults(arg, pos);
         //getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
         dismiss();
     }
 
-    public void setAddOrDeleteListener(OnAddOrDeleteListener addOrDeleteListener) {
-        this.addOrDeleteListener = addOrDeleteListener;
-    }
+
 }

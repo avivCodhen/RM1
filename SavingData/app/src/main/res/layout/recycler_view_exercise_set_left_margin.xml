@@ -37,9 +37,8 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:alpha="0.6"
-            android:background="@color/textGrayColor"></View>
+            android:layout_height="1dp"
+            android:background="@color/background_color"></View>
         <LinearLayout
             android:gravity="center_vertical"
             android:layout_height="match_parent"
@@ -59,7 +58,7 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:textStyle="bold"
-                    android:textSize="11sp"
+                    android:textSize="12sp"
                     android:text="1"
                     android:textAlignment="center"
                     android:elevation="16dp"
@@ -68,7 +67,7 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
 
-                    app:civ_fill_color="@color/background_color"
+                    app:civ_circle_background_color="#F6F6F6"
                     app:civ_border_color="#CCCCCC"
                     app:civ_border_width="1dp"
                     android:src="@android:color/transparent"
@@ -82,6 +81,8 @@
 
 
             <TextView
+                android:textColor="@color/textview_color"
+
                 android:layout_marginRight="12dp"
                 android:id="@+id/exerciseView_repsTV"
                 android:layout_width="wrap_content"
@@ -90,8 +91,9 @@
                 android:textSize="12sp" />
 
             <TextView
-                android:layout_marginRight="12dp"
 
+                android:layout_marginRight="12dp"
+                android:textColor="@color/textview_color"
                 android:text="Rest: "
                 android:id="@+id/exerciseView_restTV"
                 android:layout_width="wrap_content"
@@ -100,6 +102,8 @@
 
 
             <TextView
+                android:textColor="@color/textview_color"
+
                 android:layout_marginRight="12dp"
                 android:id="@+id/exerciseView_weightTV"
                 android:layout_width="wrap_content"
@@ -114,7 +118,7 @@
             android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
             android:id="@+id/sets_settings"
-            android:padding="13.5dp"
+            android:padding="12.5dp"
             android:layout_gravity="right"
             android:layout_marginRight="5dp"
             android:src="@drawable/ic_more_vert_24px"

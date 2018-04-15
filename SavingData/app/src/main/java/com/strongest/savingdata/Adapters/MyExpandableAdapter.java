@@ -528,6 +528,15 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             vh3.settings.setVisibility(View.INVISIBLE);
         }
+        if(exerciseProfile.showComment){
+            vh3.comment_tag.setVisibility(View.VISIBLE);
+            vh3.comment_tv.setText(exerciseProfile.comment);
+
+        }else{
+            vh3.comment_tv.setText("");
+            vh3.comment_tag.setVisibility(View.INVISIBLE);
+        }
+
 
         if (exerciseProfile.getMuscle() != null) {
             mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
@@ -559,7 +568,9 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     break;
                 }
             }
-            vh3.tag.setText(LayoutManager.intraWorkoutsLetters[pos]);
+            if(LayoutManager.intraWorkoutsLetters.length > pos){
+                vh3.tag.setText(LayoutManager.intraWorkoutsLetters[pos]);
+            }
             //  vh3.tag.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
             vh3.tag.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRedTry));
 
@@ -570,6 +581,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if(LayoutManagerHelper.exerciseHasDropset(exerciseProfile)){
                 vh3.dropsetTag.setText("Dropset");
             }else{
+                if(vh3.dropsetTag != null)
                 vh3.dropsetTag.setText("");
             }
         }
@@ -583,7 +595,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
 
-        vh3.card.setOnClickListener(new View.OnClickListener() {
+      /*  vh3.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(onWorkoutViewInterfaceClicksListener != null)
@@ -591,73 +603,51 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     onWorkoutViewInterfaceClicksListener.onExerciseClick(vh3);
 
             }
-        });
-       /* vh3.card.setOnTouchListener(new MyGestureTouchListener(context){
+        });*/
 
-            @Override
-            public void onClick() {
-                super.onClick();
-                onWorkoutViewInterfaceClicksListener.onExerciseClick(vh3);
-
-            }
+        vh3.card.setOnTouchListener(new MyGestureTouchListener(context){
 
             @Override
             public void onLongClick() {
                 super.onLongClick();
-                onWorkoutViewInterfaceClicksListener.onLongClick(vh3,false);
+                vh3.flipView.flipTheView();
+                onWorkoutViewInterfaceClicksListener.onLongClick(vh3, false);
+
             }
 
             @Override
-            public void onDoubleClick() {
-                super.onDoubleClick();
+            public void onClick() {
+                super.onClick();
+                if(onWorkoutViewInterfaceClicksListener != null)
+
+                    onWorkoutViewInterfaceClicksListener.onExerciseClick(vh3);
             }
 
-
-        });*/
-
-     /*   vh3.card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                onWorkoutViewInterfaceClicksListener.onExerciseClick(vh3);
-            }
+           /* @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(vh3.dragLayout.getVisibility() == View.VISIBLE){
+                    onDragListener.startDrag(vh3);
+                }
+                return super.onTouch(v, event);
+            }*/
         });
-*/
-
-        if(onWorkoutViewInterfaceClicksListener != null){
+   /*     if(onWorkoutViewInterfaceClicksListener != null){
 
             vh3.card.setOnLongClickListener(new View.OnLongClickListener() {
 
             @Override
             public boolean onLongClick(View v) {
-                //onShadowCollapse(position, exerciseProfile);
-                for (int i = 0; i < exArray.size(); i++) {
-                    if (exArray.get(i).innerType == WorkoutLayoutTypes.ExerciseProfile) {
-                        ExerciseProfile epTemp = (ExerciseProfile) exArray.get(i);
-                        if (epTemp.isExpand()) {
-                            onCollapse(vh3);
-                        }
-
-                    }
-                }
-
                 vh3.flipView.flipTheView();
                 onWorkoutViewInterfaceClicksListener.onLongClick(vh3, false);
                 return true;
             }
         });
-        }
+        }*/
 
         vh3.dragLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 ExerciseProfile ep = (ExerciseProfile) exArray.get(vh3.getAdapterPosition());
-                /*if (ep.innerType == WorkoutLayoutTypes.IntraExerciseProfile) {
-                    return false;
-                }*/
-                if (ep.isExpand()) {
-                    //onCollapse(vh3);
-                }
                 onDragListener.startDrag(vh3);
                 return true;
             }
@@ -665,93 +655,9 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         vh3.flipView.bringToFront();
 
-      /*  vh3.flipView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-
-                if (event.getActionMasked() == MotionEvent.ACTION_MOVE) {
-                    hasMoved = true;
-                }
-
-                if(event.getActionMasked() == MotionEvent.ACTION_DOWN){
-                    if(vh3.flipView.isBackSide()){
-                        onDragListener.startDrag(vh3);
-                        return true;
-                    }
-                }
-
-                if(event.getAction() == MotionEvent.ACTION_UP){
-
-                    if(hasMoved){
-                        return false;
-                    }else{
-                        vh3.flipView.flipTheView();
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });*/
-
-
-
-/*
-        vh3.more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                onWorkoutViewInterfaceClicksListener.onMoreClick(vh3);
-
-            }
-        });*/
-
-
     }
 
 
-    @Override
-    public void onExpand(ExerciseViewHolder vh) {
-       /* int position = vh.getAdapterPosition();
-        ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
-        ArrayList<PLObject.SetsPLObject> sets = ep.getSets();
-        ArrayList<PLObject> block = new ArrayList<>();
-
-        int newPosition = ep.getExerciseProfiles().size() + 1;
-        int row = 0;
-        if (sets != null) {
-            for (int i = 0; i < sets.size(); i++) {
-                block.add(sets.get(i));
-                if (ep.getExerciseProfiles().size() != 0) {
-                    for (int j = 0; j < ep.getExerciseProfiles().size(); j++) {
-                        block.add(ep.getExerciseProfiles().get(j).getIntraSets().get(i));
-
-                    }
-                }
-                ++row;
-                for (int j = 0; j < sets.get(i).getIntraSets().size(); j++) {
-                    ++row;
-
-                    if (sets.get(i).getIntraSets().size() != 0 && sets.get(i).getIntraSets().size() > i) {
-                        block.add(sets.get(i).getIntraSets().get(j));
-                        ++row;
-
-                    }
-                    //exArray.add(position + i + newPosition, obj);
-                }
-            }
-            int i = 0;
-            for (PLObject plObject : block) {
-                exArray.add(position + newPosition + i, plObject);
-                i++;
-            }
-            notifyItemRangeInserted(position + newPosition, row);
-            scrollListener.scrollToPosition(position, true, true);
-        }
-        ep.setExpand(true);
-        animateExpand(vh);
-        vh.expand = true;*/
-    }
 
     public void animateExpand(ExerciseViewHolder vh) {
         if (vh.arrow != null)
@@ -764,40 +670,6 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             MyJavaAnimator.rotateView(vh.arrow, 180, 360);
     }
 
-
-    @Override
-    public void onCollapse(ExerciseViewHolder vh) {
-       /* int position = vh.getAdapterPosition();
-        ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
-        ArrayList<PLObject.SetsPLObject> sets = ep.getSets();
-        int newPosition = ep.getExerciseProfiles().size() + 1;
-        int count = 0;
-        if (sets != null) {
-            for (int i = 0; i < sets.size(); i++) {
-                exArray.remove(position + newPosition);
-                count++;
-                if (ep.getExerciseProfiles().size() != 0) {
-                    for (int j = 0; j < ep.getExerciseProfiles().size(); j++) {
-                        exArray.remove(position + newPosition);
-                        count++;
-                    }
-                }
-                for (int k = 0; k < sets.get(i).getIntraSets().size(); k++) {
-                    exArray.remove(position + newPosition);
-                    count++;
-
-                }
-
-            }
-            notifyItemRangeRemoved(position + newPosition, count);
-            scrollListener.scrollToPosition(position, true, true);
-
-        }
-        ep.setExpand(false);
-        animateCollapse(vh);
-        vh.expand = false;*/
-
-    }
 
     @Override
     public void deTailExpand(RecyclerView.ViewHolder vh) {
@@ -815,8 +687,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void detailCollapse(RecyclerView.ViewHolder vh) {
-        int position = vh.getAdapterPosition();
+    public void detailCollapse(int position) {
         PLObject.AddExercise a = new PLObject.AddExercise(null);
         //ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
         exArray.remove(position + 1);
@@ -955,6 +826,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
          //   easyFlipView = (EasyFlipView) itemView.findViewById(R.id.body_part_edit);
             dummy = itemView.findViewById(R.id.dummy);
             edit = (ImageView) itemView.findViewById(R.id.body_view_edit_iv);
+            dragLayout = (View) itemView.findViewById(R.id.recyclerview_exercise_drag_layout);
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

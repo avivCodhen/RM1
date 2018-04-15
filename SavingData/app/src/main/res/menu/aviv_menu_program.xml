@@ -14,7 +14,7 @@
         android:title="edit"
         app:showAsAction="always"
         android:orderInCategory="0"
-        android:icon="@drawable/maintance_24px_white"
+        android:icon="@drawable/plus_48px"
         />
 
 
