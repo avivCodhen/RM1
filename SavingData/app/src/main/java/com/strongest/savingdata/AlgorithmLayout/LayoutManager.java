@@ -259,6 +259,7 @@ public class LayoutManager {
                             }
                         }
                         ep.comment = c.getString(c.getColumnIndex(COMMENT));
+                        ep.showComment = !ep.comment.equals("");
                       /*  if (parent != null) {
                             parent.getExerciseProfiles().add(ep);
                             ep.setParent(parent);

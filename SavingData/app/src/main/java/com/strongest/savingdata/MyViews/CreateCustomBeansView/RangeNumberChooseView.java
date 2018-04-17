@@ -47,7 +47,7 @@ public class RangeNumberChooseView extends LinearLayout implements CompoundButto
         this.context = context;
     }
 
-    public void initViews() {
+    private void initViews() {
         checkBox = (CheckBox) findViewById(R.id.choose_number_range_checkbox);
         checkBox.setOnCheckedChangeListener(this);
         //mNumberChooseManager.setOnRangeNumberChooseControl(this);

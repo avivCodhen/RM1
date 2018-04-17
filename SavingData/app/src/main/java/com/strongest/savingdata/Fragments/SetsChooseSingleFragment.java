@@ -134,6 +134,17 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
 
     private void initViews(View v) {
         numberChooseManager = new NumberChooseManager(onExerciseSetChange, exerciseSet);
+        currentRepTv = (TextSwitcher) v.findViewById(R.id.sets_current_reps);
+        currentRestTv = (TextSwitcher) v.findViewById(R.id.sets_current_rest);
+        currentWeightTV = (TextSwitcher) v.findViewById(R.id.sets_current_weight);
+
+        initTextSwitcher(currentRestTv, exerciseSet.getRest());
+        initTextSwitcher(currentRepTv, exerciseSet.getRep());
+        initTextSwitcher(currentWeightTV, exerciseSet.getRep());
+        numberChooseManager.setRepsTextSwitcher(currentRepTv);
+        numberChooseManager.setRestTextSwitcher(currentRestTv);
+
+
         mRestChooseView = (RestChooseView) v.findViewById(R.id.sets_choose_restchooseview);
         mRestChooseView.setUpWithManager(numberChooseManager);
         mRangeNumberChoose = (RangeNumberChooseView) v.findViewById(R.id.fragment_sets_choose_rangenumberview);
@@ -161,15 +172,7 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
         initWeightViews(v);
         initApplyBtns(v);
 
-        currentRepTv = (TextSwitcher) v.findViewById(R.id.sets_current_reps);
-        currentRestTv = (TextSwitcher) v.findViewById(R.id.sets_current_rest);
-        currentWeightTV = (TextSwitcher) v.findViewById(R.id.sets_current_weight);
 
-        initTextSwitcher(currentRestTv, exerciseSet.getRest());
-        initTextSwitcher(currentRepTv, exerciseSet.getRep());
-        initTextSwitcher(currentWeightTV, exerciseSet.getRep());
-        numberChooseManager.setRepsTextSwitcher(currentRepTv);
-        numberChooseManager.setRestTextSwitcher(currentRestTv);
 
 
     }

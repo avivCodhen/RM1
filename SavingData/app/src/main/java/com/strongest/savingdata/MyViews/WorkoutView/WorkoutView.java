@@ -1052,12 +1052,14 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
                     if (!ep.isExpand()) {
                         expandExercise(position);
                     }
-                    position += (LayoutManagerHelper.calcBlockLength(ep));
+                    position += (LayoutManagerHelper.calcBlockLength(ep)-1);
                     returnToMenu = true;
                     setsPLObject = ep.getSets().get(ep.getSets().size()-1);
+                    if(setsPLObject.getIntraSets().size() > 0){
+                        position--;
+                    }
                 }else{
                     setsPLObject = (PLObject.SetsPLObject) exArray.get(position);
-                    position++;
                 }
                 int setBlockLength = setsPLObject.getIntraSets().size() + setsPLObject.getParent().getExerciseProfiles().size();
                 int newPosition = position + setBlockLength;
