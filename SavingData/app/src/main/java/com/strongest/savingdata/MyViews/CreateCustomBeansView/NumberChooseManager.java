@@ -1,12 +1,15 @@
 package com.strongest.savingdata.MyViews.CreateCustomBeansView;
 
 import android.view.View;
+import android.widget.TextSwitcher;
 
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.MyViews.RestChooseView;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.OnExerciseSetChange;
+
+import java.util.ArrayList;
 
 /**
  * Created by Cohen on 1/18/2018.
@@ -19,6 +22,7 @@ public class NumberChooseManager {
     private OnExerciseSetChange onExerciseSetChange;
     private RestChooseView restChooseView;
     private SingleNumberChooseView singleNumberChooseView;
+    private TextSwitcher repsTextSwitcher, restTextSwitcher;
 
     public void setRestChooseView(RestChooseView restChooseView) {
         this.restChooseView = restChooseView;
@@ -26,6 +30,14 @@ public class NumberChooseManager {
 
     public void setSingleNumberChooseView(SingleNumberChooseView singleNumberChooseView) {
         this.singleNumberChooseView = singleNumberChooseView;
+    }
+
+    public void setRestTextSwitcher(TextSwitcher restTextSwitcher) {
+        this.restTextSwitcher = restTextSwitcher;
+    }
+
+    public void setRepsTextSwitcher(TextSwitcher repsTextSwitcher) {
+        this.repsTextSwitcher = repsTextSwitcher;
     }
 
 
@@ -59,15 +71,20 @@ public class NumberChooseManager {
         return 2;
     }
 
+    public void setTextSwitcherText(TextSwitcher textSwitcher, String text){
+        textSwitcher.setText(text);
+    }
+
     public void injectRest(String rest){
         exerciseSet.setRest(rest);
         onExerciseSetChange.notifyExerciseSetChange();
+        setTextSwitcherText(restTextSwitcher, rest);
     }
 
     public void injectRep(String rep){
         exerciseSet.setRep(rep);
         onExerciseSetChange.notifyExerciseSetChange();
-
+        setTextSwitcherText(repsTextSwitcher, rep);
     }
 
     public void updateSingleNum(){

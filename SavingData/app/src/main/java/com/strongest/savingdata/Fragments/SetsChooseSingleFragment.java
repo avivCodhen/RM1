@@ -3,18 +3,25 @@ package com.strongest.savingdata.Fragments;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextSwitcher;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.strongest.savingdata.Activities.BaseActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
@@ -40,6 +47,8 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import static android.view.View.TEXT_ALIGNMENT_CENTER;
+import static android.widget.GridLayout.HORIZONTAL;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_REPS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_REST;
 
@@ -57,6 +66,8 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
     private View weightLayout;
     private EditText weightET;
     private ImageView keyboardIV;
+
+    private TextSwitcher currentRestTv, currentRepTv, currentWeightTV;
 
     private ExerciseSet exerciseSet;
 
@@ -133,7 +144,9 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
         mRepRecycler = (RecyclerView) v.findViewById(R.id.fragment_sets_choose_recycler_repetitions);
         mRestRecycler = (RecyclerView) v.findViewById(R.id.fragment_sets_choose_recycler_rest);
         dataManager = ((BaseActivity) getActivity()).getDataManager();
-
+        DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), HORIZONTAL);
+        mRepRecycler.addItemDecoration(itemDecor);
+        mRestRecycler.addItemDecoration(itemDecor);
         listRep = dataManager.getExerciseDataManager().readListByTable(TABLE_REPS);
 
         listRest = dataManager.getExerciseDataManager().readListByTable(DBExercisesHelper.TABLE_REST);
@@ -148,6 +161,34 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
         initWeightViews(v);
         initApplyBtns(v);
 
+        currentRepTv = (TextSwitcher) v.findViewById(R.id.sets_current_reps);
+        currentRestTv = (TextSwitcher) v.findViewById(R.id.sets_current_rest);
+        currentWeightTV = (TextSwitcher) v.findViewById(R.id.sets_current_weight);
+
+        initTextSwitcher(currentRestTv, exerciseSet.getRest());
+        initTextSwitcher(currentRepTv, exerciseSet.getRep());
+        initTextSwitcher(currentWeightTV, exerciseSet.getRep());
+        numberChooseManager.setRepsTextSwitcher(currentRepTv);
+        numberChooseManager.setRestTextSwitcher(currentRestTv);
+
+
+    }
+
+    private void initTextSwitcher(TextSwitcher textSwitcher, String text) {
+        textSwitcher.setInAnimation( getContext(),android.R.anim.slide_in_left);
+        textSwitcher.setOutAnimation(getContext(),  android.R.anim.slide_out_right);
+        textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                TextView t = new TextView(getContext());
+                t.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+                t.setGravity(Gravity.CENTER_VERTICAL);
+                t.setTextColor(ContextCompat.getColor(getContext(),R.color.text_gray));
+                return t;
+            }
+        });
+        textSwitcher.setText(text);
 
     }
 
@@ -267,6 +308,7 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
 
                     exerciseSet.setWeight(d);
                     onExerciseSetChange.notifyExerciseSetChange();
+                    currentWeightTV.setText(d+" kg");
                 }
             }
 
@@ -328,10 +370,12 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
         if (type.equals("rep")) {
             exerciseSet.setRep(object);
             mRangeNumberChoose.initRep(exerciseSet.getRep());
+            currentRepTv.setText(object);
 
         } else if (type.equals("rest")) {
             exerciseSet.setRest(object);
             mRestChooseView.initRest(exerciseSet.getRest());
+            currentRestTv.setText(object);
         }
         onExerciseSetChange.notifyExerciseSetChange();
         // helper.onOnlyItemChange();

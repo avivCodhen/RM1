@@ -1052,7 +1052,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
                     if (!ep.isExpand()) {
                         expandExercise(position);
                     }
-                    position += (LayoutManagerHelper.calcBlockLength(ep)-1);
+                    position += (LayoutManagerHelper.calcBlockLength(ep));
                     returnToMenu = true;
                     setsPLObject = ep.getSets().get(ep.getSets().size()-1);
                 }else{

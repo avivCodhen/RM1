@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
+import com.strongest.savingdata.MyViews.CreateCustomBeansView.NumberChooseManager;
 import com.strongest.savingdata.R;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceAdapte
     private OnSingleChoiceAdapterOnclickListener clickListener;
     private int currentPosition;
     private ArrayList<ItemHolder> items = new ArrayList<>();
+    private NumberChooseManager numberChooseManager;
 
     public SingleChoiceAdapter(Context context, ArrayList<String> list, OnSingleChoiceAdapterOnclickListener clickListener, String type){
         this.context = context;
@@ -50,15 +52,7 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceAdapte
     @Override
     public void onBindViewHolder(SingleChoiceAdapter.ViewHolder holder, final int position) {
         holder.item.setText(list.get(position));
-        holder.item.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                list.remove(position);
-                notifyItemRemoved(position);
-                clickListener.onLongclick(list.get(position), type);
-                return true;
-            }
-        });
+
 
     }
 
@@ -67,9 +61,14 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceAdapte
         return list.size();
     }
 
+    public void setNumberChooseManager(NumberChooseManager numberChooseManager) {
+        this.numberChooseManager = numberChooseManager;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView item;
+        int position = getAdapterPosition();
         public ViewHolder(View itemView) {
             super(itemView);
             item = (TextView) itemView.findViewById(R.id.single_choice_tv);
@@ -78,6 +77,16 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceAdapte
                 @Override
                 public void onClick(View v) {
                     clickListener.onClick(list.get(getAdapterPosition()), type);
+                }
+            });
+
+            item.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    list.remove(position);
+                    notifyItemRemoved(position);
+                    clickListener.onLongclick(list.get(position), type);
+                    return true;
                 }
             });
         }

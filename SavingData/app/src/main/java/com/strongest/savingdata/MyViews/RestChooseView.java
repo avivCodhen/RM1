@@ -24,7 +24,7 @@ public class RestChooseView extends LinearLayout implements View.OnClickListener
     private SingleNumberChooseView singleNumberChooseView;
     private NumberChooseManager mNumberManager;
     private TextView minus_5, minus_10, plus_5, plus_10;
-    private EditText secondsET;
+    private TextView secondsET;
     private Context context;
     public int minutes;
     public int seconds;
@@ -49,7 +49,7 @@ public class RestChooseView extends LinearLayout implements View.OnClickListener
         minus_10 = (TextView) findViewById(R.id.rest_minus_10_tv);
         plus_10 = (TextView) findViewById(R.id.rest_plus_10);
         plus_5 = (TextView) findViewById(R.id.rest_plus_5);
-        secondsET = (EditText) findViewById(R.id.rest_seconds);
+        secondsET = (TextView) findViewById(R.id.rest_seconds);
 
         minus_5.setOnClickListener(this);
         minus_10.setOnClickListener(this);

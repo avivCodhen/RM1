@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,7 +22,7 @@ public class SingleNumberChooseView extends LinearLayout {
     public enum Type{
         Rep, Rest
     }
-    private TextView plusTV, minusTV;
+    private ImageView plusTV, minusTV;
     private TextView numberTV;
     private NumberChooseManager mNumberChooseManager;
     private OnNumberInject onNumberInject;
@@ -44,7 +45,7 @@ public class SingleNumberChooseView extends LinearLayout {
     }
 
     private void initViews() {
-        plusTV = (TextView) this.findViewById(R.id.simple_number_choose_plus);
+        plusTV = (ImageView) this.findViewById(R.id.simple_number_choose_plus);
         plusTV.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,7 +53,7 @@ public class SingleNumberChooseView extends LinearLayout {
             }
         });
         numberTV = (TextView) this.findViewById(R.id.simple_number_choose_number);
-        minusTV = (TextView) this.findViewById(R.id.simple_number_choose_minus);
+        minusTV = (ImageView) this.findViewById(R.id.simple_number_choose_minus);
         minusTV.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

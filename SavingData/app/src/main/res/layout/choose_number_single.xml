@@ -2,42 +2,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:background="@color/light_background_color"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/simple_number_choose_minus"
-        android:layout_width="35dp"
-        android:layout_height="25dp"
-        android:background="@drawable/strongest_selected_buttons"
-        android:backgroundTint="#fff"
-        android:text="-"
-        android:gravity="center"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
 
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/simple_number_choose_number"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        android:layout_width="35dp"
-        android:gravity="center"
-
-        android:layout_height="wrap_content"
-        android:text="0"
-        android:textSize="13sp" />
+        <ImageView
+            android:src="@drawable/minus_coloraccent_48px"
+            android:padding="8dp"
+            android:id="@+id/simple_number_choose_minus"
+            android:layout_width="@dimen/sets_choose_textview_size"
+            android:layout_height="@dimen/sets_choose_textview_size"
+            android:text="-"
+            android:gravity="center"
 
 
+            android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/simple_number_choose_plus"
-        android:layout_width="35dp"
-        android:layout_height="25dp"
-        android:background="@drawable/strongest_selected_buttons"
-        android:backgroundTint="#fff"
-        android:text="+"
-        android:gravity="center"
+        <include layout="@layout/layout_right_border">
 
-        android:textSize="15sp" />
+        </include>
+        <TextView
+            android:id="@+id/simple_number_choose_number"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_width="@dimen/sets_choose_textview_size"
+            android:gravity="center"
+
+            android:layout_height="@dimen/sets_choose_textview_size"
+            android:text="0"
+            android:textColor="@color/text_gray"
+
+            android:textSize="16sp" />
+        <include layout="@layout/layout_right_border"/>
+
+
+
+        <ImageView
+            android:src="@drawable/plus_coloraccent_48px"
+            android:padding="8dp"
+            android:id="@+id/simple_number_choose_plus"
+            android:layout_width="@dimen/sets_choose_textview_size"
+            android:layout_height="@dimen/sets_choose_textview_size"
+            android:text="+"
+            android:gravity="center"
+
+            android:textSize="15sp" />
+
+
+
+    </LinearLayout>
 
 </LinearLayout>

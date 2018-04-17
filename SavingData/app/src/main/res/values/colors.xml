@@ -25,6 +25,8 @@
     <color name="colorGreenTry">#28C590</color>
     <color name="dropset_tag_color">#CCCCCC</color>
     <color name="textview_color">#888888</color>
+    <color name="text_gray">#888888</color>
+    <color name="light_background_color">#F6F6F6</color>
 
 
 </resources>

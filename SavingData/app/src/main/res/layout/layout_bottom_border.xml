@@ -1,0 +1,11 @@
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <View
+        android:alpha="0.3"
+        android:background="@color/textGrayColor"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+</FrameLayout>

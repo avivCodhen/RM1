@@ -1,100 +1,97 @@
-<LinearLayout android:layout_width="wrap_content"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
     android:orientation="vertical"
+    android:background="@color/light_background_color"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_weight="1"
-            android:layout_marginRight="20dp"
-            android:text="Minutes:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
 
-        <TextView
-            android:textAlignment="center"
+        <LinearLayout
+            android:gravity="center"
 
-            android:layout_weight="1"
-            android:text="Seconds:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
 
-    </LinearLayout>
-
+            <com.strongest.savingdata.MyViews.CreateCustomBeansView.SingleNumberChooseView
+                android:layout_width="wrap_content"
+                android:id="@+id/rest_single_number_choose"
+                android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.CreateCustomBeansView.SingleNumberChooseView>
 
     <LinearLayout
-        android:padding="8dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <include layout="@layout/layout_right_border"></include>
 
-       <com.strongest.savingdata.MyViews.CreateCustomBeansView.SingleNumberChooseView
-           android:layout_width="wrap_content"
-           android:layout_marginRight="20dp"
-           android:layout_marginTop="8dp"
-           android:id="@+id/rest_single_number_choose"
-           android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.CreateCustomBeansView.SingleNumberChooseView>
-        <TextView
-            android:gravity="center"
-            android:layout_marginRight="10dp"
-            android:id="@+id/rest_minus_5_tv"
-            android:layout_width="35dp"
-            android:layout_height="20dp"
-            android:background="@drawable/strongest_selected_buttons"
-            android:backgroundTint="#fff"
-            android:text="-5"
-            android:textSize="15sp" />
-        <TextView
-            android:layout_marginRight="5dp"
-            android:id="@+id/rest_minus_10_tv"
-            android:layout_width="35dp"
-            android:layout_height="20dp"
-            android:background="@drawable/strongest_selected_buttons"
-            android:backgroundTint="#fff"
-            android:text="-10"
-            android:gravity="center"
+                <TextView
+                    android:textColor="@color/colorAccent"
+                    android:gravity="center"
+                    android:id="@+id/rest_minus_5_tv"
+                    android:layout_width="@dimen/sets_choose_textview_size"
+                    android:layout_height="@dimen/sets_choose_textview_size"
+                    android:text="-5"
+                    android:textSize="15sp" />
 
-            android:textSize="15sp" />
-        <EditText
-            android:gravity="center"
+                <include layout="@layout/layout_right_border"></include>
+                <TextView
+                    android:textColor="@color/colorAccent"
 
-            android:enabled="false"
-            android:id="@+id/rest_seconds"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            android:layout_width="35dp"
-            android:layout_height="wrap_content"
-            android:text="5"
-            android:textSize="13sp" />
+                    android:id="@+id/rest_minus_10_tv"
+                    android:layout_width="@dimen/sets_choose_textview_size"
+                    android:layout_height="@dimen/sets_choose_textview_size"
+                    android:text="-10"
+                    android:gravity="center"
 
-        <TextView
-            android:layout_marginRight="10dp"
-            android:id="@+id/rest_plus_5"
-            android:layout_width="35dp"
-            android:layout_height="20dp"
-            android:background="@drawable/strongest_selected_buttons"
-            android:backgroundTint="#fff"
-            android:text="+5"
-            android:gravity="center"
+                    android:textSize="15sp" />
+                <include layout="@layout/layout_right_border"></include>
 
-            android:textSize="15sp" />
-        <TextView
-            android:id="@+id/rest_plus_10"
-            android:layout_width="35dp"
-            android:layout_height="20dp"
-            android:background="@drawable/strongest_selected_buttons"
-            android:backgroundTint="#fff"
-            android:text="+10"
-            android:textAlignment="center"
-            android:textSize="15sp" />
+                <TextView
+                    android:gravity="center"
+                    android:textColor="@color/text_gray"
+                    android:enabled="false"
+                    android:id="@+id/rest_seconds"
+                    android:layout_width="@dimen/sets_choose_textview_size"
+                    android:layout_height="@dimen/sets_choose_textview_size"
+                    android:text="5"
+                    android:textSize="13sp" />
+                <include layout="@layout/layout_right_border"></include>
+
+
+                <TextView
+                    android:textColor="@color/colorAccent"
+
+                    android:id="@+id/rest_plus_5"
+                    android:layout_width="@dimen/sets_choose_textview_size"
+                    android:layout_height="@dimen/sets_choose_textview_size"
+                    android:text="+5"
+                    android:gravity="center"
+
+                    android:textSize="15sp" />
+                <include layout="@layout/layout_right_border"></include>
+
+                <TextView
+                    android:textColor="@color/colorAccent"
+                    android:id="@+id/rest_plus_10"
+                    android:layout_width="@dimen/sets_choose_textview_size"
+                    android:layout_height="@dimen/sets_choose_textview_size"
+                    android:text="+10"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
+
+
 
 
     </LinearLayout>
+        </LinearLayout>
+
+
 </LinearLayout>
