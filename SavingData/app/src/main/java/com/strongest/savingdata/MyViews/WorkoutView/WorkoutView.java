@@ -1060,6 +1060,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
                     }
                 }else{
                     setsPLObject = (PLObject.SetsPLObject) exArray.get(position);
+                    position++;
                 }
                 int setBlockLength = setsPLObject.getIntraSets().size() + setsPLObject.getParent().getExerciseProfiles().size();
                 int newPosition = position + setBlockLength;
