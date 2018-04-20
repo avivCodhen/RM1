@@ -43,7 +43,6 @@ public class CustomExerciseFragment extends Fragment implements OnGridViewMuscle
     private GridViewMusclesAdapter mGridViewAdapter;
     private RecyclerView recyclerView;
     private TextView mMuscleText;
-    private CircleImageView mCircleMuscleIcon;
     private DataManager dataManager;
     private Muscle choosedMuscle;
     private Button saveBtn;
@@ -88,11 +87,12 @@ public class CustomExerciseFragment extends Fragment implements OnGridViewMuscle
     private void initViews(View v) {
         dataManager = ((HomeActivity) getActivity()).dataManager;
 
-        mCircleMuscleIcon = (CircleImageView) v.findViewById(R.id.muscle_icon);
         mMuscleText = (TextView) v.findViewById(R.id.muscle_tv);
         mExpandable = (ExpandableLayout) v.findViewById(R.id.expandable);
         mGridView = (GridView) v.findViewById(R.id.fragment_choose_exercise_gridview);
-        mGridViewAdapter = new GridViewMusclesAdapter(getContext(), dataManager, this);
+        int height = ((HomeActivity)getActivity()).getScreenHeight();
+
+        mGridViewAdapter = new GridViewMusclesAdapter(height,getContext(), dataManager, this);
         mGridView.setAdapter(mGridViewAdapter);
         editText = (EditText) v.findViewById(R.id.custom_exercise_name);
         v.findViewById(R.id.toolbar_back).setOnClickListener(new View.OnClickListener() {
@@ -163,7 +163,6 @@ public class CustomExerciseFragment extends Fragment implements OnGridViewMuscle
 
     @Override
     public void onMuscleChange(GridViewMusclesAdapter.MusclesContentHolder mch) {
-        mCircleMuscleIcon.setImageResource(mch.icon);
         mMuscleText.setText(mch.text);
         choosedMuscle = mch.m;
         mExpandable.collapse();

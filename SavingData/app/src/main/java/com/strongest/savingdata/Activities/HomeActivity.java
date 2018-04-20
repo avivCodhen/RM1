@@ -20,6 +20,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -166,7 +167,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         workoutView = new WorkoutView();
         if (programmer.getProgram() == null) {
             programmer.createNewProgram();
-        }else{
+        } else {
             programmer.tryInitProgram();
         }
         workoutView.instantiate(this, getSupportFragmentManager(), programmer.getLayoutManager(), viewPager, tabLayout);
@@ -178,7 +179,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(programmer.getProgram().programName);
-          //  getSupportActionBar().setElevation(0);
+            //  getSupportActionBar().setElevation(0);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
@@ -224,7 +225,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.aviv_menu_program, menu);
-       // programToolsBtn = (ImageView) menu.findItem(R.id.edit_menu);
+        // programToolsBtn = (ImageView) menu.findItem(R.id.edit_menu);
         //programToolsView.setProgramToolsBtn(programToolsBtn);
         return true;
     }
@@ -387,6 +388,21 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             return 3;
         }
 
+    }
+
+    public int getScreenWidth() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        return metrics.widthPixels;
+
+    }
+
+    public int getScreenHeight() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        return metrics.heightPixels;
     }
 
     @Override

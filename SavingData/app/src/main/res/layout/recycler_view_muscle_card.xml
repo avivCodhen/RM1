@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_height="wrap_content"
-    android:id="@+id/recycler_view_muscle_card_layout"
-    android:layout_width="80dp"
-    android:orientation="vertical"
-    android:layout_margin="10dp"
+
+<RelativeLayout android:layout_width="90dp"
+    android:layout_height="90dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+<LinearLayout android:layout_height="118dp"
+    android:id="@+id/recycler_view_muscle_card_layout"
+    android:layout_width="90dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_gravity="center_horizontal"
         android:src="@drawable/muscle_legs"
@@ -19,7 +24,7 @@
         android:textColor="@color/muscle_name_gray"
         android:textAllCaps="true"
         android:gravity="center"
-        android:paddingTop="4dp"
+        android:paddingTop="8dp"
         android:paddingBottom="4dp"
         android:textStyle="bold"
         android:textSize="@dimen/muscle_name_textsize"
@@ -32,3 +37,16 @@
 
 
 </LinearLayout>
+ <!--   <include layout="@layout/layout_bottom_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        ></include>
+
+    <include layout="@layout/layout_right_border"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        ></include>-->
+
+</RelativeLayout>

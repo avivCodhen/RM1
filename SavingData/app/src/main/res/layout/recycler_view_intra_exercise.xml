@@ -8,6 +8,11 @@
     android:background="#F6F6F6"
     >
 
+    <include layout="@layout/layout_bottom_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"></include>
+
     <include layout="@layout/a_big_tag"
 
         android:id="@+id/intra_set_superset_tag"
@@ -39,6 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:focusable="true"
+        android:layout_marginBottom="1dp"
         android:foreground="?attr/selectableItemBackground"
         android:layout_toRightOf="@+id/intra_set_superset_tag"
         >

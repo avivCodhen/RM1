@@ -448,8 +448,9 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             } else {
                 allowLongClick = true;
                 //     vh.itemView.setClickable(true);
-                vh.supersetTag.setBackgroundColor(ContextCompat.getColor(context, R.color.dropset_tag_color));
-                vh.supersetTag.setText("");
+                vh.supersetTag.setBackgroundColor(ContextCompat.getColor(context, R.color.dropset_intraset_tag_background_gray));
+                vh.supersetTag.setText("D");
+                vh.supersetTag.setTextColor(ContextCompat.getColor(context, R.color.text_gray));
                 //   ((CardView) vh.card).setCardBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimary));
                 //       vh.fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorAccent)));
                 vh.tag.setText("Dropset");
@@ -595,7 +596,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
 
-      /*  vh3.card.setOnClickListener(new View.OnClickListener() {
+        vh3.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(onWorkoutViewInterfaceClicksListener != null)
@@ -603,35 +604,9 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     onWorkoutViewInterfaceClicksListener.onExerciseClick(vh3);
 
             }
-        });*/
-
-        vh3.card.setOnTouchListener(new MyGestureTouchListener(context){
-
-            @Override
-            public void onLongClick() {
-                super.onLongClick();
-                vh3.flipView.flipTheView();
-                onWorkoutViewInterfaceClicksListener.onLongClick(vh3, false);
-
-            }
-
-            @Override
-            public void onClick() {
-                super.onClick();
-                if(onWorkoutViewInterfaceClicksListener != null)
-
-                    onWorkoutViewInterfaceClicksListener.onExerciseClick(vh3);
-            }
-
-           /* @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(vh3.dragLayout.getVisibility() == View.VISIBLE){
-                    onDragListener.startDrag(vh3);
-                }
-                return super.onTouch(v, event);
-            }*/
         });
-   /*     if(onWorkoutViewInterfaceClicksListener != null){
+
+       if(onWorkoutViewInterfaceClicksListener != null){
 
             vh3.card.setOnLongClickListener(new View.OnLongClickListener() {
 
@@ -642,7 +617,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 return true;
             }
         });
-        }*/
+        }
 
         vh3.dragLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override

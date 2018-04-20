@@ -2,13 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="75dp"
     android:foreground="?attr/selectableItemBackground"
     android:focusable="true"
     android:clipToPadding="false"
     android:background="@color/background_color"
     >
-
+<include layout="@layout/layout_bottom_border"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"></include>
     <FrameLayout
         android:id="@+id/recyclerview_exercise_drag_layout"
         android:visibility="gone"
@@ -34,10 +37,11 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/list_view_exercise_lay1"
-        android:layout_width="wrap_content"
-        android:layout_height="75dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="1dp"
         android:background="@color/colorPrimary"
 
         android:focusable="true"

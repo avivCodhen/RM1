@@ -5,7 +5,7 @@
 
     <View
         android:alpha="0.3"
-        android:background="@color/textGrayColor"
+        android:background="@color/text_gray"
         android:layout_width="match_parent"
         android:layout_height="1dp"></View>
 </FrameLayout>

@@ -9,6 +9,7 @@ import com.strongest.savingdata.AlgorithmLayout.PLObject.ExerciseProfile;
 import com.strongest.savingdata.AlgorithmStats.StatsCalculatorManager;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
+import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
 
@@ -255,7 +256,8 @@ public class LayoutManager {
 
                         } else {
                             if (exId != null) {
-                                ep.setExercise(dataManager.getExerciseDataManager().fetchByName(muscle.getMuscle_name(), exId));
+                                Beans exercise = dataManager.getExerciseDataManager().fetchByName(muscle.getMuscle_name(), exId);
+                                ep.setExercise(exercise);
                             }
                         }
                         ep.comment = c.getString(c.getColumnIndex(COMMENT));

@@ -1,7 +1,9 @@
 package com.strongest.savingdata.Fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -37,6 +39,8 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.widget.GridLayout.HORIZONTAL;
+
 /**
  * Created by Cohen on 3/13/2018.
  */
@@ -46,7 +50,6 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment implements
 
     private OnExerciseSetChange onExerciseSetChange;
     private TextView mMuscleText;
-    private CircleImageView mCircleMuscleIcon;
 
     private ExerciseListAdapter mAdapter;
     public ExpandableLayout mExpandable;
@@ -96,18 +99,24 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment implements
         dataManager = ((HomeActivity) getActivity()).dataManager;
         //    helper =  ((BaseActivity) getActivity()).programmer.layoutManager.mLayoutManagerHelper;
         //  reactLayoutManager = ((ChooseContainerFragment) getParentFragment()).getReactLayoutManager();
-        mCircleMuscleIcon = (CircleImageView) v.findViewById(R.id.muscle_icon);
         mMuscleText = (TextView) v.findViewById(R.id.muscle_tv);
         mExpandable = (ExpandableLayout) v.findViewById(R.id.expandable);
         mGridView = (GridView) v.findViewById(R.id.fragment_choose_exercise_gridview);
-        mGridViewAdapter = new GridViewMusclesAdapter(getContext(), dataManager, this);
+        int height = ((HomeActivity)getActivity()).getScreenHeight();
+        mGridViewAdapter = new GridViewMusclesAdapter(height,getContext(), dataManager, this);
         mGridView.setAdapter(mGridViewAdapter);
+
+        if(exerciseProfile.getMuscle() != null){
+            mMuscleText.setText(exerciseProfile.getMuscle().getMuscle_display());
+        }
 
         if (exerciseProfile.getMuscle() != null) {
             initExerciseBeans(exerciseProfile.getMuscle());
         }
+        DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.choose_recyclerview);
+        recyclerView.addItemDecoration(itemDecor);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
         mAdapter = new ExerciseListAdapter(getContext(), this, onExerciseSetChange, exerciseBeans);
         recyclerView.setLayoutManager(lm);
@@ -188,7 +197,6 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment implements
         initExerciseBeans(mch.m);
         mAdapter.setExerciseBeans(exerciseBeans);
         mAdapter.notifyDataSetChanged();
-        mCircleMuscleIcon.setImageResource(mch.icon);
         mMuscleText.setText(mch.text);
         exerciseProfile.setMuscle(mch.m);
         onExerciseSetChange.notifyExerciseSetChange();

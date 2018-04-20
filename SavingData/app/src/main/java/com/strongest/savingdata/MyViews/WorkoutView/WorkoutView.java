@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -529,6 +530,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
 
         private void initViews(View view) {
             recycler = (RecyclerView) view.findViewById(R.id.workoutview_list_recycler);
+            DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             adapter = new MyExpandableAdapter(
                     exArray,
                     getContext(),

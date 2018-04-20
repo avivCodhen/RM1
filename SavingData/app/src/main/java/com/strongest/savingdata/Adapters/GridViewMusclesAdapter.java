@@ -23,10 +23,12 @@ public class GridViewMusclesAdapter extends BaseAdapter{
     ArrayList<GridViewMusclesAdapter.MusclesContentHolder> list;
     ArrayList<Muscle> muscles;
     private OnGridViewMuscleAdapterClickListener onGridViewMuscleAdapterClickListener;
+    private int minViewHeight;
     private Context context;
 
 
-    public GridViewMusclesAdapter(Context context, DataManager dataManager,  OnGridViewMuscleAdapterClickListener onGridViewMuscleAdapterClickListener) {
+    public GridViewMusclesAdapter(int minViewHeight, Context context, DataManager dataManager,  OnGridViewMuscleAdapterClickListener onGridViewMuscleAdapterClickListener) {
+        this.minViewHeight = minViewHeight;
         this.context = context;
         muscles = dataManager.getMuscleDataManager().getAllMuscles();
         this.onGridViewMuscleAdapterClickListener = onGridViewMuscleAdapterClickListener;
@@ -90,6 +92,7 @@ public class GridViewMusclesAdapter extends BaseAdapter{
         GridViewMusclesAdapter.ViewHolder holder = null;
         if (v == null) {
             v = li.inflate(R.layout.recycler_view_muscle_card, parent, false);
+            v.setMinimumHeight(minViewHeight/4);
             holder = new GridViewMusclesAdapter.ViewHolder(v, position);
             v.setTag(holder);
         } else {
