@@ -242,7 +242,9 @@ public class PLObject implements Aba, Serializable {
 
         public void setExercise(Beans exercise) {
             this.exercise = exercise;
-            defaultInt = exercise.getDefault_int();
+            if(exercise != null){
+                defaultInt = exercise.getDefault_int();
+            }
         }
 
         public ExerciseProfile getParent() {

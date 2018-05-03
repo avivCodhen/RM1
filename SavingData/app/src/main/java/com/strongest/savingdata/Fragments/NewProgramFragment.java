@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.R;
@@ -42,13 +43,16 @@ public class NewProgramFragment extends BaseCreateProgramFragment {
         v.findViewById(R.id.fragment_new_program_default_blank_template).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeActivity)getActivity()).programmer.setProgram(null);
+                ((HomeActivity)getActivity()).programmer.resetProgram();
                 ((HomeActivity)getActivity()).finish();
                 ((HomeActivity)getActivity()).startActivity( ((HomeActivity)getActivity()).getIntent());
                 getFragmentManager().popBackStack();
 
             }
         });
+
+        ( (TextView)v.findViewById(R.id.tool_bar_title)).setText("Create New Program");
+
 
     }
 }

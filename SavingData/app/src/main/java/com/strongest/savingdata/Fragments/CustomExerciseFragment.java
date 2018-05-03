@@ -108,7 +108,7 @@ public class CustomExerciseFragment extends Fragment implements OnGridViewMuscle
                 getFragmentManager().popBackStack();
             }
         });
-
+        ( (TextView)v.findViewById(R.id.tool_bar_title)).setText("Create Custom Exercise");
         v.findViewById(R.id.choose_change_Tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

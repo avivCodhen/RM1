@@ -4,25 +4,23 @@
     android:layout_height="50dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <ImageView
         android:id="@+id/toolbar_back"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/back_arrow_24px"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:padding="16dp"
+        android:src="@drawable/back_arrow_24px" />
     <TextView
-        android:visibility="gone"
         android:id="@+id/tool_bar_title"
         android:layout_gravity="center_vertical"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
-        android:text="My Program"
+        android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

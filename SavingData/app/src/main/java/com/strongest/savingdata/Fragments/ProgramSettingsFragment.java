@@ -71,6 +71,8 @@ public class ProgramSettingsFragment extends BaseCreateProgramFragment implement
     }
 
     private void initViews(View v) {
+        ( (TextView)v.findViewById(R.id.tool_bar_title)).setText("Advanced Program Settings");
+
         layoutManager = ((BaseActivity) getActivity()).getProgrammer().layoutManager;
         mRecyclerView = (RecyclerView) v.findViewById(R.id.program_settings_recyclerview);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
@@ -124,7 +126,7 @@ public class ProgramSettingsFragment extends BaseCreateProgramFragment implement
         v.findViewById(R.id.program_title_edit_iv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LayoutManagerAlertdialog.getInputAlertDialog(getContext(), ProgramSettingsFragment.this, editText.getText().toString());
+                LayoutManagerAlertdialog.getInputAlertDialog(getContext(), ProgramSettingsFragment.this, editText.getText().toString(), -1);
             }
         });
     }
@@ -174,7 +176,7 @@ public class ProgramSettingsFragment extends BaseCreateProgramFragment implement
     }
 
     @Override
-    public void onLMDialogOkPressed(String input) {
+    public void onLMDialogOkPressed(String input, int position) {
         editText.setText(input);
         toolbarTitle.setText(editText.getText());
         ((HomeActivity) getActivity()).programmer.getProgram().programName = editText.getText().toString();

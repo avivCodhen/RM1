@@ -196,9 +196,14 @@ public class LayoutManager {
 
     }
 
-    public void saveLayoutToDataBase(boolean update) {
-        requestSplitToLayout();
-        dataManager.getProgramDataManager().insertTables(update, this);
+    public void saveLayoutToDataBase(final boolean update) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                requestSplitToLayout();
+                dataManager.getProgramDataManager().insertTables(update, LayoutManager.this);
+            }
+        }).start();
     }
 
     public boolean readLayoutFromDataBase(String currentDbName) {
@@ -342,6 +347,9 @@ public class LayoutManager {
 
     public void updateLayout(UpdateComponents updateComponents) {
         int workoutPosition = updateComponents.getWorkoutPosition();
+        if(updateComponents.getLayout() != null){
+            getSplitRecyclerWorkouts().set(workoutPosition,updateComponents.getLayout());
+        }
         if (updateComponents != null) {
 
             switch (updateComponents.getUpdateType()) {

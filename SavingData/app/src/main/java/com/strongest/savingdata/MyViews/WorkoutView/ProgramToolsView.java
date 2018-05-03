@@ -25,6 +25,7 @@ import com.shehabic.droppy.DroppyMenuItem;
 import com.shehabic.droppy.DroppyMenuPopup;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManagerAlertdialog;
+import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
@@ -49,17 +50,10 @@ public class ProgramToolsView extends LinearLayout {
     private Context context;
 
 
-    private View openProgramToolsIV;
     private ExpandableLayout openProgramToolsEL /*, showExpandedToolsButton*/;
-    private View addExercise;
-    private View addExerciseSplit;
-    private View attachSuperset;
-    private View attachDropset;
-    private View addWorkout;
-    private View deleteWorkout;
-    private View drawDivider;
 
-    ImageView programToolsBtn;
+
+    View programToolsBtn;
 
     private RecyclerView mRecyclerview;
     private ArrayList<ProgramButton> buttons;
@@ -67,9 +61,6 @@ public class ProgramToolsView extends LinearLayout {
     private WorkoutViewModes mWorkoutViewModes;
 
     private OnProgramToolsActionListener onProgramToolsActionListener;
-    private boolean expandedToolsButtonOn;
-    private boolean programToolsOn;
-    private LayoutManager layoutManager;
 
     public ProgramToolsView(Context context) {
         super(context);
@@ -96,7 +87,7 @@ public class ProgramToolsView extends LinearLayout {
         droppyBuilder.setOnClick(new DroppyClickCallbackInterface() {
             @Override
             public void call(View v, int id) {
-                Log.d("aviv", "call: "+id);
+                Log.d("aviv", "call: " + id);
             }
         });
 
@@ -107,25 +98,26 @@ public class ProgramToolsView extends LinearLayout {
     private void initViews() {
         inflate(context, R.layout.layout_program_tools_view, this);
         initProgramToolsViews();
-       setOnTouchListener(new OnTouchListener() {
-           @Override
-           public boolean onTouch(View v, MotionEvent event) {
-               if(event.getAction() == MotionEvent.ACTION_DOWN){
-                   openProgramToolsEL.toggle();
-                   if (openProgramToolsEL.isExpanded()) {
-                       setVisibility(VISIBLE);
+        setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    openProgramToolsEL.toggle();
+                    if (openProgramToolsEL.isExpanded()) {
+                        setVisibility(VISIBLE);
 
-                   } else {
-                       setVisibility(GONE);
-                       //display(GONE);
+                    } else {
+                        setVisibility(GONE);
+                        MyJavaAnimator.rotateView(programToolsBtn, 315,360);
+                        //display(GONE);
 
-                   }
-                   return false;
-               }
+                    }
+                    return false;
+                }
 
-               return false;
-           }
-       });
+                return false;
+            }
+        });
         mWorkoutViewModes = new WorkoutViewModes();
 
     }
@@ -147,7 +139,7 @@ public class ProgramToolsView extends LinearLayout {
         buttons.add(new ProgramButton(green, NEW_EXERCISE, "New Exercise", plusIcon));
         buttons.add(new ProgramButton(green, DRAW_DIVIDER, "New Divider", plusIcon));
         buttons.add(new ProgramButton(green, NEW_WORKOUT, "New Workout", plusIcon));
-      //  buttons.add(new ProgramButton(red, DELETE_WORKOUT, "Workout", R.drawable.minus_white_24px));
+        //  buttons.add(new ProgramButton(red, DELETE_WORKOUT, "Workout", R.drawable.minus_white_24px));
         buttons.add(new ProgramButton(Color.WHITE, "advanced", "Advanced", R.drawable.settings_24px_gray));
         mRecyclerview = (RecyclerView) findViewById(R.id.program_tools_view_recyclerview);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(context);
@@ -157,21 +149,6 @@ public class ProgramToolsView extends LinearLayout {
         openProgramToolsEL = (ExpandableLayout) findViewById(R.id.workout_view_program_tools_expandable);
     }
 
-    public void toggleMode(boolean changeMode) {
-        if (changeMode) {
-            if (mWorkoutViewModes.isEdit()) {
-                layoutManager.saveLayoutToDataBase(true);
-                mWorkoutViewModes.setEdit(false);
-            } else {
-                mWorkoutViewModes.setEdit(true);
-
-            }
-        }
-
-
-    }
-
-
     public void setOnProgramToolsActionListener(OnProgramToolsActionListener onProgramToolsActionListener) {
         this.onProgramToolsActionListener = onProgramToolsActionListener;
     }
@@ -180,12 +157,13 @@ public class ProgramToolsView extends LinearLayout {
         openProgramToolsEL.toggle();
         if (openProgramToolsEL.isExpanded()) {
             setVisibility(VISIBLE);
+            MyJavaAnimator.rotateView(programToolsBtn, 360,315);
 
 
         } else {
             //setVisibility(GONE);
             display(GONE);
-
+            MyJavaAnimator.rotateView(programToolsBtn, 315,360);
         }
 
     }
@@ -194,18 +172,12 @@ public class ProgramToolsView extends LinearLayout {
     public WorkoutViewModes getmWorkoutViewModes() {
         return mWorkoutViewModes;
     }
-
-    public void setLayoutManager(LayoutManager layoutManager) {
-        this.layoutManager = layoutManager;
-    }
-
     public void setFragmentManager(android.support.v4.app.FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
 
-    public void setProgramToolsBtn(ImageView programToolsBtn) {
+    public void setProgramToolsBtn(View programToolsBtn) {
         this.programToolsBtn = programToolsBtn;
-        initDropMenu();
     }
 
     public class WorkoutViewModes {
@@ -280,11 +252,9 @@ public class ProgramToolsView extends LinearLayout {
 
                         MyUtils.Interface.disableClick(holder.itemView, 1000);
 
+                    } else {
+                        onProgramToolsActionListener.onProgramToolsAction(pBtn.type, null);
                     }
-
-                    else{
-                            onProgramToolsActionListener.onProgramToolsAction(pBtn.type, null);
-                        }
 
                 }
             });

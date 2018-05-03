@@ -3,6 +3,7 @@ package com.strongest.savingdata.MyViews.WorkoutView.Choose;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Handler;
+import android.os.Parcel;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -13,11 +14,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
+import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.strongest.savingdata.Activities.BaseActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Activities.MainActivity;
@@ -45,6 +52,8 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import br.com.mauker.materialsearchview.MaterialSearchView;
+
 public class ChooseDialogFragment extends BaseCreateProgramFragment implements View.OnClickListener,
         TabLayout.OnTabSelectedListener, MySelectorOnBeansHolderChange, OnExerciseSetChange {
 
@@ -57,13 +66,14 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     private ArrayList<PLObject> mLayout;
     private DataManager dataManager;
     public AppBarLayout appBarLayout;
- //   private NestedScrollView nestedScrollView;
-
+    //   private NestedScrollView nestedScrollView;
+    private FloatingSearchView mSearchView;
+    private ImageView searchIv;
     private PLObject plObject;
     private PLObject.ExerciseProfile exerciseProfile;
     private PLObject.SetsPLObject setsPLObject;
     private PLObject.IntraSetPLObject intraSetPLObject;
-
+    private ExerciseChooseFragment exerciseChooseFragment;
     private String tName;
     private Button backBtn;
     private ReactLayoutManager mReactLayoutManager;
@@ -72,16 +82,17 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     private int plObjectPosition;
 
-   // private RecyclerView.ViewHolder vh;
+    // private RecyclerView.ViewHolder vh;
 
     private int currentTab;
     private boolean initiated;
     private RecyclerView mRecyclerView;
     public MyExpandableAdapter myExpandableAdapter;
     private ChooseAdapter adapter;
-   // private LayoutManager.LayoutManagerHelper helper;
+    // private LayoutManager.LayoutManagerHelper helper;
     private int setPosition;
     private String title = "";
+    private View mainView;
 
 
     public static ChooseDialogFragment getInstance(OnExerciseChangeListener onExerciseChangeListener,
@@ -101,12 +112,13 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-      //      helper = ((BaseActivity) getActivity()).getProgrammer().layoutManager.mLayoutManagerHelper;
+            //      helper = ((BaseActivity) getActivity()).getProgrammer().layoutManager.mLayoutManagerHelper;
             plObject = (PLObject) getArguments().getSerializable(PLOBJECT);
             title = LayoutManagerHelper.writeTitle(plObject);
             if (plObject instanceof PLObject.ExerciseProfile) {
                 exerciseProfile = (PLObject.ExerciseProfile) plObject;
-                adapter = new ChooseAdapter(getChildFragmentManager(), ExerciseChooseFragment.newInstance(exerciseProfile, this));
+                exerciseChooseFragment = ExerciseChooseFragment.newInstance(exerciseProfile, this);
+                adapter = new ChooseAdapter(getChildFragmentManager(), exerciseChooseFragment);
 
             } else if (plObject instanceof PLObject.SetsPLObject) {
                 setsPLObject = (PLObject.SetsPLObject) plObject;
@@ -122,7 +134,6 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     }
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -135,28 +146,27 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
             }
         }, 500);
         // ((HomeActivity) getActivity()).begoneTabLayout();
-        View v = inflater.inflate(R.layout.fragment_choose, container, false);
-        v.setFocusableInTouchMode(true);
-        v.requestFocus();
-        v.setOnKeyListener( new View.OnKeyListener()
-        {
+        mainView = inflater.inflate(R.layout.fragment_choose, container, false);
+        mainView.setFocusableInTouchMode(true);
+        mainView.requestFocus();
+        mainView.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey( View v, int keyCode, KeyEvent event )
-            {
-                if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN )
-                {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (mSearchView.getVisibility() == View.VISIBLE) {
+                        mSearchView.setVisibility(View.GONE);
+                        return true;
+                    }
                     ((HomeActivity) getActivity()).workoutView.onExitChooseFragment(plObjectPosition, getArguments().getInt(OLD_POSITION));
-                    // ((HomeActivity) getActivity()).reviveTabLayout();
-
                     plObject.setEditMode(false);
                     getFragmentManager().popBackStack();
-
                     return true;
                 }
-                return false;
+                return true;
             }
-        } );
-        return v;
+
+        });
+        return mainView;
     }
 
     @Override
@@ -166,7 +176,69 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     }
 
     private void initView(View v) {
-    //    nestedScrollView = (NestedScrollView) v.findViewById(R.id.fragment_choose_nestedscrollview);
+        //    nestedScrollView = (NestedScrollView) v.findViewById(R.id.fragment_choose_nestedscrollview);
+        mSearchView = (FloatingSearchView) v.findViewById(R.id.exercise_choose_search_view);
+        searchIv = (ImageView) v.findViewById(R.id.choose_search_iv);
+        searchIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (/*exerciseChooseFragment != null &&*/ exerciseChooseFragment.getAllExercisesList() == null) {
+                    exerciseChooseFragment.initAllExercises();
+                }
+                mSearchView.setVisibility(View.VISIBLE);
+                mSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+                    @Override
+                    public void onSearchTextChanged(String oldQuery, String newQuery) {
+                        if (!oldQuery.equals("") && newQuery.equals("")) {
+                            mSearchView.clearSuggestions();
+                        } else {
+                            mSearchView.showProgress();
+                            ArrayList<ExerciseSearchSuggestion> queries = new ArrayList<>();
+                            for (int i = 0; i < exerciseChooseFragment.getAllExercisesListString().size(); i++) {
+                                innerloop:
+                                if (exerciseChooseFragment.getAllExercisesListString().get(i).getBody().toLowerCase().contains(newQuery.toLowerCase())) {
+                                    queries.add(exerciseChooseFragment.getAllExercisesListString().get(i));
+                                }
+
+                            }
+                            mSearchView.swapSuggestions(queries);
+                            mSearchView.hideProgress();
+                        }
+                    }
+                });
+            }
+        });
+
+        mSearchView.setOnBindSuggestionCallback(new SearchSuggestionsAdapter.OnBindSuggestionCallback() {
+            @Override
+            public void onBindSuggestion(View suggestionView, ImageView leftIcon, TextView textView, final SearchSuggestion item, int itemPosition) {
+                suggestionView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Beans exercise = null;
+                        for (int i = 0; i < exerciseChooseFragment.getAllExercisesList().size(); i++) {
+                            if (item.getBody().equals(exerciseChooseFragment.getAllExercisesList().get(i).getName())) {
+                                exercise = exerciseChooseFragment.getAllExercisesList().get(i);
+                            }
+                        }
+                        exerciseChooseFragment.setExercise(exercise);
+                        notifyExerciseSetChange();
+
+                        exerciseChooseFragment.exerciseBeans.clear();
+                        exerciseChooseFragment.mAdapter.notifyDataSetChanged();
+                        mSearchView.setSearchFocused(false);
+                        mSearchView.setVisibility(View.GONE);
+                        mainView.requestFocus();
+                    }
+                });
+            }
+        });
+
+        if (exerciseChooseFragment != null) {
+            searchIv.setVisibility(View.VISIBLE);
+
+        }
+
         mLayout = new ArrayList<>();
         //  makeLayout(exerciseProfile);
         dataManager = new DataManager(getContext());
@@ -185,7 +257,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         }, 200);
         myExpandableAdapter = new MyExpandableAdapter(layout, getContext(), null, null, null);
         mRecyclerView.setAdapter(myExpandableAdapter);
-      //  ((BaseActivity) getActivity()).programmer.layoutManager.mLayoutManagerHelper.setUpWithLayout(myExpandableAdapter, layout);
+        //  ((BaseActivity) getActivity()).programmer.layoutManager.mLayoutManagerHelper.setUpWithLayout(myExpandableAdapter, layout);
         // ((MyExpandableAdapter.ExerciseViewHolder) vh).card.setOnClickListener(null);
         viewPager = (ViewPager) v.findViewById(R.id.choose_dialog_viewpager);
         viewPager.setOffscreenPageLimit(2);
@@ -291,11 +363,12 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     }
 
 
-
     @Override
     public void notifyExerciseSetChange() {
         myExpandableAdapter.notifyItemChanged(0);
     }
+
+
     /*  @Subscribe
     public void updateBeansHolder(double weight, Beans method) {
         this.newBeansHolder.setMethod(method);
@@ -312,8 +385,8 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     }*/
 }
 
-   /* private boolean validate() {
-        *//*if (doYouHaveWeapon() && checkedItems[0] == -1) {
+/* private boolean validate() {
+ *//*if (doYouHaveWeapon() && checkedItems[0] == -1) {
             if (checkedItems[1] != -1 || checkedItems[2] != -1) {
                 Toast.makeText(getContext(), getContext().getResources().getString(R.string.toast_noLevelChoose),
                         Toast.LENGTH_SHORT).show();
@@ -518,4 +591,4 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         rg3 = (RadioGroup) v.findViewById(R.id.choose_fragment_rG3);
 
     }*//*
-*/
+ */

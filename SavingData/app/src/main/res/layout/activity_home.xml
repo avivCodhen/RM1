@@ -52,14 +52,14 @@
 -->
                 <android.support.design.widget.TabLayout
                     android:layout_gravity="bottom"
-
+                    app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
                     android:id="@+id/activity_home_tablayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorAccent"
-                    app:tabIndicatorColor="@color/colorGreenTry"
+                    app:tabIndicatorColor="#5B57AB"
                     app:tabMode="scrollable"
-                    app:tabIndicatorHeight="2dp"
+                    app:tabIndicatorHeight="3dp"
                     app:tabSelectedTextColor="@color/colorPrimary"
                     app:tabTextColor="@color/background_color"></android.support.design.widget.TabLayout>
 
@@ -132,6 +132,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:layout_marginRight="30dp"
+        android:background="@color/colorPrimary"
         app:menu="@menu/menu_main">
 
     </android.support.design.widget.NavigationView>

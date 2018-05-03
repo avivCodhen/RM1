@@ -18,6 +18,7 @@
            android:text="Current Program:"
            android:layout_width="match_parent"
            android:layout_height="wrap_content" />
+        <include layout="@layout/layout_bottom_border"></include>
         <include layout="@layout/recycler_view_program_layout_leftmargin"
             android:id="@+id/my_program_view"></include>
 
@@ -27,6 +28,8 @@
             android:text="Other Programs:"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <include layout="@layout/layout_bottom_border"></include>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fragment_my_program_recyclerview"
             android:layout_width="match_parent"

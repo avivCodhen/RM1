@@ -6,7 +6,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <include layout="@layout/layout_bottom_border"></include>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="Repetitions Used"
             android:textColor="@color/text_gray"
             android:textSize="12sp" />
@@ -168,6 +168,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="Rest Used"
             android:textColor="@color/text_gray"
             android:textSize="12sp" />

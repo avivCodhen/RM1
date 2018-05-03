@@ -7,5 +7,5 @@ package com.strongest.savingdata.AlgorithmLayout;
 public interface OnLayoutManagerDialogPress {
 
     void onLMDialogOkPressed(int viewHolderPosition);
-    void  onLMDialogOkPressed(String input);
+    void  onLMDialogOkPressed(String input, int position);
 }

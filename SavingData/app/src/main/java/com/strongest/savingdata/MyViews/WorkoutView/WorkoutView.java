@@ -223,10 +223,11 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
         return mAdapter;
     }
 
-    public void setProgramToolsView(ProgramToolsView programToolsView) {
+    public void setProgramToolsView(ProgramToolsView programToolsView, View button) {
         WorkoutView.programToolsView = programToolsView;
         programToolsView.setFragmentManager(fm);
         programToolsView.setOnProgramToolsActionListener(this);
+        programToolsView.setProgramToolsBtn(button);
     }
 
     public void updateProgramLayoutManager(LayoutManager layoutManager) {
@@ -351,14 +352,14 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
     @Override
     public void onExitChooseFragment(final int position, int oldPosition) {
         WorkoutViewFragment f = workoutViewFragments.get(mViewPager.getCurrentItem());
+        f.adapter.notifyItemRangeChanged(0, f.exArray.size() + 1);
         if (f.exArray.get(position + 1) instanceof PLObject.AddExercise) {
             f.getAdapter().detailCollapse(position);
             f.scrollToPosition(oldPosition, true, false);
         }
         layoutManager.saveLayoutToDataBase(true);
-        f.adapter.notifyItemRangeChanged(0, f.exArray.size() + 1);
         //  f.adapter.notifyItemRangeChanged(vh.getAdapterPosition(), layoutManagerHelper.countExerciseRangeChange(vh.getAdapterPosition(), f.exArray));
-        f.recycler.findViewHolderForAdapterPosition(position).itemView.setAlpha(1f);
+       // f.recycler.findViewHolderForAdapterPosition(position).itemView.setAlpha(1f);
 
     }
 
@@ -674,6 +675,11 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
         }
 
         @Override
+        public void saveProgram() {
+            layoutManager.saveLayoutToDataBase(true);
+        }
+
+        @Override
         public void duplicateExercise(RecyclerView.ViewHolder vh) {
             int position = vh.getAdapterPosition();
             ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
@@ -712,6 +718,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
             }
             updateComponents.setToPosition(toPosition);
             updateComponents.setPlObject(newCopy);
+            updateComponents.setLayout(exArray);
             newCopy.setExercise(ep.getExercise());
             newCopy.setInnerType(ep.getInnerType());
             exArray = onUpdateLayoutStatsListener.updateLayout(updateComponents);
@@ -943,6 +950,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
             LayoutManager.UpdateComponents updateComponents = new LayoutManager.UpdateComponents(DELETE_EXERCISE);
             updateComponents.setPlObject(ep);
             updateComponents.setRemovePosition(position);
+            updateComponents.setLayout(exArray);
             exArray = onUpdateLayoutStatsListener.updateLayout(updateComponents);
             adapter.setExArray(exArray);
             adapter.notifyItemRangeRemoved(position, ep.getExerciseProfiles().size() + 1);
@@ -1054,7 +1062,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
                     if (!ep.isExpand()) {
                         expandExercise(position);
                     }
-                    position += (LayoutManagerHelper.calcBlockLength(ep)-1);
+                    position += (LayoutManagerHelper.calcBlockLength(ep));
                     returnToMenu = true;
                     setsPLObject = ep.getSets().get(ep.getSets().size()-1);
                     if(setsPLObject.getIntraSets().size() > 0){
@@ -1185,7 +1193,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
 
         @Override
         public void onSwapExercise(int fromPosition, int toPosition) {
-
+            layoutManager.saveLayoutToDataBase(true);
         }
 
         @Override
@@ -1194,7 +1202,7 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
         }
 
         @Override
-        public void onLMDialogOkPressed(String input) {
+        public void onLMDialogOkPressed(String input, int position) {
 
         }
     }

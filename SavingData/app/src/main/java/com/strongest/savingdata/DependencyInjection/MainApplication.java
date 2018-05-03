@@ -6,6 +6,9 @@ import com.strongest.savingdata.Activities.OnDoneListener;
 import com.strongest.savingdata.dagger.AppComponent;
 import com.strongest.savingdata.dagger.AppModule;
 
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
 
 
 /**
@@ -14,6 +17,9 @@ import com.strongest.savingdata.dagger.AppModule;
 
 
 //@Component(modules = { CreateProgramModule.class, })
+
+@ReportsCrashes(
+        mailTo = "kaazz931@gmail.com")
 public class MainApplication extends Application{
 
     MainAppComponent appComponent;
@@ -21,6 +27,7 @@ public class MainApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+        ACRA.init(this);
         appComponent = DaggerMainAppComponent.builder()
                 .createProgramModule(new CreateProgramModule(this)).build();
         appComponent.inject(this);

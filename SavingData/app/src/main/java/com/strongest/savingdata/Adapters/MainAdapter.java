@@ -109,7 +109,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LayoutManagerAlertdialog.getInputAlertDialog(context, WorkoutViewHolder.this, editText.getText().toString());
+                    LayoutManagerAlertdialog.getInputAlertDialog(context, WorkoutViewHolder.this, editText.getText().toString(), getAdapterPosition());
                 }
             });
         }
@@ -123,7 +123,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
 
         @Override
-        public void onLMDialogOkPressed(String input) {
+        public void onLMDialogOkPressed(String input, int position) {
             editText.setText(input);
             ((PLObject.WorkoutPLObject) list.get(getAdapterPosition())).setWorkoutName(input);
             onProgramChangeListener.onEdit(getAdapterPosition());

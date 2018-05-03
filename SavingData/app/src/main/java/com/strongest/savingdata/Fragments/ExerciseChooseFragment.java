@@ -29,6 +29,7 @@ import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
 import com.strongest.savingdata.Database.Managers.DataManager;
+import com.strongest.savingdata.MyViews.WorkoutView.Choose.ExerciseSearchSuggestion;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.OnExerciseSetChange;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
@@ -37,6 +38,7 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
 
+import br.com.mauker.materialsearchview.MaterialSearchView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.widget.GridLayout.HORIZONTAL;
@@ -46,22 +48,24 @@ import static android.widget.GridLayout.HORIZONTAL;
  */
 
 public class ExerciseChooseFragment extends BaseCreateProgramFragment implements
-        OnExerciseListAdapterClickListener, OnGridViewMuscleAdapterClickListener{
+        OnExerciseListAdapterClickListener, OnGridViewMuscleAdapterClickListener {
 
     private OnExerciseSetChange onExerciseSetChange;
-    private TextView mMuscleText;
-
-    private ExerciseListAdapter mAdapter;
+    private TextView mMuscleText, mChangeMuscleTV, mCancelMuscleTV;
+    public ExerciseListAdapter mAdapter;
     public ExpandableLayout mExpandable;
     private GridView mGridView;
     private GridViewMusclesAdapter mGridViewAdapter;
     private RecyclerView recyclerView;
     private PLObject.ExerciseProfile exerciseProfile;
     public static final String EXERCISE_PROFILE = "exercise_profile";
-    private ArrayList<Beans> exerciseBeans = new ArrayList<>();
+    public ArrayList<Beans> exerciseBeans = new ArrayList<>();
     private CheckBox commentCB;
     private EditText commentET;
     private DataManager dataManager;
+    private int selectedIndex = -1;
+    private ArrayList<Beans> allExercisesList;
+    private ArrayList<ExerciseSearchSuggestion> allExercisesListString;
     //private LayoutManager.LayoutManagerHelper helper;
 
     private ReactLayoutManager reactLayoutManager;
@@ -97,16 +101,17 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment implements
 
     private void initViews(View v) {
         dataManager = ((HomeActivity) getActivity()).dataManager;
+        initAllExercises();
         //    helper =  ((BaseActivity) getActivity()).programmer.layoutManager.mLayoutManagerHelper;
         //  reactLayoutManager = ((ChooseContainerFragment) getParentFragment()).getReactLayoutManager();
         mMuscleText = (TextView) v.findViewById(R.id.muscle_tv);
         mExpandable = (ExpandableLayout) v.findViewById(R.id.expandable);
         mGridView = (GridView) v.findViewById(R.id.fragment_choose_exercise_gridview);
-        int height = ((HomeActivity)getActivity()).getScreenHeight();
-        mGridViewAdapter = new GridViewMusclesAdapter(height,getContext(), dataManager, this);
+        int height = ((HomeActivity) getActivity()).getScreenHeight();
+        mGridViewAdapter = new GridViewMusclesAdapter(height, getContext(), dataManager, this);
         mGridView.setAdapter(mGridViewAdapter);
 
-        if(exerciseProfile.getMuscle() != null){
+        if (exerciseProfile.getMuscle() != null) {
             mMuscleText.setText(exerciseProfile.getMuscle().getMuscle_display());
         }
 
@@ -118,25 +123,65 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment implements
         recyclerView = (RecyclerView) v.findViewById(R.id.choose_recyclerview);
         recyclerView.addItemDecoration(itemDecor);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
-        mAdapter = new ExerciseListAdapter(getContext(), this, onExerciseSetChange, exerciseBeans);
+        mAdapter = new ExerciseListAdapter(getSelectedIndex(), getContext(), this, onExerciseSetChange, exerciseBeans);
         recyclerView.setLayoutManager(lm);
         recyclerView.setAdapter(mAdapter);
         //      ChooseContainerFragment chooseContainerFragment = (ChooseContainerFragment) getParentFragment();
 //        ChooseDialogFragment chooseDialogFragment = (ChooseDialogFragment) chooseContainerFragment.getParentFragment();
         //  ViewCompat.setNestedScrollingEnabled(((ChooseDialogFragment) getParentFragment()).getNestedScrollView(), false);
-        v.findViewById(R.id.choose_change_Tv).setOnClickListener(new View.OnClickListener() {
+        mChangeMuscleTV = (TextView) v.findViewById(R.id.choose_change_Tv);
+        mCancelMuscleTV = (TextView) v.findViewById(R.id.choose_cancel_Tv);
+        mChangeMuscleTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mExpandable.toggle();
+                mChangeMuscleTV.setVisibility(View.GONE);
+                mCancelMuscleTV.setVisibility(View.VISIBLE);
+            }
+        });
+        mCancelMuscleTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCancelMuscleTV.setVisibility(View.GONE);
+                mChangeMuscleTV.setVisibility(View.VISIBLE);
                 mExpandable.toggle();
             }
         });
         v.findViewById(R.id.choose_change_user_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            showUserCustomExercises();
+                showUserCustomExercises();
             }
         });
         initComment(v);
+    }
+
+    public void initAllExercises() {
+        allExercisesList = new ArrayList<>();
+        allExercisesListString = new ArrayList<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                allExercisesList.addAll(dataManager.getExerciseDataManager().getAllExercises());
+                for (int i = 0; i < allExercisesList.size(); i++) {
+                    allExercisesListString.add(new ExerciseSearchSuggestion(allExercisesList.get(i).getName()));
+                }
+            }
+        }).start();
+
+    }
+
+    private int getSelectedIndex() {
+        if (exerciseProfile.getExercise() != null) {
+            for (int i = 0; i < exerciseBeans.size(); i++) {
+                if (exerciseProfile.getExercise().getName().equals(exerciseBeans.get(i).getName())) {
+                    selectedIndex = i;
+                    return selectedIndex;
+                }
+            }
+        }
+        selectedIndex = -1;
+        return selectedIndex;
     }
 
     private void initComment(View v) {
@@ -187,6 +232,8 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment implements
     private void showUserCustomExercises() {
         exerciseBeans = (ArrayList<Beans>) dataManager.getExerciseDataManager().readByTable(DBExercisesHelper.TABLE_EXERCISES_CUSTOM);
         mAdapter.setExerciseBeans(exerciseBeans);
+
+
         collapseExpandableLayout();
         mAdapter.notifyDataSetChanged();
     }
@@ -194,11 +241,16 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment implements
     @Override
     public void onMuscleChange(GridViewMusclesAdapter.MusclesContentHolder mch) {
         //make choosereact change the exerciseprofile muscle
+        mCancelMuscleTV.setVisibility(View.GONE);
+        mChangeMuscleTV.setVisibility(View.VISIBLE);
         initExerciseBeans(mch.m);
         mAdapter.setExerciseBeans(exerciseBeans);
-        mAdapter.notifyDataSetChanged();
         mMuscleText.setText(mch.text);
         exerciseProfile.setMuscle(mch.m);
+        exerciseProfile.setExercise(null);
+        mAdapter.setSelectedIndex(-1);
+        mAdapter.notifyDataSetChanged();
+
         onExerciseSetChange.notifyExerciseSetChange();
         //LayoutManagerHelper.onChange(exerciseProfile);
     }
@@ -215,13 +267,25 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment implements
     @Override
     public void setExercise(Beans beans) {
         exerciseProfile.setExercise(beans);
-        if(beans.getDefault_int() == 1){
+        if(beans != null)
             exerciseProfile.setMuscle(beans.getMuscle());
-        }
+        
+    }
+
+    public ArrayList<Beans> getAllExercisesList() {
+        return allExercisesList;
+    }
+
+    public void setAllExercisesList(ArrayList<Beans> allExercisesList) {
+        this.allExercisesList = allExercisesList;
+    }
+
+    public ArrayList<ExerciseSearchSuggestion> getAllExercisesListString() {
+        return allExercisesListString;
     }
 
 
-   // class GridViewAdapter extends BaseAdapter {
+    // class GridViewAdapter extends BaseAdapter {
 
      /*   ArrayList<MusclesContentHolder> list;
         ArrayList<Muscle> muscles;
@@ -307,5 +371,5 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment implements
 
             return v;
         }*/
-  //  }
+    //  }
 }

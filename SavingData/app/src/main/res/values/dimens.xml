@@ -19,4 +19,5 @@
     <dimen name="muscle_icon_size">42dp</dimen>
     <dimen name="program_menu_text_size">14dp</dimen>
     <dimen name="sets_choose_textview_size">43dp</dimen>
+    <dimen name="slides_right_left_in_out_duration">200</dimen>
 </resources>

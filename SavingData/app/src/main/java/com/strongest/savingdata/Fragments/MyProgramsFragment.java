@@ -57,6 +57,7 @@ public class MyProgramsFragment extends BaseCreateProgramFragment{
         MyProgramsAdapter adapter = new MyProgramsAdapter();
         recyclerView.setLayoutManager(lm);
         recyclerView.setAdapter(adapter);
+        ( (TextView)v.findViewById(R.id.tool_bar_title)).setText(" My Programs");
 
        initStaticViews(v);
 

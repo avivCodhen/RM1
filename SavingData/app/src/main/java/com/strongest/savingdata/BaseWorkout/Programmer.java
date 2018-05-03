@@ -115,4 +115,8 @@ public class Programmer implements Serializable {
         this.program = program;
         dataManager.getPrefsEditor().putString(HomeActivity.CURRENT_PROGRAM_DBNAME, program.getDbName()).commit();
     }
+
+    public void resetProgram(){
+        this.program = null;
+    }
 }

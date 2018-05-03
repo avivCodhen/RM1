@@ -46,6 +46,7 @@ import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateP
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static android.view.View.TEXT_ALIGNMENT_CENTER;
 import static android.widget.GridLayout.HORIZONTAL;
@@ -149,8 +150,8 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
         mRestChooseView.setUpWithManager(numberChooseManager);
         mRangeNumberChoose = (RangeNumberChooseView) v.findViewById(R.id.fragment_sets_choose_rangenumberview);
         mRangeNumberChoose.setUpWithNumberChooseManager(numberChooseManager);
-        RecyclerView.LayoutManager lmRep = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, true);
-        RecyclerView.LayoutManager lmRest = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, true);
+        RecyclerView.LayoutManager lmRep = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView.LayoutManager lmRest = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
         mRepRecycler = (RecyclerView) v.findViewById(R.id.fragment_sets_choose_recycler_repetitions);
         mRestRecycler = (RecyclerView) v.findViewById(R.id.fragment_sets_choose_recycler_rest);
@@ -161,6 +162,8 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
         listRep = dataManager.getExerciseDataManager().readListByTable(TABLE_REPS);
 
         listRest = dataManager.getExerciseDataManager().readListByTable(DBExercisesHelper.TABLE_REST);
+        Collections.reverse(listRest);
+        Collections.reverse(listRest);
         mRepAdapter = new SingleChoiceAdapter(getContext(), listRep, this, "rep");
         mRestAdapter = new SingleChoiceAdapter(getContext(), listRest, this, "rest");
         mRestRecycler.setLayoutManager(lmRep);

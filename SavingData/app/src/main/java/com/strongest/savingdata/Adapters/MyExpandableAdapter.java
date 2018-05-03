@@ -331,25 +331,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void configureViewHolder2(final MuscleViewHolder vh2, final int position) {
         final BodyText bodyText = (BodyText) exArray.get(position);
         vh2.bodyTv.setText(bodyText.getTitle());
-
-
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                bodyText.setTitle(vh2.bodyTv.getText().toString());
-
-            }
-        };
-
+        ((BodyText) exArray.get(position)).setTitle(vh2.bodyTv.getText().toString());
         /*vh2.bodyTv.addTextChangedListener(textWatcher);
         vh2.easyFlipView.setOnFlipListener(new EasyFlipView.OnFlipAnimationListener() {
             @Override
@@ -558,7 +540,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (exerciseProfile.getExercise() != null) {
             vh3.name.setText(exerciseProfile.getExercise().getName());
         } else {
-            vh3.name.setText("Configurate New Exercise");
+            vh3.name.setText("New Exercise");
         }
 
         if (exerciseProfile.getInnerType() == WorkoutLayoutTypes.IntraExerciseProfile && exerciseProfile.getParent() != null) {
@@ -663,12 +645,8 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void detailCollapse(int position) {
-        PLObject.AddExercise a = new PLObject.AddExercise(null);
-        //ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
         exArray.remove(position + 1);
         notifyItemRemoved(position + 1);
-        // onExerciseProfileEditClick.onEditExerciseClick(false, vh, position, exArray.get(position));
-        //  scrollListener.scrollToPosition(position, true, false);
     }
 
 
@@ -780,6 +758,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             LayoutManagerHelper.reArrangeFathers(exArray);
             notifyItemRangeChanged(vh.getAdapterPosition(), 3);
             onWorkoutViewInterfaceClicksListener.onLongClickHideMenu();
+            onWorkoutViewInterfaceClicksListener.onSwapExercise(-1,-1);
             //helper.reArrangeFathers(vh.getAdapterPosition(), exArray);
         }
     }
@@ -805,7 +784,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LayoutManagerAlertdialog.getInputAlertDialog(context, MuscleViewHolder.this, bodyTv.getText().toString());
+                    LayoutManagerAlertdialog.getInputAlertDialog(context, MuscleViewHolder.this, bodyTv.getText().toString(), getAdapterPosition());
                 }
             });
 
@@ -825,8 +804,10 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         @Override
-        public void onLMDialogOkPressed(String input) {
+        public void onLMDialogOkPressed(String input, int position) {
             bodyTv.setText(input);
+            ((BodyText) exArray.get(position)).setTitle(input);
+            onWorkoutViewInterfaceClicksListener.saveProgram();
 
         }
     }

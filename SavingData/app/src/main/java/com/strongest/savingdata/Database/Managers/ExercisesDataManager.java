@@ -50,13 +50,18 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.PYRAM
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.P_ANTERIOR;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.P_POSTERIOR;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.SETS;
+import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_ARMS;
+import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_BACK;
+import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_CHEST;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_EXERCISES_CUSTOM;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_EXERCISES_GENERATOR;
+import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_LEGS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_METHODS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_REPS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_REPS_GENERATOR;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_REST;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_SETS;
+import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_SHOULDERS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TYPE;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.WEIGHT;
 
@@ -66,6 +71,14 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.WEIGH
 
 public class ExercisesDataManager extends DataManager implements DataManagerListener<Beans> {
 
+    public static final String[] musclesTablesList = {
+            TABLE_LEGS,
+            TABLE_CHEST,
+            TABLE_SHOULDERS,
+            TABLE_CHEST,
+            TABLE_BACK,
+            TABLE_ARMS
+    };
     private SQLiteDatabase db;
     private DataManager parent;
     private Context context;
@@ -121,17 +134,26 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
         db.delete("SQLITE_SEQUENCE", "NAME = ?", new String[]{table});
     }
 
-    public ArrayList<String> readListByTable(String table){
+    public ArrayList<Beans> getAllExercises() {
+        ArrayList<Beans> list = new ArrayList<>();
+
+        for (String s : musclesTablesList) {
+            list.addAll(readByTable(s));
+        }
+
+        return list;
+    }
+
+    public ArrayList<String> readListByTable(String table) {
         ArrayList<String> arr = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ table, null);
-        if(cursor != null && cursor.moveToFirst()){
-            do{
-              arr.add(cursor.getString(cursor.getColumnIndex(NAME)));
-            }while ((cursor.moveToNext()));
+        Cursor cursor = db.rawQuery("SELECT * FROM " + table, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                arr.add(cursor.getString(cursor.getColumnIndex(NAME)));
+            } while ((cursor.moveToNext()));
         }
         return arr;
     }
-
 
 
     public Collection<Beans> readByBParams(String tableName, BParams... p) {
@@ -154,7 +176,7 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
         return arr.get(0);
     }
 
-    public void removeByName(String table, String name){
+    public void removeByName(String table, String name) {
         String nameWhere = "name=?";
         db.delete(table, nameWhere, new String[]{name});
     }
@@ -163,6 +185,7 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
         String idWhere = "id=?";
         db.delete(table, idWhere, new String[]{String.valueOf(id)});
     }
+
     @Deprecated
     public Beans fetchById(String table, int id) {
         ArrayList<Beans> arr = (ArrayList<Beans>) readByConstraint(table, new String[]{ID},
@@ -180,7 +203,6 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
     public Collection<Beans> readByString(String tableName, String s, int c) {
         return readByConstraint(tableName, new String[]{s}, new String[]{String.valueOf(c)});
     }
-
 
 
     public void refreshGeneratorTable() {
@@ -263,8 +285,8 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
             sql += where;
             for (int i = 0; i < constraints.length; i++) {
                 if (constraints[i].equals(MUSCLES)) {
-                    sql += constraints[i]+ like + "?";
-                    values[i] = "%"+values[i]+"%";
+                    sql += constraints[i] + like + "?";
+                    values[i] = "%" + values[i] + "%";
                 } else {
                     sql += constraints[i] + w;
 
@@ -376,7 +398,7 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
         }
         boolean flag = false;
         boolean custom = table.equals(TABLE_EXERCISES_CUSTOM);
-        if(custom){
+        if (custom) {
             v.put(NAME, e.getName());
             v.put(MUSCLE, e.getPrimaryMuscle());
             v.put(DEFAULT_INT, e.getDefault_int());
@@ -529,11 +551,11 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
                 boolean flag = false;
                 boolean custom = table.equals(TABLE_EXERCISES_CUSTOM);
                 for (String t : helper.muscleTables) {
-                    if (t.equals(table) || table.equals(TABLE_EXERCISES_GENERATOR)){
+                    if (t.equals(table) || table.equals(TABLE_EXERCISES_GENERATOR)) {
                         flag = true;
                     }
                 }
-                if(custom){
+                if (custom) {
                     String name = c.getString(c.getColumnIndex(NAME));
                     String primaryMuscle = c.getString((c.getColumnIndex(MUSCLE)));
                     Muscle m = Muscle.createMuscle(parent.getMuscleDataManager(), primaryMuscle);

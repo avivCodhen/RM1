@@ -2,7 +2,8 @@
 
 <RelativeLayout android:layout_width="90dp"
     android:layout_height="90dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
 <LinearLayout android:layout_height="118dp"
@@ -11,12 +12,15 @@
     android:orientation="vertical"
     android:gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_gravity="center_horizontal"
         android:src="@drawable/muscle_legs"
         android:layout_width="@dimen/muscle_icon_size"
         android:layout_height="@dimen/muscle_icon_size"
         android:id="@+id/muscle_card_civ"
+        app:civ_border_color="@color/text_gray"
+        app:civ_border_width="1dp"
         />
 
     <TextView

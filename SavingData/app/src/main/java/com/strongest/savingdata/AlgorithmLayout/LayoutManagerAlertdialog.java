@@ -29,7 +29,7 @@ public class LayoutManagerAlertdialog {
                 }).setNegativeButton("No", null).show();
     }
 
-    public static AlertDialog getInputAlertDialog(Context context, final OnLayoutManagerDialogPress callback, final String text) {
+    public static AlertDialog getInputAlertDialog(Context context, final OnLayoutManagerDialogPress callback, final String text, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final EditText input = new EditText(context);
         input.setHint(text);
@@ -41,7 +41,7 @@ public class LayoutManagerAlertdialog {
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        callback.onLMDialogOkPressed(input.getText().toString());
+                        callback.onLMDialogOkPressed(input.getText().toString(), position);
 
                     }
                 }).setNegativeButton("Cancel", null).show();

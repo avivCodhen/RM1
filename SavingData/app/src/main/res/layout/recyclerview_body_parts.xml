@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/body_parts_linear_layout"
     android:layout_width="match_parent"
-    android:layout_height="35dp"
+    android:layout_height="40dp"
     android:orientation="vertical"
     android:focusableInTouchMode="true"
     android:background="#EEEEEE"
+    android:layout_marginBottom="1dp"
 
     >
 
@@ -29,10 +30,10 @@
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
         android:padding="7dp"
-        android:layout_gravity="center_vertical"
-        android:alpha="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="39dp"
+
+        >
         <View
             android:id="@+id/dummy"
             android:layout_width="1dp"
@@ -41,6 +42,7 @@
             android:focusableInTouchMode="true" />
 
         <EditText
+            android:layout_centerVertical="true"
             android:textColor="@color/textGrayColor"
             android:enabled="false"
             android:maxLines="1"
@@ -66,7 +68,7 @@
 
             <ImageView
                 android:id="@+id/body_view_edit_iv"
-                android:alpha="0.6"
+                android:alpha="0.4"
                 android:paddingRight="10dp"
                 android:paddingLeft="10dp"
                 android:paddingTop="2dp"
@@ -77,7 +79,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
 
-    </RelativeLayout>
 
+    </RelativeLayout>
+    <include layout="@layout/layout_bottom_border"></include>
 
 </LinearLayout>

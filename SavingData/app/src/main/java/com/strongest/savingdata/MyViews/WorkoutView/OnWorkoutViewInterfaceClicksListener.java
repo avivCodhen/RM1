@@ -12,6 +12,8 @@ import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 
 public interface OnWorkoutViewInterfaceClicksListener {
 
+    void saveProgram();
+
     void duplicateExercise(RecyclerView.ViewHolder vh);
 
     void duplicateItem(RecyclerView.ViewHolder vh, WorkoutLayoutTypes type);

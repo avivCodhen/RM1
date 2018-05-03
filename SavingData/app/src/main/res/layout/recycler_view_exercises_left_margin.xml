@@ -95,9 +95,11 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_gravity="center"
                 android:id="@+id/ex1"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:elevation="5dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                app:civ_border_color="#A2A2A2"
+                android:padding="1dp"
+                app:civ_border_width="1dp"
                 app:civ_circle_background_color="@color/colorPrimary"
 
 
@@ -142,7 +144,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="70dp"
-            android:layout_marginTop="29dp"
+            android:layout_marginTop="27dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="Barbell Close-Grip Bench Press"

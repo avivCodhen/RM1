@@ -28,6 +28,10 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     public static final String EXERCISE = "exercise", SET = "set",
             INTRA_SET = "intra_set", INTRA_SUPERSET = "intra_superset", INTRA_EXERCISE = "intra_exercise";
 
+    public boolean isOn() {
+        return isOn;
+    }
+
     public enum Action {
         Delete, Back, Superset, Intraset, Set, Duplicate;
     }
@@ -43,6 +47,7 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     private int viewPosition;
     private OnLongClickMenuActionListener listener;
     private boolean deleteMode = false;
+    private boolean isOn;
 
     public LongClickMenuView(Context context) {
         super(context);
@@ -114,6 +119,7 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
         if (currentView != null) {
             onHideDragLayout();
         }
+        isOn = true;
         this.deleteMode = deleteMode;
         currentType = type;
         currentView = vh.dragLayout;
@@ -177,6 +183,7 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
             if(currentVH instanceof MyExpandableAdapter.ExerciseViewHolder)
             ((MyExpandableAdapter.ExerciseViewHolder) currentVH).flipView.flipTheView();
         }
+        isOn = false;
     }
 
     public void onHideMenu() {
@@ -219,6 +226,7 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
                     currentVH = null;
                     deleteMode = false;
                     enableDisableBtns();
+                    isOn = false;
                 }
 
                 @Override

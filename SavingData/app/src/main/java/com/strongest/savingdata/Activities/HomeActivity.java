@@ -81,7 +81,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     private ActionBarDrawerToggle mToggle;
     private NavigationView mNavigationView;
     private LongClickMenuView longClickMenuView;
-    private ImageView programToolsBtn;
+    private View programToolsBtn;
     /*@Inject
     public Programmer programmer;
     @Inject
@@ -173,7 +173,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         workoutView.instantiate(this, getSupportFragmentManager(), programmer.getLayoutManager(), viewPager, tabLayout);
         workoutView.setmAppBarLayout(mAppBarLayout);
         workoutView.setLongClickMenu(longClickMenuView);
-        workoutView.setProgramToolsView(programToolsView);
+        workoutView.setProgramToolsView(programToolsView, programToolsBtn);
         toolbar.setTitle(programmer.getProgram().programName);
 
         if (getSupportActionBar() != null) {
@@ -218,15 +218,16 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onBackPressed() {
-
+        if(longClickMenuView != null && longClickMenuView.isOn()){
+            longClickMenuView.onHideMenu();
+            return;
+        }
         super.onBackPressed();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.aviv_menu_program, menu);
-        // programToolsBtn = (ImageView) menu.findItem(R.id.edit_menu);
-        //programToolsView.setProgramToolsBtn(programToolsBtn);
         return true;
     }
 
@@ -238,6 +239,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 
         switch (item.getItemId()) {
             case R.id.edit_menu:
+                programToolsBtn = findViewById(R.id.edit_menu);
+                programToolsView.setProgramToolsBtn(programToolsBtn);
                 workoutView.enterEditMode();
                 return true;
 

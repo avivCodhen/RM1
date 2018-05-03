@@ -21,7 +21,6 @@ class ChooseAdapter extends FragmentPagerAdapter {
     private final BaseCreateProgramFragment fragment;
     //   private final ArrayList<PLObject> layout;
     private int updatedPosition = -1;
-    private ArrayList<BaseCreateProgramFragment> fragments = new ArrayList<>();
 
     public ChooseAdapter(
             FragmentManager fm,

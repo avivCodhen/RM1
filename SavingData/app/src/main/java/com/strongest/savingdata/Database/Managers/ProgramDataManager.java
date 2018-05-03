@@ -294,12 +294,17 @@ public class ProgramDataManager extends DataManager {
         String sql = "SELECT * FROM " + TABLE_PROGRAM_REFERENCE + " WHERE " + LAYOUT_NAME + "=?";
         Cursor c = getDb(programHelper).rawQuery(sql, new String[]{currentDbName});
         if (c != null && c.moveToFirst()) {
-            return new Program(
-                    c.getString(c.getColumnIndex(PROGRAM_NAME)),
-                    c.getString(c.getColumnIndex(PROGRAM_TIME)),
-                    c.getString(c.getColumnIndex(DATE_CREATED)),
-                    currentDbName
-            );
+            try{
+                return new Program(
+                        c.getString(c.getColumnIndex(PROGRAM_NAME)),
+                        c.getString(c.getColumnIndex(PROGRAM_TIME)),
+                        c.getString(c.getColumnIndex(DATE_CREATED)),
+                        currentDbName
+                );
+            }catch (Exception E){
+                Log.d("aviv", "readProgramTable: "+E.toString());
+            }
+
         }
         return null;
 
