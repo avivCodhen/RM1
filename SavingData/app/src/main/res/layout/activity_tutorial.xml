@@ -1,0 +1,30 @@
+<LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorAccent"
+    android:orientation="vertical">
+
+    <TextView
+    android:textColor="@color/colorPrimary"
+    android:padding="5dp"
+    android:textSize="44sp"
+    android:gravity="center"
+    android:text="rm1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+    <TextView
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:text="Innovative app for building fitness programs"
+        android:textStyle="italic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+   <com.strongest.savingdata.MyViews.MyViewPager
+       android:id="@+id/activity_tutorial_viewpager"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"></com.strongest.savingdata.MyViews.MyViewPager>
+
+
+</LinearLayout>

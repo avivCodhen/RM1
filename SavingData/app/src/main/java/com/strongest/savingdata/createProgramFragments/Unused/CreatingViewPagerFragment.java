@@ -20,6 +20,7 @@ import com.strongest.savingdata.createProgramFragments.CreateProgram.CreateFragm
  * Created by Cohen on 5/5/2017.
  */
 
+@Deprecated
 public class CreatingViewPagerFragment extends BaseCreateProgramFragment {
 
     private Menu menu;
@@ -65,7 +66,7 @@ public class CreatingViewPagerFragment extends BaseCreateProgramFragment {
 
         ViewPager viewPager = (ViewPager) v.findViewById(R.id.createviewpager_fragment_viewPager);
         TabLayout tabLayout = (TabLayout) v.findViewById(R.id.createviewpager_fragment_tabDots);
-        SwipeAdapter adapter = new SwipeAdapter(getContext(), images, info, imageView, textView);
+        SwipeAdapter adapter = new SwipeAdapter(getContext(), images, info);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager, true);
     }

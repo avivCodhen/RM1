@@ -255,21 +255,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    public void attachAI(ArtificialIntelligenceObserver o) {
-
-    }
-
-    @Override
-    public void dettachAI(ArtificialIntelligenceObserver o) {
-
-    }
-
-    @Override
-    public void notifyAI(int workoutPosition) {
-
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_create_program:

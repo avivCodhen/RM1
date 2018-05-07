@@ -124,7 +124,7 @@ public class CreateFragment extends BaseCreateProgramFragment implements View.On
         //fab = (FloatingActionButton) v.findViewById(R.id.fragment_create_fab);
         // fab.setOnClickListener(this);
         v.findViewById(R.id.create_create_image_view).setOnClickListener(this);
-        ai = ((HomeActivity) getActivity()).getAi();
+       // ai = ((HomeActivity) getActivity()).getAi();
         dm = ((HomeActivity) getActivity()).getDataManager();
         programmer = ((HomeActivity) getActivity()).getProgrammer();
         boolean generated = bundle.getBoolean(MODE_GENERATED_PROGRAM, false);

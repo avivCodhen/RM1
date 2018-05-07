@@ -18,7 +18,7 @@ import javax.inject.Inject;
  * Created by Cohen on 6/20/2017.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements ArtificialSubjectListener{
+public abstract class BaseActivity extends AppCompatActivity {
 
     public static String TAG = "aviv";
     public static final String ROUTINE = "routine";
@@ -30,7 +30,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Artifici
     @Inject
     public DataManager dataManager;
     @Inject
-    public ArtificialIntelligence ai;
 
     public SharedPreferences getPrefs() {
         return getSharedPreferences(PREFS, Context.MODE_PRIVATE);
@@ -58,7 +57,4 @@ public abstract class BaseActivity extends AppCompatActivity implements Artifici
         return programmer;
     }
 
-    public ArtificialIntelligence getAi() {
-        return ai;
-    }
 }

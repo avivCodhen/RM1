@@ -125,18 +125,4 @@ public class CreateWorkoutActivity extends BaseActivity implements View.OnClickL
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    public void attachAI(ArtificialIntelligenceObserver o) {
-
-    }
-
-    @Override
-    public void dettachAI(ArtificialIntelligenceObserver o) {
-
-    }
-
-    @Override
-    public void notifyAI(int workoutPosition) {
-        ai.updatePosition(workoutPosition);
-    }
 }

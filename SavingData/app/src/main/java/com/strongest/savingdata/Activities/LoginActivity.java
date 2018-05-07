@@ -10,6 +10,7 @@ import android.view.View;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.Adapters.SwipeAdapter;
 
+@Deprecated
 public class LoginActivity extends FragmentActivity implements View.OnClickListener {
 
     private ViewPager viewPager;
@@ -44,7 +45,7 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
         findViewById(R.id.login_activity_logInBtn).setOnClickListener(this);
         viewPager = (ViewPager) findViewById(R.id.login_activity_viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabDots);
-        adapter = new SwipeAdapter(this, images, info, imageView, textView);
+        adapter = new SwipeAdapter(this, images, info);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager, true);
 

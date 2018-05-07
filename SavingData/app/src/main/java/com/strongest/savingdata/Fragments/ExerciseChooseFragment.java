@@ -269,7 +269,7 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment implements
         exerciseProfile.setExercise(beans);
         if(beans != null)
             exerciseProfile.setMuscle(beans.getMuscle());
-        
+
     }
 
     public ArrayList<Beans> getAllExercisesList() {

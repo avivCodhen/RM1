@@ -351,6 +351,8 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
 
     @Override
     public void onExitChooseFragment(final int position, int oldPosition) {
+        longClickMenu.onHideMenu();
+
         WorkoutViewFragment f = workoutViewFragments.get(mViewPager.getCurrentItem());
         f.adapter.notifyItemRangeChanged(0, f.exArray.size() + 1);
         if (f.exArray.get(position + 1) instanceof PLObject.AddExercise) {
