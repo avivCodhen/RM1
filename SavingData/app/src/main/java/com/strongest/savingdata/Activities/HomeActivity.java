@@ -156,7 +156,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         mToggle.syncState();
         mToggle.setDrawerIndicatorEnabled(true);
         mNavigationView.setNavigationItemSelectedListener(this);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         programmer.getLayoutManager();
         dataManager.getPrefsEditor();
         toolbar.setTitleTextColor(Color.WHITE);
@@ -175,6 +175,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         workoutView.setLongClickMenu(longClickMenuView);
         workoutView.setProgramToolsView(programToolsView, programToolsBtn);
         toolbar.setTitle(programmer.getProgram().programName);
+
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -213,7 +214,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 
     public void reviveTabLayout() {
         workoutView.getmTabLayout().setVisibility(View.VISIBLE);
-
     }
 
     @Override

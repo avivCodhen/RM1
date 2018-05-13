@@ -27,8 +27,8 @@ public class TutorialActivity extends BaseActivity implements OnSingleChoiceAdap
     public static final String FIRSTVISIT = "firstvisit";
     private SwipeAdapter swipeAdapter;
     private int[] images = {
-            R.drawable.agiftest,
-            R.drawable.agiftest
+            R.drawable.dc_gif,
+            R.drawable.lc_gif
     };
     private String[] texts = {
       "You can Double Tap on a set to multiply it.",
