@@ -22,6 +22,7 @@
         android:layout_height="wrap_content" />
 
    <com.strongest.savingdata.MyViews.MyViewPager
+       android:layout_marginBottom="20dp"
        android:id="@+id/activity_tutorial_viewpager"
        android:layout_width="match_parent"
        android:layout_height="match_parent"></com.strongest.savingdata.MyViews.MyViewPager>

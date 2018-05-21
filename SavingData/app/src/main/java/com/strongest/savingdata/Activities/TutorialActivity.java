@@ -39,9 +39,7 @@ public class TutorialActivity extends BaseActivity implements OnSingleChoiceAdap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(dataManager.getPrefs().getString(FIRSTVISIT, FIRSTVISIT).equals("no")){
-            startActivity(new Intent(this, HomeActivity.class));
-        }
+
         setContentView(R.layout.activity_tutorial);
         ButterKnife.bind(this);
         swipeAdapter = new SwipeAdapter(this, images, texts);
@@ -56,7 +54,7 @@ public class TutorialActivity extends BaseActivity implements OnSingleChoiceAdap
             viewPager.setCurrentItem(1);
         }else{
             dataManager.getPrefsEditor().putString(FIRSTVISIT, "no").commit();
-            startActivity(new Intent(this, HomeActivity.class));
+            finish();
 
         }
     }

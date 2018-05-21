@@ -55,6 +55,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.strongest.savingdata.Activities.TutorialActivity.FIRSTVISIT;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_ARMS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_BACK;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_CHEST;
@@ -63,7 +64,7 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_SHOULDERS;
 // import com.roughike.bottombar.OnMenuTabClickListener;
 
-public class HomeActivity extends BaseActivity implements View.OnClickListener, ProgramDependencies, NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends BaseActivity implements View.OnClickListener, ProgramDependencies, NavigationView.OnNavigationItemSelectedListener, OnProgramInitListener {
 
     public static String CURRENT_PROGRAM_DBNAME = "current_program_dbname";
     public static String CURRENT_PROGRAM_NAME = "current_program_name";
@@ -141,6 +142,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             // dm.getPrefsEditor().putBoolean("download", true).commit();
         }*/
         setContentView(R.layout.activity_home);
+        String newString = dataManager.getPrefs().getString(FIRSTVISIT, "yes");
+        boolean isNew = newString.equals("yes");
+        if(isNew){
+            startActivity(new Intent(this, TutorialActivity.class));
+        }
         toolbar = (Toolbar) findViewById(R.id.activity_home_toolbar);
         setSupportActionBar(toolbar);
 
@@ -165,15 +171,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         tabLayout = (TabLayout) findViewById(R.id.activity_home_tablayout);
         programToolsView = (ProgramToolsView) findViewById(R.id.activity_programtoolsview);
         workoutView = new WorkoutView();
+        programmer.tryInitProgram(this);
         if (programmer.getProgram() == null) {
-            programmer.createNewProgram();
-        } else {
-            programmer.tryInitProgram();
+            programmer.createNewProgram(this);
         }
-        workoutView.instantiate(this, getSupportFragmentManager(), programmer.getLayoutManager(), viewPager, tabLayout);
-        workoutView.setmAppBarLayout(mAppBarLayout);
-        workoutView.setLongClickMenu(longClickMenuView);
-        workoutView.setProgramToolsView(programToolsView, programToolsBtn);
+
         toolbar.setTitle(programmer.getProgram().programName);
 
 
@@ -293,6 +295,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 
 
         return false;
+    }
+
+    @Override
+    public void instantiateWorkView() {
+        workoutView.instantiate(this, getSupportFragmentManager(), programmer.getLayoutManager(), viewPager, tabLayout);
+        workoutView.setmAppBarLayout(mAppBarLayout);
+        workoutView.setLongClickMenu(longClickMenuView);
+        workoutView.setProgramToolsView(programToolsView, programToolsBtn);
     }
 
 

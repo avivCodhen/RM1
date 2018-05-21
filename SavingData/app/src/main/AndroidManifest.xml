@@ -22,6 +22,12 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
         <activity android:name=".Activities.EnterActivity" />
         <activity android:name=".Activities.CreateWorkoutActivity" />
@@ -36,11 +42,7 @@
         <activity android:name=".TestActivity" />
         <activity android:name=".Activities.TutorialActivity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
 
         </activity>

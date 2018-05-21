@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.strongest.savingdata.Activities.HomeActivity;
+import com.strongest.savingdata.Activities.OnProgramInitListener;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.AlgorithmProgress.ProgressorManager;
 import com.strongest.savingdata.Database.Managers.DataManager;
@@ -39,7 +40,6 @@ public class Programmer implements Serializable {
     public Programmer(Context context, DataManager dataManager) {
         this.dataManager = dataManager;
         this.context = context;
-        tryInitProgram();
     }
 
     public Programmer(Context context) {
@@ -69,20 +69,21 @@ public class Programmer implements Serializable {
     }
 
 
-    public void tryInitProgram() {
+    public void tryInitProgram(OnProgramInitListener onProgramInitListener) {
             String dbName = dataManager.getPrefs().getString(HomeActivity.CURRENT_PROGRAM_DBNAME, "no_program");
             if (!dbName.equals("no_program")) {
                 program = dataManager.getProgramDataManager().readProgramTable(dbName);
                 if (program != null) {
                     layoutManager = new LayoutManager(context, dataManager);
                     layoutManager.readLayoutFromDataBase(dbName);
+                    onProgramInitListener.instantiateWorkView();
                 } else {
                 }
             }
 
     }
 
-    public void createNewProgram() {
+    public void createNewProgram(OnProgramInitListener onProgramInitListener) {
 
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date());
         String table = date.replace("-", "_");
@@ -99,6 +100,8 @@ public class Programmer implements Serializable {
                 DBProgramHelper.TABLE_PROGRAM_REFERENCE,
                 dataManager.getProgramDataManager().getProgramContentValues(program));
         dataManager.getProgramDataManager().insertTables(false, layoutManager);
+        onProgramInitListener.instantiateWorkView();
+
     }
 
     public void createProgramTable() {

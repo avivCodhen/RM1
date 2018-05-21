@@ -1070,7 +1070,10 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
                     if(setsPLObject.getIntraSets().size() > 0){
                         position--;
                     }
+                    position -= setsPLObject.getParent().getExerciseProfiles().size();
+
                 }else{
+                    longClickMenu.onHideMenu();
                     setsPLObject = (PLObject.SetsPLObject) exArray.get(position);
                     position++;
                 }
@@ -1078,7 +1081,11 @@ public class WorkoutView implements WorkoutViewOnWorkoutListener,
                 int newPosition = position + setBlockLength;
                 ArrayList<PLObject> block = layoutManagerOperator.injectCopySet(setsPLObject);
                 for (int i = 0; i < block.size(); i++) {
-                    exArray.add(newPosition + i, block.get(i));
+                    if(exArray.size() <= newPosition+i){
+                       exArray.add(block.get(i));
+                    }else{
+                        exArray.add(newPosition + i, block.get(i));
+                    }
                     adapter.notifyItemInserted(newPosition + i);
                 }
                 int numOfBlock = 0;
