@@ -14,7 +14,6 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.CreateProgram.OnMuscleClickListener;
 
 import java.util.ArrayList;
 

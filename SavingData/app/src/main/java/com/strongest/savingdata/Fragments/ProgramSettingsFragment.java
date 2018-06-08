@@ -3,7 +3,6 @@ package com.strongest.savingdata.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -27,7 +26,6 @@ import com.strongest.savingdata.AlgorithmLayout.OnLayoutManagerDialogPress;
 import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.MyViews.WorkoutView.OnProgramToolsActionListener;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.strongest.savingdata.createProgramFragments.CreateProgram;
+package com.strongest.savingdata.Dialogs;
 
 /**
  * Created by Cohen on 1/24/2018.

@@ -1,39 +1,30 @@
 package com.strongest.savingdata.MyViews.WorkoutView.Choose;
 
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Handler;
-import android.os.Parcel;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
-import com.strongest.savingdata.Activities.BaseActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
-import com.strongest.savingdata.Activities.MainActivity;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
-import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManagerHelper;
 import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AlgorithmLayout.ReactLayoutManager;
-import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
@@ -43,16 +34,10 @@ import com.strongest.savingdata.Fragments.ExerciseChooseFragment;
 import com.strongest.savingdata.Fragments.SetsChooseSingleFragment;
 import com.strongest.savingdata.MyViews.MySelector.MySelectorOnBeansHolderChange;
 import com.strongest.savingdata.MyViews.WorkoutView.OnExerciseChangeListener;
-import com.strongest.savingdata.MyViews.WorkoutView.OnWorkoutViewInterfaceClicksListener;
-import com.strongest.savingdata.MyViews.WorkoutView.WorkoutView;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
-
-import org.w3c.dom.Text;
+import com.strongest.savingdata.Fragments.BaseCreateProgramFragment;
 
 import java.util.ArrayList;
-
-import br.com.mauker.materialsearchview.MaterialSearchView;
 
 public class ChooseDialogFragment extends BaseCreateProgramFragment implements View.OnClickListener,
         TabLayout.OnTabSelectedListener, MySelectorOnBeansHolderChange, OnExerciseSetChange {

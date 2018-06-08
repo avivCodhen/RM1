@@ -16,7 +16,7 @@ import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
+import com.strongest.savingdata.Fragments.BaseCreateProgramFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;

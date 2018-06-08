@@ -13,9 +13,7 @@ import android.view.ViewGroup;
 import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AlgorithmLayout.ReactLayoutManager;
 import com.strongest.savingdata.MyViews.MyViewPager;
-import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 
 import static com.strongest.savingdata.Fragments.SetsChooseSingleFragment.SET_POS;
 

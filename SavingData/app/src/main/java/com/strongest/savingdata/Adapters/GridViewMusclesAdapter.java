@@ -7,12 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Managers.DataManager;
-import com.strongest.savingdata.Fragments.ExerciseChooseFragment;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.CreateProgram.OnMuscleClickListener;
 
 import java.util.ArrayList;
 

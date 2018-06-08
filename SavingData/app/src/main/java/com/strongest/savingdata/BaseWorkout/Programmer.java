@@ -36,6 +36,8 @@ public class Programmer implements Serializable {
     private Program program;
     private int counter = 0;
 
+    private boolean toCreateProgram;
+
     @Inject
     public Programmer(Context context, DataManager dataManager) {
         this.dataManager = dataManager;
@@ -70,6 +72,8 @@ public class Programmer implements Serializable {
 
 
     public void tryInitProgram(OnProgramInitListener onProgramInitListener) {
+        if(!toCreateProgram){
+
             String dbName = dataManager.getPrefs().getString(HomeActivity.CURRENT_PROGRAM_DBNAME, "no_program");
             if (!dbName.equals("no_program")) {
                 program = dataManager.getProgramDataManager().readProgramTable(dbName);
@@ -80,6 +84,10 @@ public class Programmer implements Serializable {
                 } else {
                 }
             }
+        }else{
+            createNewProgram(onProgramInitListener);
+        }
+        toCreateProgram = false;
 
     }
 
@@ -121,5 +129,9 @@ public class Programmer implements Serializable {
 
     public void resetProgram(){
         this.program = null;
+    }
+
+    public void setToCreateProgram(boolean toCreateProgram) {
+        this.toCreateProgram = toCreateProgram;
     }
 }

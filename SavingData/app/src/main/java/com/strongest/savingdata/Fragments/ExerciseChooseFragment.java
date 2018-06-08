@@ -1,6 +1,5 @@
 package com.strongest.savingdata.Fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -11,7 +10,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -32,16 +30,10 @@ import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.ExerciseSearchSuggestion;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.OnExerciseSetChange;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
-
-import br.com.mauker.materialsearchview.MaterialSearchView;
-import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.widget.GridLayout.HORIZONTAL;
 
 /**
  * Created by Cohen on 3/13/2018.

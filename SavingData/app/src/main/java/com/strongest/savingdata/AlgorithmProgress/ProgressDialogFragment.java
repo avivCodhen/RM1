@@ -21,7 +21,7 @@ import android.widget.Button;
 import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.MyViews.WorkoutView.WorkoutView;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.Unused.BaseDialogFragment;
+import com.strongest.savingdata.Unused.BaseDialogFragment;
 
 import java.util.ArrayList;
 

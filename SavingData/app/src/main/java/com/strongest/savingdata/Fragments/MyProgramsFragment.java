@@ -1,7 +1,6 @@
 package com.strongest.savingdata.Fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.BaseWorkout.Program;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 
 import java.util.ArrayList;
 

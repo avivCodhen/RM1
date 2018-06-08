@@ -15,16 +15,11 @@ import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.CreateRepsViewController;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.NumberChoose;
-import com.strongest.savingdata.MyViews.CreateCustomBeansView.NumberChooseManager;
-import com.strongest.savingdata.MyViews.CreateCustomBeansView.PyramidNumberChooseView;
-import com.strongest.savingdata.MyViews.CreateCustomBeansView.RangeNumberChooseView;
-import com.strongest.savingdata.MyViews.CreateCustomBeansView.SingleNumberChooseView;
 import com.strongest.savingdata.MyViews.MySelector.MySelector;
 import com.strongest.savingdata.MyViews.MySelector.OnSelectorDialogListener;
 import com.strongest.savingdata.MyViews.MyViewPager;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.TestActivity;
-import com.strongest.savingdata.createProgramFragments.Unused.BaseDialogFragment;
+import com.strongest.savingdata.Unused.BaseDialogFragment;
 
 /**
  * Created by Cohen on 1/14/2018.

@@ -4,13 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.strongest.savingdata.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AlgorithmLayout.PLObject.ExerciseProfile;
-import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
-import com.strongest.savingdata.Fragments.ChooseContainerFragment;
-import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
-
-import java.util.ArrayList;
+import com.strongest.savingdata.Fragments.BaseCreateProgramFragment;
 
 /**
  * Created by Cohen on 11/16/2017.

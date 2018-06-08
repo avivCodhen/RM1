@@ -14,7 +14,7 @@ import com.strongest.savingdata.MyViews.CreateCustomBeansView.CreateBeansHolderV
 import com.strongest.savingdata.MyViews.MySelector.ChooseSelectorAdapter;
 import com.strongest.savingdata.MyViews.MySelector.MySelector;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.Unused.BaseDialogFragment;
+import com.strongest.savingdata.Unused.BaseDialogFragment;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,5 @@
 package com.strongest.savingdata.Fragments;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -24,10 +23,8 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.strongest.savingdata.Activities.BaseActivity;
-import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Adapters.OnSingleChoiceAdapterOnclickListener;
 import com.strongest.savingdata.Adapters.SingleChoiceAdapter;
-import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.AlgorithmLayout.LayoutManagerHelper;
 import com.strongest.savingdata.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
@@ -41,14 +38,10 @@ import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.OnExerciseSetChange;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.Utils.MyUtils;
-import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static android.view.View.TEXT_ALIGNMENT_CENTER;
 import static android.widget.GridLayout.HORIZONTAL;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_REPS;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_REST;

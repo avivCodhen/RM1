@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.Unused.BaseDialogFragment;
+import com.strongest.savingdata.Unused.BaseDialogFragment;
 
 /**
  * Created by Cohen on 10/28/2017.

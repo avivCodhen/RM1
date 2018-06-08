@@ -30,12 +30,10 @@
 
         </activity>
         <activity android:name=".Activities.EnterActivity" />
-        <activity android:name=".Activities.CreateWorkoutActivity" />
         <activity
             android:name=".Dialogs.DialogMuscleSelect"
             android:theme="@style/AppTheme.CustomeTheme" />
-        <activity android:name=".createProgramFragments.CreateProgram.LimitFragment" />
-        <activity android:name=".createProgramFragments.Unused.LevelDeterminerDialogFragment" />
+        <activity android:name=".Unused.LevelDeterminerDialogFragment" />
         <activity android:name=".MyViews.WorkoutView.Choose.ChooseDialogFragment" />
         <activity android:name=".Activities.LevelActivity" />
         <activity android:name=".Activities.WebViewActivity" />

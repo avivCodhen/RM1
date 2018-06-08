@@ -2,7 +2,6 @@ package com.strongest.savingdata.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -12,8 +11,6 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -26,15 +23,10 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.strongest.savingdata.ArtificialInteligence.ArtificialIntelligenceObserver;
 import com.strongest.savingdata.BaseWorkout.Programmer;
 import com.strongest.savingdata.Database.Articles.ArticleObj;
-import com.strongest.savingdata.Database.Articles.DownloadImage;
 import com.strongest.savingdata.Database.Managers.DataManager;
-import com.strongest.savingdata.Database.Muscles.DBMuscleHelper;
 import com.strongest.savingdata.Fragments.CustomExerciseFragment;
 import com.strongest.savingdata.Fragments.MyProgramsFragment;
 import com.strongest.savingdata.Fragments.NewProgramFragment;
@@ -42,26 +34,12 @@ import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
 import com.strongest.savingdata.MyViews.WorkoutView.WorkoutView;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.Server.Download;
 import com.strongest.savingdata.tabFragments.HomeFragment;
 import com.strongest.savingdata.tabFragments.ManagerFragment;
-import com.strongest.savingdata.tabFragments.WorkoutFragment;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.strongest.savingdata.Activities.TutorialActivity.FIRSTVISIT;
-import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_ARMS;
-import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_BACK;
-import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_CHEST;
-import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_CORE;
-import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_LEGS;
-import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_SHOULDERS;
 // import com.roughike.bottombar.OnMenuTabClickListener;
 
 public class HomeActivity extends BaseActivity implements View.OnClickListener, ProgramDependencies, NavigationView.OnNavigationItemSelectedListener, OnProgramInitListener {
@@ -77,7 +55,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 
     private ManagerFragment managerFragment;
     private HomeFragment homeFragment;
-    private WorkoutFragment workoutFragment;
+    //private WorkoutFragment workoutFragment;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView mNavigationView;
@@ -91,11 +69,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     private ArrayList<ArticleObj> texts = new ArrayList<>();
     private FloatingActionButton fab;
     private Fragment fragment;
-    private Fragment[] fragments = new Fragment[]{
+    /*private Fragment[] fragments = new Fragment[]{
             new HomeFragment(),
             new WorkoutFragment(),
             new ManagerFragment()
-    };
+    };*/
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -106,7 +84,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 
     //private ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
 
-    private HomeAdapter adapter;
+    //private HomeAdapter adapter;
 
     private int[] defaultIcons = {
             R.drawable.nav_home_black_24px,
@@ -202,7 +180,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
-        startActivityForResult(new Intent(this, CreateWorkoutActivity.class), COME_BACK_WITH_PROGRAM);
     }
 
     public void begoneTabLayout() {
@@ -305,7 +282,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         workoutView.setProgramToolsView(programToolsView, programToolsBtn);
     }
 
-
+/*
     public class LoadArticles extends AsyncTask {
 
         @Override
@@ -349,7 +326,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
                 }
             }
         }
-    }
+    }*/
 
     @Override
     protected void onStart() {
@@ -368,7 +345,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         super.onPause();
     }
 
-    private class HomeAdapter extends FragmentStatePagerAdapter {
+   /* private class HomeAdapter extends FragmentStatePagerAdapter {
 
         public HomeAdapter(FragmentManager fm) {
             super(fm);
@@ -386,7 +363,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             return 3;
         }
 
-    }
+    }*/
 
     public int getScreenWidth() {
         DisplayMetrics metrics = new DisplayMetrics();

@@ -1,9 +1,7 @@
-package com.strongest.savingdata.createProgramFragments.Unused;
+package com.strongest.savingdata.Unused;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.DialogFragment;
 
 /**

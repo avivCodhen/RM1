@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.createProgramFragments.CreateProgram.BaseCreateProgramFragment;
 
 /**
  * Created by Cohen on 3/11/2018.
@@ -44,6 +43,7 @@ public class NewProgramFragment extends BaseCreateProgramFragment {
             @Override
             public void onClick(View v) {
                 ((HomeActivity)getActivity()).programmer.resetProgram();
+                ((HomeActivity)getActivity()).programmer.setToCreateProgram(true);
                 ((HomeActivity)getActivity()).finish();
                 ((HomeActivity)getActivity()).startActivity( ((HomeActivity)getActivity()).getIntent());
                 getFragmentManager().popBackStack();
