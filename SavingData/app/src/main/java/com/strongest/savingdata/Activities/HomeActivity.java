@@ -1,203 +1,188 @@
 package com.strongest.savingdata.Activities;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.strongest.savingdata.BaseWorkout.Programmer;
-import com.strongest.savingdata.Database.Articles.ArticleObj;
-import com.strongest.savingdata.Database.Managers.DataManager;
+import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
+import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
+import com.strongest.savingdata.AModels.WorkoutItemAdapterFactory;
+import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
+import com.strongest.savingdata.Adapters.MyExpandableAdapter;
+import com.strongest.savingdata.Adapters.WorkoutItemAdapters.DividerItemAdapter;
+import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
+import com.strongest.savingdata.Adapters.WorkoutsViewPagerAdapter;
+import com.strongest.savingdata.Architecture;
+import com.strongest.savingdata.BaseWorkout.Program;
 import com.strongest.savingdata.Fragments.CustomExerciseFragment;
 import com.strongest.savingdata.Fragments.MyProgramsFragment;
 import com.strongest.savingdata.Fragments.NewProgramFragment;
+import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
+import com.strongest.savingdata.Fragments.WorkoutViewFragment;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
-import com.strongest.savingdata.MyViews.WorkoutView.WorkoutView;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.tabFragments.HomeFragment;
-import com.strongest.savingdata.tabFragments.ManagerFragment;
 
-import java.util.ArrayList;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
+import static com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel.Actions.Advanced;
 import static com.strongest.savingdata.Activities.TutorialActivity.FIRSTVISIT;
 // import com.roughike.bottombar.OnMenuTabClickListener;
 
-public class HomeActivity extends BaseActivity implements View.OnClickListener, ProgramDependencies, NavigationView.OnNavigationItemSelectedListener, OnProgramInitListener {
+public class HomeActivity extends BaseActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        WorkoutViewFragment.WorkoutViewFragmentListener,
+        Architecture.view.LongClickView,
+        Architecture.view.ProgramTools,
+        ProgramSettingsFragment.OnProgramSettingsChange {
 
-    public static String CURRENT_PROGRAM_DBNAME = "current_program_dbname";
-    public static String CURRENT_PROGRAM_NAME = "current_program_name";
+    // public WorkoutsModelController workoutsModelController;
 
-    private Toolbar toolbar;
-    public WorkoutView workoutView;
-    private AppBarLayout mAppBarLayout;
-    private static final String TO_REFRESH = "refresh";
-    private static final int COME_BACK_WITH_PROGRAM = 0;
 
-    private ManagerFragment managerFragment;
-    private HomeFragment homeFragment;
-    //private WorkoutFragment workoutFragment;
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mToggle;
-    private NavigationView mNavigationView;
-    private LongClickMenuView longClickMenuView;
-    private View programToolsBtn;
-    /*@Inject
-    public Programmer programmer;
-    @Inject
-    public DataManager dataManager;*/
-
-    private ArrayList<ArticleObj> texts = new ArrayList<>();
-    private FloatingActionButton fab;
-    private Fragment fragment;
-    /*private Fragment[] fragments = new Fragment[]{
-            new HomeFragment(),
-            new WorkoutFragment(),
-            new ManagerFragment()
-    };*/
-
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
+    @BindView(R.id.activity_home_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.activity_home_app_bar)
+    AppBarLayout mAppBarLayout;
+    @BindView(R.id.activity_home_drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.home_activity_navigationview)
+    NavigationView mNavigationView;
+    @BindView(R.id.activity_home_longclick_menu)
+    LongClickMenuView longClickMenuView;
+    @BindView(R.id.activity_home_viewpager)
+    ViewPager mViewPager;
+    @BindView(R.id.activity_home_tablayout)
+    TabLayout mTabLayout;
+    @BindView(R.id.activity_programtoolsview)
     ProgramToolsView programToolsView;
 
 
-    //private NavigationTabBar navigationTabBar;
+    //this view is the edit "+" button of the toolbar menu
+    //it will be setuped with the programtoolsview on inflating menu
+    View programToolsBtn;
 
-    //private ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
+    //used for the hamburger icon in the toolbar menu
+    ActionBarDrawerToggle mToggle;
 
-    //private HomeAdapter adapter;
+    public Program program;
 
-    private int[] defaultIcons = {
-            R.drawable.nav_home_black_24px,
-            R.drawable.nav_workout_black_24px,
-            R.drawable.nav_manager_black_24px
-    };
+    private WorkoutsViewPagerAdapter mAdapter;
 
-    private int[] activeColors = {
-            R.drawable.nav_home_purple_24px,
-            R.drawable.nav_workout_purple_24px,
-            R.drawable.nav_manager_purple_24px
-    };
-    private boolean settingsDrawer;
+    private WorkoutsViewModel workoutsViewModel;
+    private Workout w;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-       /* Download d = new Download(this);
-        try {
-
-            d.refreshData(
-                    DBMuscleHelper.DB_TABLE_NAME,
-                    TABLE_CHEST,
-                    TABLE_BACK,
-                    TABLE_LEGS,
-                    TABLE_SHOULDERS,
-                    TABLE_ARMS,
-                    TABLE_CORE
-            );
-        } catch (Exception e) {
-            Log.d("aviv", "downloadExercises: " + e.toString());
-            // dm.getPrefsEditor().putBoolean("download", true).commit();
-        }*/
         setContentView(R.layout.activity_home);
+        workoutsViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(WorkoutsViewModel.class);
+        ButterKnife.bind(this);
+        setUpToolbar();
+        setUpViewPager();
+        longClickMenuView.instantiate(this);
+        programToolsView.instantiate(programToolsBtn, this);
+
         String newString = dataManager.getPrefs().getString(FIRSTVISIT, "yes");
         boolean isNew = newString.equals("yes");
-        if(isNew){
+        if (isNew) {
             startActivity(new Intent(this, TutorialActivity.class));
         }
-        toolbar = (Toolbar) findViewById(R.id.activity_home_toolbar);
+
+
+        workoutsViewModel.getWorkoutsList().observe(this, list -> mAdapter.notifyDataSetChanged());
+        notifyCurrentWorkout();
+    }
+
+    private void notifyCurrentWorkout() {
+        w = workoutsViewModel.getWorkoutsList().getValue().get(mViewPager.getCurrentItem());
+
+    }
+
+    private void setUpViewPager() {
+
+        mTabLayout.setupWithViewPager(mViewPager);
+        mAdapter = new WorkoutsViewPagerAdapter(
+                getSupportFragmentManager(),
+                workoutsViewModel.getWorkoutsList().getValue());
+
+        mViewPager.setOffscreenPageLimit(workoutsViewModel.getWorkoutsList().getValue().size());
+        mViewPager.setAdapter(mAdapter);
+
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
+                longClickMenuView.onHideMenu();
+                notifyCurrentWorkout();
+                //layoutManager.mLayoutManagerHelper.updateLayoutManagerHelper(mViewPager.getCurrentItem());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+    }
+
+
+    private void setUpToolbar() {
         setSupportActionBar(toolbar);
 
-        longClickMenuView = (LongClickMenuView) findViewById(R.id.activity_home_longclick_menu);
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.activity_home_app_bar);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.activity_home_drawer_layout);
         mDrawerLayout.setScrimColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
         //mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
-        mNavigationView = (NavigationView) findViewById(R.id.home_activity_navigationview);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
         mToggle.setDrawerIndicatorEnabled(true);
         mNavigationView.setNavigationItemSelectedListener(this);
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        programmer.getLayoutManager();
-        dataManager.getPrefsEditor();
         toolbar.setTitleTextColor(Color.WHITE);
-
-        viewPager = (ViewPager) findViewById(R.id.activity_home_viewpager);
-        tabLayout = (TabLayout) findViewById(R.id.activity_home_tablayout);
-        programToolsView = (ProgramToolsView) findViewById(R.id.activity_programtoolsview);
-        workoutView = new WorkoutView();
-        programmer.tryInitProgram(this);
-        if (programmer.getProgram() == null) {
-            programmer.createNewProgram(this);
-        }
-
-        toolbar.setTitle(programmer.getProgram().programName);
-
+        String programName = workoutsViewModel.getProgram().getValue().programName;
+        toolbar.setTitle(programName);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(programmer.getProgram().programName);
+            getSupportActionBar().setTitle(programName);
             //  getSupportActionBar().setElevation(0);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
         }
 
-    }
 
-    /*@Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            float per = Math.abs(mAppBarLayout.getY()) / mAppBarLayout.getTotalScrollRange();
-            boolean setExpanded = (per <= 0.5F);
-            mAppBarLayout.setExpanded(setExpanded, true);
-        }
-        return super.dispatchTouchEvent(event);
-    }*/
-
-    @Override
-    public void onClick(View v) {
-    }
-
-    public void begoneTabLayout() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                workoutView.getmTabLayout().setVisibility(View.INVISIBLE);
-            }
-        }, 800);
-    }
-
-    public void reviveTabLayout() {
-        workoutView.getmTabLayout().setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onBackPressed() {
-        if(longClickMenuView != null && longClickMenuView.isOn()){
+        if (longClickMenuView != null && longClickMenuView.isOn()) {
             longClickMenuView.onHideMenu();
             return;
         }
@@ -207,20 +192,21 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.aviv_menu_program, menu);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        programToolsBtn = findViewById(R.id.edit_menu);
+        programToolsView.setProgramToolsBtn(programToolsBtn);
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
 
         switch (item.getItemId()) {
             case R.id.edit_menu:
-                programToolsBtn = findViewById(R.id.edit_menu);
-                programToolsView.setProgramToolsBtn(programToolsBtn);
-                workoutView.enterEditMode();
+                programToolsView.expand();
                 return true;
 
         }
@@ -228,151 +214,32 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public DataManager getDependecies() {
-        return dataManager;
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Fragment f;
         switch (item.getItemId()) {
             case R.id.menu_create_program:
-                NewProgramFragment fr = new NewProgramFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.activity_home_framelayout, fr, "myPrograms")
-                        .addToBackStack("myPrograms")
-                        .commit();
-                mDrawerLayout.closeDrawer(Gravity.START);
-                //viewPager.setCurrentItem(1);
+                f = new NewProgramFragment();
+                addFragmentToHomeActivity(f, "NewProgram");
                 break;
             case R.id.menu_my_programs:
-                MyProgramsFragment frag = new MyProgramsFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.activity_home_framelayout, frag, "myPrograms")
-                        .addToBackStack("myPrograms")
-                        .commit();
-                mDrawerLayout.closeDrawer(Gravity.START);
+                f = new MyProgramsFragment();
+                addFragmentToHomeActivity(f, "MyPrograms");
                 break;
             case R.id.menu_custom_exercise:
-
-                CustomExerciseFragment fr1 = new CustomExerciseFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.activity_home_framelayout, fr1, "custom_exercise")
-                        .addToBackStack("custom_exercise")
-                        .commit();
-                mDrawerLayout.closeDrawer(Gravity.START);
+                f = new CustomExerciseFragment();
+                addFragmentToHomeActivity(f, "CustomExercise");
                 break;
-            /*case R.id.menu_save_program:
-                programmer.getLayoutManager().saveLayoutToDataBase(true);
-                Toast.makeText(this, "working", Toast.LENGTH_SHORT).show();*/
-        }
 
+        }
+        mDrawerLayout.closeDrawer(Gravity.START);
 
         return false;
     }
 
-    @Override
-    public void instantiateWorkView() {
-        workoutView.instantiate(this, getSupportFragmentManager(), programmer.getLayoutManager(), viewPager, tabLayout);
-        workoutView.setmAppBarLayout(mAppBarLayout);
-        workoutView.setLongClickMenu(longClickMenuView);
-        workoutView.setProgramToolsView(programToolsView, programToolsBtn);
-    }
-
-/*
-    public class LoadArticles extends AsyncTask {
-
-        @Override
-        protected void onPreExecute() {
-            if (fragment != null && fragment instanceof HomeFragment) {
-                ((HomeFragment) fragment).dealWithProgressBar(true);
-            }
-        }
-
-
-        @Override
-        protected Object doInBackground(Object[] params) {
-            ArticleObj arobj;
-            try {
-                Document doc = Jsoup.connect("http://strongest.co.il").get();
-                final Elements article = doc.select("article");
-                StringBuilder sb = new StringBuilder();
-                for (Element link : article) {
-                    arobj = new ArticleObj();
-                    arobj.setTitle(link.select("a").attr("title"));
-                    arobj.setSummary(link.select("p").text());
-                    arobj.setLink(link.select("img").attr("src"));
-                    arobj.setPage(link.select("a").attr("href"));
-                    DownloadImage downloadImage = new DownloadImage(arobj, dataManager);
-                    downloadImage.run();
-                    texts.add(arobj);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-
-        @Override
-        protected void onPostExecute(Object o) {
-            if (fragment != null && fragment instanceof HomeFragment) {
-                ((HomeFragment) fragment).dealWithProgressBar(false);
-                if (fragments[0] != null) {
-                    ((HomeFragment) fragments[0]).updateArticles();
-                }
-            }
-        }
-    }*/
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart: ");
-        //new LoadArticles().execute();
-        getPrefsEditor().putBoolean(TO_REFRESH, false);
-
-    }
-
-    @Override
-    protected void onPause() {
-        //    programmer.getLayoutManager().saveLayoutToDataBase(true);
-        getPrefsEditor().putBoolean(TO_REFRESH, true).commit();
-        //dataManager.getArticleDataManager().delete(TABLE_NAME);
-        super.onPause();
-    }
-
-   /* private class HomeAdapter extends FragmentStatePagerAdapter {
-
-        public HomeAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return fragments[position];
-            //  return fragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            //return fragments.size();
-            return 3;
-        }
-
-    }*/
-
-    public int getScreenWidth() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        return metrics.widthPixels;
-
-    }
-
+    //getscreenheight provides the height of the screen
+    //mainly used for the musclegridview allowing to create a symetric grid
     public int getScreenHeight() {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -381,12 +248,95 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    public DataManager getDataManager() {
-        return dataManager;
+    public void onLongClick(PLObject plObject, MyExpandableAdapter.MyExpandableViewHolder vh) {
+        longClickMenuView.onShowMenu(vh, plObject);
     }
 
     @Override
-    public Programmer getProgrammer() {
-        return programmer;
+    public void onProgramToolsClick() {
+
+    }
+
+    @Override
+    public void onLongClickAction(LongClickMenuView longClickMenuView, WorkoutsModel.Actions action) {
+        WorkoutsModel.ListModifier listModifier = null;
+        int position = longClickMenuView.getViewPosition();
+        PLObject plObject = w.exArray.get(position);
+
+        switch (action) {
+            case Duplicate:
+                listModifier = WorkoutsModel.ListModifier.
+                        OnWith(w, WorkoutItemAdapterFactory.getFactory().create(plObject.getClass()))
+                        .doDuplicate(position);
+                break;
+            case Delete:
+                listModifier = WorkoutsModel.ListModifier.OnWith(w, new ExerciseItemAdapter())
+                        .doRemove(plObject, 1);
+                longClickMenuView.onHideMenu();
+                break;
+
+            case MultiDelete:
+                for (PLObject p : longClickMenuView.getSelectedPLObjects()) {
+                    listModifier = WorkoutsModel.ListModifier.OnWith(w, WorkoutItemAdapterFactory.getFactory())
+                            .doRemove(p, 1);
+                }
+                longClickMenuView.onHideMenu();
+                break;
+            case Child:
+                listModifier = WorkoutsModel.ListModifier.OnWith(w, WorkoutItemAdapterFactory.getFactory())
+                        .doChild(longClickMenuView.getSelectedPLObjects().get(0));
+        }
+        if (listModifier != null) {
+            w.getObserver().onChange(listModifier);
+
+        }
+        if (w.exArray.size() == 0) {
+            longClickMenuView.onHideMenu();
+        }
+
+    }
+
+    @Override
+    public void onProgramToolsAction(WorkoutsModel.Actions action) {
+        if (action == Advanced) {
+            addFragmentToHomeActivity(new ProgramSettingsFragment(), "programsettings");
+        } else {
+            workoutsViewModel.workoutsModel.validateActions(
+                    workoutsViewModel.getWorkoutsList().getValue(),
+                    mViewPager.getCurrentItem(),
+                    action);
+
+            switch (action) {
+                case NewExercise:
+                    w.getObserver().onChange(
+                            WorkoutsModel.ListModifier
+                                    .OnWith(w, new ExerciseItemAdapter())
+                                    .doAddNew(w.exArray.size())
+                    );
+
+                    break;
+
+                case NewWorkout:
+                    workoutsViewModel.workoutsModel.addNewWorkout(workoutsViewModel.getWorkoutsList().getValue());
+                    notifyAdapter();
+                    break;
+
+                case NewDivider:
+                    w.getObserver().onChange(
+                            WorkoutsModel.ListModifier
+                                    .OnWith(w, new DividerItemAdapter())
+                                    .doAddNew(w.exArray.size())
+                    );
+                    break;
+
+            }
+
+
+        }
+    }
+
+    @Override
+    public void notifyAdapter() {
+        mAdapter.notifyDataSetChanged();
     }
 }

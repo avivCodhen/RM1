@@ -78,6 +78,7 @@ public class Muscle implements Serializable {
             m.image = c.getString(c.getColumnIndex(IMAGE));
             m.children = c.getString(c.getColumnIndex(CHILDREN));
         }
+        c.close();
         return m;
 
     }

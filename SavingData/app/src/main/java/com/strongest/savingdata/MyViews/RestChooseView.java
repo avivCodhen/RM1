@@ -4,12 +4,10 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.strongest.savingdata.AlgorithmLayout.ExerciseProfileStats;
-import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
+import com.strongest.savingdata.AModels.AlgorithmLayout.ExerciseProfileStats;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.NumberChooseManager;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.OnNumberInject;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.SingleNumberChooseView;

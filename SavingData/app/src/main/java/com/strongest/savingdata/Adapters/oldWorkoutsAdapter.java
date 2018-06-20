@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import com.strongest.savingdata.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 
 import java.util.ArrayList;
 

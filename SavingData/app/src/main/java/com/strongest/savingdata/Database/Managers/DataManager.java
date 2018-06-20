@@ -46,20 +46,12 @@ public class DataManager {
     private ExercisesDataManager exerciseDataManager;
     private ArticleDataManager articleDataManager;
     private ProgramDataManager programDataManager;
-    private StatsDataManager statsDataManager;
     private ProgressDataManager progressDataManager;
     private MusclesDataManager musclesDataManager;
     private WeightToolsDataManager weightToolsDataManager;
 
     @Inject
     public Context context;
-
-    private DataManager[] managers = {
-            exerciseDataManager,
-            articleDataManager,
-            programDataManager,
-            statsDataManager
-    };
 
     @Inject
     public DataManager(Context context) {
@@ -103,15 +95,7 @@ public class DataManager {
             return progressDataManager;
         }
     }
-    public StatsDataManager getStatsDataManager() {
-        if (statsDataManager == null) {
-            statsDataManager = new StatsDataManager(context);
-            return statsDataManager;
-        } else {
-            return statsDataManager;
 
-        }
-    }
 
     public MusclesDataManager getMuscleDataManager(){
         if(musclesDataManager != null){
@@ -143,10 +127,7 @@ public class DataManager {
             programDataManager.close();
             programDataManager = null;
         }
-        if (statsDataManager != null) {
-            statsDataManager.close();
-            statsDataManager = null;
-        }
+
         if (articleDataManager != null) {
             articleDataManager.close();
             articleDataManager = null;

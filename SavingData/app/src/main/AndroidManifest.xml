@@ -19,8 +19,7 @@
         <activity android:name=".Activities.RegisterActivity" />
         <activity
             android:name=".Activities.HomeActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait">
+            >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,13 +28,11 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".Activities.EnterActivity" />
         <activity
             android:name=".Dialogs.DialogMuscleSelect"
             android:theme="@style/AppTheme.CustomeTheme" />
-        <activity android:name=".Unused.LevelDeterminerDialogFragment" />
+        <activity android:name=".Deprecated.ArtificialInteligence.Unused.LevelDeterminerDialogFragment" />
         <activity android:name=".MyViews.WorkoutView.Choose.ChooseDialogFragment" />
-        <activity android:name=".Activities.LevelActivity" />
         <activity android:name=".Activities.WebViewActivity" />
         <activity android:name=".TestActivity" />
         <activity android:name=".Activities.TutorialActivity">
@@ -47,3 +44,7 @@
     </application>
 
 </manifest>
+<!--
+
+    android:configChanges="orientation|keyboardHidden"
+    android:screenOrientation="portrait"-->

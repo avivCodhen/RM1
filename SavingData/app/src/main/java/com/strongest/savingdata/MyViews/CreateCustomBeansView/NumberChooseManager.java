@@ -3,13 +3,10 @@ package com.strongest.savingdata.MyViews.CreateCustomBeansView;
 import android.view.View;
 import android.widget.TextSwitcher;
 
-import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.MyViews.RestChooseView;
 import com.strongest.savingdata.MyViews.WorkoutView.Choose.OnExerciseSetChange;
-
-import java.util.ArrayList;
 
 /**
  * Created by Cohen on 1/18/2018.

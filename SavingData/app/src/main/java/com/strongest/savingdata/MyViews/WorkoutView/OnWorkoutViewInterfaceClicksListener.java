@@ -3,8 +3,7 @@ package com.strongest.savingdata.MyViews.WorkoutView;
 import android.support.v7.widget.RecyclerView;
 
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
-import com.strongest.savingdata.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
+import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 
 /**
  * Created by Cohen on 3/20/2018.
@@ -13,10 +12,6 @@ import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
 public interface OnWorkoutViewInterfaceClicksListener {
 
     void saveProgram();
-
-    void duplicateExercise(RecyclerView.ViewHolder vh);
-
-    void duplicateItem(RecyclerView.ViewHolder vh, WorkoutLayoutTypes type);
 
     void notifyExerciseChanged(int position);
 

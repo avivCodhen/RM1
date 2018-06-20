@@ -14,8 +14,7 @@
 
         <ImageView
             android:id="@+id/longclick_menu_back"
-
-            android:layout_width="wrap_content"
+            android:layout_width="65dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
@@ -23,81 +22,82 @@
             android:src="@drawable/back_arrow_24px" />
 
         <ImageView
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
+            android:visibility="invisible"
             android:id="@+id/longclick_menu_more"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:src="@drawable/menu_vertical_white_24px_drawable" />
 
         <ImageView
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:id="@+id/longclick_menu_delete"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/longclick_menu_more"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="13dp"
+            android:paddingRight="13dp"
             android:src="@drawable/delete_24dp_white" />
 
         <ImageView
-            android:visibility="gone"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
             android:id="@+id/longclick_menu_transfer"
             android:layout_width="35dp"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/longclick_menu_delete"
-            android:src="@drawable/forward_arrow_24px_white" />
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:src="@drawable/forward_arrow_24px_white"
+            android:visibility="gone" />
 
-        <Button
-            android:id="@+id/longclick_menu_superset"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/longclick_menu_duplicate"
+            android:layout_width="32dp"
 
             android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:layout_toLeftOf="@id/longclick_menu_transfer"
             android:gravity="center"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
-            android:src="@drawable/ic_delete_black_24dp"
+            android:src="@drawable/duplicate_24px"
             android:text="+ Superset"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/longclick_menu_set"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/longclick_menu_child"
+            android:layout_width="30dp"
 
             android:layout_height="match_parent"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/longclick_menu_superset"
+            android:layout_toLeftOf="@id/longclick_menu_duplicate"
             android:gravity="center"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
-            android:src="@drawable/ic_delete_black_24dp"
+            android:src="@drawable/content_duplicate"
             android:text="+ Set"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/longclick_menu_intraSet"
+        <TextView
+            android:id="@+id/longclick_menu_selected"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/longclick_menu_set"
+            android:layout_toRightOf="@id/longclick_menu_back"
             android:gravity="center"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
             android:src="@drawable/ic_delete_black_24dp"
-            android:text="+ Intraset"
+            android:text="1"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
 

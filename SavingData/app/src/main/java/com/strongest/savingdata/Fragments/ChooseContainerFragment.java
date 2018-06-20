@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.strongest.savingdata.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AlgorithmLayout.ReactLayoutManager;
+import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.AlgorithmLayout.ReactLayoutManager;
 import com.strongest.savingdata.MyViews.MyViewPager;
 import com.strongest.savingdata.R;
 

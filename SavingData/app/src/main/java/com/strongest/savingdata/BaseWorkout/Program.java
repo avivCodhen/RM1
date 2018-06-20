@@ -1,20 +1,18 @@
 package com.strongest.savingdata.BaseWorkout;
 
-import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
-import com.strongest.savingdata.Database.Managers.DataManager;
+import android.arch.persistence.room.Entity;
 
 /**
  * Created by Cohen on 10/18/2017.
  */
-
+@Entity
 public class Program {
 
     public String programName;
-    public String time;
-    public String programDate;
-    private String dbName;
-
-    private boolean current;
+    public final String time;
+    public final String programDate;
+    public final String dbName;
+    //private boolean current;
 
 
     public Program(String programName, String time,  String programDate, String dbName) {
@@ -29,11 +27,11 @@ public class Program {
         return dbName;
     }
 
-    public boolean isCurrent() {
+    /*public boolean isCurrent() {
         return current;
     }
 
     public void setCurrent(boolean current) {
         this.current = current;
-    }
+    }*/
 }

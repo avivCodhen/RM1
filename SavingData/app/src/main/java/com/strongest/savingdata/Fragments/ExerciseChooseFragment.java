@@ -1,5 +1,6 @@
 package com.strongest.savingdata.Fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -16,13 +17,14 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Adapters.ExerciseListAdapter;
 import com.strongest.savingdata.Adapters.GridViewMusclesAdapter;
 import com.strongest.savingdata.Adapters.OnExerciseListAdapterClickListener;
 import com.strongest.savingdata.Adapters.OnGridViewMuscleAdapterClickListener;
-import com.strongest.savingdata.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AlgorithmLayout.ReactLayoutManager;
+import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.AlgorithmLayout.ReactLayoutManager;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
@@ -58,6 +60,7 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment implements
     private int selectedIndex = -1;
     private ArrayList<Beans> allExercisesList;
     private ArrayList<ExerciseSearchSuggestion> allExercisesListString;
+    private WorkoutsViewModel workoutsViewModel;
     //private LayoutManager.LayoutManagerHelper helper;
 
     private ReactLayoutManager reactLayoutManager;
@@ -88,11 +91,12 @@ public class ExerciseChooseFragment extends BaseCreateProgramFragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        workoutsViewModel = ViewModelProviders.of(getActivity()).get(WorkoutsViewModel.class);
+        dataManager = workoutsViewModel.getDataManager();
         initViews(view);
     }
 
     private void initViews(View v) {
-        dataManager = ((HomeActivity) getActivity()).dataManager;
         initAllExercises();
         //    helper =  ((BaseActivity) getActivity()).programmer.layoutManager.mLayoutManagerHelper;
         //  reactLayoutManager = ((ChooseContainerFragment) getParentFragment()).getReactLayoutManager();

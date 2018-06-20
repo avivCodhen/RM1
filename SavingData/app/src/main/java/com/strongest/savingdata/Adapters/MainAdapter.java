@@ -2,27 +2,22 @@ package com.strongest.savingdata.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ItemTouchHelperAdapter;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ScrollToPositionListener;
-import com.strongest.savingdata.AlgorithmLayout.LayoutManagerAlertdialog;
-import com.strongest.savingdata.AlgorithmLayout.OnLayoutManagerDialogPress;
-import com.strongest.savingdata.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.Fragments.OnProgramSettingChange;
+import com.strongest.savingdata.AModels.AlgorithmLayout.LayoutManagerAlertdialog;
+import com.strongest.savingdata.AModels.AlgorithmLayout.OnLayoutManagerDialogPress;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
-import com.strongest.savingdata.MyViews.WorkoutTextView;
+import com.strongest.savingdata.Fragments.ProgramSettingsFragment.OnProgramSettingsChange;
 import com.strongest.savingdata.R;
-import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,12 +30,12 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     private Context context;
-    private ArrayList<PLObject> list;
+    private ArrayList<Workout> list;
     private OnDragListener onDragListener;
     private ScrollToPositionListener scrollListener;
-    private OnProgramSettingChange onProgramChangeListener;
+    private OnProgramSettingsChange onProgramChangeListener;
 
-    public MainAdapter(Context context, ArrayList<PLObject> list, OnDragListener onDragListener,
+    public MainAdapter(Context context, ArrayList<Workout> list, OnDragListener onDragListener,
                        ScrollToPositionListener scrollListener) {
         this.context = context;
         this.list = list;
@@ -63,7 +58,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     private void configWorkout(WorkoutViewHolder holder, int position) {
-        holder.editText.setText(((PLObject.WorkoutPLObject) list.get(position)).getWorkoutName());
+        holder.editText.setText(list.get(position).workoutName);
     }
 
 
@@ -72,7 +67,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         return list.size();
     }
 
-    public void setOnProgramChangeListener(OnProgramSettingChange onProgramChangeListener) {
+    public void setOnProgramChangeListener(OnProgramSettingsChange onProgramChangeListener) {
         this.onProgramChangeListener = onProgramChangeListener;
     }
 
@@ -117,16 +112,18 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         @Override
         public void onLMDialogOkPressed(int viewHolderPosition) {
-            onProgramChangeListener.onDelete(getAdapterPosition());
             list.remove(viewHolderPosition);
             notifyItemRemoved(getAdapterPosition());
+            onProgramChangeListener.notifyAdapter();
+
         }
 
         @Override
         public void onLMDialogOkPressed(String input, int position) {
             editText.setText(input);
-            ((PLObject.WorkoutPLObject) list.get(getAdapterPosition())).setWorkoutName(input);
-            onProgramChangeListener.onEdit(getAdapterPosition());
+            list.get(getAdapterPosition()).workoutName = input;
+            onProgramChangeListener.notifyAdapter();
+
         }
 
 
@@ -137,15 +134,16 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(list, i, i + 1);
-                onProgramChangeListener.onSwap(i, i + 1);
+
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
                 Collections.swap(list, i, i - 1);
-                onProgramChangeListener.onSwap(i, i - 1);
+
             }
         }
         notifyItemMoved(fromPosition, toPosition);
+        onProgramChangeListener.notifyAdapter();
         return true;
     }
 

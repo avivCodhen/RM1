@@ -1,16 +1,12 @@
 package com.strongest.savingdata.Database.Exercise;
 
-import com.strongest.savingdata.AlgorithmLayout.Ben;
-
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.Serializable;
 
 /**
  * Created by Cohen on 10/18/2017.
  */
 
-public class ExerciseSet implements Serializable, Ben {
+public class ExerciseSet implements Serializable {
 
     private Beans exercise;
     private String rep = "0";

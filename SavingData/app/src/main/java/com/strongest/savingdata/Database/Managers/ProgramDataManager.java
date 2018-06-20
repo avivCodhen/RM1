@@ -7,13 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
-import com.strongest.savingdata.AlgorithmLayout.WorkoutLayoutTypes;
+import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
+import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.BaseWorkout.Program;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
 import com.strongest.savingdata.Database.Program.DBProgramHelper;
-import com.strongest.savingdata.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,22 +86,22 @@ public class ProgramDataManager extends DataManager {
                     contentValues);
     }
 
-    public void insertTables(boolean update, LayoutManager lm) {
+    public void insertTables(boolean update, String dbName, ArrayList<PLObject> layout) {
         ContentValues v;
         ArrayList<ContentValues> values;
 
-        values = getPLObjectsContentValues(lm.getLayout());
+        values = getPLObjectsContentValues(layout);
         //creates a new layout table
-        v = getLayoutReferenceContentValues(lm.getDbName());
+        v = getLayoutReferenceContentValues(dbName);
         updateCurrentTables(0);
         if (update) {
             try {
-                delete(lm.getDbName());
+                delete(dbName);
             } catch (Exception e) {
                 Log.d("aviv", "saveLayoutToDataBase: " + e.toString());
             }
         } else {
-            getDb(programHelper).execSQL(programHelper.getLayoutCommand(lm.getDbName()));
+            getDb(programHelper).execSQL(programHelper.getLayoutCommand(dbName));
             //inserts name to layout reference
             insertData(TABLE_LAYOUT_REFERENCE, v);
             //creates reference in current program table
@@ -110,7 +110,7 @@ public class ProgramDataManager extends DataManager {
         }
 
         //inserts data to the new layout table
-        insertData(lm.getDbName(), values);
+        insertData(dbName, values);
         if (update) {
 
         }
@@ -317,7 +317,7 @@ public class ProgramDataManager extends DataManager {
         try {
             c = db.rawQuery(sql, null);
         } catch (Exception e) {
-            throw e;
+            return null;
         }
            /* if (c.getCount() >= 0) {
                 String currentLayout = c.getString(c.getColumnIndex(LAYOUT_NAME));

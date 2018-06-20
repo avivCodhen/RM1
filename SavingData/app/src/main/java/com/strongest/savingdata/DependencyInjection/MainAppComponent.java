@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.strongest.savingdata.Activities.BaseActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
+import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
 import com.strongest.savingdata.dagger.AppModule;
 
 import javax.inject.Singleton;
@@ -15,8 +16,11 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {CreateProgramModule.class})
+@Component(modules = {CreateProgramModule.class,
+                        ViewModelModule.class})
 public interface MainAppComponent {
     void inject(MainApplication application);
     void inject(BaseActivity baseActivity);
+
+    void inject(ProgramSettingsFragment programSettingsFragment);
 }

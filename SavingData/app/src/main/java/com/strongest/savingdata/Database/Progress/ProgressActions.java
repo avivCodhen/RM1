@@ -1,6 +1,6 @@
 package com.strongest.savingdata.Database.Progress;
 
-import com.strongest.savingdata.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 
 /**

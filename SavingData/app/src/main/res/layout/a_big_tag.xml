@@ -9,7 +9,7 @@
         android:textSize="11sp"
         android:gravity="center"
         android:id="@+id/big_tag_tv"
-        android:textColor="@color/colorPrimary"
+        android:background="@color/colorRedTry"
         android:text="B"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

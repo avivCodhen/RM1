@@ -1,17 +1,12 @@
 package com.strongest.savingdata.Server;
 
-import com.strongest.savingdata.AlgorithmStats.Calculator.ProgressStatsMinMaxBean;
 import com.strongest.savingdata.BaseWorkout.Muscle;
-import com.strongest.savingdata.BaseWorkout.NewMuscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -43,9 +38,5 @@ public interface ApiInterface {
 
     @GET("getTablesDB.php/")
     Call<ArrayList<Beans>> getTables(@Query("muscles") String table);
-
-    @GET("stats/")
-    Call<Collection<ProgressStatsMinMaxBean>> getStats();
-
 
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.strongest.savingdata.AlgorithmGenerator.BParams;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
@@ -156,7 +155,7 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
     }
 
 
-    public Collection<Beans> readByBParams(String tableName, BParams... p) {
+  /*  public Collection<Beans> readByBParams(String tableName, BParams... p) {
         String[] s = new String[p.length];
         String[] c = new String[p.length];
         for (int i = 0; i < p.length; i++) {
@@ -165,7 +164,7 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
             c[i] = v;
         }
         return readByConstraint(tableName, s, c);
-    }
+    }*/
 
     public Beans fetchByName(String table, String name) {
         ArrayList<Beans> arr = (ArrayList<Beans>) readByConstraint(table, new String[]{NAME},

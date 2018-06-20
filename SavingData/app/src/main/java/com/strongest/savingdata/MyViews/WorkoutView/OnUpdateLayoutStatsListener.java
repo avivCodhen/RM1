@@ -1,7 +1,7 @@
 package com.strongest.savingdata.MyViews.WorkoutView;
 
-import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
-import com.strongest.savingdata.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
+import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 
 import java.util.ArrayList;
 
@@ -11,5 +11,5 @@ import java.util.ArrayList;
 
 public interface OnUpdateLayoutStatsListener {
 
-    ArrayList<PLObject> updateLayout(LayoutManager.UpdateComponents updateComponents);
+    ArrayList<PLObject> updateLayout(WorkoutsModel.UpdateComponents updateComponents);
 }

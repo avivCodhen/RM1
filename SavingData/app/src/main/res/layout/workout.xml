@@ -28,10 +28,10 @@
         android:id="@+id/workout_fragment_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></com.strongest.savingdata.MyViews.MyViewPager>
-    <com.strongest.savingdata.MyViews.WorkoutView.WorkoutView
+    <com.strongest.savingdata.AModels.WorkoutsModelController
         android:visibility="visible"
         android:id="@+id/fragment_workout_workoutview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.strongest.savingdata.MyViews.WorkoutView.WorkoutView>
+        android:layout_height="match_parent"></com.strongest.savingdata.AModels.WorkoutsModelController>
 
 </LinearLayout>

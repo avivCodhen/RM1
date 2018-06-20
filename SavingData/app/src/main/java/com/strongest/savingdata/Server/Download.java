@@ -3,11 +3,7 @@ package com.strongest.savingdata.Server;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.strongest.savingdata.AlgorithmStats.Calculator.ProgressStatsMinMaxBean;
 import com.strongest.savingdata.BaseWorkout.Muscle;
-import com.strongest.savingdata.BaseWorkout.NewMuscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Managers.DataManager;
 
@@ -31,7 +27,6 @@ public class Download {
     private ApiInterface apiInterface;
     private ArrayList<Muscle> e;
     private ArrayList<Beans> beans;
-    private Collection<ProgressStatsMinMaxBean> stats;
     private DataManager dm;
 
     public Download(Context context) {
@@ -42,10 +37,6 @@ public class Download {
         //downloadStats();
     }
 
-    private void downloadStats() {
-        dm.getStatsDataManager().delete(TABLE_STATS);
-        getAllStats();
-    }
 
     public void refreshData(final String... tables) {
 
@@ -73,24 +64,7 @@ public class Download {
 
     }
 
-    private void getAllStats() {
-        Call<Collection<ProgressStatsMinMaxBean>> call = apiInterface.getStats();
-        call.enqueue(new Callback<Collection<ProgressStatsMinMaxBean>>() {
-            @Override
-            public void onResponse(Call<Collection<ProgressStatsMinMaxBean>> call, Response<Collection<ProgressStatsMinMaxBean>> response) {
-                stats = response.body();
-                for (ProgressStatsMinMaxBean stat : stats){
-                    insertStats(stat, TABLE_STATS);
-                }
 
-            }
-
-            @Override
-            public void onFailure(Call<Collection<ProgressStatsMinMaxBean>> call, Throwable t) {
-
-            }
-        });
-    }
 
     private void getAllBeans(final String table) {
         if(table.equals("muscles")){
@@ -174,16 +148,7 @@ public class Download {
 
     }
 
-    private void insertStats(final ProgressStatsMinMaxBean stat, final String table) {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                dm.getStatsDataManager().insertData(stat);
-            }
-        }).start();
-
-    }
 
     private void insertBeans(final String table, final Beans eb) {
         new Thread(new Runnable() {

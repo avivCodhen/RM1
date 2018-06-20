@@ -1,9 +1,7 @@
 package com.strongest.savingdata.MyViews.WorkoutView;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.graphics.Color;
-import android.opengl.Visibility;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -18,27 +16,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.shehabic.droppy.DroppyClickCallbackInterface;
 import com.shehabic.droppy.DroppyMenuItem;
 import com.shehabic.droppy.DroppyMenuPopup;
-import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
-import com.strongest.savingdata.AlgorithmLayout.LayoutManagerAlertdialog;
+import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
+import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel.Actions;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
-import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
-import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
-import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
+import com.strongest.savingdata.Architecture;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.Utils.MyUtils;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.*;
 
 /**
  * Created by Cohen on 2/17/2018.
@@ -46,7 +35,10 @@ import static com.strongest.savingdata.AlgorithmLayout.LayoutManager.*;
 
 public class ProgramToolsView extends LinearLayout {
 
-    private android.support.v4.app.FragmentManager fragmentManager;
+    public enum Action {
+        NewExercise, NewDivider, NewWorkout, Advanced
+    }
+
     private Context context;
 
 
@@ -60,18 +52,16 @@ public class ProgramToolsView extends LinearLayout {
 
     private WorkoutViewModes mWorkoutViewModes;
 
-    private OnProgramToolsActionListener onProgramToolsActionListener;
+    private Architecture.view.ProgramTools listener;
 
     public ProgramToolsView(Context context) {
         super(context);
         this.context = context;
-        initViews();
     }
 
     public ProgramToolsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        initViews();
     }
 
     public void initDropMenu() {
@@ -84,15 +74,16 @@ public class ProgramToolsView extends LinearLayout {
         }
 
 // Set Callback handler
-        droppyBuilder.setOnClick(new DroppyClickCallbackInterface() {
-            @Override
-            public void call(View v, int id) {
-                Log.d("aviv", "call: " + id);
-            }
-        });
+        droppyBuilder.setOnClick((v, id) -> Log.d("aviv", "call: " + id));
 
         DroppyMenuPopup droppyMenu = droppyBuilder.build();
 
+    }
+
+    public void instantiate(View programToolsBtn, Architecture.view.ProgramTools listener) {
+        this.programToolsBtn = programToolsBtn;
+        this.listener = listener;
+        initViews();
     }
 
     private void initViews() {
@@ -108,8 +99,7 @@ public class ProgramToolsView extends LinearLayout {
 
                     } else {
                         setVisibility(GONE);
-                        MyJavaAnimator.rotateView(programToolsBtn, 315,360);
-                        //display(GONE);
+                        MyJavaAnimator.rotateView(programToolsBtn, 315, 360);
 
                     }
                     return false;
@@ -136,11 +126,11 @@ public class ProgramToolsView extends LinearLayout {
         int green = ContextCompat.getColor(context, R.color.green_dark);
         int red = ContextCompat.getColor(context, R.color.red);
         int plusIcon = R.drawable.plus_gray_24px;
-        buttons.add(new ProgramButton(green, NEW_EXERCISE, "New Exercise", plusIcon));
-        buttons.add(new ProgramButton(green, DRAW_DIVIDER, "New Divider", plusIcon));
-        buttons.add(new ProgramButton(green, NEW_WORKOUT, "New Workout", plusIcon));
+        buttons.add(new ProgramButton(green, Actions.NewExercise, "New Exercise", plusIcon));
+        buttons.add(new ProgramButton(green, Actions.NewDivider, "New Divider", plusIcon));
+        buttons.add(new ProgramButton(green, Actions.NewWorkout, "New Workout", plusIcon));
         //  buttons.add(new ProgramButton(red, DELETE_WORKOUT, "Workout", R.drawable.minus_white_24px));
-        buttons.add(new ProgramButton(Color.WHITE, "advanced", "Advanced", R.drawable.settings_24px_gray));
+        buttons.add(new ProgramButton(Color.WHITE, Actions.Advanced, "Advanced", R.drawable.settings_24px_gray));
         mRecyclerview = (RecyclerView) findViewById(R.id.program_tools_view_recyclerview);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(context);
         ProgramToolsAdapter adapter = new ProgramToolsAdapter();
@@ -149,21 +139,18 @@ public class ProgramToolsView extends LinearLayout {
         openProgramToolsEL = (ExpandableLayout) findViewById(R.id.workout_view_program_tools_expandable);
     }
 
-    public void setOnProgramToolsActionListener(OnProgramToolsActionListener onProgramToolsActionListener) {
-        this.onProgramToolsActionListener = onProgramToolsActionListener;
-    }
-
+    //this function expands the expandable layout
+    //it also takes into consideration the
     public void expand() {
         openProgramToolsEL.toggle();
         if (openProgramToolsEL.isExpanded()) {
             setVisibility(VISIBLE);
-            MyJavaAnimator.rotateView(programToolsBtn, 360,315);
+            MyJavaAnimator.rotateView(programToolsBtn, 360, 315);
 
 
         } else {
-            //setVisibility(GONE);
             display(GONE);
-            MyJavaAnimator.rotateView(programToolsBtn, 315,360);
+            MyJavaAnimator.rotateView(programToolsBtn, 315, 360);
         }
 
     }
@@ -171,9 +158,6 @@ public class ProgramToolsView extends LinearLayout {
 
     public WorkoutViewModes getmWorkoutViewModes() {
         return mWorkoutViewModes;
-    }
-    public void setFragmentManager(android.support.v4.app.FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
     }
 
     public void setProgramToolsBtn(View programToolsBtn) {
@@ -239,25 +223,7 @@ public class ProgramToolsView extends LinearLayout {
             holder.imageView.setImageResource(buttons.get(position).image);
             //holder.ImageView.setCircleBackgroundColor(buttons.get(position).color);
             holder.tv.setText(buttons.get(position).tv_name);
-            holder.itemView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (pBtn.type.equals("advanced")) {
-                        ProgramSettingsFragment f = ProgramSettingsFragment.getInstance(onProgramToolsActionListener);
-                        fragmentManager.beginTransaction()
-                                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                                .replace(R.id.activity_home_framelayout, f, "unique")
-                                .addToBackStack("unique")
-                                .commit();
-
-                        MyUtils.Interface.disableClick(holder.itemView, 1000);
-
-                    } else {
-                        onProgramToolsActionListener.onProgramToolsAction(pBtn.type, null);
-                    }
-
-                }
-            });
+            holder.itemView.setOnClickListener(v -> listener.onProgramToolsAction(pBtn.type));
         }
 
         @Override
@@ -279,11 +245,11 @@ public class ProgramToolsView extends LinearLayout {
 
     class ProgramButton {
         String tv_name;
-        String type;
+        Actions type;
         int color;
         int image;
 
-        ProgramButton(int color, String type, String tv_name, int image) {
+        ProgramButton(int color, Actions type, String tv_name, int image) {
 
             this.color = color;
             this.type = type;

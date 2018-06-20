@@ -22,9 +22,9 @@ import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
-import com.strongest.savingdata.AlgorithmLayout.LayoutManagerHelper;
-import com.strongest.savingdata.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AlgorithmLayout.ReactLayoutManager;
+import com.strongest.savingdata.AModels.AlgorithmLayout.LayoutManagerHelper;
+import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.AlgorithmLayout.ReactLayoutManager;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
@@ -123,13 +123,6 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //getActionBar().hide();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-//                getActionBar().show();
-
-            }
-        }, 500);
         // ((HomeActivity) getActivity()).begoneTabLayout();
         mainView = inflater.inflate(R.layout.fragment_choose, container, false);
         mainView.setFocusableInTouchMode(true);
@@ -142,8 +135,11 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
                         mSearchView.setVisibility(View.GONE);
                         return true;
                     }
-                    ((HomeActivity) getActivity()).workoutView.onExitChooseFragment(plObjectPosition, getArguments().getInt(OLD_POSITION));
+
+                    //this needs to be addressed!!!
+             //       ((HomeActivity) getActivity()).workoutsModelController.onExitChooseFragment(plObjectPosition, getArguments().getInt(OLD_POSITION));
                     plObject.setEditMode(false);
+                    onExerciseChangeListener.onExerciseChange(plObjectPosition, "");
                     getFragmentManager().popBackStack();
                     return true;
                 }
@@ -233,14 +229,8 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         mRecyclerView = (RecyclerView) v.findViewById(R.id.fragment_choose_recyclerview);
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(lm);
-        mRecyclerView.setAlpha(0f);
-        MyJavaAnimator.fadeIn(mRecyclerView);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-            }
-        }, 200);
-        myExpandableAdapter = new MyExpandableAdapter(layout, getContext(), null, null, null);
+
+        myExpandableAdapter = new MyExpandableAdapter(layout, getContext(), null, null, null, null);
         mRecyclerView.setAdapter(myExpandableAdapter);
         //  ((BaseActivity) getActivity()).programmer.layoutManager.mLayoutManagerHelper.setUpWithLayout(myExpandableAdapter, layout);
         // ((MyExpandableAdapter.ExerciseViewHolder) vh).card.setOnClickListener(null);
@@ -255,10 +245,14 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         v.findViewById(R.id.fragment_choose_back_iv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeActivity) getActivity()).workoutView.onExitChooseFragment(plObjectPosition, getArguments().getInt(OLD_POSITION));
+                //this needs to be addressed!!!
+
+                //((HomeActivity) getActivity()).workoutsModelController.onExitChooseFragment(plObjectPosition, getArguments().getInt(OLD_POSITION));
                 // ((HomeActivity) getActivity()).reviveTabLayout();
 
                 plObject.setEditMode(false);
+                onExerciseChangeListener.onExerciseChange(plObjectPosition, "");
+
                 getFragmentManager().popBackStack();
             }
         });

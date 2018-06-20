@@ -2,12 +2,7 @@ package com.strongest.savingdata.DependencyInjection;
 
 import android.app.Application;
 
-import com.strongest.savingdata.Activities.OnDoneListener;
-import com.strongest.savingdata.dagger.AppComponent;
-import com.strongest.savingdata.dagger.AppModule;
-
 import org.acra.ACRA;
-import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
 
@@ -28,6 +23,7 @@ public class MainApplication extends Application{
     public void onCreate() {
         super.onCreate();
         ACRA.init(this);
+
         appComponent = DaggerMainAppComponent.builder()
                 .createProgramModule(new CreateProgramModule(this)).build();
         appComponent.inject(this);

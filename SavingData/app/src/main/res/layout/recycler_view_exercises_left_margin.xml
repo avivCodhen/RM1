@@ -48,26 +48,24 @@
         android:foreground="?attr/selectableItemBackground">
 
 
-        <!--   <RelativeLayout
-            android:focusable="true"
-            android:id="@+id/exercise_main_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:foreground="?attr/selectableItemBackground"
-            android:background="@drawable/aviv_exercise_placeholder_left_margin"
-            android:paddingTop="3dp">
--->
-
         <TextView
             android:id="@+id/exerciseView_muscleTV"
             android:layout_width="wrap_content"
             android:layout_height="18dp"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
             android:text="Anterior Shoulder"
             android:textAlignment="center"
             android:textColor="#888888"
             android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/drag_iv"
+            android:paddingLeft="5dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/order_gray_50px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <com.wajahatkarim3.easyflipview.EasyFlipView
             app:flipOnTouch="false"
@@ -77,7 +75,7 @@
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="38dp"
 
             >
 
@@ -143,7 +141,7 @@
             android:id="@+id/exerciseView_nameTV"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="100dp"
             android:layout_marginTop="27dp"
             android:ellipsize="end"
             android:maxLines="1"
@@ -152,7 +150,8 @@
             android:textStyle="bold"
             android:textColor="@color/colorAccent"/>
 
-        <ImageView
+     <!--   <ImageView
+            android:visibility=""
             android:id="@+id/ex_arrow"
             android:layout_width="13dp"
             android:layout_height="wrap_content"
@@ -163,7 +162,7 @@
 
             android:src="@drawable/ic_expand_more_24px" />
 
-
+-->
         <!-- </RelativeLayout>-->
 
         <LinearLayout
@@ -204,7 +203,7 @@
             android:id="@+id/exerciseView_data_layout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="100dp"
             android:layout_marginBottom="10dp">
 
             <TextView
@@ -286,7 +285,7 @@
             android:layout_marginRight="10dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="12dp"
-            android:layout_toLeftOf="@id/ex_arrow"
+            android:layout_toLeftOf="@+id/exerciseView_data_layout2"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:text="Dropset"

@@ -1,11 +1,17 @@
 package com.strongest.savingdata.DependencyInjection;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 
-import com.strongest.savingdata.AlgorithmLayout.LayoutManager;
-import com.strongest.savingdata.ArtificialInteligence.ArtificialIntelligence;
-import com.strongest.savingdata.BaseWorkout.Programmer;
+import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
+import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
+import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModelValidator;
+import com.strongest.savingdata.AService.WorkoutsService;
+import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
+import com.strongest.savingdata.AViewModels.WorkoutsViewModelFactory;
 import com.strongest.savingdata.Database.Managers.DataManager;
+
+import java.util.ArrayList;
 
 import javax.inject.Singleton;
 
@@ -41,33 +47,35 @@ public class CreateProgramModule {
 
     @Provides
     @Singleton
-    public DataManager getDataManager(Context context) {
+    static DataManager getDataManager(Context context) {
         return new DataManager(context);
     }
 
 
-/*
     @Provides
     @Singleton
-    public LayoutManager getProgramLayoutManager(Context context, DataManager dataManager){
-        int workoutOrder = dataManager.getPrefs().getInt(DataManager.WORKOUT_ORDER, -1);
-        LayoutManager plm = new LayoutManager(context, dataManager);
-        plm.readLayoutFromDataBase("");
-        return plm;
+    static WorkoutsService getWorkoutsService(DataManager dataManager) {
+        return new WorkoutsService(dataManager);
+    }
+
+
+    @Provides
+    @Singleton
+    static WorkoutsModel getWorkoutsModel(WorkoutsService workoutsService) {
+        return new WorkoutsModel(workoutsService);
+    }
+
+    /*@Provides
+    @Singleton
+    public ViewModelProvider.Factory workoutsViewModelFactory(Context context, DataManager dataManager) {
+        return new WorkoutsViewModelFactory(context, dataManager);
     }
 */
 
-    @Provides
+    /*@Provides
     @Singleton
     public Programmer getProgrammer(Context context, DataManager dataManager) {
         return new Programmer(context, dataManager);
-    }
+    }*/
 
-
-
-    @Provides
-    @Singleton
-    public ArtificialIntelligence getAI(Context context, Programmer programmer) {
-        return new ArtificialIntelligence(context, programmer);
-    }
 }
