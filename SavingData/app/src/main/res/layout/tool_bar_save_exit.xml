@@ -1,0 +1,77 @@
+<RelativeLayout app:elevation="10dp"
+    android:id="@+id/choose_fragment_actiobar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/save_exit_toolbar_optional_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:src="@drawable/ic_action_search_white"/>
+
+
+    <TextView
+        android:visibility="gone"
+
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimary"
+        android:id="@+id/save_exit_toolbar_optional_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:src="@drawable/ic_action_search_white"/>
+
+
+
+    <ImageView
+        android:id="@+id/fragment_choose_back_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp"
+        android:src="@drawable/checkmark_96px_white" />
+
+    <ImageView
+
+        android:layout_toRightOf="@+id/fragment_choose_back_iv"
+        android:id="@+id/fragment_choose_nosave_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp"
+        android:src="@drawable/delete_96px_white" />
+
+    <TextView
+        android:id="@+id/optional_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/fragment_choose_nosave_iv"
+        android:elevation="10dp"
+        android:padding="5dp"
+        android:text=" "
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold" />
+
+</RelativeLayout>
+

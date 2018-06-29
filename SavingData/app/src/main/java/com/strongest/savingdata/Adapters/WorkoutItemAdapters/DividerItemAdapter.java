@@ -29,7 +29,8 @@ public class DividerItemAdapter implements WorkoutItemAdapter<PLObject.BodyText>
 
     @Override
     public boolean notifyRemoved(int from, int count, ItemAdapter adapter) {
-        return false;
+        adapter.adapterNotifyItemRemoved(from);
+        return true;
     }
 
     @Override
@@ -40,6 +41,11 @@ public class DividerItemAdapter implements WorkoutItemAdapter<PLObject.BodyText>
     @Override
     public PLObject.BodyText onDuplicate(PLObject.BodyText clone) {
         return null;
+    }
+
+    @Override
+    public int addingDuplicateTo(PLObject.BodyText parent) {
+        return 0;
     }
 
     @Override

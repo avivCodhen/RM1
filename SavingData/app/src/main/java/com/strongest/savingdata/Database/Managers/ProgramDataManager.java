@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.BaseWorkout.Program;
@@ -81,15 +82,14 @@ public class ProgramDataManager extends DataManager {
     }
 
     public void insertData(String tableName, ContentValues contentValues) {
-            getDb(programHelper).insert(tableName,
-                    null,
-                    contentValues);
+        getDb(programHelper).insert(tableName,
+                null,
+                contentValues);
     }
 
-    public void insertTables(boolean update, String dbName, ArrayList<PLObject> layout) {
+    public void insertTables(boolean update, String dbName, ArrayList<Workout> layout) {
         ContentValues v;
         ArrayList<ContentValues> values;
-
         values = getPLObjectsContentValues(layout);
         //creates a new layout table
         v = getLayoutReferenceContentValues(dbName);
@@ -265,13 +265,14 @@ public class ProgramDataManager extends DataManager {
         return null;
     }
 
-    public void updateProgramName(String progName,String dbName ){
+    public void updateProgramName(String progName, String dbName) {
         ContentValues cv = new ContentValues();
         cv.put(PROGRAM_NAME, progName);
-        db.update(TABLE_PROGRAM_REFERENCE, cv, LAYOUT_NAME + "= ?", new String[] {dbName});
+        db.update(TABLE_PROGRAM_REFERENCE, cv, LAYOUT_NAME + "= ?", new String[]{dbName});
        /* db.rawQuery("UPDATE "+TABLE_PROGRAM_REFERENCE+" SET "+PROGRAM_NAME+"="+ progName +
                 " WHERE "+LAYOUT_NAME+"=?", new String[]{dbName});*/
     }
+
     public ArrayList<Program> getAllPrograms() {
         ArrayList<Program> programs = new ArrayList<>();
         Cursor c = getDb(programHelper).rawQuery("Select * from " + TABLE_PROGRAM_REFERENCE, null);
@@ -294,15 +295,15 @@ public class ProgramDataManager extends DataManager {
         String sql = "SELECT * FROM " + TABLE_PROGRAM_REFERENCE + " WHERE " + LAYOUT_NAME + "=?";
         Cursor c = getDb(programHelper).rawQuery(sql, new String[]{currentDbName});
         if (c != null && c.moveToFirst()) {
-            try{
+            try {
                 return new Program(
                         c.getString(c.getColumnIndex(PROGRAM_NAME)),
                         c.getString(c.getColumnIndex(PROGRAM_TIME)),
                         c.getString(c.getColumnIndex(DATE_CREATED)),
                         currentDbName
                 );
-            }catch (Exception E){
-                Log.d("aviv", "readProgramTable: "+E.toString());
+            } catch (Exception E) {
+                Log.d("aviv", "readProgramTable: " + E.toString());
             }
 
         }
@@ -375,42 +376,37 @@ public class ProgramDataManager extends DataManager {
         return v;
     }
 
-    public ArrayList<ContentValues> getPLObjectsContentValues(ArrayList<PLObject> p) {
+    public ArrayList<ContentValues> getPLObjectsContentValues(ArrayList<Workout> w) {
         ArrayList<ContentValues> contentValues = new ArrayList<>();
         ContentValues v;
-        int i = 0;
-        for (PLObject ep : p) {
-            v = new ContentValues();
+        for (Workout workout : w) {
+            ArrayList<PLObject> p = workout.exArray;
+            ContentValues workoutV = new ContentValues();
+            workoutV.put(DBExercisesHelper.TYPE, WorkoutLayoutTypes.WorkoutView.ordinal());
+            workoutV.put(DBProgramHelper.NAME, workout.workoutName);
+            contentValues.add(workoutV);
+            for (PLObject ep : p) {
+                v = new ContentValues();
 
-            switch (ep.getType()) {
-                case WorkoutView:
-                    v.put(DBExercisesHelper.TYPE, ep.getType().ordinal());
-                    v.put(DBProgramHelper.WORKOUT_ID, ep.getWorkoutId());
-                    PLObject.WorkoutPLObject workoutPLObject = (PLObject.WorkoutPLObject) ep;
-                    v.put(DBProgramHelper.NAME, workoutPLObject.getWorkoutName());
-                    contentValues.add(v);
-
-                    //       v.put(DBProgramHelper.WORKOUT_ID, workoutText.getWorkoutId());
-                    break;
-                case BodyView:
+                if(ep.type == WorkoutLayoutTypes.BodyView){
                     v.put(DBExercisesHelper.TYPE, ep.getType().ordinal());
                     v.put(DBProgramHelper.WORKOUT_ID, ep.getWorkoutId());
                     PLObject.BodyText bodyText = (PLObject.BodyText) ep;
                     v.put(DBExercisesHelper.NAME, (bodyText.getTitle()));
                     contentValues.add(v);
                     //    v.put(DBProgramHelper.workou);
-                    break;
-                case ExerciseProfile:
+                }
+                else if(ep.type == WorkoutLayoutTypes.ExerciseProfile || ep.type == WorkoutLayoutTypes.IntraSet){
                     PLObject.ExerciseProfile exerciseProfile = (PLObject.ExerciseProfile) ep;
-                    if(exerciseProfile.getInnerType() == WorkoutLayoutTypes.IntraExerciseProfile){
+                    if (exerciseProfile.getInnerType() == WorkoutLayoutTypes.IntraExerciseProfile) {
                         break;
                     }
-                    contentValues.add(saveExercise(exerciseProfile)) ;
+                    contentValues.add(saveExercise(exerciseProfile));
                     for (int j = 0; j < exerciseProfile.getSets().size(); j++) {
                         PLObject.SetsPLObject setsPLObject = exerciseProfile.getSets().get(j);
                         contentValues.add(saveSets(setsPLObject));
-                        for (int k = 0; k < setsPLObject.getIntraSets().size(); k++) {
-                            PLObject.IntraSetPLObject intraSet = setsPLObject.getIntraSets().get(k);
+                        for (int k = 0; k < setsPLObject.intraSets.size(); k++) {
+                            PLObject.SetsPLObject intraSet = setsPLObject.intraSets.get(k);
                             contentValues.add(saveSets(intraSet));
                         }
                     }
@@ -419,13 +415,13 @@ public class ProgramDataManager extends DataManager {
                         PLObject.ExerciseProfile superset = exerciseProfile.getExerciseProfiles().get(j);
                         contentValues.add(saveExercise(superset));
 
-                        for (int k = 0; k < superset.getIntraSets().size(); k++) {
-                            PLObject.IntraSetPLObject intraSetPLObject = superset.getIntraSets().get(k);
+                        for (int k = 0; k < superset.intraSets.size(); k++) {
+                            PLObject.SetsPLObject intraSetPLObject = superset.intraSets.get(k);
                             contentValues.add(saveSets(intraSetPLObject));
                         }
                     }
-                    break;
 
+                }
             }
         }
         return contentValues;
@@ -437,7 +433,7 @@ public class ProgramDataManager extends DataManager {
         supersetIntraCV.put(DBExercisesHelper.TYPE, setsPLObject.getType().ordinal());
         supersetIntraCV.put(DBProgramHelper.WORKOUT_ID, setsPLObject.getWorkoutId());
         supersetIntraCV.put(DBExercisesHelper.TYPE, setsPLObject.getType().ordinal());
-        supersetIntraCV.put(INNER_TYPE, setsPLObject.getInnerType().ordinal());
+        //supersetIntraCV.put(INNER_TYPE, setsPLObject.getInnerType().ordinal());
         supersetIntraCV.put(DBProgramHelper.WORKOUT_ID, setsPLObject.getWorkoutId());
         supersetIntraCV.put(REP_ID, setsPLObject.getExerciseSet().getRep());
         supersetIntraCV.put(REST, setsPLObject.getExerciseSet().getRest());
@@ -445,7 +441,7 @@ public class ProgramDataManager extends DataManager {
         return supersetIntraCV;
     }
 
-    private ContentValues saveSets(PLObject.IntraSetPLObject intraSetPLObject) {
+   /* private ContentValues saveSets(PLObject.IntraSetPLObject intraSetPLObject) {
         ContentValues intraCv;
         intraCv = new ContentValues();
         intraCv.put(DBExercisesHelper.TYPE, intraSetPLObject.getType().ordinal());
@@ -457,7 +453,7 @@ public class ProgramDataManager extends DataManager {
         intraCv.put(REST, intraSetPLObject.getExerciseSet().getRest());
         intraCv.put(WEIGHT, intraSetPLObject.getExerciseSet().getWeight());
         return intraCv;
-    }
+    }*/
 
     private ContentValues saveExercise(PLObject.ExerciseProfile exerciseProfile) {
         ContentValues epCV = new ContentValues();
@@ -469,7 +465,7 @@ public class ProgramDataManager extends DataManager {
         if (exerciseProfile.getExercise() != null) {
             epCV.put(EXERCISE_ID, exerciseProfile.getExercise().getName());
         }
-        epCV.put(INNER_TYPE, exerciseProfile.getInnerType().ordinal());
+//        epCV.put(INNER_TYPE, exerciseProfile.getInnerType().ordinal());
         epCV.put(DBProgramHelper.COMMENT, exerciseProfile.comment);
         epCV.put(DEFAULT_INT, exerciseProfile.getDefaultInt());
         return epCV;

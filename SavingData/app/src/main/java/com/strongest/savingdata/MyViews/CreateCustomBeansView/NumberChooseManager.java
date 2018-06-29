@@ -6,7 +6,7 @@ import android.widget.TextSwitcher;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.MyViews.RestChooseView;
-import com.strongest.savingdata.MyViews.WorkoutView.Choose.OnExerciseSetChange;
+import com.strongest.savingdata.Fragments.Choose.OnExerciseSetChange;
 
 /**
  * Created by Cohen on 1/18/2018.
@@ -16,7 +16,6 @@ public class NumberChooseManager {
 
    // private LayoutManager.LayoutManagerHelper helper;
     private ExerciseSet exerciseSet;
-    private OnExerciseSetChange onExerciseSetChange;
     private RestChooseView restChooseView;
     private SingleNumberChooseView singleNumberChooseView;
     private TextSwitcher repsTextSwitcher, restTextSwitcher;
@@ -51,8 +50,7 @@ public class NumberChooseManager {
 
     private OnRangeNumberChooseControl onRangeNumberChooseControl;
 
-    public NumberChooseManager(OnExerciseSetChange onExerciseSetChange, ExerciseSet exerciseSet) {
-        this.onExerciseSetChange = onExerciseSetChange;
+    public NumberChooseManager( ExerciseSet exerciseSet) {
 
         this.exerciseSet = exerciseSet;
     }
@@ -74,13 +72,11 @@ public class NumberChooseManager {
 
     public void injectRest(String rest){
         exerciseSet.setRest(rest);
-        onExerciseSetChange.notifyExerciseSetChange();
         setTextSwitcherText(restTextSwitcher, rest);
     }
 
     public void injectRep(String rep){
         exerciseSet.setRep(rep);
-        onExerciseSetChange.notifyExerciseSetChange();
         setTextSwitcherText(repsTextSwitcher, rep);
     }
 

@@ -145,6 +145,10 @@ public class Muscle implements Serializable {
         return children;
     }
 
+    /**
+     * this function parses the string containing % characters
+     * and muscle names. this is used to recieve an string usuable to print
+     * */
     public static String[] parseMuscles(String muscles) {
         int length = 0;
         for (int i = 0; i < muscles.length(); i++) {

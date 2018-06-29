@@ -7,11 +7,19 @@
     android:clipToPadding="true"
     >
 
+
+    <FrameLayout
+        android:layout_below="@+id/choose_fragment_actiobar_layout"
+        android:id="@+id/youtube_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"></FrameLayout>
+
+
     <RelativeLayout
 
         android:id="@+id/choose_fragment_actiobar_layout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:background="@color/colorAccent"
         >
 
@@ -56,6 +64,7 @@
 
 
             <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
                 android:background="@color/background_color"
                 android:layout_below="@+id/choose_fragment_actiobar_layout"
                 android:id="@+id/fragment_choose_recyclerview"
@@ -66,7 +75,7 @@
 
         <android.support.v4.view.ViewPager
             android:clipToPadding="true"
-            android:layout_below="@+id/fragment_choose_recyclerview"
+            android:layout_below="@+id/youtube_fragment"
             android:id="@+id/choose_dialog_viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

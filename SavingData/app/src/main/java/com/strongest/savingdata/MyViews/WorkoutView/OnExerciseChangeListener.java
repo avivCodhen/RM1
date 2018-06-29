@@ -1,10 +1,12 @@
 package com.strongest.savingdata.MyViews.WorkoutView;
 
+import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
+
 /**
  * Created by Cohen on 2/15/2018.
  */
 
 public interface OnExerciseChangeListener {
 
-    void onExerciseChange(int position, String change);
+    void onExerciseChange(PLObject plObject);
 }

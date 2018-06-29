@@ -3,7 +3,6 @@ package com.strongest.savingdata.Fragments;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
 import com.strongest.savingdata.R;
 
 public class BaseFragment extends Fragment {

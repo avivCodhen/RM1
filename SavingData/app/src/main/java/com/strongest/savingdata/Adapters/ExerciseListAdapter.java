@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
-import com.strongest.savingdata.MyViews.WorkoutView.Choose.OnExerciseSetChange;
+import com.strongest.savingdata.Fragments.Choose.OnExerciseSetChange;
 import com.strongest.savingdata.R;
 
 import java.util.ArrayList;
@@ -83,7 +83,7 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
                 } else {
                     onExerciseListAdapterClickListener.setExercise(exerciseBeans.get(position));
                 }
-                onExerciseSetChange.notifyExerciseSetChange();
+//                onExerciseSetChange.notifyExerciseSetChange();
             }
         });
 

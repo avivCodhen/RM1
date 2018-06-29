@@ -63,9 +63,14 @@ public class ExerciseItemAdapter implements WorkoutItemAdapter<ExerciseProfile> 
     }
 
     @Override
+    public int addingDuplicateTo(ExerciseProfile parent) {
+        return 1+parent.getExerciseProfiles().size();
+    }
+
+    @Override
     public boolean notifyDuplicate(int position, ItemAdapter adapter) {
         adapter.adapterNotifyItemInserted(position);
-        return false;
+        return true;
     }
 
     @Override
@@ -87,6 +92,6 @@ public class ExerciseItemAdapter implements WorkoutItemAdapter<ExerciseProfile> 
     @Override
     public boolean notifyChild(int position, ItemAdapter adapter) {
         adapter.adapterNotifyItemInserted(position);
-        return false;
+        return true;
     }
 }

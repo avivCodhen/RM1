@@ -19,5 +19,9 @@ public static class Interface{
     }
     }
 
+    public static String[] stringsToArray(String...strings){
+            return strings;
+    }
+
 }
 

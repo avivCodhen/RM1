@@ -49,14 +49,20 @@ public class WorkoutsService {
         this.dataManager = dataManager;
     }
 
-    public void saveLayoutToDataBase(final boolean update, ArrayList<Workout> layout, String dbName) {
+    public boolean saveLayoutToDataBase(final boolean update, ArrayList<Workout> layout, String dbName) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 // requestSplitToLayout();
-            //    dataManager.getProgramDataManager().insertTables(update, dbName, layout);
+                try {
+
+                } catch (Exception e) {
+                    throw new IllegalArgumentException("could not save layout to database " + e.toString());
+                }
+                dataManager.getProgramDataManager().insertTables(update, dbName, layout);
             }
         }).start();
+        return true;
     }
 
 
@@ -74,7 +80,7 @@ public class WorkoutsService {
         PLObject.ExerciseProfile ep;
 
         //for the workoutList implementation
-        ArrayList<PLObject> exArray = new ArrayList<>();
+        ArrayList<PLObject> exArray = null;
 
 
         int workoutIndex = 0;
@@ -87,6 +93,8 @@ public class WorkoutsService {
 
                         //for the workoutList implementation
                         workoutsList.add(new Workout());
+                        exArray = new ArrayList<>();
+                        workoutIndex = workoutsList.size()-1;
                         workoutsList.get(workoutIndex).setWorkoutName(wName);
 
                         /*bodyTemplate.add(new ArrayList<String>());
@@ -113,6 +121,8 @@ public class WorkoutsService {
                         }
 
                         ep = new PLObject.ExerciseProfile();
+                        ep.type = type;
+                        ep.isParent = true;
                         ep.setMuscle(muscle);
                         ep.setInnerType(innerType);
                         String exId = c.getString(c.getColumnIndex(EXERCISE_ID));
@@ -136,10 +146,52 @@ public class WorkoutsService {
                         //again for the new workoutList implementation
                         exArray.add(ep);
                         break;
+
+                    case IntraExerciseProfile:
+                        innerType = WorkoutLayoutTypes
+                                .getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
+
+                        Muscle muscle2 = null;
+                        muscle_str = c.getString(c.getColumnIndex(MUSCLE));
+                        try {
+                            muscle = Muscle.createMuscle(dataManager.getMuscleDataManager(), muscle_str);
+                        } catch (Exception e) {
+                            Log.d("aviv", "readLayoutFromDataBase: either null or no muscle");
+                        }
+
+                        ep = new PLObject.ExerciseProfile();
+                        ep.type = type;
+                        ep.isParent = true;
+                        ep.setMuscle(muscle2);
+                        ep.setInnerType(innerType);
+                        String exId2 = c.getString(c.getColumnIndex(EXERCISE_ID));
+                        int default_int2 = c.getInt(c.getColumnIndex(DEFAULT_INT));
+                        if (default_int2 == 1) {
+                            ep.setExercise(dataManager.getExerciseDataManager().fetchByName(TABLE_EXERCISES_CUSTOM, exId2));
+
+                        } else {
+                            if (exId2 != null) {
+                                Beans exercise = dataManager.getExerciseDataManager().fetchByName(muscle2.getMuscle_name(), exId2);
+                                ep.setExercise(exercise);
+                            }
+                        }
+                        ep.comment = c.getString(c.getColumnIndex(COMMENT));
+                        ep.showComment = !ep.comment.equals("");
+                      /*  if (parent != null) {
+                            parent.getExerciseProfiles().add(ep);
+                            ep.setParent(parent);
+                        }*/
+
+                        //again for the new workoutList implementation
+                        exArray.add(ep);
+
+
+                        break;
                     case SetsPLObject:
 
                         innerType = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
-                        ep = ((PLObject.ExerciseProfile) workoutsList.get(workoutIndex).exArray.get(workoutsList.get(workoutIndex).exArray.size() - 1));
+                        int pos = workoutsList.get(workoutIndex).exArray.size() - 1;
+                        ep = ((PLObject.ExerciseProfile) workoutsList.get(workoutIndex).exArray.get(pos));
                         PLObject.ExerciseProfile setParent = null;
                         if (ep.getParent() != null) {
                             setParent = ep.getParent();
@@ -156,46 +208,62 @@ public class WorkoutsService {
                         PLObject.SetsPLObject setsPLObjectSet = new PLObject.SetsPLObject(setParent, exerciseSet);
                         setsPLObjectSet.setInnerType(innerType);
                         setParent.getSets().add(setsPLObjectSet);
+                        setsPLObjectSet.isParent = true;
+                        setsPLObjectSet.type = type;
                         break;
                     case IntraSet:
-                        ep = ((PLObject.ExerciseProfile)workoutsList.get(workoutIndex).exArray.get(workoutsList.get(workoutIndex).exArray.size() - 1));
+                        /**
+                         * getting the last exercise profile in the list
+                         * */
+                        int last = workoutsList.get(workoutIndex).exArray.size() - 1;
+                        ep = ((PLObject.ExerciseProfile) workoutsList.get(workoutIndex).exArray.get(last));
+
+
                         innerType = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
-                        switch (innerType) {
+                        rep = c.getString(c.getColumnIndex(REP_ID));
+                        rest = c.getString(c.getColumnIndex(REST));
+                        weight = c.getDouble(c.getColumnIndex(WEIGHT));
+                        exerciseSet = new ExerciseSet();
+                        exerciseSet.setRep(rep);
+                        exerciseSet.setRest(rest);
+                        exerciseSet.setWeight(weight);
+                        PLObject.SetsPLObject intra = new PLObject.SetsPLObject();
+                        intra.setExerciseSet(exerciseSet);
+                        intra.setInnerType(innerType);
+                        intra.type = type;
 
-                            case SuperSetIntraSet:
-                                //exerciseprofile is a superset
+                        /**
+                         * getting the last set from the exercise array
+                         * */
+                        int position = ep.getSets().size() - 1;
 
-                                rep = c.getString(c.getColumnIndex(REP_ID));
-                                rest = c.getString(c.getColumnIndex(REST));
-                                weight = c.getDouble(c.getColumnIndex(WEIGHT));
-                                exerciseSet = new ExerciseSet();
-                                exerciseSet.setRep(rep);
-                                exerciseSet.setRest(rest);
-                                exerciseSet.setWeight(weight);
-                                PLObject.IntraSetPLObject intra = new PLObject.IntraSetPLObject(
-                                        ep,
-                                        exerciseSet,
-                                        innerType, null);
-                                ep.getIntraSets().add(intra);
-                                break;
 
-                            case IntraSetNormal:
-                                //exerciseprofile is normal
-                                rep = c.getString(c.getColumnIndex(REP_ID));
-                                rest = c.getString(c.getColumnIndex(REST));
-                                weight = c.getDouble(c.getColumnIndex(WEIGHT));
-                                exerciseSet = new ExerciseSet();
-                                exerciseSet.setRep(rep);
-                                exerciseSet.setRest(rest);
-                                exerciseSet.setWeight(weight);
-                                int position = ep.getSets().size() - 1;
+                        intra.parent = ep;
+                        intra.setParent = ep.getSets().get(position);
+                        ep.getSets().get(position).intraSets.add(intra);
 
-                                PLObject.IntraSetPLObject setsPLObjectIntraSet = new PLObject.IntraSetPLObject(
-                                        ep, exerciseSet, innerType, ep.getSets().get(position));
-                                ep.getSets().get(position).getIntraSets().add(setsPLObjectIntraSet);
-                                break;
+                        break;
 
-                        }
+                    case SuperSetIntraSet:
+
+                        int last2 = workoutsList.get(workoutIndex).exArray.size() - 1;
+                        ep = ((PLObject.ExerciseProfile) workoutsList.get(workoutIndex).exArray.get(last2));
+
+
+                        innerType = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
+                        rep = c.getString(c.getColumnIndex(REP_ID));
+                        rest = c.getString(c.getColumnIndex(REST));
+                        weight = c.getDouble(c.getColumnIndex(WEIGHT));
+                        exerciseSet = new ExerciseSet();
+                        exerciseSet.setRep(rep);
+                        exerciseSet.setRest(rest);
+                        exerciseSet.setWeight(weight);
+                        PLObject.SetsPLObject intra2 = new PLObject.SetsPLObject();
+                        intra2.setExerciseSet(exerciseSet);
+                        intra2.setInnerType(innerType);
+                        intra2.type = type;
+                        ep.intraSets.add(intra2);
+                        break;
 
                 }
 

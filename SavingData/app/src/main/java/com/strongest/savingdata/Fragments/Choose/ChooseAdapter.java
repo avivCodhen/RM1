@@ -1,4 +1,4 @@
-package com.strongest.savingdata.MyViews.WorkoutView.Choose;
+package com.strongest.savingdata.Fragments.Choose;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

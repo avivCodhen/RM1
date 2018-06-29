@@ -4,6 +4,8 @@
     package="com.strongest.savingdata">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
         android:name=".DependencyInjection.MainApplication"
@@ -15,7 +17,6 @@
         android:theme="@style/newAppTheme"
         tools:replace="android:label, supportsRtl">
         <activity android:name=".Activities.MainActivity" />
-        <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.RegisterActivity" />
         <activity
             android:name=".Activities.HomeActivity"
@@ -31,8 +32,7 @@
         <activity
             android:name=".Dialogs.DialogMuscleSelect"
             android:theme="@style/AppTheme.CustomeTheme" />
-        <activity android:name=".Deprecated.ArtificialInteligence.Unused.LevelDeterminerDialogFragment" />
-        <activity android:name=".MyViews.WorkoutView.Choose.ChooseDialogFragment" />
+        <activity android:name=".Fragments.Choose.ChooseDialogFragment" />
         <activity android:name=".Activities.WebViewActivity" />
         <activity android:name=".TestActivity" />
         <activity android:name=".Activities.TutorialActivity">

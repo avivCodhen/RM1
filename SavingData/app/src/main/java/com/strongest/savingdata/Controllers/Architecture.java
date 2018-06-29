@@ -1,4 +1,4 @@
-package com.strongest.savingdata;
+package com.strongest.savingdata.Controllers;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
 import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;

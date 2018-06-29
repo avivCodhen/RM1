@@ -39,7 +39,7 @@ public class ChooseContainerFragment extends BaseCreateProgramFragment {
     public static ChooseContainerFragment getInstance(PLObject.ExerciseProfile ep, int pos, String type) {
         ChooseContainerFragment f = new ChooseContainerFragment();
         Bundle b = new Bundle();
-        b.putSerializable(ExerciseChooseFragment.EXERCISE_PROFILE, ep);
+        b.putSerializable(ExerciseEditFragment.EXERCISE_PROFILE, ep);
         b.putInt(SET_POS, pos);
         b.putSerializable(TYPE, type);
         f.setArguments(b);
@@ -50,7 +50,7 @@ public class ChooseContainerFragment extends BaseCreateProgramFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            exerciseProfile = (PLObject.ExerciseProfile) getArguments().getSerializable(ExerciseChooseFragment.EXERCISE_PROFILE);
+            exerciseProfile = (PLObject.ExerciseProfile) getArguments().getSerializable(ExerciseEditFragment.EXERCISE_PROFILE);
             pos = getArguments().getInt(SET_POS);
             type = getArguments().getString(TYPE);
         }
@@ -107,7 +107,7 @@ public class ChooseContainerFragment extends BaseCreateProgramFragment {
             if(type.equals(INTRA_EXERCISE)){
                 return exerciseProfile.getExerciseProfiles().size()+1;
             }else if(type.equals(SET)){
-                return exerciseProfile.getSets().get(pos).getIntraSets().size();
+              //  return exerciseProfile.getSets().get(pos).getIntraSets().size();
             }
             return -1;
         }

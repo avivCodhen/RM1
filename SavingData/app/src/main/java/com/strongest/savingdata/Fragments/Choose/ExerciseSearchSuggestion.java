@@ -1,4 +1,4 @@
-package com.strongest.savingdata.MyViews.WorkoutView.Choose;
+package com.strongest.savingdata.Fragments.Choose;
 
 import android.annotation.SuppressLint;
 import android.os.Parcel;

@@ -48,7 +48,7 @@
             android:gravity="center_vertical"
             android:layout_height="match_parent"
             android:id="@+id/exerciseView_data_linearlayout"
-            android:layout_width="match_parent"
+            android:layout_width="70dp"
             >
             <RelativeLayout
                 android:gravity="center"
@@ -84,6 +84,14 @@
                     />
             </RelativeLayout>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_toRightOf="@+id/exerciseView_data_linearlayout"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <TextView
                 android:textColor="@color/textview_color"
@@ -119,7 +127,9 @@
 
 
         </LinearLayout>
+
         <ImageView
+            android:visibility="gone"
             android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
             android:id="@+id/sets_settings"

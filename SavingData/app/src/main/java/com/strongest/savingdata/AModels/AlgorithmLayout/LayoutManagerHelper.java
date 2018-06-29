@@ -71,19 +71,19 @@ public class LayoutManagerHelper {
 
     public static int findIntraSetPosition(PLObject.IntraSetPLObject intraPLObject) {
         if (intraPLObject.innerType == WorkoutLayoutTypes.SuperSetIntraSet) {
-            for (int i = 0; i < intraPLObject.getParent().getIntraSets().size(); i++) {
-                if (intraPLObject.getParent().getIntraSets().get(i) == intraPLObject) {
+            for (int i = 0; i < intraPLObject.getParent().intraSets.size(); i++) {
+                /*if (intraPLObject.getParent().intraSets.get(i) == intraPLObject) {
                     return i;
-                }
+                }*/
             }
-        } else if (intraPLObject.innerType == WorkoutLayoutTypes.IntraSetNormal) {
+        } /*else if (intraPLObject.innerType == WorkoutLayoutTypes.IntraSetNormal) {
             for (int i = 0; i < intraPLObject.getParentSet().getIntraSets().size(); i++) {
                 PLObject.IntraSetPLObject temp = intraPLObject.getParentSet().getIntraSets().get(i);
                 if (intraPLObject == temp) {
                     return i;
                 }
             }
-        }
+        }*/
         return -1;
     }
 
@@ -227,20 +227,19 @@ public class LayoutManagerHelper {
 
     public static void attachSupersetIntraSetsByParent(PLObject.ExerciseProfile superset) {
         int sets = superset.getParent().getSets().size();
-        int intraSets = superset.getIntraSets().size();
-        int length = sets - intraSets;
-        if (length > 0) {
+   //     int intraSets = superset.getIntraSets().size();
+     //   int length = sets - intraSets;
+    /*    if (length > 0) {
             for (int i = 0; i < length; i++) {
-                superset.getIntraSets().add(new PLObject.IntraSetPLObject(superset, new ExerciseSet(), SuperSetIntraSet, null));
-            }
-        }
+             //   superset.getIntraSets().add(new PLObject.IntraSetPLObject(superset, new ExerciseSet(), SuperSetIntraSet, null));
+            }*/
 
     }
 
     public static int calcBlockLength(PLObject.ExerciseProfile ep) {
         int sets = 0;
         for (int i = 0; i < ep.getSets().size(); i++) {
-            sets += 1 + ep.getSets().get(i).getIntraSets().size();
+          //  sets += 1 + ep.getSets().get(i).getIntraSets().size();
         }
         int setsWithSuperset = ep.getSets().size() * ep.getExerciseProfiles().size();
         int supersets = ep.getExerciseProfiles().size();
@@ -252,9 +251,9 @@ public class LayoutManagerHelper {
             return false;
         }
         for (int i = 0; i < ep.getSets().size(); i++) {
-            if(ep.getSets().get(i).getIntraSets().size() > 0){
+         /*   if(ep.getSets().get(i).getIntraSets().size() > 0){
                 return true;
-            }
+            }*/
         }
         return false;
 

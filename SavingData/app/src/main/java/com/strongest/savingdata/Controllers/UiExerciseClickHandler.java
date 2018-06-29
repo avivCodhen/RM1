@@ -1,11 +1,11 @@
-package com.strongest.savingdata.Controllers.SingleWorkout;
+package com.strongest.savingdata.Controllers;
 
 import android.support.v7.widget.RecyclerView;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 
-public interface UIWorkoutClickHandler {
+public interface UiExerciseClickHandler {
 
     void onExerciseEdit(RecyclerView.ViewHolder vh,PLObject plObject, int position);
     void onExerciseDetails(PLObject.ExerciseProfile exerciseProfile);

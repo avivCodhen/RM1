@@ -39,13 +39,13 @@ public class GridViewMusclesAdapter extends BaseAdapter{
 
     }
 
-    public class MusclesContentHolder {
+    public static class MusclesContentHolder {
 
         public String text;
         public int icon;
         public Muscle m;
 
-        MusclesContentHolder(int icon, String text, Muscle m) {
+        public MusclesContentHolder(int icon, String text, Muscle m) {
 
             this.icon = icon;
             this.text = text;

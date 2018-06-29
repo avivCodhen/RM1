@@ -147,7 +147,7 @@ public class PLObject implements Serializable {
 
         public String comment = "";
         private ArrayList<SetsPLObject> sets = new ArrayList<>();
-        private ArrayList<IntraSetPLObject> intraSets = new ArrayList<>();
+        public ArrayList<SetsPLObject> intraSets = new ArrayList<>();
         private ArrayList<ExerciseProfile> exerciseProfiles = new ArrayList<>();
         private int exerciseProfileId;
         private Muscle muscle;
@@ -177,14 +177,13 @@ public class PLObject implements Serializable {
             this.tag = ep.tag;
             this.comment = ep.comment;
             this.defaultInt = ep.getDefaultInt();
+            this.sets = ep.sets;
+            this.isParent = ep.isParent;
+            this.exerciseProfiles = ep.exerciseProfiles;
         }
         public ExerciseProfile(){
             type = WorkoutLayoutTypes.ExerciseProfile;
 
-        }
-
-        public ArrayList<IntraSetPLObject> getIntraSets() {
-            return intraSets;
         }
 
         public WorkoutLayoutTypes getInnerType() {
@@ -288,14 +287,24 @@ public class PLObject implements Serializable {
     public static class SetsPLObject extends PLObject {
 
         private ExerciseSet ExerciseSet = new ExerciseSet();
-        private ArrayList<IntraSetPLObject> intraSets = new ArrayList<>();
-        private ExerciseProfile parent;
+        public ArrayList<SetsPLObject> intraSets = new ArrayList<>();
+        public ExerciseProfile parent;
+        public SetsPLObject setParent;
+        public String tag;
+
 
         public SetsPLObject(ExerciseProfile father, ExerciseSet ExerciseSet) {
             this.ExerciseSet = ExerciseSet;
             type = WorkoutLayoutTypes.SetsPLObject;
             parent = father;
             innerType = WorkoutLayoutTypes.SetsPLObject;
+        }
+
+        public SetsPLObject(SetsPLObject setsPLObject){
+            this.ExerciseSet = setsPLObject.ExerciseSet;
+            this.type = setsPLObject.type;
+            this.intraSets = intraSets;
+            this.isParent = isParent;
         }
 
         public SetsPLObject(){
@@ -322,14 +331,18 @@ public class PLObject implements Serializable {
             return parent;
         }
 
-        public ArrayList<IntraSetPLObject> getIntraSets() {
-            return intraSets;
-        }
+    }
 
-        public void setIntraSets(ArrayList<IntraSetPLObject> intraSets) {
-            this.intraSets = intraSets;
+    public static class ExerciseStats extends PLObject{
+
+        public ExerciseProfile exerciseProfile;
+
+        public ExerciseStats(ExerciseProfile exerciseProfile){
+            this.exerciseProfile = exerciseProfile;
+            this.type = WorkoutLayoutTypes.ExerciseStats;
         }
     }
+
 
     public static class IntraSetPLObject extends PLObject {
 

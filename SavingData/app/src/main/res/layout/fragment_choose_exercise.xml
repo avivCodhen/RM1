@@ -1,57 +1,140 @@
 <RelativeLayout android:layout_height="match_parent"
     android:clipToPadding="true"
+    android:elevation="10dp"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/colorPrimary"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <include layout="@layout/recycler_view_muscle"
-      android:id="@+id/choose_muscle_include"
 
-      android:layout_height="wrap_content"
-      android:layout_width="wrap_content"></include>
-
-
-    <TextView
-        android:layout_margin="10dp"
-
-        android:padding="10dp"
-        android:id="@+id/choose_change_user_tv"
-        android:textColor="@color/colorAccent"
-        android:layout_alignParentRight="true"
-        android:gravity="center_vertical"
-        android:textSize="12dp"
-        android:text="My Exercises"
-        android:layout_marginLeft="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:id="@+id/choose_change_Tv"
-        android:textColor="@color/colorAccent"
-        android:gravity="center_vertical"
-        android:textSize="12dp"
-        android:text="Change"
-        android:layout_toLeftOf="@+id/choose_change_user_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <com.strongest.savingdata.MyViews.SaveExitToolBar
+        app:elevation="10dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/exercise_edit_fragment_saveExitToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
 
 
-    <TextView
-        android:visibility="gone"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:id="@+id/choose_cancel_Tv"
-        android:textColor="@color/colorRedTry"
-        android:gravity="center_vertical"
-        android:textSize="12dp"
-        android:text="Cancel"
-        android:layout_toLeftOf="@+id/choose_change_user_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_below="@+id/exercise_edit_fragment_saveExitToolbar"
+        android:id="@+id/layout_youtube_search"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.arlib.floatingsearchview.FloatingSearchView
+            android:background="@color/colorRedTry"
+            android:id="@+id/exercise_choose_search_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="12dp"
+            app:floatingSearch_searchHint="Search Exercise..."
+            app:floatingSearch_suggestionsListAnimDuration="250"
+            app:floatingSearch_showSearchKey="false"
+            app:floatingSearch_leftActionMode="showSearch"
+            app:floatingSearch_close_search_on_keyboard_dismiss="true"/>
+
+        <FrameLayout
+            android:id="@+id/youtube_player_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:visibility="invisible"
+                android:layout_marginTop="55dp"
+                android:id="@+id/youtube_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"></FrameLayout>
+            <TextView
+                android:elevation="5dp"
+                android:id="@+id/youtube_textview_hiddner"
+                android:alpha="0.5"
+                android:gravity="center"
+                android:layout_marginTop="55dp"
+                android:text="Choose an exercise to play a video."
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+        </FrameLayout>
+
+
+    </RelativeLayout>
+
+<RelativeLayout
+    android:background="@color/background_color"
+    android:elevation="12dp"
+    android:layout_marginTop="260dp"
+    android:id="@+id/exercise_layout"
+    android:layout_below="@+id/exercise_edit_fragment_saveExitToolbar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:padding="8dp"
+        android:orientation="horizontal"
+        android:id="@+id/recycler_menu"
+        android:layout_below="@+id/youtube_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/recycler_view_muscle"
+            android:id="@+id/choose_muscle_include"
+            android:layout_gravity="center"
+            android:layout_below="@+id/youtube_fragment"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"></include>
+
+        <TextView
+            android:layout_below="@+id/youtube_fragment"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/choose_change_Tv"
+            android:textColor="@color/colorAccent"
+            android:textSize="12dp"
+            android:text="Change"
+            android:layout_toLeftOf="@+id/choose_change_user_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+
+        <TextView
+            android:layout_below="@+id/youtube_fragment"
+            android:layout_marginLeft="15dp"
+            android:visibility="gone"
+            android:id="@+id/choose_cancel_Tv"
+            android:textColor="@color/colorRedTry"
+            android:textSize="12dp"
+            android:text="Cancel"
+            android:layout_toLeftOf="@+id/choose_change_user_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+
+
+        <TextView
+            android:layout_below="@+id/youtube_fragment"
+
+            android:id="@+id/choose_change_user_tv"
+            android:textColor="@color/colorAccent"
+            android:layout_alignParentRight="true"
+            android:textSize="12dp"
+            android:text="My Exercises"
+            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/hide_player_edit_exercise_fragment"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="Hide Player"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
     <include layout="@layout/layout_bottom_border"
         android:layout_width="match_parent"
@@ -59,7 +142,7 @@
         android:layout_below="@+id/my_selector_exercise_expand_layout"></include>
     <LinearLayout
         android:layout_marginTop="1dp"
-        android:layout_below="@+id/choose_muscle_include"
+        android:layout_below="@+id/recycler_menu"
         android:id="@+id/my_selector_exercise_expand_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -73,14 +156,14 @@
             app:el_parallax="1">
 
             <include layout="@layout/layout_bottom_border"></include>
-                <GridView
-                    android:layout_marginTop="5dp"
-                    android:background="@android:color/transparent"
-                    android:stretchMode="columnWidth"
-                    android:numColumns="4"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/fragment_choose_exercise_gridview"></GridView>
+            <GridView
+                android:layout_marginTop="5dp"
+                android:background="@android:color/transparent"
+                android:stretchMode="columnWidth"
+                android:numColumns="4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/fragment_choose_exercise_gridview"></GridView>
         </net.cachapa.expandablelayout.ExpandableLayout>
 
 
@@ -97,6 +180,7 @@
         android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:id="@+id/exercise_choose_weight_layout"
         android:gravity="center_vertical"
@@ -135,6 +219,9 @@
     </LinearLayout>
 
 
+
+
+</RelativeLayout>
 
 </RelativeLayout>
 

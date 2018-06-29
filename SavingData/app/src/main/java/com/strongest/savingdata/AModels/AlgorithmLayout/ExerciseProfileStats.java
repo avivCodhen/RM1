@@ -70,8 +70,8 @@ public class ExerciseProfileStats {
         double totalVolume = 0;
         for (int i = 0; i < ep.getSets().size(); i++) {
             totalVolume += calcSetVolume(ep.getSets().get(i).getExerciseSet());
-            for (int j = 0; j < ep.getSets().get(i).getIntraSets().size(); j++) {
-                totalVolume += calcSetVolume(ep.getSets().get(i).getIntraSets().get(j).getExerciseSet());
+            for (int j = 0; j < ep.getSets().get(i).intraSets.size(); j++) {
+                totalVolume += calcSetVolume(ep.getSets().get(i).intraSets.get(j).getExerciseSet());
             }
         }
         return totalVolume;
@@ -84,8 +84,8 @@ public class ExerciseProfileStats {
         for (int i = 0; i < ep.getSets().size(); i++) {
             String rest = ep.getSets().get(i).getExerciseSet().getRest();
             totalRest = calcRest(rest);
-            for (int j = 0; j < ep.getSets().get(i).getIntraSets().size(); j++) {
-                String intraRest = ep.getSets().get(i).getIntraSets().get(j).getExerciseSet().getRest();
+            for (int j = 0; j < ep.getSets().get(i).intraSets.size(); j++) {
+                String intraRest = ep.getSets().get(i).intraSets.get(j).getExerciseSet().getRest();
                 totalRest += calcRest(intraRest);
             }
         }
@@ -133,8 +133,8 @@ public class ExerciseProfileStats {
                 return 0;
             }
             totalReps += calcRep(setRep);
-            for (int j = 0; j < ep.getSets().get(i).getIntraSets().size(); j++) {
-                String intraRep = ep.getSets().get(i).getIntraSets().get(j).getExerciseSet().getRep();
+            for (int j = 0; j < ep.getSets().get(i).intraSets.size(); j++) {
+                String intraRep = ep.getSets().get(i).intraSets.get(j).getExerciseSet().getRep();
                 totalReps += calcRep(intraRep);
             }
         }
@@ -147,7 +147,7 @@ public class ExerciseProfileStats {
         int numOfSets = ep.getSets().size();
         for (int i = 0; i < numOfSets; i++) {
             totalSets++;
-            for (int j = 0; j < ep.getSets().get(i).getIntraSets().size(); j++) {
+            for (int j = 0; j < ep.getSets().get(i).intraSets.size(); j++) {
                 totalSets++;
             }
         }

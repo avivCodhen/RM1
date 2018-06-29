@@ -1,4 +1,4 @@
-package com.strongest.savingdata.MyViews.WorkoutView.Choose;
+package com.strongest.savingdata.Fragments.Choose;
 
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;

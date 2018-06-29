@@ -6,7 +6,9 @@ import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject.ExerciseProfile
 import com.strongest.savingdata.AModels.WorkoutItemAdapter;
 import com.strongest.savingdata.AModels.WorkoutItemAdapterFactory;
 import com.strongest.savingdata.AService.WorkoutsService;
-import com.strongest.savingdata.Architecture;
+import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
+import com.strongest.savingdata.Adapters.WorkoutItemAdapters.SetsItemAdapter;
+import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.BaseWorkout.Program;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
@@ -14,7 +16,6 @@ import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Queue;
@@ -160,12 +161,11 @@ public class WorkoutsModel implements Architecture.model {
         this.workoutsService = workoutsService;
     }
 
-
     public ArrayList<Workout> createDefaultWorkoutsList() {
         ArrayList<Workout> workoutArrayList = new ArrayList<>();
         Workout w = new Workout();
         w.workoutName = "Workout 1";
-        w.exArray.add(new PLObject.ExerciseProfile());
+        w.exArray.add(new ExerciseItemAdapter().insert());
         workoutArrayList.add(w);
         return workoutArrayList;
     }
@@ -193,6 +193,10 @@ public class WorkoutsModel implements Architecture.model {
             //provideWorktoutsList(dbName);
         }
         return list;
+    }
+
+    public boolean saveLayoutToDatabase(boolean update, ArrayList<Workout> w, String dbName){
+        return workoutsService.saveLayoutToDataBase(update,w,dbName);
     }
 
     //creates a new program with a special UDBname for the program
@@ -237,7 +241,7 @@ public class WorkoutsModel implements Architecture.model {
         if (results != WorkoutsModelValidator.NULL) {
 
             Workout w = new Workout();
-            w.exArray.add(new ExerciseProfile());
+            w.exArray.add(new ExerciseItemAdapter().insert());
             w.workoutName = "Workout " + (list.size() + 1);
             list.add(w);
             return true;
@@ -253,49 +257,50 @@ public class WorkoutsModel implements Architecture.model {
         }
 
         if (results == WorkoutsModelValidator.NO_SET) {
-            ep.getSets().add(new PLObject.SetsPLObject());
+            PLObject.SetsPLObject set = new SetsItemAdapter().insert();
+            ep.getSets().add(set);
         }
+        Workout w = new Workout();
 
+        //add all of the supersets to the list
+       /* for (ExerciseProfile superset : ep.getExerciseProfiles()) {
+            w.exArray.add(superset);
+        }
+*/
+        //add each set to the list
+        for (PLObject.SetsPLObject s : ep.getSets()) {
+            w.exArray.add(s);
 
-            Workout w = new Workout();
+           /* //add superset(s) for each set
+            for (ExerciseProfile e : ep.getExerciseProfiles()) {
+                w.exArray.add(e);
+            }*/
 
-            //add all of the supersets to the list
-            for (ExerciseProfile superset : ep.getExerciseProfiles()){
-                w.exArray.add(superset);
+            //add each child (if any)
+            for (PLObject.SetsPLObject i : s.intraSets) {
+                w.exArray.add(i);
             }
 
-            //add each set to the list
-            for (PLObject.SetsPLObject s : ep.getSets()) {
-                w.exArray.add(s);
 
-                //add superset(s) for each set
-                for(ExerciseProfile e : ep.getExerciseProfiles()){
-                    w.exArray.add(e);
-                }
-
-                //add each child (if any)
-                for (PLObject.IntraSetPLObject i : s.getIntraSets()){
-                    w.exArray.add(i);
-                }
-
-
-            return w;
         }
 
-        throw  new IllegalArgumentException(
-                "Even when trying to adverse all of the problem, exerciseList still failed. Idiot.");
+        return w;
+
 
     }
 
-    public ArrayList<PLObject> expandExercise(ExerciseProfile ep){
+    /**
+     * this function expands the exercise into exercise and it's childs(supersets)
+     * this is not to be confused with expanding the exercise into a list of sets
+     * */
+    public ArrayList<PLObject> expandExercise(ExerciseProfile ep) {
         ArrayList<PLObject> list = new ArrayList<>();
         list.add(ep);
-        for (ExerciseProfile e : ep.getExerciseProfiles()){
+        for (ExerciseProfile e : ep.getExerciseProfiles()) {
             list.add(e);
         }
         return list;
     }
-
 
   /*  public void drawWorkout(ArrayList<PLObject> toLayout, String workoutName) {
         ++numOfWorkouts;
@@ -928,6 +933,7 @@ public class WorkoutsModel implements Architecture.model {
         private int positionTo = -1;
         private Queue<PLObject> removeObjects = new LinkedList<>();
         private PLObject parent;
+        private PLObject clone;
 
         private static ListModifier listModifier;
 
@@ -968,8 +974,8 @@ public class WorkoutsModel implements Architecture.model {
             return listModifier;
         }
 
-        public ListModifier doDuplicate(int start) {
-            listModifier.positionTo = start;
+        public ListModifier doDuplicate(PLObject p) {
+            this.clone = p;
             listModifier.doTasks.add(Duplicate);
             return listModifier;
         }
@@ -1007,16 +1013,22 @@ public class WorkoutsModel implements Architecture.model {
                         modifier.addNew(positionTo);
                         break;
                     case Remove:
-                        Iterator<PLObject> it = removeObjects.iterator();
-                        while (it.hasNext()) {
-                            PLObject p = it.next();
+
+                        /**checking that there is an element to remove
+                         * */
+                        if (removeObjects.size() > 0) {
+                            PLObject p = removeObjects.poll();
                             adapterOrFactory(p);
                             modifier.remove(p);
-
+                        } else {
+                            throw new IllegalArgumentException("a remove task where no element to be removed");
                         }
+//                            removeObjects.remove();
+
+
                         break;
                     case Duplicate:
-                        modifier.duplicate(positionTo);
+                        modifier.duplicate(clone);
                         break;
                     case Child:
                         adapterOrFactory(parent);
@@ -1026,7 +1038,7 @@ public class WorkoutsModel implements Architecture.model {
             }
         }
 
-        private void adapterOrFactory(PLObject p){
+        private void adapterOrFactory(PLObject p) {
             if (workoutItemAdapters == null) {
                 if (adapterFactory == null) {
                     throw new IllegalArgumentException("apply: Please provide an adapter or factory ");
@@ -1070,20 +1082,35 @@ public class WorkoutsModel implements Architecture.model {
                 int pos = workoutList.getList().indexOf(p);
                 workoutList.getList().remove(p);
                 workoutItemAdapter.remove(pos, p);
-                workoutItemAdapter.notifyRemoved(pos, listModifier.removeObjects.size(), adapter);
+                int countOfRemovedObjects = listModifier.removeObjects.size();
+                boolean funcOverrided =
+                        workoutItemAdapter.notifyRemoved(pos, countOfRemovedObjects, adapter);
+
+                if (!funcOverrided) {
+                    adapter.adapterNotifyItemInserted(pos);
+                }
 
                 return listModifier;
             }
 
-            public <T> ListModifier duplicate(int position) {
-                PLObject pl = (PLObject) workoutList.getList().get(position);
-                PLObject clone = workoutItemAdapter.onDuplicate(pl);
-                workoutList.getList().add(position + 1, clone);
-                workoutItemAdapter.notifyDuplicate(position + 1, adapter);
+            public <T> ListModifier duplicate(PLObject toClone) {
+                int originalPosition = workoutList.getList().indexOf(toClone);
+                int appliedPosition = workoutItemAdapter.addingDuplicateTo(toClone);
+                int finalPosition = originalPosition+appliedPosition;
+                PLObject clone = workoutItemAdapter.onDuplicate(toClone);
+                workoutList.getList().add(finalPosition, clone);
+
+                boolean funcOverrided =
+                        workoutItemAdapter.notifyDuplicate(finalPosition, adapter);
+
+                if (!funcOverrided) {
+                    adapter.adapterNotifyItemInserted(finalPosition);
+                }
+
                 return listModifier;
             }
 
-            public <T>ListModifier child(PLObject parent){
+            public <T> ListModifier child(PLObject parent) {
                 //calls the adapter and asks for a child created by the client
                 PLObject child = workoutItemAdapter.onChild(parent);
 
@@ -1093,12 +1120,17 @@ public class WorkoutsModel implements Architecture.model {
                 //requests a specific position for the child to be inserted
                 //zero means the child be added to the top in the parent's group
                 int position = workoutItemAdapter.onAddingChildToGroup(parent, child);
-                int finalPos = position+parentPosition;
+                int finalPos = position + parentPosition;
                 //adds the child to the list
                 workoutList.getList().add(finalPos, child);
 
                 //notify implemented by the client
-                workoutItemAdapter.notifyChild(finalPos, adapter);
+                boolean funcOverrided =
+                        workoutItemAdapter.notifyChild(finalPos, adapter);
+
+                if (!funcOverrided) {
+                    adapter.adapterNotifyItemInserted(finalPos);
+                }
                 return listModifier;
             }
         }

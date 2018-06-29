@@ -1,86 +1,86 @@
-<LinearLayout android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/background_color"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    android:orientation="vertical">
+
+    <com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView
+        android:background="@color/colorAccent"
+        android:id="@+id/fragment_details_longclick"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:alpha="0"
+        android:elevation="12dp"
+        android:visibility="gone" />
+
+   <com.strongest.savingdata.MyViews.SaveExitToolBar
+       android:layout_width="match_parent"
+       android:id="@+id/fragment_details_saveExitToolbar"
+       android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
+
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/background_color"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-
-    <android.support.design.widget.AppBarLayout
-
-        android:id="@+id/activity_home_app_bar"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background_color"
-        app:elevation="20dp">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/fragment_details_saveExitToolbar"
+        android:background="@color/background_color">
 
 
+        <android.support.design.widget.AppBarLayout
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/activity_home_collapsingtoolbar"
+            android:id="@+id/activity_home_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/background_color"
-            android:foregroundGravity="bottom|right"
-            android:foregroundTintMode="add"
-            app:contentScrim="?attr/colorAccent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:titleEnabled="true">
+            app:elevation="10dp">
 
-            <RelativeLayout
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/activity_home_collapsingtoolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <include
-                    android:id="@+id/toolbar"
-                    layout="@layout/tool_bar_layout"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color"
+                android:foregroundGravity="bottom|right"
+                android:foregroundTintMode="add"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:titleEnabled="false">
 
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></include>
-                <TextView
-                    android:id="@+id/fragment_details_exercise"
-                    android:layout_below="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:text="Bench Press Barbell"
-                    android:textSize="16dp" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:layout_below="@+id/fragment_details_exercise"
-                    android:id="@+id/fragment_details_recycler_exercises"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-            </RelativeLayout>
+                    android:layout_height="wrap_content">
 
 
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-
-    </android.support.design.widget.AppBarLayout>
-
-
-    <android.support.v4.widget.NestedScrollView
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/fragment_details_recycler_exercises"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/toolbar"></android.support.v7.widget.RecyclerView>
+                </RelativeLayout>
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/details_fragment_recyclerview"
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent"
+
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-    </android.support.v4.widget.NestedScrollView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/details_fragment_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
 
-</android.support.design.widget.CoordinatorLayout>
-</LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+
+    </android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

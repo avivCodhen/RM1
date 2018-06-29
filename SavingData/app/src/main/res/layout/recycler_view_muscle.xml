@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:layout_margin="15dp"
         android:textColor="@color/text_gray"
         android:textSize="14sp"
         android:id="@+id/muscle_tv"

@@ -56,7 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                .replace(R.id.activity_home_framelayout, f, tag)
+                .add(R.id.activity_home_framelayout, f, tag)
                 .addToBackStack(tag)
                 .commit();
     }

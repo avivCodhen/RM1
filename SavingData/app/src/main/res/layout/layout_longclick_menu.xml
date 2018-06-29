@@ -19,7 +19,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:padding="16dp"
-            android:src="@drawable/back_arrow_24px" />
+            android:src="@drawable/delete_96px_white" />
 
         <ImageView
             android:visibility="invisible"

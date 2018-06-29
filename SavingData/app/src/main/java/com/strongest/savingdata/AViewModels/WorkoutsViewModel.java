@@ -11,6 +11,7 @@ import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
 import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
 import com.strongest.savingdata.AService.WorkoutsService;
 import com.strongest.savingdata.BaseWorkout.Program;
+import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.Database.Program.DBProgramHelper;
 
@@ -26,14 +27,18 @@ import static com.strongest.savingdata.Activities.BaseActivity.TAG;
 public class WorkoutsViewModel extends ViewModel {
 
 
-    private Context context;
     @Inject
     public WorkoutsModel workoutsModel;
     private MutableLiveData<Program> program = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Workout>> workoutsList = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Beans>> allExercisesList = new MutableLiveData<>();
 
     public MutableLiveData<ArrayList<Workout>> getWorkoutsList() {
         return workoutsList;
+    }
+
+    public MutableLiveData<ArrayList<Beans>> getAllExercisesList() {
+        return allExercisesList;
     }
 
     public MutableLiveData<Program> getProgram() {
@@ -42,7 +47,7 @@ public class WorkoutsViewModel extends ViewModel {
 
 
     //needs to be changed
-    public DataManager getDataManager(){
+    public DataManager getDataManager() {
         return workoutsModel.getWorkoutsService().getDataManager();
     }
 
@@ -50,6 +55,10 @@ public class WorkoutsViewModel extends ViewModel {
     public WorkoutsViewModel(WorkoutsModel workoutsModel) {
         program.setValue(workoutsModel.provideProgram());
         workoutsList.setValue(workoutsModel.provideWorktoutsList(program.getValue().dbName));
+    }
+
+    public void saveLayoutToDataBase() {
+        workoutsModel.saveLayoutToDatabase(true, workoutsList.getValue(), program.getValue().dbName);
     }
 
     public WorkoutsModel getWorkoutsModel() {

@@ -28,7 +28,9 @@ public enum WorkoutLayoutTypes {
 
     Method,
 
-    More;
+    More,
+
+    ExerciseStats;
 
     public static WorkoutLayoutTypes getEnum(int value) {
         return values()[value];

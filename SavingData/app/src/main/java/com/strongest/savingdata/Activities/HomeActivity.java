@@ -15,7 +15,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -32,7 +31,7 @@ import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.DividerItemAdapter;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
 import com.strongest.savingdata.Adapters.WorkoutsViewPagerAdapter;
-import com.strongest.savingdata.Architecture;
+import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.BaseWorkout.Program;
 import com.strongest.savingdata.Fragments.CustomExerciseFragment;
 import com.strongest.savingdata.Fragments.MyProgramsFragment;
@@ -93,6 +92,7 @@ public class HomeActivity extends BaseActivity implements
     private Workout w;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +104,7 @@ public class HomeActivity extends BaseActivity implements
         longClickMenuView.instantiate(this);
         programToolsView.instantiate(programToolsBtn, this);
 
+
         String newString = dataManager.getPrefs().getString(FIRSTVISIT, "yes");
         boolean isNew = newString.equals("yes");
         if (isNew) {
@@ -113,7 +114,10 @@ public class HomeActivity extends BaseActivity implements
 
         workoutsViewModel.getWorkoutsList().observe(this, list -> mAdapter.notifyDataSetChanged());
         notifyCurrentWorkout();
+
     }
+
+
 
     private void notifyCurrentWorkout() {
         w = workoutsViewModel.getWorkoutsList().getValue().get(mViewPager.getCurrentItem());
@@ -267,7 +271,7 @@ public class HomeActivity extends BaseActivity implements
             case Duplicate:
                 listModifier = WorkoutsModel.ListModifier.
                         OnWith(w, WorkoutItemAdapterFactory.getFactory().create(plObject.getClass()))
-                        .doDuplicate(position);
+                        .doDuplicate(plObject);
                 break;
             case Delete:
                 listModifier = WorkoutsModel.ListModifier.OnWith(w, new ExerciseItemAdapter())
@@ -288,11 +292,12 @@ public class HomeActivity extends BaseActivity implements
         }
         if (listModifier != null) {
             w.getObserver().onChange(listModifier);
-
+            workoutsViewModel.saveLayoutToDataBase();
         }
         if (w.exArray.size() == 0) {
             longClickMenuView.onHideMenu();
         }
+
 
     }
 
@@ -333,6 +338,8 @@ public class HomeActivity extends BaseActivity implements
 
 
         }
+        workoutsViewModel.saveLayoutToDataBase();
+
     }
 
     @Override

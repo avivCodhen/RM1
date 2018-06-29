@@ -12,12 +12,12 @@ import android.support.transition.Transition;
 import android.support.transition.TransitionSet;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
 import com.strongest.savingdata.AViewModels.SelectedExerciseViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModelFactory;
@@ -25,17 +25,13 @@ import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.DragAndSwipeCallback;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.MyExpandableLinearLayoutManager;
-import com.strongest.savingdata.Adapters.WorkoutAdapter.OnExerciseProfileEditClick;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ScrollToPositionListener;
 import com.strongest.savingdata.AModels.AlgorithmLayout.OnLayoutManagerDialogPress;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject.ExerciseProfile;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
-import com.strongest.savingdata.Controllers.SingleWorkout.UIWorkoutClickHandler;
+import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
-import com.strongest.savingdata.MyViews.WorkoutView.Choose.ChooseDialogFragment;
 import com.strongest.savingdata.MyViews.WorkoutView.OnEnterExitChooseFragment;
-import com.strongest.savingdata.MyViews.WorkoutView.OnExerciseChangeListener;
 import com.strongest.savingdata.MyViews.WorkoutView.OnUpdateLayoutStatsListener;
 import com.strongest.savingdata.R;
 
@@ -46,8 +42,8 @@ import javax.inject.Inject;
 
 public class WorkoutViewFragment extends BaseFragment implements com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener,
         ScrollToPositionListener,
-        OnExerciseProfileEditClick, OnExerciseChangeListener,
-        OnLayoutManagerDialogPress, UIWorkoutClickHandler {
+
+        OnLayoutManagerDialogPress, UiExerciseClickHandler {
 
 
     private RecyclerView recycler;
@@ -69,6 +65,8 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     private OnEnterExitChooseFragment onEnterExitChooseFragment;
     //private LayoutManagerOperator layoutManagerOperator;
     private int tag;
+
+    private SelectedExerciseViewModel selectedExerciseViewModel;
 
 
     public static WorkoutViewFragment getInstance(int tag) {
@@ -116,12 +114,14 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         workout.registerObserver((listModifier) -> {
             listModifier.applyWith(adapter);
         });
+
+
+
         initViews(view);
     }
 
     private void initViews(View view) {
         recycler = view.findViewById(R.id.workoutview_list_recycler);
-        //DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         initAdapter();
         configurateRecycler();
 
@@ -130,13 +130,9 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     private void initAdapter() {
         adapter = new MyExpandableAdapter(
                 exArray,
-                getContext(),
-                this,
-                this,
-                null,
-                this
+                getContext()
         );
-        adapter.setOnExerciseProfileEditClick(this);
+        adapter.setUiExerciseClickHandler(this);
     }
 
     private void configurateRecycler() {
@@ -185,140 +181,6 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
 
     }
 
-   /* private void addRow(int position, WorkoutLayoutTypes innerType) {
-
-
-        if (onUpdateLayoutStatsListener != null) {
-            WorkoutsModel.UpdateComponents uc = new WorkoutsModel.UpdateComponents(NEW_EXERCISE);
-            uc.setInsertPosition(position);
-            uc.setInnerType(innerType);
-            exArray = onUpdateLayoutStatsListener.updateLayout(uc);
-        }
-        adapter.myNotifyItemInserted(exArray, position);
-        scrollToPosition(position, true, false);
-    }*/
-
-    public void addBodyView(int position, WorkoutsModel.UpdateComponents upd) {
-        if (onUpdateLayoutStatsListener != null) {
-            upd.setInsertPosition(position);
-            exArray = onUpdateLayoutStatsListener.updateLayout(upd);
-        }
-        adapter.myNotifyItemInserted(exArray, position);
-        scrollToPosition(position, true, false);
-    }
-
-    public void setOnEnterExitChooseFragment(OnEnterExitChooseFragment onEnterExitChooseFragment) {
-        this.onEnterExitChooseFragment = onEnterExitChooseFragment;
-    }
-
-    public void setExArray(ArrayList<PLObject> exArray) {
-        this.exArray = exArray;
-    }
-
-
-    public void setOnUpdateLayoutStatsListener(OnUpdateLayoutStatsListener onUpdateLayoutStatsListener) {
-        this.onUpdateLayoutStatsListener = onUpdateLayoutStatsListener;
-    }
-
-
-    @Override
-    public void onDetach() {
-        //provides a "fadeout" effect upon destroy(for deleting mainly)
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                MyJavaAnimator.fadeOut(mainView);
-            }
-        });
-        super.onDetach();
-
-    }
-
-    @Override
-    public void onEditExerciseClick(boolean enter, RecyclerView.ViewHolder vh, int position, PLObject plObject) {
-        if (!enter) {
-            // onEnterExitChooseFragment.onExitChooseFragment(vh, true);
-            //getFragmentManager().popBackStack();
-        } else {
-
-            onEnterExitChooseFragment.onEnterChooseFragment(vh.getAdapterPosition());
-        }
-    }
-
-    //updates the item that has been changed in the choosedialogfragment
-    @Override
-    public void onExerciseChange(int position, String change) {
-        adapter.notifyItemChanged(position);
-    }
-
-    public void deleteTransition() {
-        MyJavaAnimator.fadeOut(mainView);
-    }
-
-
-  /*  @Override
-    public void duplicateExercise(RecyclerView.ViewHolder vh) {
-        int position = vh.getAdapterPosition();
-        ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
-        ExerciseProfile newCopy = new ExerciseProfile(
-                ep.getMuscle(),
-                0,
-                0,
-                0
-        );
-
-        //copies the sets
-        for (int i = 0; i < ep.getSets().size(); i++) {
-            newCopy.getSets().add(new PLObject.SetsPLObject(newCopy, new ExerciseSet(ep.getSets().get(i).getExerciseSet())));
-        }
-
-        // copies the intrasets
-        for (int i = 0; i < ep.getSets().size(); i++) {
-            for (int j = 0; j < ep.getSets().get(i).getIntraSets().size(); j++) {
-                PLObject.SetsPLObject copyParentSet = newCopy.getSets().get(i);
-                copyParentSet.getIntraSets().add(new PLObject.IntraSetPLObject(
-                        newCopy,
-                        new ExerciseSet(ep.getSets().get(i).getIntraSets().get(j).getExerciseSet()),
-                        WorkoutLayoutTypes.IntraSetNormal,
-                        copyParentSet
-                ));
-            }
-
-        }
-
-        LayoutManager.UpdateComponents updateComponents = new LayoutManager.UpdateComponents(NEW_EXERCISE);
-        int toPosition = position;
-        if (ep.isExpand()) {
-            toPosition += LayoutManagerHelper.calcBlockLength(ep);
-        } else {
-            toPosition += (ep.getExerciseProfiles().size());
-        }
-        updateComponents.setToPosition(toPosition);
-        updateComponents.setPlObject(newCopy);
-        updateComponents.setLayout(exArray);
-        newCopy.setExercise(ep.getExercise());
-        newCopy.setInnerType(ep.getInnerType());
-        exArray = onUpdateLayoutStatsListener.updateLayout(updateComponents);
-        adapter.setExArray(exArray);
-        adapter.notifyItemInserted(toPosition);
-    }*/
-
-  /*  @Override
-    public void duplicateItem(RecyclerView.ViewHolder vh, WorkoutLayoutTypes type) {
-        switch (type) {
-            case SetsPLObject:
-                onSetsDoubleClick(vh);
-                break;
-            case ExerciseProfile:
-                duplicateExercise(vh);
-                break;
-            case IntraSetNormal:
-                onAddNormalIntraSet(vh);
-                break;
-        }
-
-    }*/
-
 
     @Override
     public void onLMDialogOkPressed(int viewHolderPosition) {
@@ -337,8 +199,16 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         //TODO: create a viewmodel for the details fragment
         //TODO: call the details fragment
 
+        selectedExerciseViewModel = ViewModelProviders
+                .of(getActivity())
+                .get(String.valueOf(tag), SelectedExerciseViewModel.class);
 
-        ChooseDialogFragment f = ChooseDialogFragment.getInstance(this, oldPosition, position, plObject);
+        selectedExerciseViewModel.select((ExerciseProfile) plObject);
+      //  selectedExerciseViewModel.getSelectedExercise().removeObservers(this);
+        selectedExerciseViewModel.getSelectedExercise().observe(this, (ep) -> {
+            adapter.notifyItemChanged(exArray.indexOf(ep));
+        });
+        ExerciseEditFragment f = ExerciseEditFragment.newInstance(String.valueOf(tag));
         addFragmentChild(getFragmentManager(), f);
 
         Rect rect = new Rect();
@@ -369,11 +239,21 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
 
     @Override
     public void onExerciseDetails(ExerciseProfile exerciseProfile) {
-        SelectedExerciseViewModel selectedExerciseViewModel = ViewModelProviders
+        final int selectedPosition = workout.exArray.indexOf(exerciseProfile);
+
+        selectedExerciseViewModel = ViewModelProviders
                 .of(getActivity())
-                .get(SelectedExerciseViewModel.class);
+                .get(String.valueOf(tag), SelectedExerciseViewModel.class);
+
+        selectedExerciseViewModel.getModifiedExerciseProfile().observe(this, (ep) -> {
+            workout.exArray.set(selectedExerciseViewModel.getSelectedExercisePosition(), ep);
+            adapter.notifyItemChanged(selectedExerciseViewModel.getSelectedExercisePosition());
+        });
+
         selectedExerciseViewModel.select(exerciseProfile);
-        ((HomeActivity) getActivity()).addFragmentToHomeActivity(new ExerciseDetailsFragment(),"details");
+        selectedExerciseViewModel.setExpandedExerciseList(workoutsViewModel.workoutsModel.exerciseToList(exerciseProfile));
+        selectedExerciseViewModel.setSelectedExercisePosition(selectedPosition);
+        ((HomeActivity) getActivity()).addFragmentToHomeActivity(ExerciseDetailsFragment.getInstance(String.valueOf(tag)), "details");
 
     }
 
@@ -395,6 +275,20 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         } catch (ClassCastException e) {
             throw new ClassCastException(e.toString());
         }
+    }
+
+    @Override
+    public void onDetach() {
+        //provides a "fadeout" effect upon destroy(for deleting mainly)
+       /* new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                MyJavaAnimator.fadeOut(mainView);
+            }
+        });*/
+
+        super.onDetach();
+
     }
 
     public interface WorkoutViewFragmentListener {

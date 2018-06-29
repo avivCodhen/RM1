@@ -13,7 +13,7 @@ import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel.Actions;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
-import com.strongest.savingdata.Architecture;
+import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.MyViews.WorkoutView.OnWorkoutViewInterfaceClicksListener;
 import com.strongest.savingdata.R;
 
