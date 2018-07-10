@@ -29,6 +29,7 @@
     <color name="light_background_color">#F6F6F6</color>
     <color name="much_lighter_gray_text">#AFAFAF</color>
     <color name="dropset_intraset_tag_background_gray">#DCDCDC</color>
+    <color name="longClickBackground">#DAD7FF</color>
 
 
 </resources>

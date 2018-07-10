@@ -1,0 +1,186 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical">
+
+    <com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView
+        android:background="@color/colorAccent"
+        android:id="@+id/fragment_details_longclick"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:alpha="0"
+        android:elevation="12dp"
+
+         />
+
+    <com.strongest.savingdata.MyViews.SaveExitToolBar
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:id="@+id/fragment_details_saveExitToolbar"
+        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
+
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_color">
+
+
+        <android.support.design.widget.AppBarLayout
+
+            android:id="@+id/activity_home_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:elevation="10dp">
+
+
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                app:contentScrim="?attr/colorAccent"
+                android:id="@+id/activity_home_collapsingtoolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color"
+                android:foregroundGravity="bottom|right"
+                android:foregroundTintMode="add"
+                app:titleEnabled="true"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                <android.support.v7.widget.Toolbar
+                    app:theme="@style/AppToolbarwhite"
+                    android:elevation="8dp"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:layout_collapseMode="pin"
+                    android:background="@color/colorAccent"
+                    android:id="@+id/exercise_details_activity_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp">
+                    <TextView
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimary"
+                        android:id="@+id/test"
+                        android:textSize="14sp"
+                        android:text="Bench Press hah"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </android.support.v7.widget.Toolbar>
+
+                <RelativeLayout
+                    app:layout_collapseMode="parallax"
+                    android:layout_marginTop="48dp"
+                    android:background="@color/colorAccent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <ImageView
+                        android:layout_margin="10dp"
+                        app:layout_collapseMode="parallax"
+                        android:transitionName="q1"
+                        android:id="@+id/testIv"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp" />
+
+
+                    <include layout="@layout/recycler_view_exercise_stats"
+                        app:layout_collapseMode="parallax"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/stats"
+                        android:layout_toRightOf="@+id/testIv"
+                        android:layout_marginBottom="50dp"
+                        >
+                    </include>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_marginTop="-45dp"
+                        android:id="@+id/fragment_details_recycler_exercises"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/stats"></android.support.v7.widget.RecyclerView>
+                </RelativeLayout>
+
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_marginTop="10dp"
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+
+                <net.cachapa.expandablelayout.ExpandableLayout
+
+                    android:id="@+id/youtube_expand_layout"
+                    app:el_expanded="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <FrameLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:id="@+id/youtube_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"></FrameLayout>
+
+                </net.cachapa.expandablelayout.ExpandableLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_marginBottom="20dp"
+                    android:layout_below="@+id/youtube_expand_layout"
+                    android:id="@+id/details_fragment_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+                <Button
+                    android:layout_below="@+id/details_fragment_recyclerview"
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/add_set_btn"
+                    android:layout_centerHorizontal="true"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:backgroundTint="@color/colorRedTry"
+                    android:text="ADD SET"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+
+        </android.support.v4.widget.NestedScrollView>
+
+       <android.support.design.widget.FloatingActionButton
+           android:id="@+id/play_fav"
+           android:layout_margin="15dp"
+           app:fabSize="mini"
+           android:src="@drawable/play_24px_white"
+           app:backgroundTint="@color/colorRedTry"
+           android:layout_width="wrap_content"
+           app:layout_anchor="@id/activity_home_app_bar"
+           app:layout_anchorGravity="bottom|right"
+           android:layout_height="wrap_content" />
+    </android.support.design.widget.CoordinatorLayout>
+
+    <FrameLayout
+        android:id="@+id/sets_details_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+
+</RelativeLayout>

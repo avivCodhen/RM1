@@ -3,6 +3,7 @@ package com.strongest.savingdata.MyViews.LongClickMenu;
 import android.animation.Animator;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -54,7 +55,6 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     private OnWorkoutViewInterfaceClicksListener onWorkoutViewInterfaceClicksListener;
     private ArrayList<PLObject> selectedPLObjects = new ArrayList<>();
 
-
     //    private ImageView more;
     private int viewPosition;
     private Architecture.view.LongClickView listener;
@@ -104,10 +104,10 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     private void enableDisableBtns() {
         if (highlightedViews.size() > 1) {
             disableBtns(duplicate, child);
-        }else if(!selectedPLObjects.get(0).isParent){
+        } else if (!selectedPLObjects.get(0).isParent) {
             enableBtns(duplicate);
             disableBtns(child);
-        }else{
+        } else {
             enableBtns(duplicate, child);
         }
         /*else{
@@ -145,15 +145,16 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     public void onShowMenu(MyExpandableAdapter.MyExpandableViewHolder vh, PLObject plObject) {
         isOn = true;
         selectedPLObjects.add(plObject);
-        View hView = vh.dragLayout;
-        hView.setVisibility(VISIBLE);
+        View hView = vh.getMainLayout();
+        //hView.setVisibility(VISIBLE);
+        hView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.longClickBackground));
         highlightedViews.add(vh);
 
         currentVH = vh;
         viewPosition = vh.getAdapterPosition();
         setVisibility(VISIBLE);
         selectedNum.setText(highlightedViews.size() + "");
-        hView.animate().alpha(0.8f)/*.setListener(new Animator.AnimatorListener() {
+        /*hView.animate().alpha(0.8f)*//*.setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
 
@@ -172,8 +173,8 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
             public void onAnimationRepeat(Animator animation) {
 
             }
-        })*/;
-
+        })*//*;
+         */
 
         animate().alpha(1f)/*.setListener(new Animator.AnimatorListener() {
             @Override
@@ -305,7 +306,9 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
 
     public void removeVisibility() {
         for (int i = 0; i < highlightedViews.size(); i++) {
-            highlightedViews.get(i).dragLayout.setVisibility(GONE);
+            highlightedViews.get(i).getMainLayout().setBackgroundColor(
+                    ContextCompat.getColor(getContext(), R.color.colorPrimary)
+            );
         }
     }
 

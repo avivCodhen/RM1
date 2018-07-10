@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
+import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
+import com.strongest.savingdata.AModels.WorkoutItemAdapterFactory;
 import com.strongest.savingdata.AViewModels.SelectedExerciseViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModelFactory;
@@ -29,11 +31,13 @@ import com.strongest.savingdata.Adapters.WorkoutAdapter.ScrollToPositionListener
 import com.strongest.savingdata.AModels.AlgorithmLayout.OnLayoutManagerDialogPress;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject.ExerciseProfile;
+import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
 import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.MyViews.WorkoutView.OnEnterExitChooseFragment;
 import com.strongest.savingdata.MyViews.WorkoutView.OnUpdateLayoutStatsListener;
 import com.strongest.savingdata.R;
+import com.strongest.savingdata.ViewHolders.ExerciseViewHolder;
 
 import java.util.ArrayList;
 
@@ -194,53 +198,22 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
 
     @Override
     public void onExerciseEdit(RecyclerView.ViewHolder vh, PLObject plObject, int position) {
-        int oldPosition = lm.findFirstVisibleItemPosition();
-
-        //TODO: create a viewmodel for the details fragment
-        //TODO: call the details fragment
-
         selectedExerciseViewModel = ViewModelProviders
                 .of(getActivity())
                 .get(String.valueOf(tag), SelectedExerciseViewModel.class);
 
         selectedExerciseViewModel.select((ExerciseProfile) plObject);
-      //  selectedExerciseViewModel.getSelectedExercise().removeObservers(this);
         selectedExerciseViewModel.getSelectedExercise().observe(this, (ep) -> {
             adapter.notifyItemChanged(exArray.indexOf(ep));
         });
         ExerciseEditFragment f = ExerciseEditFragment.newInstance(String.valueOf(tag));
         addFragmentChild(getFragmentManager(), f);
-
-        Rect rect = new Rect();
-        vh.itemView.getGlobalVisibleRect(rect);
-        rect.top = rect.bottom;
-        Explode explode = new Explode();
-        explode.setEpicenterCallback(new Transition.EpicenterCallback() {
-            @Override
-            public Rect onGetEpicenter(@NonNull Transition transition) {
-                return rect;
-            }
-        });
-        TransitionSet set = new TransitionSet();
-        set.setPropagation(null);
-        set.addTransition(explode);
-
-        android.support.transition.TransitionManager.beginDelayedTransition(recycler, set);
-        recycler.setAdapter(null);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                recycler.setAdapter(adapter);
-            }
-        }, 1000);
-        //hides the item for extra transition animation
-        //new Handler().postDelayed(() -> vh.itemView.setAlpha(0f), 200);
     }
 
     @Override
-    public void onExerciseDetails(ExerciseProfile exerciseProfile) {
+    public void onExerciseDetails(ExerciseViewHolder vh, ExerciseProfile exerciseProfile) {
         final int selectedPosition = workout.exArray.indexOf(exerciseProfile);
-
+/*
         selectedExerciseViewModel = ViewModelProviders
                 .of(getActivity())
                 .get(String.valueOf(tag), SelectedExerciseViewModel.class);
@@ -253,7 +226,10 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         selectedExerciseViewModel.select(exerciseProfile);
         selectedExerciseViewModel.setExpandedExerciseList(workoutsViewModel.workoutsModel.exerciseToList(exerciseProfile));
         selectedExerciseViewModel.setSelectedExercisePosition(selectedPosition);
-        ((HomeActivity) getActivity()).addFragmentToHomeActivity(ExerciseDetailsFragment.getInstance(String.valueOf(tag)), "details");
+        //((HomeActivity) getActivity()).addFragmentToHomeActivity(ExerciseDetailsFragment.getInstance(String.valueOf(tag)), "details");
+        ((HomeActivity) getActivity()).test(vh.name);*/
+
+        ((HomeActivity) getActivity()).testTwo(exerciseProfile, vh);
 
     }
 
@@ -268,6 +244,14 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     }
 
     @Override
+    public void onAddSuperset(ExerciseProfile exerciseProfile, int position) {
+        ExerciseItemAdapter exerciseItemAdapter = new ExerciseItemAdapter();
+        exerciseItemAdapter.onChild(exerciseProfile);
+        adapter.notifyItemChanged(position);
+
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
@@ -279,13 +263,6 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
 
     @Override
     public void onDetach() {
-        //provides a "fadeout" effect upon destroy(for deleting mainly)
-       /* new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                MyJavaAnimator.fadeOut(mainView);
-            }
-        });*/
 
         super.onDetach();
 

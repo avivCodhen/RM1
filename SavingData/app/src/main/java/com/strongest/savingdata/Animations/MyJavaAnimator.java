@@ -1,8 +1,13 @@
 package com.strongest.savingdata.Animations;
 
 import android.animation.Animator;
+import android.graphics.Rect;
 import android.media.Image;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.transition.Explode;
+import android.support.transition.Transition;
+import android.support.transition.TransitionSet;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -243,6 +248,31 @@ public class MyJavaAnimator {
         anim.setFillAfter(true);
 
         view.startAnimation(anim);
+    }
+
+    public static void explode(RecyclerView.ViewHolder vh, RecyclerView recycler, RecyclerView.Adapter adapter){
+        Rect rect = new Rect();
+        vh.itemView.getGlobalVisibleRect(rect);
+        rect.top = rect.bottom;
+        Explode explode = new Explode();
+        explode.setEpicenterCallback(new Transition.EpicenterCallback() {
+            @Override
+            public Rect onGetEpicenter(@NonNull Transition transition) {
+                return rect;
+            }
+        });
+        TransitionSet set = new TransitionSet();
+        set.setPropagation(null);
+        set.addTransition(explode);
+
+        android.support.transition.TransitionManager.beginDelayedTransition(recycler, set);
+        recycler.setAdapter(null);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recycler.setAdapter(adapter);
+            }
+        }, 1000);
     }
 
 

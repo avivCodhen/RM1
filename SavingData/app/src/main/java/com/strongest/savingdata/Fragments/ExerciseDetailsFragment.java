@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
@@ -33,6 +34,9 @@ import butterknife.ButterKnife;
 
 public class ExerciseDetailsFragment extends BaseFragment implements
         Architecture.view.LongClickView, UISetsClickHandler {
+
+    @BindView(R.id.test)
+    TextView test;
 
     @BindView(R.id.details_fragment_recyclerview)
     RecyclerView recyclerView;
@@ -72,6 +76,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_details, container, false);
         ButterKnife.bind(this, view);
+        postponeEnterTransition();
         return view;
     }
 
@@ -110,6 +115,10 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         exerciseRecycler.setAdapter(exerciseAdapter);
         longClickMenuView.instantiate(this);
         initToolbar();
+
+        test.setTransitionName("q");
+        test.setText("New exericse");
+        startPostponedEnterTransition();
 
     }
 
@@ -186,7 +195,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
 
     @Override
-    public void onSetsClick(PLObject plObject) {
+    public void onSetsClick(MyExpandableAdapter.SetsViewHolder vh,PLObject plObject) {
         SelectedSetViewModel selectedSetViewModel = ViewModelProviders.of(getActivity()).get(SelectedSetViewModel.class);
         selectedSetViewModel.select((PLObject.SetsPLObject) plObject);
         selectedSetViewModel.getSelectedExerciseSet().removeObservers(this);

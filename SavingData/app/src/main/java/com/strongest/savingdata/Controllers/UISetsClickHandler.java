@@ -5,6 +5,6 @@ import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 
 public interface UISetsClickHandler {
 
-    void onSetsClick(PLObject plObject);
+    void onSetsClick(MyExpandableAdapter.SetsViewHolder vh, PLObject plObject);
     void onSetsLongClick(PLObject plObject, MyExpandableAdapter.MyExpandableViewHolder vh);
 }

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/exercise_main_viewgroup_layout"
+    >
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/list_view_exercise_lay1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:layout_toRightOf="@+id/intra_set_superset_tag"
+        >
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/exerciseView_muscleTV"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginTop="10dp"
+            android:text="Anterior Shoulder"
+            android:textAlignment="center"
+            android:textColor="#888888"
+            android:textSize="12sp" />
+
+
+        <RelativeLayout
+            android:id="@+id/exercise_main_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:paddingTop="3dp">
+
+            <ImageView
+                android:layout_toRightOf="@id/intra_set_superset_tag"
+                android:id="@+id/child_arrow_iv"
+                android:paddingLeft="5dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/child_red"
+                android:layout_width="30dp"
+                android:layout_height="match_parent" />
+
+
+
+
+            <com.wajahatkarim3.easyflipview.EasyFlipView
+                app:flipOnTouch="false"
+
+                android:id="@+id/recyclerview_exercise_flipview"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="37dp"
+
+                >
+
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_gravity="center"
+
+                    android:id="@+id/recyclerview_exercise_drag_icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:civ_circle_background_color="@color/colorPrimary"
+                    android:src="@drawable/ic_drag_handle_black_24dp"
+                    android:backgroundTint="@color/background_color"
+                    />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_gravity="center"
+                    android:id="@+id/ex1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="#A2A2A2"
+                    app:civ_circle_background_color="@color/colorPrimary"
+
+
+                    />
+
+
+            </com.wajahatkarim3.easyflipview.EasyFlipView>
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
+                android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:id="@+id/exerciseView_nameTV"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="Barbell Low Bar Squat"
+                android:textSize="14sp"
+                android:textColor="@color/colorAccent"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="-25dp"
+        android:layout_below="@+id/list_view_exercise_lay1"
+        android:id="@+id/btns"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="110dp"
+        android:layout_height="wrap_content">
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:id="@+id/add_superset"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:padding="10dp"
+            android:elevation="10dp"
+            android:textColor="@color/colorAccent"
+            android:text="DELETE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <Button
+            android:layout_marginRight="10dp"
+            android:id="@+id/exercise_edit_btn"
+            android:textStyle="bold"
+            style=""
+            android:textSize="14sp"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:elevation="10dp"
+            android:textColor="@color/colorAccent"
+            android:text="EDIT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_below="@+id/list_view_exercise_lay1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        >
+
+        <net.cachapa.expandablelayout.ExpandableLayout
+            android:id="@+id/exercise_menu_expandlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:el_expanded="false">
+
+            <LinearLayout
+                android:layout_marginTop="3dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:textAlignment="center"
+                    android:textColor="@color/green_dark"
+
+                    android:layout_weight="1"
+                    android:text="Total Reps: 39"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+                <TextView
+                    android:textAlignment="center"
+
+                    android:textColor="@color/green_dark"
+
+                    android:layout_weight="1"
+
+                    android:text="Total Rest: 06:32"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:textAlignment="center"
+
+                    android:textColor="@color/green_dark"
+                    android:layout_weight="1"
+
+                    android:text="Total Volume: 160.5 kg"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

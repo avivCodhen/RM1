@@ -18,16 +18,12 @@
         tools:replace="android:label, supportsRtl">
         <activity android:name=".Activities.MainActivity" />
         <activity android:name=".Activities.RegisterActivity" />
-        <activity
-            android:name=".Activities.HomeActivity"
-            >
-
+        <activity android:name=".Activities.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".Dialogs.DialogMuscleSelect"
@@ -35,16 +31,12 @@
         <activity android:name=".Fragments.Choose.ChooseDialogFragment" />
         <activity android:name=".Activities.WebViewActivity" />
         <activity android:name=".TestActivity" />
-        <activity android:name=".Activities.TutorialActivity">
-
-
-
-
-        </activity>
+        <activity android:name=".Activities.TutorialActivity" />
+        <activity android:name=".Activities.ExerciseDetailsActivity" />
+        <activity android:name=".Activities.SetsDetailsActivity"></activity>
     </application>
 
-</manifest>
-<!--
-
+</manifest><!--
     android:configChanges="orientation|keyboardHidden"
-    android:screenOrientation="portrait"-->
+    android:screenOrientation="portrait"
+-->

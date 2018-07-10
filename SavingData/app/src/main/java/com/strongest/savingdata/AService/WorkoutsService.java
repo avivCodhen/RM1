@@ -78,6 +78,7 @@ public class WorkoutsService {
         double weight;
         ExerciseSet exerciseSet;
         PLObject.ExerciseProfile ep;
+        PLObject.ExerciseProfile currentParent = null;
 
         //for the workoutList implementation
         ArrayList<PLObject> exArray = null;
@@ -144,6 +145,7 @@ public class WorkoutsService {
                         }*/
 
                         //again for the new workoutList implementation
+                        currentParent = ep;
                         exArray.add(ep);
                         break;
 
@@ -154,7 +156,7 @@ public class WorkoutsService {
                         Muscle muscle2 = null;
                         muscle_str = c.getString(c.getColumnIndex(MUSCLE));
                         try {
-                            muscle = Muscle.createMuscle(dataManager.getMuscleDataManager(), muscle_str);
+                            muscle2 = Muscle.createMuscle(dataManager.getMuscleDataManager(), muscle_str);
                         } catch (Exception e) {
                             Log.d("aviv", "readLayoutFromDataBase: either null or no muscle");
                         }
@@ -177,13 +179,13 @@ public class WorkoutsService {
                         }
                         ep.comment = c.getString(c.getColumnIndex(COMMENT));
                         ep.showComment = !ep.comment.equals("");
-                      /*  if (parent != null) {
-                            parent.getExerciseProfiles().add(ep);
-                            ep.setParent(parent);
-                        }*/
+                        if (currentParent != null) {
+                            currentParent.getExerciseProfiles().add(ep);
+                            ep.setParent(currentParent);
+                        }
 
                         //again for the new workoutList implementation
-                        exArray.add(ep);
+                        //exArray.add(ep);
 
 
                         break;

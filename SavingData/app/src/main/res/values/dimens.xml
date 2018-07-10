@@ -21,4 +21,5 @@
     <dimen name="sets_choose_textview_size">43dp</dimen>
     <dimen name="slides_right_left_in_out_duration">200</dimen>
     <dimen name="recycler_view_stats_textsize">14dp</dimen>
+    <dimen name="activity_sets_icons_size">40dp</dimen>
 </resources>

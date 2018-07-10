@@ -4,8 +4,6 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="35dp"
-
-
     >
 
     <include layout="@layout/layout_bottom_border"
@@ -14,6 +12,7 @@
         android:layout_alignParentBottom="true"></include>
 
     <FrameLayout
+
         android:visibility="gone"
         android:id="@+id/recyclerview_exercise_drag_layout"
         android:elevation="5dp"

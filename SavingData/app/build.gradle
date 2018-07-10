@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 
 dependencies {
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 }
 android {
     compileSdkVersion 26
@@ -73,7 +74,7 @@ android {
         //implementation 'com.roughike:bottom-bar:2.0'
         // compile 'com.allattentionhere:fabulousfilter:0.0.4'
 
-       /* implementation 'com.squareup.moshi:moshi:1.6.0'
+        /* implementation 'com.squareup.moshi:moshi:1.6.0'
         compileOnly "com.google.auto.value:auto-value:$autoValueVersion"
         annotationProcessor "com.google.auto.value:auto-value:$autoValueVersion"
 
@@ -81,11 +82,12 @@ android {
         annotationProcessor "com.ryanharter.auto.value:auto-value-moshi:$autoValueMoshiVersion"*/
 
         implementation 'com.google.dagger:dagger-android:2.11'
-        implementation 'com.google.dagger:dagger-android-support:2.11' // if you use the support libraries
+        implementation 'com.google.dagger:dagger-android-support:2.11'
+        // if you use the support libraries
         annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
         annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 
-       /* implementation 'com.google.dagger:dagger:2.4'
+        /* implementation 'com.google.dagger:dagger:2.4'
         annotationProcessor 'com.google.dagger:dagger-compiler:2.4'*/
 
 
@@ -133,7 +135,6 @@ android {
         implementation 'ch.acra:acra:4.6.2'
         implementation 'br.com.mauker.materialsearchview:materialsearchview:1.2.2'
         implementation 'com.github.arimorty:floatingsearchview:2.1.1'
-
 
         // ViewModel and LiveData
         implementation "android.arch.lifecycle:extensions:$lifecycle_version"

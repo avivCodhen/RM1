@@ -2,34 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="50dp"
     android:foreground="?attr/selectableItemBackground"
     android:focusable="true"
-    android:background="#F6F6F6"
-    android:id="@+id/exercise_main_viewgroup_layout"
     >
-
-    <include layout="@layout/layout_bottom_border"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"></include>
-
-
-
-    <FrameLayout
-        android:id="@+id/recyclerview_exercise_drag_layout"
-        android:visibility="gone"
-        android:elevation="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="70dp">
-
-        <View
-            android:alpha="0.5"
-            android:background="@color/colorAccent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></View>
-
-    </FrameLayout>
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -52,44 +28,14 @@
             android:foreground="?attr/selectableItemBackground"
             android:paddingTop="3dp">
 
-
-            <TextView
-                android:id="@+id/exerciseView_muscleTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Anterior Shoulder"
-                android:textAlignment="center"
-                android:layout_marginTop="10dp"
-                android:textColor="#888888"
-                android:textSize="12sp"
-                android:layout_marginLeft="120dp"
-               />
-
-            <ImageView
-                android:id="@+id/drag_iv"
-                android:paddingLeft="5dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/order_gray_50px"
-                android:layout_width="25dp"
-                android:layout_height="25dp" />
-
-
-
-            <include layout="@layout/a_big_tag"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/drag_iv"
-                android:id="@+id/intra_set_superset_tag"
-                android:layout_width="15dp"
-                android:layout_height="match_parent"></include>
-
             <ImageView
                 android:layout_toRightOf="@id/intra_set_superset_tag"
                 android:id="@+id/child_arrow_iv"
                 android:paddingLeft="5dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/child_red"
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
+                android:layout_width="30dp"
+                android:layout_height="match_parent" />
 
 
 
@@ -102,7 +48,7 @@
                 android:layout_height="45dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="67dp"
+                android:layout_marginLeft="37dp"
 
                 >
 
@@ -134,109 +80,22 @@
 
             </com.wajahatkarim3.easyflipview.EasyFlipView>
 
-
             <TextView
-                android:maxLength="20"
-                android:id="@+id/ex_comment_tv"
-                android:gravity="end"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="7dp"
-                android:layout_toLeftOf="@+id/ex_icon_tag"
-                android:layout_toRightOf="@+id/exerciseView_muscleTV"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:text=""
-                android:textColor="#888888"
-                android:textSize="12sp"
-
-                android:textStyle="italic" />
-
-
-            <ImageView
-                android:visibility="invisible"
-                android:alpha="0.7"
-                android:layout_marginTop="7dp"
-                android:id="@+id/ex_icon_tag"
-                android:layout_toLeftOf="@+id/ex_choose"
-                android:src="@drawable/tag_icon_48px_purple"
-                android:layout_width="18dp"
-                android:layout_height="18dp" />
-
-
-            <ImageView
-                android:id="@+id/ex_choose"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:padding="18dp"
-                android:src="@drawable/ic_more_vert_24px" />
-
-          <!--  <ImageView
-                android:id="@+id/ex_more"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:padding="5dp"
-                android:src="@drawable/menu_vertical_darg_gray_24px" />
--->
-            <TextView
+                android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
                 android:textStyle="bold"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:id="@+id/exerciseView_nameTV"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="120dp"
-                android:layout_marginTop="25dp"
                 android:text="Barbell Low Bar Squat"
                 android:textSize="14sp"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorPrimary"
                 />
 
 
         </RelativeLayout>
-
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/recycler_view_set_card"
-            android:layout_width="match_parent"
-            android:layout_height="17dp"
-            android:layout_marginLeft="85dp"
-            android:layout_marginRight="17dp"
-            android:layout_marginTop="92dp">
-            <!--
-
-                        <TextView
-
-                            android:id="@+id/exerciseView_setsTV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="12dp"
-                            android:text="Ttl Sets: 12"
-                            android:textSize="12sp" />
-            -->
-
-
-
-
-            <TextView
-                android:id="@+id/exerciseView_restTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="12dp"
-                android:text="Ttl Rest: 03:00"
-                android:textSize="12sp" />
-
-
-
-        </LinearLayout>
 
 
         <LinearLayout

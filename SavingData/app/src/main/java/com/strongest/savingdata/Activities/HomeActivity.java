@@ -1,5 +1,6 @@
 package com.strongest.savingdata.Activities;
 
+import android.app.ActivityOptions;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,13 +11,20 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.TransitionInflater;
+import android.transition.TransitionSet;
 import android.util.DisplayMetrics;
+import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +42,7 @@ import com.strongest.savingdata.Adapters.WorkoutsViewPagerAdapter;
 import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.BaseWorkout.Program;
 import com.strongest.savingdata.Fragments.CustomExerciseFragment;
+import com.strongest.savingdata.Fragments.ExerciseDetailsFragment;
 import com.strongest.savingdata.Fragments.MyProgramsFragment;
 import com.strongest.savingdata.Fragments.NewProgramFragment;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
@@ -41,6 +50,7 @@ import com.strongest.savingdata.Fragments.WorkoutViewFragment;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
 import com.strongest.savingdata.R;
+import com.strongest.savingdata.ViewHolders.ExerciseViewHolder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,7 +102,6 @@ public class HomeActivity extends BaseActivity implements
     private Workout w;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +125,6 @@ public class HomeActivity extends BaseActivity implements
         notifyCurrentWorkout();
 
     }
-
 
 
     private void notifyCurrentWorkout() {
@@ -159,6 +167,7 @@ public class HomeActivity extends BaseActivity implements
 
     private void setUpToolbar() {
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
 
         mDrawerLayout.setScrimColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
@@ -168,7 +177,6 @@ public class HomeActivity extends BaseActivity implements
         mToggle.syncState();
         mToggle.setDrawerIndicatorEnabled(true);
         mNavigationView.setNavigationItemSelectedListener(this);
-        toolbar.setTitleTextColor(Color.WHITE);
         String programName = workoutsViewModel.getProgram().getValue().programName;
         toolbar.setTitle(programName);
 
@@ -346,4 +354,46 @@ public class HomeActivity extends BaseActivity implements
     public void notifyAdapter() {
         mAdapter.notifyDataSetChanged();
     }
+
+    public void test(View v) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment nextFragment = ExerciseDetailsFragment.getInstance(String.valueOf(mViewPager.getCurrentItem()));
+        Fragment previousFragment = getSupportFragmentManager().getFragments().get(mViewPager.getCurrentItem());
+        // 1. Exit for Previous Fragment
+        Fade exitFade = new Fade();
+        exitFade.setDuration(200);
+        previousFragment.setExitTransition(exitFade);
+
+        // 2. Shared Elements Transition
+        TransitionSet enterTransitionSet = new TransitionSet();
+        enterTransitionSet.addTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.move));
+        enterTransitionSet.setDuration(200);
+        enterTransitionSet.setStartDelay(200);
+        nextFragment.setSharedElementEnterTransition(enterTransitionSet);
+
+        // 3. Enter Transition for New Fragment
+        Fade enterFade = new Fade();
+        enterFade.setStartDelay(200);
+        enterFade.setDuration(200);
+        nextFragment.setEnterTransition(enterFade);
+        v.setTransitionName("q");
+        fragmentTransaction.addSharedElement(v, v.getTransitionName());
+        fragmentTransaction.replace(R.id.activity_home_framelayout, nextFragment);
+        fragmentTransaction.addToBackStack(String.valueOf(mViewPager.getCurrentItem()));
+        fragmentTransaction.commitAllowingStateLoss();
+    }
+
+    public void testTwo(PLObject.ExerciseProfile ep, ExerciseViewHolder vh){
+        Intent i = new Intent(this, ExerciseDetailsActivity.class);
+        i.putExtra("exercise", ep);
+
+        Pair<View, String> [] pairs = new Pair[2];
+        vh.name.setTransitionName("q");
+        vh.icon.setTransitionName("q1");
+        pairs[0] = Pair.create(vh.name, "q");
+        pairs[1] = Pair.create( vh.icon, "q1");
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, pairs);
+        startActivity(i, options.toBundle());
+    }
+
 }
