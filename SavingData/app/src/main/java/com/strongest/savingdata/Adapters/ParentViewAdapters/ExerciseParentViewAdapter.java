@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.ViewHolders.ExerciseViewHolder;
@@ -35,7 +36,23 @@ public class ExerciseParentViewAdapter extends ParentView.Adapter<SupersetViewHo
 
     @Override
     public void onBindViewHolder(SupersetViewHolder exerciseViewHolder, int position) {
+        PLObject.ExerciseProfile superset = exerciseProfile.getExerciseProfiles().get(position);
+        if(superset.getMuscle() != null){
+            Muscle.MuscleUI mui = Muscle.provideMuscleUI(superset.getMuscle());
+            exerciseViewHolder.icon.setImageResource(mui.getImage());
+        }
 
+        if(superset.getExercise() != null)
+            exerciseViewHolder.name.setText(superset.getExercise().getName());
+
+        exerciseViewHolder.edit.setOnClickListener(v ->{
+            uiExerciseClickHandler.onExerciseEdit(exerciseViewHolder, superset, position);
+        });
+
+        exerciseViewHolder.delete.setOnClickListener(v ->{
+            exerciseProfile.getExerciseProfiles().remove(superset);
+            uiExerciseClickHandler.onRemoveSuperset(exerciseProfile);
+        });
 
 
     }

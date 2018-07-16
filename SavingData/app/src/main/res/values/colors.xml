@@ -30,6 +30,7 @@
     <color name="much_lighter_gray_text">#AFAFAF</color>
     <color name="dropset_intraset_tag_background_gray">#DCDCDC</color>
     <color name="longClickBackground">#DAD7FF</color>
+    <color name="lean_blue_color">#3E3B75</color>
 
 
 </resources>

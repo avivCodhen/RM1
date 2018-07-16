@@ -13,5 +13,6 @@ public interface UiExerciseClickHandler {
     void onExerciseStartDrag(RecyclerView.ViewHolder vh);
     void onLongClick(PLObject plObject, MyExpandableAdapter.MyExpandableViewHolder vh);
     void onAddSuperset(PLObject.ExerciseProfile exerciseProfile, int position);
+    void onRemoveSuperset(PLObject.ExerciseProfile exerciseProfile);
 
 }

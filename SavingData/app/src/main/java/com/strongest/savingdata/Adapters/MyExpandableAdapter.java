@@ -37,6 +37,7 @@ import com.strongest.savingdata.MyViews.CreateCustomBeansView.SingleNumberChoose
 import com.strongest.savingdata.MyViews.WeightKeyBoard.WeightKeyboard;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.ViewHolders.ExerciseViewHolder;
+import com.strongest.savingdata.ViewHolders.LeanExerciseViewHolder;
 import com.strongest.savingdata.ViewHolders.SupersetViewHolder;
 import com.wajahatkarim3.easyflipview.EasyFlipView;
 
@@ -102,8 +103,8 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else if (viewType == WorkoutLayoutTypes.IntraExerciseProfile.ordinal()) {
 
             View v3;
-            v3 = inflater.inflate(R.layout.parentview_child_exercise, parent, false);
-            return new SupersetViewHolder(v3);
+            v3 = inflater.inflate(R.layout.recycler_view_lean_exercise, parent, false);
+            return new LeanExerciseViewHolder(v3);
 
         } else if (viewType == WorkoutLayoutTypes.AddExercise.ordinal()) {
             View v3 = inflater.inflate(R.layout.a_test, parent, false);
@@ -132,8 +133,8 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             configureViewHolder3(vh3, position);
 
         } else if (holder.getItemViewType() == WorkoutLayoutTypes.IntraExerciseProfile.ordinal()) {
-            SupersetViewHolder supersetViewHolder = (SupersetViewHolder) holder;
-            configurateSuperset(supersetViewHolder, position);
+            LeanExerciseViewHolder leanExerciseViewHolder= (LeanExerciseViewHolder) holder;
+            configurateSuperset(leanExerciseViewHolder, position);
 
 
         } else if (holder.getItemViewType() == WorkoutLayoutTypes.SetsPLObject.ordinal()) {
@@ -159,8 +160,16 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     }
 
-    private void configurateSuperset(SupersetViewHolder supersetViewHolder, int position) {
-            ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
+    private void configurateSuperset(LeanExerciseViewHolder supersetViewHolder, int position) {
+        ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
+
+        if(ep.getMuscle() != null){
+            Muscle.MuscleUI mui = Muscle.provideMuscleUI(ep.getMuscle());
+            supersetViewHolder.icon.setImageResource(mui.getImage());
+        }
+
+        if(ep.getExercise() != null)
+        supersetViewHolder.name.setText(ep.getExercise().getName());
 
     }
 
@@ -236,46 +245,19 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private void configureViewHolder3(final com.strongest.savingdata.ViewHolders.ExerciseViewHolder vh3, final int position) {
         final ExerciseProfile exerciseProfile = (ExerciseProfile) exArray.get(position);
-        // int color = ContextCompat.getColor(context, R.color.colorAccent);
-        // final int repositionWidth = vh3.expandableLayout.getWidth();
+
+
         Muscle.MuscleUI mui = null;
-        //     ExerciseProfileStats stats = ExerciseProfileStats.getInstance(exerciseProfile);
 
-       /* if (uiExerciseClickHandler == null) {
-
-            vh3.settings.setVisibility(View.INVISIBLE);
-        }*/
-  /*      if (exerciseProfile.showComment) {
-            vh3.comment_tag.setVisibility(View.VISIBLE);
-            vh3.comment_tv.setText(exerciseProfile.comment);
-
-        } else {
-            vh3.comment_tv.setText("");
-            vh3.comment_tag.setVisibility(View.INVISIBLE);
+        if(position == 0){
+            vh3.icon.setTransitionName("q1");
         }
-*/
-
         if (exerciseProfile.getMuscle() != null) {
             mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
             vh3.icon.setImageResource(mui.getImage());
-            //vh3.icon.setVisibility(View.VISIBLE);
-            if (vh3.muscle != null) {
 
-                vh3.muscle.setText(exerciseProfile.getMuscle().getMuscle_display());
-            }
-        } else {
-
-            if (vh3.muscle != null) {
-                vh3.muscle.setText("Muscle");
-            }
-            vh3.icon.setImageResource(android.R.color.transparent);
+           // vh3.icon.setImageResource(android.R.color.transparent);
         }
-
-        /*vh3.sets.setText("Sets: " + stats.getTotalSets());
-        //  vh3.reps.setText("Reps: "+stats.getTotalReps());
-        vh3.reps.setText("Reps: " + stats.getAllReps());
-        vh3.rest.setText(stats.getTotalRest());*/
-        //vh3.weight.setText(stats.getTotalVolume());
 
         if (exerciseProfile.getExercise() != null) {
             vh3.name.setText(exerciseProfile.getExercise().getName());
@@ -285,30 +267,6 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         vh3.name.setTransitionName("a" + position);
 
-  /*      if (exerciseProfile.getInnerType() == WorkoutLayoutTypes.IntraExerciseProfile && exerciseProfile.getParent() != null) {
-            int pos = 0;
-            for (int i = 0; i < exerciseProfile.getParent().getExerciseProfiles().size(); i++) {
-                pos++;
-                if (exerciseProfile.getParent().getExerciseProfiles().get(i) == exerciseProfile) {
-                    break;
-                }
-            }
-            if (WorkoutsModel.intraWorkoutsLetters.length > pos) {
-                vh3.tag.setText(WorkoutsModel.intraWorkoutsLetters[pos]);
-            }
-            vh3.tag.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRedTry));
-
-            exerciseProfile.setTag(vh3.tag.getText().toString());
-        } else {
-
-            if (LayoutManagerHelper.exerciseHasDropset(exerciseProfile)) {
-                vh3.dropsetTag.setText("Dropset");
-            } else {
-                if (vh3.dropsetTag != null)
-                    vh3.dropsetTag.setText("");
-            }
-        }
-*/
 
         if (vh3.edit != null) {
             vh3.edit.setOnClickListener(new View.OnClickListener() {
@@ -569,10 +527,12 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public ImageView restIcon;
         @BindView(R.id.sets_reps_icon)
         public ImageView repsIcon;
+        @BindView(R.id.sets_main_layout)
+        public ViewGroup mainLayout;
 
         @Override
         public View getMainLayout() {
-            return null;
+            return mainLayout;
         }
 
         public SetsViewHolder(View itemView) {

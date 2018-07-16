@@ -25,6 +25,14 @@ public class SupersetViewHolder extends MyExpandableAdapter.MyExpandableViewHold
     @BindView(R.id.ex1)
     public CircleImageView icon;
 
+    @BindView(R.id.exercise_edit_btn)
+
+    public ImageView edit;
+
+
+    @BindView(R.id.delete)
+    public Button delete;
+
     @Override
     public View getMainLayout() {
         return null;

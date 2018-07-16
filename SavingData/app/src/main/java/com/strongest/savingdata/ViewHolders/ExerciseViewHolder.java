@@ -1,5 +1,6 @@
 package com.strongest.savingdata.ViewHolders;
 
+import android.media.Image;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -25,8 +26,8 @@ public class ExerciseViewHolder extends MyExpandableAdapter.MyExpandableViewHold
     /*@BindView(R.id.ex_choose)
     public ImageView settings;
 */
-    @BindView(R.id.exerciseView_muscleTV)
-    public TextView muscle;
+ /*   @BindView(R.id.exerciseView_muscleTV)
+    public TextView muscle;*/
 
     @BindView(R.id.exerciseView_repsTV)
     public TextView reps;
@@ -55,7 +56,7 @@ public class ExerciseViewHolder extends MyExpandableAdapter.MyExpandableViewHold
     public Button addSuperset;
 
     @BindView(R.id.exercise_edit_btn)
-    public Button edit;
+    public ImageView edit;
 
 
     @Override

@@ -31,13 +31,37 @@
     </FrameLayout>
 -->
 
+
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/list_view_exercise_lay1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
        >
 
+        <include layout="@layout/layour_side_border"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/exercise_edit_btn">
+
+        </include>
+
+        <ImageView
+            android:src="@drawable/icon_edit_48px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:id="@+id/exercise_edit_btn"
+            android:textStyle="bold"
+            style=""
+            android:textSize="14sp"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:elevation="10dp"
+            android:textColor="@color/colorAccent"
+            android:text="EDIT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <ImageView
             android:layout_centerVertical="true"
             android:id="@+id/drag_iv"
@@ -86,40 +110,6 @@
         </com.wajahatkarim3.easyflipview.EasyFlipView>
 
 
-
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/exerciseView_muscleTV"
-            android:layout_width="wrap_content"
-            android:layout_height="18dp"
-            android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
-            android:layout_marginTop="10dp"
-            android:text="Anterior Shoulder"
-            android:textAlignment="center"
-            android:textColor="#888888"
-            android:textSize="12sp" />
-
-
-        <ImageView
-            android:visibility="gone"
-            android:alpha="0.7"
-            android:layout_marginTop="10dp"
-            android:id="@+id/ex_icon_tag"
-            android:layout_toLeftOf="@+id/ex_choose"
-            android:src="@drawable/tag_icon_48px_purple"
-            android:layout_width="18dp"
-            android:layout_height="18dp" />
-
-        <ImageView
-            android:visibility="gone"
-            android:id="@+id/ex_choose"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:padding="18dp"
-            android:src="@drawable/ic_more_vert_24px" />
         <TextView
 
             android:layout_marginLeft="10dp"
@@ -280,7 +270,6 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_marginTop="-15dp"
         android:layout_below="@+id/list_view_exercise_lay1"
         android:id="@+id/btns"
         android:gravity="right"
@@ -301,26 +290,12 @@
             android:layout_height="wrap_content"
             />
 
-        <Button
 
-            android:layout_marginRight="10dp"
-            android:id="@+id/exercise_edit_btn"
-            android:textStyle="bold"
-            style=""
-            android:textSize="14sp"
-            android:layout_marginLeft="10dp"
-            android:padding="10dp"
-            android:elevation="10dp"
-            android:textColor="@color/colorAccent"
-            android:text="EDIT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
-
     <LinearLayout
-        android:layout_below="@+id/list_view_exercise_lay1"
+        android:layout_below="@+id/btns"
         android:orientation="vertical"
         android:id="@+id/parent_view_container"
         android:layout_width="match_parent"

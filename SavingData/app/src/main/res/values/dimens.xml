@@ -22,4 +22,9 @@
     <dimen name="slides_right_left_in_out_duration">200</dimen>
     <dimen name="recycler_view_stats_textsize">14dp</dimen>
     <dimen name="activity_sets_icons_size">40dp</dimen>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="image_width">110dp</dimen>
+    <dimen name="image_small_width">32dp</dimen>
 </resources>

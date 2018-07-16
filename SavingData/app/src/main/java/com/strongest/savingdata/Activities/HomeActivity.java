@@ -186,7 +186,7 @@ public class HomeActivity extends BaseActivity implements
             //  getSupportActionBar().setElevation(0);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
+         //   getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
         }
 
 

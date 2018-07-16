@@ -73,10 +73,10 @@
 
 
     <LinearLayout
+        android:elevation="5dp"
         android:padding="8dp"
         android:orientation="horizontal"
         android:id="@+id/recycler_menu"
-        android:layout_below="@+id/youtube_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -3,25 +3,25 @@ package com.strongest.savingdata.Activities;
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.graphics.Color;
+import android.media.Image;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.ChangeBounds;
-import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.TransitionInflater;
-import android.transition.TransitionSet;
 import android.util.Pair;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
@@ -35,8 +35,6 @@ import com.strongest.savingdata.Adapters.WorkoutItemAdapters.SetsItemAdapter;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.Controllers.UISetsClickHandler;
-import com.strongest.savingdata.Fragments.ExerciseDetailsFragment;
-import com.strongest.savingdata.Fragments.SetsDetailsFragment;
 import com.strongest.savingdata.Handlers.YoutubeHandler;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.SaveExitToolBar;
@@ -47,10 +45,23 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ExerciseDetailsActivity extends AppCompatActivity implements Architecture.view.LongClickView, UISetsClickHandler {
+public class ExerciseDetailsActivity extends AppCompatActivity implements
+        Architecture.view.LongClickView, UISetsClickHandler, AppBarLayout.OnOffsetChangedListener {
 
-    @BindView(R.id.test)
-    TextView test;
+    @BindView(R.id.stats)
+    View stats;
+
+ /*   @BindView(R.id.btn_container)
+    LinearLayout btnContainer;*/
+    @BindView(R.id.textview_title)
+    TextView textview_title;
+
+   /* @BindView(R.id.nestedScrollView)
+    NestedScrollView nestedScrollView;
+*/
+    @BindView(R.id.toolbar_add_set_btn)
+   ImageView toolbarAddSet;
+
     @BindView(R.id.testIv)
     ImageView testIv;
 
@@ -64,11 +75,17 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements Archit
     @BindView(R.id.play_fav)
     FloatingActionButton fab;
 
-    @BindView(R.id.youtube_expand_layout)
-    ExpandableLayout el;
+    /*@BindView(R.id.youtube_expand_layout)
+    ExpandableLayout el;*/
 
     @BindView(R.id.add_set_btn)
-    Button addSet;
+    FloatingActionButton addSet;
+
+   /* @BindView(R.id.activity_exercise_collapsingtoolbar)
+    CollapsingToolbarLayout mCollapseToolbarLayout;
+
+    @BindView(R.id.activity_exercise_app_bar)
+    AppBarLayout mAppbar;*/
 
     MyExpandableAdapter adapter;
     MyExpandableAdapter exerciseAdapter;
@@ -85,6 +102,21 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements Archit
 
     private PLObject.ExerciseProfile exerciseProfile;
     private YoutubeHandler youtubeHandler;
+    private LinearLayoutManager setsLayoutManager;
+
+
+    /**
+     * this is related to the toolbar and appbar offsets
+     */
+
+    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.3f;
+    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
+    private static final int ALPHA_ANIMATIONS_DURATION = 200;
+
+    private boolean mIsTheTitleVisible = false;
+    private boolean mIsTheTitleContainerVisible = true;
+
+    Animation slideRight, slideTop;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -92,35 +124,22 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements Archit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_details);
         ButterKnife.bind(this);
-        getWindow().setStatusBarColor(R.color.colorAccent);
+
         exerciseProfile = new PLObject.ExerciseProfile((PLObject.ExerciseProfile) getIntent().getSerializableExtra("exercise"));
-        test.setTransitionName("q");
+        //textview_title.setTransitionName("q");
         testIv.setTransitionName("q1");
-        toolbar.setNavigationIcon(R.drawable.checkmark_48_whitepx);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (exerciseProfile.getExercise() != null) {
-            test.setText(exerciseProfile.getExercise().getName());
-
-        }
-        if (exerciseProfile.getMuscle() != null) {
-            Muscle.MuscleUI mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
-            testIv.setImageResource(mui.getImage());
-        }
-        toolbar.setTitle("");
-        LinearLayoutManager lm = new LinearLayoutManager(this);
-        LinearLayoutManager lm2 = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(lm);
-        exerciseRecycler.setLayoutManager(lm2);
-        initAdapters();
-        setsItemAdapter = new SetsItemAdapter(exerciseProfile);
-        recyclerView.setAdapter(adapter);
-        exerciseRecycler.setAdapter(exerciseAdapter);
-        longClickMenuView.instantiate(this);
         initToolbar();
+    //    mAppbar.addOnOffsetChangedListener(this);
+        initRecycler();
+        longClickMenuView.instantiate(this);
 
-        fab.setOnClickListener((v) -> {
+        slideRight = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide_in_right);
+        slideTop = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide_in_up);
+
+        //startAlphaAnimation(toolbarAddSet, 0, View.INVISIBLE);
+       /* fab.setOnClickListener((v) -> {
 
             if (youtubeHandler == null) {
                 youtubeHandler = YoutubeHandler.getHandler(this).init(R.id.youtube_fragment, getSupportFragmentManager());
@@ -136,13 +155,45 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements Archit
 
             }
         });
-
+*/
         addSet.setOnClickListener((view) -> {
             WorkoutsModel.ListModifier.OnWith(workout, setsItemAdapter)
                     .doAddNew(workout.exArray.size()).applyWith(adapter);
-            recyclerView.scrollToPosition(workout.exArray.size() - 1);
+         //   setsLayoutManager.scrollToPositionWithOffset(workout.exArray.size() - 1, 0);
+        //    nestedScrollView.fullScroll(View.FOCUS_DOWN);
+
+        });
+        toolbarAddSet.setOnClickListener(v -> {
+            WorkoutsModel.ListModifier.OnWith(workout, setsItemAdapter)
+                    .doAddNew(workout.exArray.size()).applyWith(adapter);
+            //setsLayoutManager.scrollToPositionWithOffset(workout.exArray.size() - 1, 2);
+           // nestedScrollView.fullScroll(View.FOCUS_DOWN);
+            //recyclerView.scrollToPosition(workout.exArray.size() - 1);
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        stats.setVisibility(View.VISIBLE);
+        stats.startAnimation(slideRight);
+        exerciseRecycler.setVisibility(View.VISIBLE);
+        exerciseRecycler.startAnimation(slideTop);
+    }
+
+    private void initRecycler() {
+
+        setsLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager lm2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(setsLayoutManager);
+        exerciseRecycler.setLayoutManager(lm2);
+        initAdapters();
+        setsItemAdapter = new SetsItemAdapter(exerciseProfile);
+        recyclerView.setAdapter(adapter);
+        exerciseRecycler.setAdapter(exerciseAdapter);
+        recyclerView.setNestedScrollingEnabled(false);
+    }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -153,7 +204,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements Archit
     }
 
     private void initToolbar() {
-        saveExitToolBar.instantiate();
+       /* saveExitToolBar.instantiate();
         saveExitToolBar.setOptionalTV("Add Set", (v) -> {
             WorkoutsModel.ListModifier.OnWith(workout, setsItemAdapter)
                     .doAddNew(workout.exArray.size()).applyWith(adapter);
@@ -165,7 +216,22 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements Archit
             workoutsViewModel.saveLayoutToDataBase();
             getFragmentManager().popBackStack();
         });
-        saveExitToolBar.setCancelButton(v -> getFragmentManager().popBackStack());
+        saveExitToolBar.setCancelButton(v -> getFragmentManager().popBackStack());*/
+
+       /* toolbar.setNavigationIcon(R.drawable.checkmark_48_whitepx);
+        */
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (exerciseProfile.getExercise() != null) {
+            textview_title.setText(exerciseProfile.getExercise().getName());
+
+        }
+        if (exerciseProfile.getMuscle() != null) {
+            Muscle.MuscleUI mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
+            testIv.setImageResource(mui.getImage());
+        }
+        toolbar.setTitle("");
     }
 
     private void initAdapters() {
@@ -210,5 +276,25 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements Archit
     @Override
     public void onSetsLongClick(PLObject plObject, MyExpandableAdapter.MyExpandableViewHolder vh) {
         longClickMenuView.onShowMenu(vh, plObject);
+    }
+
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        int maxScroll = appBarLayout.getTotalScrollRange();
+        float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
+
+       // handleAlphaOnTitle(percentage);
+       // handleToolbarTitleVisibility(percentage);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

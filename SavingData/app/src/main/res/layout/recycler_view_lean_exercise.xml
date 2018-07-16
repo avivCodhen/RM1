@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_width="177dp"
+    android:layout_height="70dp"
     android:foreground="?attr/selectableItemBackground"
     android:focusable="true"
+    app:cardBackgroundColor="@color/lean_blue_color"
+    android:layout_margin="10dp"
     >
 
 
@@ -14,29 +16,21 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:focusable="true"
-        android:layout_marginBottom="1dp"
         android:foreground="?attr/selectableItemBackground"
         android:layout_toRightOf="@+id/intra_set_superset_tag"
+
         >
 
 
         <RelativeLayout
+            android:layout_centerVertical="true"
             android:focusable="true"
             android:id="@+id/exercise_main_layout"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:foreground="?attr/selectableItemBackground"
-            android:paddingTop="3dp">
 
-            <ImageView
-                android:layout_toRightOf="@id/intra_set_superset_tag"
-                android:id="@+id/child_arrow_iv"
-                android:paddingLeft="5dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/child_red"
-                android:layout_width="30dp"
-                android:layout_height="match_parent" />
-
+            >
 
 
 
@@ -46,10 +40,9 @@
                 android:id="@+id/recyclerview_exercise_flipview"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="37dp"
-
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 >
 
 
@@ -68,10 +61,9 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_gravity="center"
                     android:id="@+id/ex1"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    app:civ_border_width="1dp"
-                    app:civ_border_color="#A2A2A2"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/back"
                     app:civ_circle_background_color="@color/colorPrimary"
 
 
@@ -80,15 +72,35 @@
 
             </com.wajahatkarim3.easyflipview.EasyFlipView>
 
+
+            <ImageView
+                android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
+                android:id="@+id/child_arrow_iv"
+                android:src="@drawable/child_red"
+                android:layout_width="20dp"
+                android:layout_height="15dp" />
+
+            <TextView
+                android:textSize="12dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/child_arrow_iv"
+                android:text="Superset"
+                android:textColor="@color/background_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+
+
             <TextView
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
+                android:layout_below="@+id/child_arrow_iv"
                 android:textStyle="bold"
                 android:ellipsize="end"
-                android:maxLines="1"
                 android:id="@+id/exerciseView_nameTV"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
+                android:layout_width="110dp"
+                android:layout_height="match_parent"
                 android:text="Barbell Low Bar Squat"
                 android:textSize="14sp"
                 android:textColor="@color/colorPrimary"
@@ -261,4 +273,4 @@
     </LinearLayout>
 
 
-</RelativeLayout>
+</android.support.v7.widget.CardView>

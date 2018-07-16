@@ -11,11 +11,12 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_marginLeft="20dp"
         android:id="@+id/list_view_exercise_lay1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_marginBottom="1dp"
         android:layout_toRightOf="@+id/intra_set_superset_tag"
         >
+
 
         <TextView
             android:visibility="invisible"
@@ -34,6 +35,30 @@
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:paddingTop="3dp">
+
+            <include layout="@layout/layour_side_border"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/exercise_edit_btn">
+
+            </include>
+
+            <ImageView
+                android:layout_alignParentRight="true"
+                android:src="@drawable/icon_edit_48px"
+                android:layout_marginRight="10dp"
+                android:id="@+id/exercise_edit_btn"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginLeft="10dp"
+                android:padding="10dp"
+                android:elevation="10dp"
+                android:textColor="@color/colorAccent"
+                android:text="EDIT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
 
             <ImageView
                 android:layout_toRightOf="@id/intra_set_superset_tag"
@@ -88,13 +113,14 @@
             </com.wajahatkarim3.easyflipview.EasyFlipView>
 
             <TextView
+                android:layout_toLeftOf="@+id/exercise_edit_btn"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
                 android:textStyle="bold"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:id="@+id/exerciseView_nameTV"
-                android:layout_width="250dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Barbell Low Bar Squat"
                 android:textSize="14sp"
@@ -107,7 +133,7 @@
 
 
     <LinearLayout
-        android:layout_marginTop="-25dp"
+        android:layout_marginTop="-5dp"
         android:layout_below="@+id/list_view_exercise_lay1"
         android:id="@+id/btns"
         android:gravity="right"
@@ -118,7 +144,7 @@
 
         <Button
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:id="@+id/add_superset"
+            android:id="@+id/delete"
             android:textStyle="bold"
             android:textSize="14sp"
             android:padding="10dp"
@@ -129,80 +155,11 @@
             android:layout_height="wrap_content"
             />
 
-        <Button
-            android:layout_marginRight="10dp"
-            android:id="@+id/exercise_edit_btn"
-            android:textStyle="bold"
-            style=""
-            android:textSize="14sp"
-            android:layout_marginLeft="10dp"
-            android:padding="10dp"
-            android:elevation="10dp"
-            android:textColor="@color/colorAccent"
-            android:text="EDIT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+
 
     </LinearLayout>
 
 
-
-    <LinearLayout
-        android:layout_below="@+id/list_view_exercise_lay1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        >
-
-        <net.cachapa.expandablelayout.ExpandableLayout
-            android:id="@+id/exercise_menu_expandlayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:el_expanded="false">
-
-            <LinearLayout
-                android:layout_marginTop="3dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-
-                <TextView
-                    android:textAlignment="center"
-                    android:textColor="@color/green_dark"
-
-                    android:layout_weight="1"
-                    android:text="Total Reps: 39"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
-                <TextView
-                    android:textAlignment="center"
-
-                    android:textColor="@color/green_dark"
-
-                    android:layout_weight="1"
-
-                    android:text="Total Rest: 06:32"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:textAlignment="center"
-
-                    android:textColor="@color/green_dark"
-                    android:layout_weight="1"
-
-                    android:text="Total Volume: 160.5 kg"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-        </net.cachapa.expandablelayout.ExpandableLayout>
-    </LinearLayout>
 
 
 </RelativeLayout>

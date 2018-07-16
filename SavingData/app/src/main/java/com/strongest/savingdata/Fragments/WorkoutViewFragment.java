@@ -204,7 +204,14 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
 
         selectedExerciseViewModel.select((ExerciseProfile) plObject);
         selectedExerciseViewModel.getSelectedExercise().observe(this, (ep) -> {
-            adapter.notifyItemChanged(exArray.indexOf(ep));
+            int pos = exArray.indexOf(ep);
+            if(pos == -1){
+                adapter.notifyItemChanged(position);
+
+            }else{
+                adapter.notifyItemChanged(pos);
+
+            }
         });
         ExerciseEditFragment f = ExerciseEditFragment.newInstance(String.valueOf(tag));
         addFragmentChild(getFragmentManager(), f);
@@ -249,6 +256,11 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         exerciseItemAdapter.onChild(exerciseProfile);
         adapter.notifyItemChanged(position);
 
+    }
+
+    @Override
+    public void onRemoveSuperset(ExerciseProfile exerciseProfile) {
+        adapter.notifyItemChanged(exArray.indexOf(exerciseProfile));
     }
 
     @Override
