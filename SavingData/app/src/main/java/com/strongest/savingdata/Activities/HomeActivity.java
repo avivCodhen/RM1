@@ -1,5 +1,6 @@
 package com.strongest.savingdata.Activities;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -18,9 +19,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.transition.ChangeBounds;
 import android.transition.Explode;
 import android.transition.Fade;
 import android.transition.Slide;
+import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
 import android.util.DisplayMetrics;
@@ -29,11 +32,13 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
 import com.strongest.savingdata.AModels.WorkoutItemAdapterFactory;
+import com.strongest.savingdata.AViewModels.SelectedExerciseViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.DividerItemAdapter;
@@ -68,6 +73,8 @@ public class HomeActivity extends BaseActivity implements
 
     // public WorkoutsModelController workoutsModelController;
 
+    public static final int EXERCISE_ACTIVITY = 1;
+    public static final String EXERCISE_POSITION = "exercisePosition";
 
     @BindView(R.id.activity_home_toolbar)
     Toolbar toolbar;
@@ -85,6 +92,8 @@ public class HomeActivity extends BaseActivity implements
     TabLayout mTabLayout;
     @BindView(R.id.activity_programtoolsview)
     ProgramToolsView programToolsView;
+    @BindView(R.id.toolbar_title)
+    public TextView title;
 
 
     //this view is the edit "+" button of the toolbar menu
@@ -182,11 +191,9 @@ public class HomeActivity extends BaseActivity implements
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(programName);
+            title.setText(programName);
+            getSupportActionBar().setTitle("");
             //  getSupportActionBar().setElevation(0);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-         //   getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
         }
 
 
@@ -207,6 +214,7 @@ public class HomeActivity extends BaseActivity implements
 
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -383,17 +391,34 @@ public class HomeActivity extends BaseActivity implements
         fragmentTransaction.commitAllowingStateLoss();
     }
 
-    public void testTwo(PLObject.ExerciseProfile ep, ExerciseViewHolder vh){
+    @SuppressLint("RestrictedApi")
+    public void navigateToExerciseDetailsActivity(PLObject.ExerciseProfile ep, ExerciseViewHolder vh) {
         Intent i = new Intent(this, ExerciseDetailsActivity.class);
+        i.putExtra(EXERCISE_POSITION, vh.getAdapterPosition());
         i.putExtra("exercise", ep);
+        i.putExtra("transitionName", vh.icon.getTransitionName());
+        Pair<View, String>[] pairs = new Pair[2];
 
-        Pair<View, String> [] pairs = new Pair[2];
-        vh.name.setTransitionName("q");
-        vh.icon.setTransitionName("q1");
         pairs[0] = Pair.create(vh.name, "q");
-        pairs[1] = Pair.create( vh.icon, "q1");
+        pairs[1] = Pair.create(vh.icon, vh.icon.getTransitionName());
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, pairs);
-        startActivity(i, options.toBundle());
+        startActivityForResult(i, EXERCISE_ACTIVITY, options.toBundle());
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EXERCISE_ACTIVITY) {
+            if (resultCode == RESULT_OK) {
+                PLObject.ExerciseProfile ep = (PLObject.ExerciseProfile) data.getSerializableExtra("exercise");
+                int position = data.getIntExtra(EXERCISE_POSITION, -1);
+                w.getExerciseObserver().onChange(
+                        WorkoutsModel.ListModifier.OnWith(w, new ExerciseItemAdapter())
+                        .doReplace(ep, position)
+                );
+                workoutsViewModel.saveLayoutToDataBase();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

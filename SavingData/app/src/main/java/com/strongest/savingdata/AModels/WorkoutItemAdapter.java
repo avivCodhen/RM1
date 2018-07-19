@@ -12,7 +12,7 @@ public interface WorkoutItemAdapter<T extends PLObject> {
     interface ItemAdapter {
         boolean adapterNotifyDataSetChanged();
 
-        boolean adapterNotifyItemChanged();
+        boolean adapterNotifyItemChanged(int positionChanged);
 
         boolean adapterNotifyItemInserted(int positionTo);
 
@@ -46,4 +46,8 @@ public interface WorkoutItemAdapter<T extends PLObject> {
     int onAddingChildToGroup(T parent, T child);
 
     boolean notifyChild(int position, ItemAdapter adapter);
+
+    T replace(T toReplace);
+
+    boolean notifyReplaced(int positionReplaced, ItemAdapter adapter);
 }

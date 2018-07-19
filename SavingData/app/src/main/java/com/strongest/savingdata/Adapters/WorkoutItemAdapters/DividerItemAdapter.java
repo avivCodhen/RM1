@@ -68,4 +68,14 @@ public class DividerItemAdapter implements WorkoutItemAdapter<PLObject.BodyText>
         return false;
     }
 
+    @Override
+    public PLObject.BodyText replace(PLObject.BodyText toReplace) {
+        return null;
+    }
+
+    @Override
+    public boolean notifyReplaced(int positionReplaced, ItemAdapter adapter) {
+        return false;
+    }
+
 }

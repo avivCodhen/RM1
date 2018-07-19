@@ -7,6 +7,7 @@ public class Workout implements Lister {
     public ArrayList<PLObject> exArray = new ArrayList<>();
     public String workoutName;
     private WorkoutObserver workoutObserver;
+    private SpecifiecExerciseObserver exerciseObserver;
 
     public  Workout(){
     }
@@ -32,6 +33,10 @@ public class Workout implements Lister {
        workoutObserver = wo;
     }
 
+    public void registerExerciseObserver(SpecifiecExerciseObserver o) {
+        this.exerciseObserver = o;
+    }
+
    /* public void notifyChanges(){
         workoutObserver.onChange(exArray);
 
@@ -46,4 +51,10 @@ public class Workout implements Lister {
     public ArrayList getList() {
         return exArray;
     }
+
+    public SpecifiecExerciseObserver getExerciseObserver() {
+        return exerciseObserver;
+    }
+
+
 }

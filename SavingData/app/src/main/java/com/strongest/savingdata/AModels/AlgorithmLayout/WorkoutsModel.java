@@ -28,6 +28,7 @@ import static com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel.Lis
 import static com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel.ListModifier.DoTasks.DoNew;
 import static com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel.ListModifier.DoTasks.Duplicate;
 import static com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel.ListModifier.DoTasks.Remove;
+import static com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel.ListModifier.DoTasks.Replace;
 
 /**
  * Created by Cohen on 10/18/2017.
@@ -921,7 +922,7 @@ public class WorkoutsModel implements Architecture.model {
 
 
         protected enum DoTasks {
-            DoNew, Remove, Duplicate, Child
+            DoNew, Remove, Duplicate, Child, Replace
         }
 
         private Lister workoutList;
@@ -934,6 +935,8 @@ public class WorkoutsModel implements Architecture.model {
         private Queue<PLObject> removeObjects = new LinkedList<>();
         private PLObject parent;
         private PLObject clone;
+        private PLObject replacement;
+        private int positionReplacement;
 
         private static ListModifier listModifier;
 
@@ -992,6 +995,13 @@ public class WorkoutsModel implements Architecture.model {
             return listModifier;
         }
 
+        public ListModifier doReplace(PLObject p, int positionReplacement){
+            this.replacement = p;
+            this.positionReplacement = positionReplacement;
+            listModifier.doTasks.add(Replace);
+            return this;
+        }
+
 
         public void applyWith(WorkoutItemAdapter.ItemAdapter adapter) {
             listModifier.modifier = new Modifier();
@@ -1034,6 +1044,9 @@ public class WorkoutsModel implements Architecture.model {
                         adapterOrFactory(parent);
                         modifier.child(parent);
                         break;
+                    case Replace:
+                        modifier.replace(replacement, positionReplacement);
+                        break;
                 }
             }
         }
@@ -1048,10 +1061,6 @@ public class WorkoutsModel implements Architecture.model {
             }
         }
 
-      /*  public void andNotify() {
-            if (workoutList.getObserver() != null)
-                workoutList.getObserver().onChange(null);
-        }*/
 
         public static class Modifier {
             Lister workoutList;
@@ -1065,6 +1074,17 @@ public class WorkoutsModel implements Architecture.model {
 
             }
 
+            public ListModifier replace(PLObject p, int pos){
+                PLObject trueReplacement = workoutItemAdapter.replace(p);
+                workoutList.getList().set(pos, trueReplacement);
+                boolean funcOverrided =
+                       workoutItemAdapter.notifyReplaced(pos, adapter);
+
+                if (!funcOverrided) {
+                    adapter.adapterNotifyItemChanged(pos);
+                }
+                return listModifier;
+            }
 
             public ListModifier addNew(int positionTo) {
                 ArrayList list = new ArrayList();
@@ -1078,7 +1098,7 @@ public class WorkoutsModel implements Architecture.model {
                 return listModifier;
             }
 
-            public <T> ListModifier remove(PLObject p) {
+            public  ListModifier remove(PLObject p) {
                 int pos = workoutList.getList().indexOf(p);
                 workoutList.getList().remove(p);
                 workoutItemAdapter.remove(pos, p);

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
@@ -19,6 +20,7 @@ import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.SetsItemAdapter;
+import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.Controllers.UISetsClickHandler;
 import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ExerciseDetailsFragment extends BaseFragment implements
@@ -47,6 +50,9 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     MyExpandableAdapter adapter;
     MyExpandableAdapter exerciseAdapter;
     private Workout workout;
+
+    @BindView(R.id.testIv)
+    CircleImageView icon;
 
     @BindView(R.id.fragment_details_longclick)
     LongClickMenuView longClickMenuView;
@@ -98,7 +104,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
+        icon.setTransitionName("q1");
         selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(parentFragmentId, SelectedExerciseViewModel.class);
 
         //instantiating the cloned exercise profile
@@ -116,8 +122,11 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         longClickMenuView.instantiate(this);
         initToolbar();
 
-        test.setTransitionName("q");
-        test.setText("New exericse");
+
+        if (exerciseProfile.getMuscle() != null) {
+            Muscle.MuscleUI mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
+            icon.setImageResource(mui.getImage());
+        }
         startPostponedEnterTransition();
 
     }

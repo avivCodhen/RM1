@@ -32,7 +32,7 @@ public class ExerciseViewHolder extends MyExpandableAdapter.MyExpandableViewHold
     @BindView(R.id.exerciseView_repsTV)
     public TextView reps;
 
-    @BindView(R.id.exerciseView_setsTV)
+    @BindView(R.id.exercise_set_tv)
     public TextView sets;
 
     @BindView(R.id.exerciseView_nameTV)

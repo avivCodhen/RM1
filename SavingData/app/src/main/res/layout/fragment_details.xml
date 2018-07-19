@@ -52,18 +52,33 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:layout_marginLeft="100dp"
                         android:id="@+id/test"
                         android:padding="20dp"
                         android:textSize="16sp"
                         android:text="Bench Press hah"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        app:layout_behavior="com.strongest.savingdata.Utils.ImageBehavior"
+                        android:elevation="10dp"
+                        android:layout_marginTop="8dp"
+                        android:id="@+id/testIv"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginLeft="10dp"
+
+                        />
+
+
                     <android.support.v7.widget.RecyclerView
                         android:visibility="gone"
                         android:id="@+id/fragment_details_recycler_exercises"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/toolbar"></android.support.v7.widget.RecyclerView>
+                        ></android.support.v7.widget.RecyclerView>
+
                 </RelativeLayout>
 
 

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.media.Image;
+import android.os.PersistableBundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +15,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
+import android.util.TimingLogger;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -44,6 +47,7 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ExerciseDetailsActivity extends AppCompatActivity implements
         Architecture.view.LongClickView, UISetsClickHandler, AppBarLayout.OnOffsetChangedListener {
@@ -51,35 +55,35 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements
     @BindView(R.id.stats)
     View stats;
 
- /*   @BindView(R.id.btn_container)
-    LinearLayout btnContainer;*/
+    /*   @BindView(R.id.btn_container)
+       LinearLayout btnContainer;*/
     @BindView(R.id.textview_title)
     TextView textview_title;
 
-   /* @BindView(R.id.nestedScrollView)
-    NestedScrollView nestedScrollView;
-*/
+    /* @BindView(R.id.nestedScrollView)
+     NestedScrollView nestedScrollView;
+ */
     @BindView(R.id.toolbar_add_set_btn)
-   ImageView toolbarAddSet;
+    ImageView toolbarAddSet;
 
     @BindView(R.id.testIv)
-    ImageView testIv;
+    CircleImageView testIv;
 
     @BindView(R.id.details_fragment_recyclerview)
     RecyclerView recyclerView;
     @BindView(R.id.fragment_details_recycler_exercises)
     RecyclerView exerciseRecycler;
-    @BindView(R.id.fragment_details_saveExitToolbar)
-    SaveExitToolBar saveExitToolBar;
+    /*@BindView(R.id.fragment_details_saveExitToolbar)
+    SaveExitToolBar saveExitToolBar;*/
 
-    @BindView(R.id.play_fav)
-    FloatingActionButton fab;
+    /*@BindView(R.id.play_fav)
+    FloatingActionButton fab;*/
 
     /*@BindView(R.id.youtube_expand_layout)
     ExpandableLayout el;*/
 
-    @BindView(R.id.add_set_btn)
-    FloatingActionButton addSet;
+   /* @BindView(R.id.add_set_btn)
+    FloatingActionButton addSet;*/
 
    /* @BindView(R.id.activity_exercise_collapsingtoolbar)
     CollapsingToolbarLayout mCollapseToolbarLayout;
@@ -124,13 +128,16 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_details);
         ButterKnife.bind(this);
-
+        TimingLogger timings = new TimingLogger("aviv", "ExerciseActivity");
+        testIv.setTransitionName(getIntent().getStringExtra("transitionName"));
         exerciseProfile = new PLObject.ExerciseProfile((PLObject.ExerciseProfile) getIntent().getSerializableExtra("exercise"));
-        //textview_title.setTransitionName("q");
-        testIv.setTransitionName("q1");
         initToolbar();
-    //    mAppbar.addOnOffsetChangedListener(this);
+        timings.addSplit("After initToolbar");
+        //textview_title.setTransitionName("q");
+        //testIv.setTransitionName("q1");
+        //    mAppbar.addOnOffsetChangedListener(this);
         initRecycler();
+        timings.addSplit("After initRecycler");
         longClickMenuView.instantiate(this);
 
         slideRight = AnimationUtils.loadAnimation(getApplicationContext(),
@@ -138,38 +145,19 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements
         slideTop = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.slide_in_up);
 
-        //startAlphaAnimation(toolbarAddSet, 0, View.INVISIBLE);
-       /* fab.setOnClickListener((v) -> {
-
-            if (youtubeHandler == null) {
-                youtubeHandler = YoutubeHandler.getHandler(this).init(R.id.youtube_fragment, getSupportFragmentManager());
-                if (exerciseProfile.getExercise() != null) {
-                    youtubeHandler.searchOnYoutube(exerciseProfile.getExercise().getName());
-                }
-            }
-            el.toggle();
-            if (el.isExpanded()) {
-                fab.setImageResource(R.drawable.delete_24px_white);
-            } else {
-                fab.setImageResource(R.drawable.play_24px_white);
-
-            }
-        });
-*/
-        addSet.setOnClickListener((view) -> {
+        toolbarAddSet.setOnClickListener(toolBarAddIcon -> {
             WorkoutsModel.ListModifier.OnWith(workout, setsItemAdapter)
                     .doAddNew(workout.exArray.size()).applyWith(adapter);
-         //   setsLayoutManager.scrollToPositionWithOffset(workout.exArray.size() - 1, 0);
-        //    nestedScrollView.fullScroll(View.FOCUS_DOWN);
+        });
+        timings.addSplit("After All");
+        timings.dumpToLog();
+    }
 
-        });
-        toolbarAddSet.setOnClickListener(v -> {
-            WorkoutsModel.ListModifier.OnWith(workout, setsItemAdapter)
-                    .doAddNew(workout.exArray.size()).applyWith(adapter);
-            //setsLayoutManager.scrollToPositionWithOffset(workout.exArray.size() - 1, 2);
-           // nestedScrollView.fullScroll(View.FOCUS_DOWN);
-            //recyclerView.scrollToPosition(workout.exArray.size() - 1);
-        });
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putSerializable("exercise", exerciseProfile);
+
     }
 
     @Override
@@ -203,25 +191,16 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements
         }
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        exerciseProfile = new PLObject.ExerciseProfile((PLObject.ExerciseProfile) getIntent().getSerializableExtra("exercise"));
+
+    }
+
     private void initToolbar() {
-       /* saveExitToolBar.instantiate();
-        saveExitToolBar.setOptionalTV("Add Set", (v) -> {
-            WorkoutsModel.ListModifier.OnWith(workout, setsItemAdapter)
-                    .doAddNew(workout.exArray.size()).applyWith(adapter);
-            exerciseAdapter.notifyItemChanged(0);
-        });
 
-        saveExitToolBar.setSaveButton(v -> {
-            selectedExerciseViewModel.modifyNewExerciseProfile(exerciseProfile);
-            workoutsViewModel.saveLayoutToDataBase();
-            getFragmentManager().popBackStack();
-        });
-        saveExitToolBar.setCancelButton(v -> getFragmentManager().popBackStack());*/
-
-       /* toolbar.setNavigationIcon(R.drawable.checkmark_48_whitepx);
-        */
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (exerciseProfile.getExercise() != null) {
             textview_title.setText(exerciseProfile.getExercise().getName());
@@ -284,17 +263,47 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements
         int maxScroll = appBarLayout.getTotalScrollRange();
         float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
 
-       // handleAlphaOnTitle(percentage);
-       // handleToolbarTitleVisibility(percentage);
+        // handleAlphaOnTitle(percentage);
+        // handleToolbarTitleVisibility(percentage);
     }
 
+    /*   @Override
+       public boolean onCreateOptionsMenu(Menu menu) {
+           getMenuInflater().inflate(R.menu.aviv_menu_program, menu);
 
+           return true;
+       }
+   */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.home){
-            finish();
+        if (item.getItemId() == android.R.id.home) {
+            finishActivity();
+            return true;
+        }
+        if (item.getItemId() == R.id.edit_menu) {
+            WorkoutsModel.ListModifier.OnWith(workout, setsItemAdapter)
+                    .doAddNew(workout.exArray.size()).applyWith(adapter);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {
+        finishActivity();
+        super.onBackPressed();
+
+    }
+
+    private void finishActivity() {
+        Intent i = new Intent(this, HomeActivity.class);
+        i.putExtra("exercise", exerciseProfile);
+        i.putExtra(
+                HomeActivity.EXERCISE_POSITION,
+                getIntent().getIntExtra(HomeActivity.EXERCISE_POSITION, -1)
+        );
+        setResult(RESULT_OK, i);
+        supportFinishAfterTransition();
+    }
+
 }

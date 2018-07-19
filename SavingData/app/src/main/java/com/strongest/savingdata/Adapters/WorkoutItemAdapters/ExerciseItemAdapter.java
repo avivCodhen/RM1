@@ -94,4 +94,15 @@ public class ExerciseItemAdapter implements WorkoutItemAdapter<ExerciseProfile> 
         adapter.adapterNotifyItemInserted(position);
         return true;
     }
+
+    @Override
+    public ExerciseProfile replace(ExerciseProfile toReplace) {
+        return toReplace;
+    }
+
+    @Override
+    public boolean notifyReplaced(int positionReplaced, ItemAdapter adapter) {
+        adapter.adapterNotifyItemChanged(positionReplaced);
+        return true;
+    }
 }

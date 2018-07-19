@@ -2,24 +2,20 @@ package com.strongest.savingdata.Fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.transition.Explode;
-import android.support.transition.Transition;
-import android.support.transition.TransitionSet;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
+import android.transition.Fade;
+import android.transition.TransitionInflater;
+import android.transition.TransitionSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
-import com.strongest.savingdata.AModels.WorkoutItemAdapterFactory;
 import com.strongest.savingdata.AViewModels.SelectedExerciseViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModelFactory;
@@ -33,7 +29,6 @@ import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject.ExerciseProfile;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
 import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
-import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.MyViews.WorkoutView.OnEnterExitChooseFragment;
 import com.strongest.savingdata.MyViews.WorkoutView.OnUpdateLayoutStatsListener;
 import com.strongest.savingdata.R;
@@ -217,26 +212,66 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         addFragmentChild(getFragmentManager(), f);
     }
 
+    /**
+     * this is the callback that upon clicking on exercise container
+     * it transists to the ExerciseDetailsFragment/Activity
+     * */
     @Override
     public void onExerciseDetails(ExerciseViewHolder vh, ExerciseProfile exerciseProfile) {
-        final int selectedPosition = workout.exArray.indexOf(exerciseProfile);
-/*
+       // final int selectedPosition = workout.exArray.indexOf(exerciseProfile);
         selectedExerciseViewModel = ViewModelProviders
                 .of(getActivity())
                 .get(String.valueOf(tag), SelectedExerciseViewModel.class);
 
-        selectedExerciseViewModel.getModifiedExerciseProfile().observe(this, (ep) -> {
-            workout.exArray.set(selectedExerciseViewModel.getSelectedExercisePosition(), ep);
-            adapter.notifyItemChanged(selectedExerciseViewModel.getSelectedExercisePosition());
+        //this is an object that has observer that applies changes to this fragment's list
+        workout.registerExerciseObserver((listModifier)->{
+          //  adapter.notifyItemChanged(selectedExerciseViewModel.getSelectedExercisePosition());
+
+            //this is a custom list changes class for making changes to the list
+            listModifier.applyWith(adapter);
+
         });
 
+
+        /**
+         * selectedExerciseViewModel provides the ExerciseProfile for the fragment
+         * */
+        selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(String.valueOf(tag), SelectedExerciseViewModel.class);
         selectedExerciseViewModel.select(exerciseProfile);
         selectedExerciseViewModel.setExpandedExerciseList(workoutsViewModel.workoutsModel.exerciseToList(exerciseProfile));
-        selectedExerciseViewModel.setSelectedExercisePosition(selectedPosition);
-        //((HomeActivity) getActivity()).addFragmentToHomeActivity(ExerciseDetailsFragment.getInstance(String.valueOf(tag)), "details");
-        ((HomeActivity) getActivity()).test(vh.name);*/
 
-        ((HomeActivity) getActivity()).testTwo(exerciseProfile, vh);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        Fragment nextFragment = ExerciseDetailsFragment.getInstance(String.valueOf(tag));
+        //Fragment previousFragment = getSupportFragmentManager().getFragments().get(tag);
+        // 1. Exit for Previous Fragment
+        Fade exitFade = new Fade();
+        exitFade.setDuration(200);
+        this.setExitTransition(exitFade);
+
+        // 2. Shared Elements Transition
+        TransitionSet enterTransitionSet = new TransitionSet();
+        enterTransitionSet.addTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+        enterTransitionSet.setDuration(200);
+        enterTransitionSet.setStartDelay(200);
+        nextFragment.setSharedElementEnterTransition(enterTransitionSet);
+
+        // 3. Enter Transition for New Fragment
+        Fade enterFade = new Fade();
+        enterFade.setStartDelay(200);
+        enterFade.setDuration(200);
+        nextFragment.setEnterTransition(enterFade);
+
+        /**
+         * icon is the imageview for the shared element
+         * */
+
+        vh.icon.setTransitionName("q");
+        fragmentTransaction.addSharedElement(vh.icon, "q");
+        fragmentTransaction.replace(R.id.activity_home_framelayout, nextFragment);
+        fragmentTransaction.addToBackStack(String.valueOf(tag));
+        fragmentTransaction.commitAllowingStateLoss();
+
+        //((HomeActivity) getActivity()).navigateToExerciseDetailsActivity(exerciseProfile, vh);
 
     }
 

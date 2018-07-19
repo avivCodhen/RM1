@@ -256,7 +256,8 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
             vh3.icon.setImageResource(mui.getImage());
 
-           // vh3.icon.setImageResource(android.R.color.transparent);
+        }else{
+             vh3.icon.setImageResource(android.R.color.transparent);
         }
 
         if (exerciseProfile.getExercise() != null) {
@@ -319,17 +320,22 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 uiExerciseClickHandler.onAddSuperset(exerciseProfile, position);
             }
         });
+        vh3.sets.setText("Sets: "+exerciseProfile.getSets().size());
+
+        vh3.icon.setTransitionName("tag"+position);
 
     }
 
     @Override
     public boolean adapterNotifyDataSetChanged() {
         return false;
+
     }
 
     @Override
-    public boolean adapterNotifyItemChanged() {
-        return false;
+    public boolean adapterNotifyItemChanged(int pos) {
+        notifyItemChanged(pos);
+        return true;
     }
 
     @Override

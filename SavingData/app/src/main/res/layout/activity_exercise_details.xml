@@ -12,15 +12,10 @@
         android:layout_height="52dp"
         android:layout_alignParentTop="true"
         android:alpha="0"
-        android:elevation="2dp"
+        android:visibility="gone"
+        android:elevation="1dp"
 
         />
-
-    <com.strongest.savingdata.MyViews.SaveExitToolBar
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:id="@+id/fragment_details_saveExitToolbar"
-        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
 
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -31,12 +26,11 @@
 
 
         <android.support.design.widget.AppBarLayout
-
             android:background="@color/colorAccent"
             android:id="@+id/activity_exercise_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="1dp">
+            >
 
 
 
@@ -47,16 +41,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorAccent"
-
                 android:foregroundGravity="bottom|right"
                 android:foregroundTintMode="add"
-                app:titleEnabled="true"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
 
 
                 <android.support.v7.widget.Toolbar
                     android:background="@color/colorAccent"
-
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:elevation="1dp"
                     app:theme="@style/AppToolbarwhite"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -83,23 +77,22 @@
 
 
                         <ImageView
-                            android:padding="10dp"
+
                             android:layout_alignParentRight="true"
+                            app:layout_collapseMode="pin"
+                            android:padding="10dp"
                             android:src="@drawable/plus_48px"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="135dp"
                             android:id="@+id/toolbar_add_set_btn"
                             android:backgroundTint="@color/colorRedTry"
                             android:text="add set"
-                            android:elevation="3dp"
+                            android:elevation="10dp"
                             android:textColor="@color/colorPrimary"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
 
                             />
+
                     </RelativeLayout>
-
-
 
 
 
@@ -121,12 +114,13 @@
 
 
 
-                    <ImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                         app:layout_behavior="com.strongest.savingdata.Utils.ImageBehavior"
                         android:elevation="10dp"
+                        android:layout_marginTop="8dp"
                         android:id="@+id/testIv"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
                         android:layout_marginLeft="10dp"
                         />
 
@@ -253,11 +247,7 @@
 
         </android.support.v4.widget.NestedScrollView>
 
-
-
-
-
-        <android.support.design.widget.FloatingActionButton
+    <!--    <android.support.design.widget.FloatingActionButton
             android:id="@+id/play_fav"
             android:layout_margin="15dp"
             app:fabSize="mini"
@@ -266,7 +256,9 @@
             android:layout_width="wrap_content"
             app:layout_anchor="@id/activity_exercise_app_bar"
             app:layout_anchorGravity="bottom|right"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" />-->
+
+
     </android.support.design.widget.CoordinatorLayout>
 
 

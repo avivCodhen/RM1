@@ -112,4 +112,14 @@ public class SetsItemAdapter implements WorkoutItemAdapter<SetsPLObject> {
         adapter.adapterNotifyItemInserted(position);
         return true;
     }
+
+    @Override
+    public SetsPLObject replace(SetsPLObject toReplace) {
+        return null;
+    }
+
+    @Override
+    public boolean notifyReplaced(int positionReplaced, ItemAdapter adapter) {
+        return false;
+    }
 }
