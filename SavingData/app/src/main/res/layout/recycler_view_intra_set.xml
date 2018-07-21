@@ -2,147 +2,262 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="35dp"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:foreground="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?attr/selectableItemBackground"
-    android:id="@+id/recycler_view_set_card"
+    android:id="@+id/sets_main_layout"
 
-    android:background="#EFEFEF">
+    >
 
-    <include layout="@layout/layout_bottom_border"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"></include>
 
     <FrameLayout
+
         android:id="@+id/recyclerview_exercise_drag_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:elevation="5dp"
         android:visibility="gone">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorAccent"></View>
+            android:background="@color/text_gray"></View>
 
 
     </FrameLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/background_color"></View>
 
+    <RelativeLayout
+        android:layout_marginBottom="1dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:id="@+id/recycler_view_set_card"
+        android:layout_width="match_parent"
+        android:foreground="?attr/selectableItemBackground"
+        >
+
+        <!-- <View
+             android:layout_width="match_parent"
+             android:layout_height="1dp"
+             android:background="@color/background_color"></View>-->
 
         <LinearLayout
-                       android:id="@+id/layout"
-            android:gravity="center"
-            android:layout_width="70dp"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/child_iv"
-                android:layout_centerVertical="true"
-                android:src="@drawable/child_red"
-                android:layout_width="21dp"
-                android:layout_height="21dp" />
+            android:id="@+id/reps_rest_weight_layout"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
 
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:layout_weight="1.3"
+                android:layout_height="wrap_content"
+                android:id="@+id/exerciseView_data_linearlayout"
+                android:layout_width="10dp"
+                >
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@color/colorRedTry"
+                        android:id="@+id/recycler_view_exercise_details_sets_tv"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:textStyle="bold"
+                        android:textSize="16dp"
 
-            <RelativeLayout
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/child_iv"
-                android:layout_marginRight="12dp"
-                android:layout_marginLeft="16dp"
-                android:id="@+id/tag_layout"
+                        android:text="B"
+                        android:textAlignment="center"
+                        android:elevation="12dp"
+                        android:layout_width="55dp"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content" />
+
+                    <!--  <de.hdodenhof.circleimageview.CircleImageView
+
+                          app:civ_circle_background_color="#F6F6F6"
+                          app:civ_border_color="#CCCCCC"
+                          app:civ_border_width="1dp"
+                          android:src="@android:color/transparent"
+                          android:layout_centerVertical="true"
+                          android:layout_centerHorizontal="true"
+                          android:id="@+id/recycler_view_exercise_details_fab"
+                          android:layout_width="20dp"
+                          android:layout_height="20dp"
+                          />-->
+                </RelativeLayout>
+
+            </LinearLayout>
+            <include layout="@layout/layour_side_border"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </include>
+
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_centerHorizontal="true"
-                    app:civ_circle_background_color="#F6F6F6"
-                    app:civ_border_color="#CCCCCC"
-                    app:civ_border_width="1dp"
-                    android:src="@android:color/transparent"
-                    android:layout_centerVertical="true"
-                    android:id="@+id/superset_circle_iv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    />
 
                 <TextView
-                    android:layout_centerHorizontal="true"
-                    android:textColor="@color/colorRedTry"
-                    android:id="@+id/recycler_view_exercise_details_sets_tv"
-                    android:layout_centerVertical="true"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
-                    android:text="B"
-                    android:textAlignment="center"
-                    android:elevation="16dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:src="@drawable/reps_color_accent_icon"
+                    android:id="@+id/exerciseView_repsTV"
+                    android:layout_width="55dp"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:text="10-12"
+                    android:textSize="14dp" />
 
-            </RelativeLayout>
+            </LinearLayout>
+
+
+            <include layout="@layout/layour_side_border"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </include>
+
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+
+                    android:text="00:35"
+                    android:src="@drawable/time_24px"
+                    android:id="@+id/exerciseView_restTV"
+                    android:layout_width="55dp"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+            <include layout="@layout/layour_side_border"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </include>
+
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+
+                    android:id="@+id/exerciseView_weightTV"
+                    android:layout_width="55dp"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+
+                    android:text="175 kg"
+                    android:textSize="14dp" />
+
+
+            </LinearLayout>
+
+            <include layout="@layout/layour_side_border"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </include>
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <ImageView
+                    android:visibility="visible"
+                    android:id="@+id/sets_settings"
+                    android:padding="8dp"
+                    android:src="@drawable/icon_edit_48px"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"  />
+
+            </LinearLayout>
+
 
 
         </LinearLayout>
-
-
 
         <LinearLayout
-            android:layout_toRightOf="@+id/layout"
-            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_below="@+id/reps_rest_weight_layout"
+            android:id="@+id/dropset_and_superset_layout"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:layout_marginLeft="23dp"
+                android:src="@drawable/child_green"
+                android:layout_width="20dp"
+                android:layout_height="23dp" />
 
             <TextView
-
-                android:textColor="@color/textview_color"
-                android:id="@+id/exerciseView_repsTV"
+                android:layout_marginLeft="30dp"
+                android:textColor="@color/text_gray"
+                android:src="@drawable/reps_color_accent_icon"
+                android:layout_marginRight="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="Reps: "
+                android:text="Dropsets:"
+                android:textSize="14dp" />
+
+            <TextView
+                android:textColor="@color/textview_color"
+                android:src="@drawable/reps_color_accent_icon"
+                android:layout_marginRight="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2 Sets"
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/exerciseView_restTV"
-                android:textColor="@color/textview_color"
-
+                android:visibility="gone"
+                android:textStyle="bold"
+                android:layout_marginRight="12dp"
+                android:textColor="@color/colorRedTry"
+                android:text="SUPERSET:"
+                android:src="@drawable/time_24px"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="Rest: "
-                android:textSize="12sp" />
-
+                android:textSize="10sp" />
 
             <TextView
-                android:textColor="@color/textview_color"
+                android:visibility="gone"
 
-                android:id="@+id/exerciseView_weightTV"
+                android:layout_marginRight="12dp"
+                android:textColor="@color/textview_color"
+                android:text="A, B"
+                android:src="@drawable/time_24px"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-
-                android:text="Wgh:"
                 android:textSize="12sp" />
 
         </LinearLayout>
 
 
 
-        <ImageView
-            android:visibility="gone"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:id="@+id/sets_settings"
-            android:padding="12.5dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ic_more_vert_24px"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"  />
+    </RelativeLayout>
 
 
 </RelativeLayout>

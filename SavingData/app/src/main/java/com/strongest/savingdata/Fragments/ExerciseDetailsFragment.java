@@ -243,6 +243,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
                 listModifier.doRemove(longClickMenuView.getSelectedPLObjects().get(0), 1)
                         .applyWith(adapter);
+                adapter.notifyItemRangeChanged(0, adapter.getExArray().size()-1);
                 longClickMenuView.onHideMenu();
                 break;
             case MultiDelete:
@@ -250,18 +251,23 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                     listModifier.doRemove(plObject, 1);
                 }
                 longClickMenuView.onHideMenu();
+
                 listModifier.applyWith(adapter);
+                adapter.notifyItemRangeChanged(0, adapter.getExArray().size()-1);
                 break;
             case Duplicate:
                 //int position = workout.exArray.indexOf(longClickMenuView.getSelectedPLObjects().get(0));
                 listModifier.doDuplicate(longClickMenuView.getSelectedPLObjects().get(0)).applyWith(adapter);
                 break;
 
-            case Child:
+            /*case Child:
                 listModifier.doChild(longClickMenuView.getSelectedPLObjects().get(0))
                         .applyWith(adapter);
-                break;
+                break;*/
+
+
         }
+        selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile);
 
         if (workout.exArray.size() == 0) {
             longClickMenuView.onHideMenu();
@@ -276,7 +282,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
     @Override
     public void onSetsClick(MyExpandableAdapter.SetsViewHolder vh,PLObject plObject) {
-        SelectedSetViewModel selectedSetViewModel = ViewModelProviders.of(getActivity()).get(SelectedSetViewModel.class);
+       /* SelectedSetViewModel selectedSetViewModel = ViewModelProviders.of(getActivity()).get(SelectedSetViewModel.class);
         selectedSetViewModel.select((PLObject.SetsPLObject) plObject);
         selectedSetViewModel.getSelectedExerciseSet().removeObservers(this);
         selectedSetViewModel.getSelectedExerciseSet().observe(this, (exerciseSet) -> {
@@ -285,11 +291,24 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
         SetsChooseSingleFragment f = SetsChooseSingleFragment.getInstance();
 
-        ((HomeActivity) getActivity()).addFragmentToHomeActivity(f, "setsFragment");
+        ((HomeActivity) getActivity()).addFragmentToHomeActivity(f, "setsFragment");*/
+
+       setsItemAdapter.onChild((PLObject.SetsPLObject) plObject);
+       adapter.notifyItemChanged(vh.getAdapterPosition());
     }
 
     @Override
     public void onSetsLongClick(PLObject plObject, MyExpandableAdapter.MyExpandableViewHolder vh) {
         longClickMenuView.onShowMenu(vh, plObject);
+    }
+
+    @Override
+    public void onAddingIntraSet(PLObject.SetsPLObject setsPLObject, int position) {
+
+    }
+
+    @Override
+    public void onRemoveIntraSet(PLObject.SetsPLObject setsPLObject) {
+
     }
 }

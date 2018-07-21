@@ -49,7 +49,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ExerciseDetailsActivity extends AppCompatActivity implements
+public abstract class ExerciseDetailsActivity extends AppCompatActivity implements
         Architecture.view.LongClickView, UISetsClickHandler, AppBarLayout.OnOffsetChangedListener {
 
 

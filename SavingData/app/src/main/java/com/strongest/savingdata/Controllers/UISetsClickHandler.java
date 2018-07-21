@@ -7,4 +7,7 @@ public interface UISetsClickHandler {
 
     void onSetsClick(MyExpandableAdapter.SetsViewHolder vh, PLObject plObject);
     void onSetsLongClick(PLObject plObject, MyExpandableAdapter.MyExpandableViewHolder vh);
+    void onAddingIntraSet(PLObject.SetsPLObject setsPLObject, int position);
+    void onRemoveIntraSet(PLObject.SetsPLObject setsPLObject);
+
 }

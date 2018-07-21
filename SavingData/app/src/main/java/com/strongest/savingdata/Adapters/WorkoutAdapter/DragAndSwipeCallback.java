@@ -6,6 +6,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 import com.strongest.savingdata.Adapters.MainAdapter;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
+import com.strongest.savingdata.ViewHolders.ExerciseViewHolder;
 
 /**
  * Created by Cohen on 10/27/2017.
@@ -85,9 +86,9 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
             if (viewHolder instanceof MainAdapter.WorkoutViewHolder) {
                     MainAdapter.WorkoutViewHolder itemViewHolder = (MainAdapter.WorkoutViewHolder) viewHolder;
                  //   itemViewHolder.onItemSelected();
-            }else if(viewHolder instanceof MyExpandableAdapter.ExerciseViewHolder){
-                MyExpandableAdapter.ExerciseViewHolder itemViewHolder = (MyExpandableAdapter.ExerciseViewHolder) viewHolder;
-                itemViewHolder.onItemSelected();
+            }else if(viewHolder instanceof ExerciseViewHolder){
+                ExerciseViewHolder itemViewHolder = (ExerciseViewHolder) viewHolder;
+               // itemViewHolder.onItemSelected();
             }
         }
         super.onSelectedChanged(viewHolder, actionState);
@@ -101,9 +102,9 @@ public class DragAndSwipeCallback extends ItemTouchHelper.Callback
         if (viewHolder instanceof MainAdapter.WorkoutViewHolder) {
             MainAdapter.WorkoutViewHolder itemViewHolder = (MainAdapter.WorkoutViewHolder) viewHolder;
          //   itemViewHolder.onItemClear();
-        }else if(viewHolder instanceof MyExpandableAdapter.ExerciseViewHolder){
-            MyExpandableAdapter.ExerciseViewHolder itemViewHolder = (MyExpandableAdapter.ExerciseViewHolder) viewHolder;
-            itemViewHolder.onItemClear();
+        }else if(viewHolder instanceof ExerciseViewHolder){
+            ExerciseViewHolder itemViewHolder = (ExerciseViewHolder) viewHolder;
+           // itemViewHolder.onItemClear();
         }
     }
 

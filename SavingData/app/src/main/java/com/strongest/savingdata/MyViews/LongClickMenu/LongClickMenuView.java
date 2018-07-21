@@ -268,9 +268,9 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
                 }
             });*/
 
-        if (currentType == WorkoutLayoutTypes.ExerciseProfile || currentType == WorkoutLayoutTypes.IntraExerciseProfile) {
+      /*  if (currentType == WorkoutLayoutTypes.ExerciseProfile || currentType == WorkoutLayoutTypes.IntraExerciseProfile) {
             ((MyExpandableAdapter.ExerciseViewHolder) currentVH).flipView.flipTheView();
-        }
+        }*/
     }
 
     @OnClick({R.id.longclick_menu_back,

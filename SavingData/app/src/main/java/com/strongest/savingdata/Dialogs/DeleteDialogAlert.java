@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
+import com.strongest.savingdata.ViewHolders.ExerciseViewHolder;
 
 /**
  * Created by Cohen on 3/20/2018.
@@ -27,7 +28,7 @@ public class DeleteDialogAlert extends AlertDialog{
 
         // set dialog message
         String object = "";
-        if(vh instanceof MyExpandableAdapter.ExerciseViewHolder){
+        if(vh instanceof ExerciseViewHolder){
             object = "exercise";
         }else if(vh instanceof MyExpandableAdapter.SetsViewHolder){
             object = "set";

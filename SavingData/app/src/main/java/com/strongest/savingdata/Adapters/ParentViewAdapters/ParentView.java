@@ -24,7 +24,7 @@ public class ParentView extends LinearLayout {
         return parentView;
     }
 
-    public ParentView with(Adapter adapter) {
+    public ParentView with(ParentView.Adapter adapter) {
         this.adapter = adapter;
         return this;
     }

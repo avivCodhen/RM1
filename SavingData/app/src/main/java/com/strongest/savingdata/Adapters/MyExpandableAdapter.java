@@ -10,12 +10,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
 import com.strongest.savingdata.AModels.WorkoutItemAdapter;
 import com.strongest.savingdata.Adapters.ParentViewAdapters.ExerciseParentViewAdapter;
 import com.strongest.savingdata.Adapters.ParentViewAdapters.ParentView;
+import com.strongest.savingdata.Adapters.ParentViewAdapters.SetParentViewAdapter;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ItemTouchHelperAdapter;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ItemTouchHelperListener;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener;
@@ -133,7 +135,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             configureViewHolder3(vh3, position);
 
         } else if (holder.getItemViewType() == WorkoutLayoutTypes.IntraExerciseProfile.ordinal()) {
-            LeanExerciseViewHolder leanExerciseViewHolder= (LeanExerciseViewHolder) holder;
+            LeanExerciseViewHolder leanExerciseViewHolder = (LeanExerciseViewHolder) holder;
             configurateSuperset(leanExerciseViewHolder, position);
 
 
@@ -163,13 +165,13 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void configurateSuperset(LeanExerciseViewHolder supersetViewHolder, int position) {
         ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
 
-        if(ep.getMuscle() != null){
+        if (ep.getMuscle() != null) {
             Muscle.MuscleUI mui = Muscle.provideMuscleUI(ep.getMuscle());
             supersetViewHolder.icon.setImageResource(mui.getImage());
         }
 
-        if(ep.getExercise() != null)
-        supersetViewHolder.name.setText(ep.getExercise().getName());
+        if (ep.getExercise() != null)
+            supersetViewHolder.name.setText(ep.getExercise().getName());
 
     }
 
@@ -216,9 +218,9 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         if (setsPLObject.type == WorkoutLayoutTypes.SuperSetIntraSet) {
             allowLongClick = false;
-            vh.childIcon.setImageResource(R.drawable.child_red);
+            // vh.childIcon.setImageResource(R.drawable.child_red);
         } else if (setsPLObject.type == WorkoutLayoutTypes.IntraSet) {
-            vh.childIcon.setImageResource(R.drawable.child_green);
+            //  vh.childIcon.setImageResource(R.drawable.child_green);
         }
         if (allowLongClick) {
 
@@ -238,7 +240,12 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         vh.reps.setText(exerciseSet.getRep());
         vh.rest.setText(exerciseSet.getRest());
         vh.weight.setText(exerciseSet.getWeight() + "kg");
-        vh.set.setText(position+1+"");
+        vh.set.setText(position + 1 + "");
+
+        ParentView.loadParent(context, vh.parentViewContainer)
+                .reset()
+                .with(new SetParentViewAdapter(setsPLObject, uiSetsClickHandler))
+                .make();
 
     }
 
@@ -249,15 +256,15 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         Muscle.MuscleUI mui = null;
 
-        if(position == 0){
+        if (position == 0) {
             vh3.icon.setTransitionName("q1");
         }
         if (exerciseProfile.getMuscle() != null) {
             mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
             vh3.icon.setImageResource(mui.getImage());
 
-        }else{
-             vh3.icon.setImageResource(android.R.color.transparent);
+        } else {
+            vh3.icon.setImageResource(android.R.color.transparent);
         }
 
         if (exerciseProfile.getExercise() != null) {
@@ -320,9 +327,11 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 uiExerciseClickHandler.onAddSuperset(exerciseProfile, position);
             }
         });
-        vh3.sets.setText("Sets: "+exerciseProfile.getSets().size());
 
-        vh3.icon.setTransitionName("tag"+position);
+
+        vh3.sets.setText("Sets: " + exerciseProfile.getSets().size());
+
+        vh3.icon.setTransitionName("tag" + position);
 
     }
 
@@ -373,6 +382,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.uiSetsClickHandler = uiSetsClickHandler;
     }
 
+/*
 
     public class ExerciseViewHolder extends MyExpandableViewHolder implements ItemTouchHelperListener {
 
@@ -438,15 +448,20 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // editIv = (CircleImageView) itemView.findViewById(R.id.recycler_view_edit);
             drag_iv = itemView.findViewById(R.id.drag_iv);
 
-            /**
-             * drag should be on onBind
-             * */
-            /*drag_iv.setOnTouchListener((view, motionEvent) -> {
+            */
+
+    /**
+     * drag should be on onBind
+     *//*
+
+     */
+/*drag_iv.setOnTouchListener((view, motionEvent) -> {
                 if (onDragListener != null)
                     onDragListener.startDrag(vh);
 
                 return false;
-            });*/
+            });*//*
+
             this.itemView = itemView;
 
 
@@ -461,6 +476,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         }
     }
+*/
 
 
     public class MuscleViewHolder extends MyExpandableViewHolder implements OnLayoutManagerDialogPress {
@@ -526,7 +542,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public TextView supersetTag;
         private SetsViewHolder vh = this;
         private ImageView settings;
-        public ImageView childIcon;
+        //public ImageView childIcon;
         @BindView(R.id.sets_weight_icon)
         public ImageView weightIcon;
         @BindView(R.id.sets_rest_icon)
@@ -535,6 +551,9 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public ImageView repsIcon;
         @BindView(R.id.sets_main_layout)
         public ViewGroup mainLayout;
+
+        @BindView(R.id.parent_view_container)
+        public LinearLayout parentViewContainer;
 
         @Override
         public View getMainLayout() {
@@ -554,7 +573,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             settings = (ImageView) itemView.findViewById(R.id.sets_settings);
             dragLayout = (View) itemView.findViewById(R.id.recyclerview_exercise_drag_layout);
             supersetTag = (TextView) itemView.findViewById(R.id.big_tag_tv);
-            childIcon = itemView.findViewById(R.id.child_iv);
+            //childIcon = itemView.findViewById(R.id.child_iv);
 
 
         }

@@ -15,7 +15,6 @@ public interface OnWorkoutViewInterfaceClicksListener {
 
     void notifyExerciseChanged(int position);
 
-    void onExerciseClick(MyExpandableAdapter.ExerciseViewHolder vh);
 
     void onLongClick(RecyclerView.ViewHolder vh, boolean delete);
 
@@ -35,9 +34,7 @@ public interface OnWorkoutViewInterfaceClicksListener {
 
     void onBodyViewLongClick(RecyclerView.ViewHolder vh, boolean delete);
 
-    void collapseExercise(MyExpandableAdapter.ExerciseViewHolder vh);
 
-    void expandExercise(MyExpandableAdapter.ExerciseViewHolder vh);
 
     void collapseExercise(int adapterPosition);
 

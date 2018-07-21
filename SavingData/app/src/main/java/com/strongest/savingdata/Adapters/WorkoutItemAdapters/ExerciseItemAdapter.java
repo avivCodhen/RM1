@@ -91,7 +91,7 @@ public class ExerciseItemAdapter implements WorkoutItemAdapter<ExerciseProfile> 
 
     @Override
     public boolean notifyChild(int position, ItemAdapter adapter) {
-        adapter.adapterNotifyItemInserted(position);
+        adapter.adapterNotifyItemChanged(position);
         return true;
     }
 

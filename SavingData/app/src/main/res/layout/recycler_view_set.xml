@@ -14,9 +14,10 @@
 
     >
     <include layout="@layout/layout_bottom_border"
+
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_below="@+id/recycler_view_set_card"
+        android:layout_below="@+id/parent_view_container"
         ></include>
 
     <FrameLayout
@@ -64,7 +65,7 @@
 
             <LinearLayout
                 android:gravity="center_horizontal"
-                android:layout_weight="1"
+                android:layout_weight="1.3"
                 android:layout_height="wrap_content"
                 android:id="@+id/exerciseView_data_linearlayout"
                 android:layout_width="10dp"
@@ -123,7 +124,8 @@
                 <TextView
                     android:src="@drawable/reps_color_accent_icon"
                     android:id="@+id/exerciseView_repsTV"
-                    android:layout_width="wrap_content"
+                    android:layout_width="55dp"
+                    android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
                     android:text="10-12"
                     android:textSize="14dp" />
@@ -153,11 +155,11 @@
                 android:textSize="12sp" />
 
             <TextView
-
+                android:layout_width="55dp"
+                android:gravity="center_horizontal"
                 android:text="00:35"
                 android:src="@drawable/time_24px"
                 android:id="@+id/exerciseView_restTV"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14dp" />
 
@@ -189,10 +191,11 @@
             <TextView
 
                 android:id="@+id/exerciseView_weightTV"
-                android:layout_width="wrap_content"
+                android:layout_width="55dp"
+                android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
 
-                android:text="175 kg"
+                android:text="175.5kg"
                 android:textSize="14dp" />
 
 
@@ -287,6 +290,13 @@
 
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/recycler_view_set_card"
+        android:orientation="vertical"
+        android:id="@+id/parent_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></LinearLayout>
 
 
 </RelativeLayout>
