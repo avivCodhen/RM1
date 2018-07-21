@@ -224,11 +224,10 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
                 .get(String.valueOf(tag), SelectedExerciseViewModel.class);
 
         //this is an object that has observer that applies changes to this fragment's list
-        workout.registerExerciseObserver((listModifier)->{
+        workout.registerExerciseObserver((changedEp)->{
           //  adapter.notifyItemChanged(selectedExerciseViewModel.getSelectedExercisePosition());
 
-            //this is a custom list changes class for making changes to the list
-            listModifier.applyWith(adapter);
+            adapter.notifyItemChanged(exArray.indexOf(changedEp));
 
         });
 
@@ -239,6 +238,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(String.valueOf(tag), SelectedExerciseViewModel.class);
         selectedExerciseViewModel.select(exerciseProfile);
         selectedExerciseViewModel.setExpandedExerciseList(workoutsViewModel.workoutsModel.exerciseToList(exerciseProfile));
+        selectedExerciseViewModel.setParentWorkout(workout);
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         Fragment nextFragment = ExerciseDetailsFragment.getInstance(String.valueOf(tag));

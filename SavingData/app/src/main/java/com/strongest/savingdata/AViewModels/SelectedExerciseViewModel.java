@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class SelectedExerciseViewModel extends ViewModel {
 
     private MutableLiveData<PLObject.ExerciseProfile> selectedExercise = new MutableLiveData<>();
+    private MutableLiveData<Workout> parentWorkout= new MutableLiveData<>();
     private MutableLiveData<Workout> exerciseAsList = new MutableLiveData<>();
     private MutableLiveData<PLObject.ExerciseProfile> modifiedExerciseProfile = new MutableLiveData<>();
     private int selectedExercisePosition;
@@ -54,5 +55,13 @@ public class SelectedExerciseViewModel extends ViewModel {
 
     public int getSelectedExercisePosition() {
         return selectedExercisePosition;
+    }
+
+    public Workout getParentWorkout() {
+        return parentWorkout.getValue();
+    }
+
+    public void setParentWorkout(Workout parentWorkout) {
+        this.parentWorkout.setValue(parentWorkout);
     }
 }

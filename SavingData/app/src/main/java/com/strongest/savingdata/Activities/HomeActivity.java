@@ -412,10 +412,10 @@ public class HomeActivity extends BaseActivity implements
             if (resultCode == RESULT_OK) {
                 PLObject.ExerciseProfile ep = (PLObject.ExerciseProfile) data.getSerializableExtra("exercise");
                 int position = data.getIntExtra(EXERCISE_POSITION, -1);
-                w.getExerciseObserver().onChange(
+               /* w.getExerciseObserver().onChange(
                         WorkoutsModel.ListModifier.OnWith(w, new ExerciseItemAdapter())
                         .doReplace(ep, position)
-                );
+                );*/
                 workoutsViewModel.saveLayoutToDataBase();
             }
         }

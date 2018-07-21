@@ -52,17 +52,18 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ExerciseDetailsActivity extends AppCompatActivity implements
         Architecture.view.LongClickView, UISetsClickHandler, AppBarLayout.OnOffsetChangedListener {
 
-    @BindView(R.id.stats)
-    View stats;
 
     /*   @BindView(R.id.btn_container)
        LinearLayout btnContainer;*/
-    @BindView(R.id.textview_title)
-    TextView textview_title;
 
     /* @BindView(R.id.nestedScrollView)
      NestedScrollView nestedScrollView;
  */
+    @BindView(R.id.textview_title)
+    TextView textview_title;
+    @BindView(R.id.stats)
+    View stats;
+
     @BindView(R.id.toolbar_add_set_btn)
     ImageView toolbarAddSet;
 
@@ -73,6 +74,11 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements
     RecyclerView recyclerView;
     @BindView(R.id.fragment_details_recycler_exercises)
     RecyclerView exerciseRecycler;
+    @BindView(R.id.exercise_details_activity_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.fragment_details_longclick)
+    LongClickMenuView longClickMenuView;
+
     /*@BindView(R.id.fragment_details_saveExitToolbar)
     SaveExitToolBar saveExitToolBar;*/
 
@@ -95,10 +101,6 @@ public class ExerciseDetailsActivity extends AppCompatActivity implements
     MyExpandableAdapter exerciseAdapter;
     private Workout workout;
 
-    @BindView(R.id.exercise_details_activity_toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.fragment_details_longclick)
-    LongClickMenuView longClickMenuView;
 
     private SelectedExerciseViewModel selectedExerciseViewModel;
     private WorkoutsViewModel workoutsViewModel;

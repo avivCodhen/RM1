@@ -238,7 +238,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         vh.reps.setText(exerciseSet.getRep());
         vh.rest.setText(exerciseSet.getRest());
         vh.weight.setText(exerciseSet.getWeight() + "kg");
-        vh.set.setText(setsPLObject.tag);
+        vh.set.setText(position+1+"");
 
     }
 
