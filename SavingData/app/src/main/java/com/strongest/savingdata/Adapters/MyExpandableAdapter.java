@@ -31,6 +31,7 @@ import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject.BodyText;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject.ExerciseProfile;
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.BaseWorkout.Muscle;
+import com.strongest.savingdata.Controllers.OnExerciseInfo;
 import com.strongest.savingdata.Controllers.UISetsClickHandler;
 import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
@@ -64,6 +65,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private OnDragListener onDragListener;
     private ScrollToPositionListener scrollListener;
     private boolean isLeanLayout;
+    private OnExerciseInfo onExerciseInfo;
 
 
     public void setLeanLayout(boolean leanLayout) {
@@ -172,6 +174,10 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         if (ep.getExercise() != null)
             supersetViewHolder.name.setText(ep.getExercise().getName());
+
+        supersetViewHolder.exerciseInfo.setOnClickListener(v ->{
+            onExerciseInfo.transitionToExerciseInfo();
+        });
 
     }
 
@@ -380,6 +386,10 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void setUiSetsClickHandler(UISetsClickHandler uiSetsClickHandler) {
         this.uiSetsClickHandler = uiSetsClickHandler;
+    }
+
+    public void setOnExerciseInfo(OnExerciseInfo onExerciseInfo) {
+        this.onExerciseInfo = onExerciseInfo;
     }
 
 /*

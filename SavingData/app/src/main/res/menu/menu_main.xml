@@ -32,5 +32,11 @@
         android:icon="@android:drawable/ic_menu_save"
         android:title="Custom Exercise"/>
 
+    <item android:id="@+id/menu_login"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="Login "/>
+
+
+
 
 </menu>

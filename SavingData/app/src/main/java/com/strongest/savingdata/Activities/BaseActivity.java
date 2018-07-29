@@ -52,11 +52,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void addFragmentToHomeActivity(Fragment f, String tag){
+    public void addFragmentToHomeActivity(int id, Fragment f, String tag){
 
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                .add(R.id.activity_home_framelayout, f, tag)
+                .add(id, f, tag)
                 .addToBackStack(tag)
                 .commit();
     }

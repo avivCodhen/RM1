@@ -51,6 +51,7 @@ import com.strongest.savingdata.Fragments.ExerciseDetailsFragment;
 import com.strongest.savingdata.Fragments.MyProgramsFragment;
 import com.strongest.savingdata.Fragments.NewProgramFragment;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
+import com.strongest.savingdata.Fragments.RegisterFragment;
 import com.strongest.savingdata.Fragments.WorkoutViewFragment;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
@@ -241,16 +242,19 @@ public class HomeActivity extends BaseActivity implements
         switch (item.getItemId()) {
             case R.id.menu_create_program:
                 f = new NewProgramFragment();
-                addFragmentToHomeActivity(f, "NewProgram");
+                addFragmentToHomeActivity(R.id.activity_home_framelayout,f, "NewProgram");
                 break;
             case R.id.menu_my_programs:
                 f = new MyProgramsFragment();
-                addFragmentToHomeActivity(f, "MyPrograms");
+                addFragmentToHomeActivity(R.id.activity_home_framelayout, f, "MyPrograms");
                 break;
             case R.id.menu_custom_exercise:
                 f = new CustomExerciseFragment();
-                addFragmentToHomeActivity(f, "CustomExercise");
+                addFragmentToHomeActivity(R.id.activity_home_framelayout, f, "CustomExercise");
                 break;
+            case R.id.menu_login:
+                f = new RegisterFragment();
+                addFragmentToHomeActivity(R.id.activity_home_framelayout, f,"login");
 
         }
         mDrawerLayout.closeDrawer(Gravity.START);
@@ -320,7 +324,7 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public void onProgramToolsAction(WorkoutsModel.Actions action) {
         if (action == Advanced) {
-            addFragmentToHomeActivity(new ProgramSettingsFragment(), "programsettings");
+            addFragmentToHomeActivity(R.id.activity_home_framelayout,new ProgramSettingsFragment(), "programsettings");
         } else {
             workoutsViewModel.workoutsModel.validateActions(
                     workoutsViewModel.getWorkoutsList().getValue(),

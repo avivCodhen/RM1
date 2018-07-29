@@ -36,10 +36,10 @@ public class ExerciseModel {
                 w.exArray.add(e);
             }*/
 
-            //add each child (if any)
+           /* //add each child (if any)
             for (PLObject.SetsPLObject i : s.intraSets) {
                 w.exArray.add(i);
-            }
+            }*/
 
 
         }

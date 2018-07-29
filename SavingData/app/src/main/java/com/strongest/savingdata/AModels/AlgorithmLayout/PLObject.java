@@ -291,6 +291,7 @@ public class PLObject implements Serializable {
         public ExerciseProfile parent;
         public SetsPLObject setParent;
         public String tag;
+        public String title;
 
 
         public SetsPLObject(ExerciseProfile father, ExerciseSet ExerciseSet) {
@@ -300,11 +301,14 @@ public class PLObject implements Serializable {
             innerType = WorkoutLayoutTypes.SetsPLObject;
         }
 
+        //this is necessary for duplication
         public SetsPLObject(SetsPLObject setsPLObject){
+
             this.ExerciseSet = setsPLObject.ExerciseSet;
             this.type = setsPLObject.type;
-            this.intraSets = intraSets;
-            this.isParent = isParent;
+            this.intraSets = setsPLObject.intraSets;
+            this.isParent = setsPLObject.isParent;
+            this.title = setsPLObject.title;
         }
 
         public SetsPLObject(){

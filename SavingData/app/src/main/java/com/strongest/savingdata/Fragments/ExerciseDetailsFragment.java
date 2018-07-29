@@ -1,9 +1,11 @@
 package com.strongest.savingdata.Fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,16 +25,21 @@ import com.strongest.savingdata.AModels.ExerciseModel;
 import com.strongest.savingdata.AViewModels.SelectedExerciseViewModel;
 import com.strongest.savingdata.AViewModels.SelectedSetViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
+import com.strongest.savingdata.Activities.ExerciseDetailsActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.SetsItemAdapter;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Controllers.Architecture;
+import com.strongest.savingdata.Controllers.OnExerciseInfo;
 import com.strongest.savingdata.Controllers.UISetsClickHandler;
 import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
+import com.strongest.savingdata.Database.LogDataManager;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.SaveExitToolBar;
 import com.strongest.savingdata.R;
+
+import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
 
@@ -41,7 +49,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ExerciseDetailsFragment extends BaseFragment implements
-        Architecture.view.LongClickView, UISetsClickHandler {
+        Architecture.view.LongClickView, UISetsClickHandler, OnExerciseInfo {
 
     @BindView(R.id.textview_title)
     TextView textview_title;
@@ -68,6 +76,18 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     @BindView(R.id.fragment_details_longclick)
     LongClickMenuView longClickMenuView;
 
+    @BindView(R.id.exercise_info)
+    View exerciseInfo;
+
+    @BindView(R.id.youtube_expand_layout)
+    ExpandableLayout el;
+
+    @BindView(R.id.logBtn)
+    Button logBtn;
+
+    @BindView(R.id.saveToLogBtn)
+    Button saveToLogBtn;
+
     private SelectedExerciseViewModel selectedExerciseViewModel;
     private WorkoutsViewModel workoutsViewModel;
     private SetsItemAdapter setsItemAdapter;
@@ -80,6 +100,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     private PLObject.ExerciseProfile exerciseProfile;
     private String parentFragmentId;
     private LinearLayoutManager setsLayoutManager;
+    private LogDataManager logDataManager;
 
     Animation slideRight, slideTop;
 
@@ -121,7 +142,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         icon.setTransitionName("q1");
         selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(parentFragmentId, SelectedExerciseViewModel.class);
-
+        logDataManager = new LogDataManager(getContext());
         //instantiating the cloned exercise profile
         exerciseProfile = selectedExerciseViewModel.getSelectedExercise().getValue();
         setsItemAdapter = new SetsItemAdapter(exerciseProfile);
@@ -158,6 +179,18 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                 exerciseRecycler.startAnimation(slideTop);
             }
         }, 200);
+
+        exerciseInfo.setOnClickListener(info ->{
+            transitionToExerciseDetailsActivity();
+        });
+
+        logBtn.setOnClickListener(btnClicked ->{
+            el.toggle();
+        });
+
+        saveToLogBtn.setOnClickListener(saveLog ->{
+            logDataManager.insert(exerciseProfile);
+        });
     }
 
     private void initRecycler() {
@@ -219,7 +252,6 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                 workout.exArray,
                 getContext());
 
-
         exerciseAdapter = new MyExpandableAdapter(
                 ExerciseModel.expandExercise(exerciseProfile),
                 getContext());
@@ -229,7 +261,14 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                 workout.exArray,
                 getContext());
         adapter.setUiSetsClickHandler(this);
+        adapter.setOnExerciseInfo(this);
 
+    }
+
+    private void transitionToExerciseDetailsActivity(){
+        Intent i = new Intent(getContext(), ExerciseDetailsActivity.class);
+        i.putExtra("exercise", exerciseProfile.getExercise());
+        startActivity(i);
     }
 
 
@@ -310,5 +349,10 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     @Override
     public void onRemoveIntraSet(PLObject.SetsPLObject setsPLObject) {
 
+    }
+
+    @Override
+    public void transitionToExerciseInfo() {
+        transitionToExerciseDetailsActivity();
     }
 }

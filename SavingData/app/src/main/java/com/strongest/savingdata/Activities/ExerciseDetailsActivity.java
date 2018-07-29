@@ -2,6 +2,7 @@ package com.strongest.savingdata.Activities;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.media.Image;
 import android.os.PersistableBundle;
@@ -11,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +25,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,12 +35,18 @@ import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
 import com.strongest.savingdata.AModels.ExerciseModel;
 import com.strongest.savingdata.AViewModels.SelectedExerciseViewModel;
+import com.strongest.savingdata.AViewModels.SelectedLogDataViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
+import com.strongest.savingdata.Adapters.LogDataAdapter;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.SetsItemAdapter;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Controllers.Architecture;
+import com.strongest.savingdata.Controllers.LogDataAdapterOnClick;
 import com.strongest.savingdata.Controllers.UISetsClickHandler;
+import com.strongest.savingdata.Database.Exercise.Beans;
+import com.strongest.savingdata.Database.LogDataManager;
+import com.strongest.savingdata.Fragments.ExerciseLogFragment;
 import com.strongest.savingdata.Handlers.YoutubeHandler;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.SaveExitToolBar;
@@ -45,12 +54,14 @@ import com.strongest.savingdata.R;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public abstract class ExerciseDetailsActivity extends AppCompatActivity implements
-        Architecture.view.LongClickView, UISetsClickHandler, AppBarLayout.OnOffsetChangedListener {
+public class ExerciseDetailsActivity extends BaseActivity implements
+        Architecture.view.LongClickView, UISetsClickHandler, AppBarLayout.OnOffsetChangedListener, LogDataAdapterOnClick {
 
 
     /*   @BindView(R.id.btn_container)
@@ -61,8 +72,6 @@ public abstract class ExerciseDetailsActivity extends AppCompatActivity implemen
  */
     @BindView(R.id.textview_title)
     TextView textview_title;
-    @BindView(R.id.stats)
-    View stats;
 
     @BindView(R.id.toolbar_add_set_btn)
     ImageView toolbarAddSet;
@@ -76,9 +85,9 @@ public abstract class ExerciseDetailsActivity extends AppCompatActivity implemen
     RecyclerView exerciseRecycler;
     @BindView(R.id.exercise_details_activity_toolbar)
     Toolbar toolbar;
-    @BindView(R.id.fragment_details_longclick)
-    LongClickMenuView longClickMenuView;
 
+    @BindView(R.id.youtube_fragment)
+    FrameLayout youtubeFragment;
     /*@BindView(R.id.fragment_details_saveExitToolbar)
     SaveExitToolBar saveExitToolBar;*/
 
@@ -97,8 +106,7 @@ public abstract class ExerciseDetailsActivity extends AppCompatActivity implemen
     @BindView(R.id.activity_exercise_app_bar)
     AppBarLayout mAppbar;*/
 
-    MyExpandableAdapter adapter;
-    MyExpandableAdapter exerciseAdapter;
+    LogDataAdapter adapter;
     private Workout workout;
 
 
@@ -106,7 +114,8 @@ public abstract class ExerciseDetailsActivity extends AppCompatActivity implemen
     private WorkoutsViewModel workoutsViewModel;
     private SetsItemAdapter setsItemAdapter;
 
-    private PLObject.ExerciseProfile exerciseProfile;
+    //private PLObject.ExerciseProfile exerciseProfile;
+    private Beans exercise;
     private YoutubeHandler youtubeHandler;
     private LinearLayoutManager setsLayoutManager;
 
@@ -121,6 +130,8 @@ public abstract class ExerciseDetailsActivity extends AppCompatActivity implemen
 
     private boolean mIsTheTitleVisible = false;
     private boolean mIsTheTitleContainerVisible = true;
+    LogDataManager m;
+
 
     Animation slideRight, slideTop;
 
@@ -130,58 +141,45 @@ public abstract class ExerciseDetailsActivity extends AppCompatActivity implemen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_details);
         ButterKnife.bind(this);
-        TimingLogger timings = new TimingLogger("aviv", "ExerciseActivity");
         testIv.setTransitionName(getIntent().getStringExtra("transitionName"));
-        exerciseProfile = new PLObject.ExerciseProfile((PLObject.ExerciseProfile) getIntent().getSerializableExtra("exercise"));
+        exercise = (Beans) getIntent().getSerializableExtra("exercise");
+        //exerciseProfile = new PLObject.ExerciseProfile((PLObject.ExerciseProfile) getIntent().getSerializableExtra("exercise"));
         initToolbar();
-        timings.addSplit("After initToolbar");
         //textview_title.setTransitionName("q");
         //testIv.setTransitionName("q1");
         //    mAppbar.addOnOffsetChangedListener(this);
         initRecycler();
-        timings.addSplit("After initRecycler");
-        longClickMenuView.instantiate(this);
-
-        slideRight = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.slide_in_right);
-        slideTop = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.slide_in_up);
 
         toolbarAddSet.setOnClickListener(toolBarAddIcon -> {
-            WorkoutsModel.ListModifier.OnWith(workout, setsItemAdapter)
-                    .doAddNew(workout.exArray.size()).applyWith(adapter);
+
         });
-        timings.addSplit("After All");
-        timings.dumpToLog();
+        youtubeHandler = YoutubeHandler.getHandler(this);
+        youtubeHandler.init(R.id.youtube_fragment, getSupportFragmentManager())
+                .searchOnYoutube(exercise.getName());
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-        outState.putSerializable("exercise", exerciseProfile);
+        outState.putSerializable("exercise", exercise);
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        stats.setVisibility(View.VISIBLE);
-        stats.startAnimation(slideRight);
-        exerciseRecycler.setVisibility(View.VISIBLE);
-        exerciseRecycler.startAnimation(slideTop);
     }
 
     private void initRecycler() {
 
-        setsLayoutManager = new LinearLayoutManager(this);
-        LinearLayoutManager lm2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(setsLayoutManager);
-        exerciseRecycler.setLayoutManager(lm2);
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(lm);
         initAdapters();
-        setsItemAdapter = new SetsItemAdapter(exerciseProfile);
+        // setsItemAdapter = new SetsItemAdapter(exerciseProfile);
         recyclerView.setAdapter(adapter);
-        exerciseRecycler.setAdapter(exerciseAdapter);
         recyclerView.setNestedScrollingEnabled(false);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
 
@@ -189,14 +187,14 @@ public abstract class ExerciseDetailsActivity extends AppCompatActivity implemen
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (outState != null) {
-            exerciseProfile = (PLObject.ExerciseProfile) outState.getSerializable("exercise");
+            exercise = (Beans) outState.getSerializable("exercise");
         }
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        exerciseProfile = new PLObject.ExerciseProfile((PLObject.ExerciseProfile) getIntent().getSerializableExtra("exercise"));
+        exercise = ((Beans) getIntent().getSerializableExtra("exercise"));
 
     }
 
@@ -204,12 +202,12 @@ public abstract class ExerciseDetailsActivity extends AppCompatActivity implemen
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (exerciseProfile.getExercise() != null) {
-            textview_title.setText(exerciseProfile.getExercise().getName());
+        if (exercise != null) {
+            textview_title.setText(exercise.getName());
 
         }
-        if (exerciseProfile.getMuscle() != null) {
-            Muscle.MuscleUI mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
+        if (exercise.getMuscle() != null) {
+            Muscle.MuscleUI mui = Muscle.provideMuscleUI(exercise.getMuscle());
             testIv.setImageResource(mui.getImage());
         }
         toolbar.setTitle("");
@@ -217,19 +215,18 @@ public abstract class ExerciseDetailsActivity extends AppCompatActivity implemen
 
     private void initAdapters() {
         //workout = workoutsViewModel.workoutsModel.exerciseToList(ep);
-        exerciseAdapter = new MyExpandableAdapter(
-                ExerciseModel.expandExercise(exerciseProfile),
-                this);
-        exerciseAdapter.setLeanLayout(true);
+        m = new LogDataManager(this);
+        ArrayList<String> dates;
 
-        workout = ExerciseModel.exerciseToList(exerciseProfile);
-        // workout.exArray.add(new PLObject.ExerciseStats(exerciseProfile));
-        adapter = new MyExpandableAdapter(
-                workout.exArray,
-                this);
-        adapter.setUiSetsClickHandler(this);
+        try {
+            dates = m.readDates(exercise.getName());
+        } catch (Exception e) {
+            dates = new ArrayList<>();
+            dates.add("No Record Found");
+        }
+        adapter = new LogDataAdapter(dates);
+        adapter.setLogDataAdapterOnClick(this);
 
-        adapter.setUiSetsClickHandler(this);
     }
 
     @Override
@@ -256,7 +253,17 @@ public abstract class ExerciseDetailsActivity extends AppCompatActivity implemen
 
     @Override
     public void onSetsLongClick(PLObject plObject, MyExpandableAdapter.MyExpandableViewHolder vh) {
-        longClickMenuView.onShowMenu(vh, plObject);
+        // longClickMenuView.onShowMenu(vh, plObject);
+    }
+
+    @Override
+    public void onAddingIntraSet(PLObject.SetsPLObject setsPLObject, int position) {
+
+    }
+
+    @Override
+    public void onRemoveIntraSet(PLObject.SetsPLObject setsPLObject) {
+
     }
 
 
@@ -279,33 +286,21 @@ public abstract class ExerciseDetailsActivity extends AppCompatActivity implemen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finishActivity();
             return true;
         }
         if (item.getItemId() == R.id.edit_menu) {
-            WorkoutsModel.ListModifier.OnWith(workout, setsItemAdapter)
-                    .doAddNew(workout.exArray.size()).applyWith(adapter);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onBackPressed() {
-        finishActivity();
-        super.onBackPressed();
+    public void dateClicked(String date) {
+        SelectedLogDataViewModel selectedLogDataViewModel = ViewModelProviders.of(this)
+                .get(SelectedLogDataViewModel.class);
+        ArrayList<PLObject> sets = m.readSets(exercise.getName(), date);
+        selectedLogDataViewModel.setSets(sets);
 
+        addFragmentToHomeActivity(R.id.exercise_log_frame, new ExerciseLogFragment(), "log");
     }
-
-    private void finishActivity() {
-        Intent i = new Intent(this, HomeActivity.class);
-        i.putExtra("exercise", exerciseProfile);
-        i.putExtra(
-                HomeActivity.EXERCISE_POSITION,
-                getIntent().getIntExtra(HomeActivity.EXERCISE_POSITION, -1)
-        );
-        setResult(RESULT_OK, i);
-        supportFinishAfterTransition();
-    }
-
 }

@@ -9,50 +9,48 @@
         android:background="@color/colorAccent"
         android:id="@+id/fragment_details_longclick"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="52dp"
         android:layout_alignParentTop="true"
         android:alpha="0"
-        android:elevation="12dp"
+        android:visibility="gone"
+        android:elevation="1dp"
 
         />
-
-    <com.strongest.savingdata.MyViews.SaveExitToolBar
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:id="@+id/fragment_details_saveExitToolbar"
-        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
 
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_color">
+        >
 
 
         <android.support.design.widget.AppBarLayout
-
+            android:background="@color/colorAccent"
             android:id="@+id/activity_exercise_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="10dp">
+            >
 
 
 
             <android.support.design.widget.CollapsingToolbarLayout
+
                 app:contentScrim="?attr/colorAccent"
                 android:id="@+id/activity_exercise_collapsingtoolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/background_color"
+                android:background="@color/colorAccent"
                 android:foregroundGravity="bottom|right"
                 android:foregroundTintMode="add"
-                app:titleEnabled="true"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
+
                 <android.support.v7.widget.Toolbar
-                    android:background="@color/colorPrimary"
+                    android:background="@color/colorAccent"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:elevation="1dp"
                     app:theme="@style/AppToolbarwhite"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -62,7 +60,9 @@
                     android:layout_height="52dp">
 
                     <RelativeLayout
-                        android:layout_width="wrap_content"
+                        android:background="@color/colorAccent"
+
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <TextView
@@ -72,26 +72,27 @@
                             android:textSize="16dp"
                             android:text="Bench Press hah"
                             android:layout_width="250dp"
+                            android:textColor="@color/colorPrimary"
                             android:layout_height="wrap_content" />
 
 
-                        <Button
-                            android:elevation="1dp"
-                            android:visibility="gone"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="135dp"
+                        <ImageView
+
+                            android:layout_alignParentRight="true"
+                            app:layout_collapseMode="pin"
+                            android:padding="10dp"
+                            android:src="@drawable/plus_48px"
                             android:id="@+id/toolbar_add_set_btn"
-                            style="@style/Widget.AppCompat.Button.Small"
                             android:backgroundTint="@color/colorRedTry"
                             android:text="add set"
+                            android:elevation="10dp"
                             android:textColor="@color/colorPrimary"
-                            android:layout_width="wrap_content"
+                            android:layout_width="50dp"
                             android:layout_height="wrap_content"
 
                             />
+
                     </RelativeLayout>
-
-
 
 
 
@@ -101,8 +102,9 @@
 
 
                 <RelativeLayout
+                    android:background="@color/colorAccent"
+
                     android:layout_marginBottom="20dp"
-                    android:background="@color/colorPrimary"
                     android:id="@+id/collapse_container"
                     app:layout_collapseMode="parallax"
                     android:layout_marginTop="52dp"
@@ -112,13 +114,14 @@
 
 
 
-                    <ImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                         app:layout_behavior="com.strongest.savingdata.Utils.ImageBehavior"
                         android:elevation="10dp"
+                        android:layout_marginTop="8dp"
                         android:id="@+id/testIv"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginLeft="10dp"
                         />
 
                     <include layout="@layout/recycler_view_exercise_stats"
@@ -134,7 +137,8 @@
 
 
                     <android.support.v7.widget.RecyclerView
-                        android:layout_marginTop="-45dp"
+                        android:layout_marginTop="-40dp"
+                        android:layout_marginBottom="25dp"
                         android:id="@+id/fragment_details_recycler_exercises"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -243,20 +247,18 @@
 
         </android.support.v4.widget.NestedScrollView>
 
+        <!--    <android.support.design.widget.FloatingActionButton
+                android:id="@+id/play_fav"
+                android:layout_margin="15dp"
+                app:fabSize="mini"
+                android:src="@drawable/ic_add_white_24dp"
+                app:backgroundTint="@color/colorRedTry"
+                android:layout_width="wrap_content"
+                app:layout_anchor="@id/activity_exercise_app_bar"
+                app:layout_anchorGravity="bottom|right"
+                android:layout_height="wrap_content" />-->
 
 
-
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/play_fav"
-            android:layout_margin="15dp"
-            app:fabSize="mini"
-            android:src="@drawable/ic_add_white_24dp"
-            app:backgroundTint="@color/colorRedTry"
-            android:layout_width="wrap_content"
-            app:layout_anchor="@id/activity_exercise_app_bar"
-            app:layout_anchorGravity="bottom|right"
-            android:layout_height="wrap_content" />
     </android.support.design.widget.CoordinatorLayout>
 
 
