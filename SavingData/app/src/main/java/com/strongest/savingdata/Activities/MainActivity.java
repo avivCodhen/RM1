@@ -29,7 +29,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
 
-                Log.d("aviv", "onResponse: "+  response.body());
+                Log.d("aviv", "onResponse body: "+  response.body() + " onResponse code:" + response.code());
             }
 
             @Override
