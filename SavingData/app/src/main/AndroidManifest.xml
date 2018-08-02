@@ -16,9 +16,9 @@
         android:supportsRtl="false"
         android:theme="@style/newAppTheme"
         tools:replace="android:label, supportsRtl">
-        <activity android:name=".Activities.MainActivity" />
+        <activity android:name=".Activities.HomeActivity" />
         <activity android:name=".Activities.RegisterActivity" />
-        <activity android:name=".Activities.HomeActivity">
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
