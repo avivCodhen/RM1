@@ -22,7 +22,16 @@ import youruserpools.AppHelper;
 public class ApiClient {
 
     public static final String BASE_URL = "http://10.0.2.2:80/site/_db/";
-    public static final String BASE_SERVER_URL = "http://192.168.1.23:8080/";
+
+    /**
+     * yarin's ip
+     * */
+    //public static final String BASE_SERVER_URL = "http://192.168.1.23:8080/";
+
+    /**
+     * aviv's ip
+     * */
+    public static final String BASE_SERVER_URL = "http://192.168.1.18:8080/";
     //public static final String BASE_URL = "http://localhost/site/_db/";
 
     public static Retrofit retrofit = null;
