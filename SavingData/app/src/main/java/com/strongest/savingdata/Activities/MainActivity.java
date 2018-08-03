@@ -23,21 +23,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        ApiInterface apiInterface = ApiClient.getApiClientTmp().create(ApiInterface.class);
-        Call<String> call = apiInterface.getTmp();
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
 
-                Log.d("aviv", "onResponse body: "+  response.body() + " onResponse code:" + response.code());
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.d("aviv", "onFailure: "+ t.toString()+" ");
-            }
-        });
-        if(true) return;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
