@@ -28,7 +28,7 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
 
     @Override
     public int getCount() {
-        return setsPLObject.intraSets.size();
+        return setsPLObject.intraSets.size() + setsPLObject.superSets.size();
     }
 
     @Override

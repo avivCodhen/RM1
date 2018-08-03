@@ -13,7 +13,6 @@ import static com.strongest.savingdata.AModels.AlgorithmLayout.PLObject.*;
 public class ExerciseItemAdapter implements WorkoutItemAdapter<ExerciseProfile> {
 
 
-
     public ExerciseItemAdapter() {
 
     }
@@ -33,7 +32,7 @@ public class ExerciseItemAdapter implements WorkoutItemAdapter<ExerciseProfile> 
     }
 
     @Override
-    public boolean notifyInserted(int start,int count, ItemAdapter adapter) {
+    public boolean notifyInserted(int start, int count, ItemAdapter adapter) {
 
         adapter.adapterNotifyItemRangeInserted(start, count);
         return true;
@@ -58,13 +57,15 @@ public class ExerciseItemAdapter implements WorkoutItemAdapter<ExerciseProfile> 
     }
 
     @Override
-    public ExerciseProfile onDuplicate(ExerciseProfile clone) {
+    public ExerciseProfile onDuplicate(int position, ExerciseProfile clone) {
         return new ExerciseProfile(clone);
+
     }
+
 
     @Override
     public int addingDuplicateTo(ExerciseProfile parent) {
-        return 1+parent.getExerciseProfiles().size();
+        return 1 + parent.getExerciseProfiles().size();
     }
 
     @Override

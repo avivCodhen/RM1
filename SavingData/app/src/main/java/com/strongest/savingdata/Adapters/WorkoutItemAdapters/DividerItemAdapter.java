@@ -39,9 +39,10 @@ public class DividerItemAdapter implements WorkoutItemAdapter<PLObject.BodyText>
     }
 
     @Override
-    public PLObject.BodyText onDuplicate(PLObject.BodyText clone) {
+    public PLObject.BodyText onDuplicate(int position, PLObject.BodyText clone) {
         return null;
     }
+
 
     @Override
     public int addingDuplicateTo(PLObject.BodyText parent) {

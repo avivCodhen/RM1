@@ -250,6 +250,11 @@ public class WorkoutsModel implements Architecture.model {
         return false;
     }
 
+    /**
+     * this function has moved to the ExerciseModel
+     * */
+    /*
+
     public Workout exerciseToList(ExerciseProfile ep) {
         int results = WorkoutsModelValidator.getWorkoutsValidator().validateExercise(ep);
 
@@ -263,19 +268,23 @@ public class WorkoutsModel implements Architecture.model {
         }
         Workout w = new Workout();
 
-        //add all of the supersets to the list
-       /* for (ExerciseProfile superset : ep.getExerciseProfiles()) {
+        //add all of the superSets to the list
+       */
+/* for (ExerciseProfile superset : ep.getExerciseProfiles()) {
             w.exArray.add(superset);
         }
-*/
+*//*
+
         //add each set to the list
         for (PLObject.SetsPLObject s : ep.getSets()) {
             w.exArray.add(s);
 
-           /* //add superset(s) for each set
+           */
+/* //add superset(s) for each set
             for (ExerciseProfile e : ep.getExerciseProfiles()) {
                 w.exArray.add(e);
-            }*/
+            }*//*
+
 
             //add each child (if any)
             for (PLObject.SetsPLObject i : s.intraSets) {
@@ -289,9 +298,10 @@ public class WorkoutsModel implements Architecture.model {
 
 
     }
+*/
 
     /**
-     * this function expands the exercise into exercise and it's childs(supersets)
+     * this function expands the exercise into exercise and it's childs(superSets)
      * this is not to be confused with expanding the exercise into a list of sets
      * */
     public ArrayList<PLObject> expandExercise(ExerciseProfile ep) {
@@ -1117,7 +1127,7 @@ public class WorkoutsModel implements Architecture.model {
                 int originalPosition = workoutList.getList().indexOf(toClone);
                 int appliedPosition = workoutItemAdapter.addingDuplicateTo(toClone);
                 int finalPosition = originalPosition+appliedPosition;
-                PLObject clone = workoutItemAdapter.onDuplicate(toClone);
+                PLObject clone = workoutItemAdapter.onDuplicate(originalPosition, toClone);
                 workoutList.getList().add(finalPosition, clone);
 
                 boolean funcOverrided =

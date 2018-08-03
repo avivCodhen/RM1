@@ -65,7 +65,7 @@ public class LayoutManagerOperator {
             block.add(newIntra);
         }*//*
 
-        //copies the intrasets from the supersets, if any
+        //copies the intrasets from the superSets, if any
         for (int i = 0; i < setsPLObject.getParent().getExerciseProfiles().size(); i++) {
             ArrayList<PLObject.IntraSetPLObject> intras = setsPLObject.getParent().getExerciseProfiles().get(i).getIntraSets();
             if(setsPLObject.getParent().getSets().size() < intras.size()){

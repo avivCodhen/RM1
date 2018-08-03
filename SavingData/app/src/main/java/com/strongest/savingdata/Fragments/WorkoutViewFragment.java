@@ -219,6 +219,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     @Override
     public void onExerciseDetails(ExerciseViewHolder vh, ExerciseProfile exerciseProfile) {
        // final int selectedPosition = workout.exArray.indexOf(exerciseProfile);
+
         selectedExerciseViewModel = ViewModelProviders
                 .of(getActivity())
                 .get(String.valueOf(tag), SelectedExerciseViewModel.class);
@@ -228,7 +229,6 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
           //  adapter.notifyItemChanged(selectedExerciseViewModel.getSelectedExercisePosition());
 
             adapter.notifyItemChanged(exArray.indexOf(changedEp));
-
         });
 
 
@@ -237,7 +237,6 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
          * */
         selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(String.valueOf(tag), SelectedExerciseViewModel.class);
         selectedExerciseViewModel.select(exerciseProfile);
-        selectedExerciseViewModel.setExpandedExerciseList(workoutsViewModel.workoutsModel.exerciseToList(exerciseProfile));
         selectedExerciseViewModel.setParentWorkout(workout);
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
