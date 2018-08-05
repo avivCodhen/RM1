@@ -76,25 +76,25 @@ public class AppHelper {
     /**
      * Add your pool id here
      */
-    private static final String userPoolId = "us-east-1_OmZsJdmz8";
+    private static final String userPoolId = "us-east-2_2hJLqLFef";
 
     /**
      * Add you app id
      */
-    private static final String clientId = "34gj5ce1neke3fs0e0rniqrhe6";
+    private static final String clientId = "7i36e5i4g6l7038vrqj26p4jb4";
 
     /**
      * App secret associated with your app id - if the App id does not have an associated App secret,
      * set the App secret to null.
      * e.g. clientSecret = null;
      */
-    private static final String clientSecret = "1ad3vmdh1q3freggq7f2kimrv6asmq3u0ibipp2jruqbvse0g15i";
+    private static final String clientSecret = "16m398muvfdan44cmlrvj9oppjtcbp9lhp52i0eei0k7o1d7dtoj";
 
     /**
      * Set Your User Pools region.
      * e.g. if your user pools are in US East (N Virginia) then set cognitoRegion = Regions.US_EAST_1.
      */
-    private static final Regions cognitoRegion = Regions.US_EAST_1;
+    private static final Regions cognitoRegion = Regions.US_EAST_2;
 
     // User details from the service
     private static CognitoUserSession currSession;
