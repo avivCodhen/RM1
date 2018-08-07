@@ -31,7 +31,7 @@ public class ApiClient {
     /**
      * aviv's ip
      * */
-    public static final String BASE_SERVER_URL = "http://192.168.1.18:8080/";
+    public static final String BASE_SERVER_URL = "http://192.168.1.16:8080/";
     //public static final String BASE_URL = "http://localhost/site/_db/";
 
     public static Retrofit retrofit = null;
