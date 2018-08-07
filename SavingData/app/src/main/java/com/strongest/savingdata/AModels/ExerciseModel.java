@@ -2,6 +2,7 @@ package com.strongest.savingdata.AModels;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
+import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModelValidator;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.SetsItemAdapter;
 import com.strongest.savingdata.Controllers.CallBacks;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 public class ExerciseModel {
 
 
-    public static void exerciseToWorkout(PLObject.ExerciseProfile ep, CallBacks.OnFinish onFinish) {
+    public static void exerciseToWorkout(SetsItemAdapter setsItemAdapter, PLObject.ExerciseProfile ep, CallBacks.OnFinish onFinish) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -23,8 +24,7 @@ public class ExerciseModel {
                 }
 
                 if (results == WorkoutsModelValidator.NO_SET) {
-                    PLObject.SetsPLObject set = new SetsItemAdapter().insert();
-                    ep.getSets().add(set);
+                    setsItemAdapter.insert();
                 }
                 Workout w = new Workout();
 
@@ -33,14 +33,11 @@ public class ExerciseModel {
                 for (int i = 0; i < ep.getSets().size(); i++) {
                     PLObject.SetsPLObject s = ep.getSets().get(i);
 
-                    //add all of the superSets to the list for the first time
-                    if (s.superSets.size() == 0) {
-
-                        for (PLObject.ExerciseProfile superset : ep.getExerciseProfiles()) {
-                            if (i < superset.intraSets.size()) {
-                                s.superSets.add(superset.intraSets.get(i));
-                            }
-
+                    //each set has to get it's supersets from each superset exercise
+                    s.superSets.clear();
+                    for (PLObject.ExerciseProfile superset : ep.getExerciseProfiles()) {
+                        s.superSets.add(superset.intraSets.get(i));
+                        if (i < superset.intraSets.size()) {
                         }
                     }
 
@@ -68,45 +65,53 @@ public class ExerciseModel {
         return list;
     }
 
-    /**
-     * this function injects a superset-set in a set(ahm)
-     */
 
-    public static boolean injectSupersetExercise(PLObject.ExerciseProfile parent, PLObject.SetsPLObject set) {
-        if (hasSupersets(parent)) {
-            for (PLObject.ExerciseProfile superset : parent.getExerciseProfiles()) {
-                int setPositionInParent = getSetPosition(parent, set);
-                set.intraSets.add(superset.intraSets.get(setPositionInParent));
-
-            }
-
-            return true;
-
-        }
-        return false;
-    }
 
     public static int getSetPosition(PLObject.ExerciseProfile parent, PLObject.SetsPLObject set) {
         return parent.getSets().indexOf(set);
 
     }
 
+    private static boolean hasSupersets(PLObject.ExerciseProfile parent) {
+        return parent.getExerciseProfiles().size() > 0;
+    }
+
+
     /**
      * injectSetSuperset injects a new set in the superset.
-     * it gets the position of the correct set in the list
+     * it gets the new position  of the set in the list
      * based on the position of the sets
      */
-    public static void injectDuplicateSetToSuperset(PLObject.ExerciseProfile parent, PLObject.SetsPLObject duplicate) {
+    public static void injectDuplicateSetToSuperset(int positionInList,
+                                                    PLObject.ExerciseProfile parent,
+                                                    ArrayList<PLObject.SetsPLObject> supersetsSets) {
 
-        int setPosition = getSetPosition(parent, duplicate);
-        for (PLObject.ExerciseProfile superset : parent.getExerciseProfiles()) {
-          //  superset.intraSets
+        for (int i = 0; i < parent.getExerciseProfiles().size(); i++) {
+            PLObject.ExerciseProfile superset = parent.getExerciseProfiles().get(i);
+            superset.intraSets.add(positionInList, supersetsSets.get(i));
         }
 
     }
 
-    private static boolean hasSupersets(PLObject.ExerciseProfile parent) {
-        return parent.getExerciseProfiles().size() > 0;
+
+    /**
+     * this function injects a superset-set in a set(ahm)
+     */
+
+    public static void injectSupersetExercise(int positionInList,
+                                              PLObject.ExerciseProfile parent,
+                                              PLObject.SetsPLObject setsPLObject,
+                                              SetsItemAdapter setsItemAdapter) {
+
+        int numOfSupersets = parent.getExerciseProfiles().size();
+        for (int i = 0; i < numOfSupersets; i++) {
+            PLObject.ExerciseProfile superset = parent.getExerciseProfiles().get(i);
+            PLObject.SetsPLObject intraSet =new PLObject.SetsPLObject();
+            intraSet.innerType = WorkoutLayoutTypes.SuperSetIntraSet;
+            intraSet.type = WorkoutLayoutTypes.SuperSetIntraSet;
+            superset.intraSets.add(positionInList, intraSet);
+            setsPLObject.superSets.add(intraSet);
+        }
     }
 
 }

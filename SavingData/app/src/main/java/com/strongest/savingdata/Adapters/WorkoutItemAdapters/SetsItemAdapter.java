@@ -30,8 +30,8 @@ public class SetsItemAdapter implements WorkoutItemAdapter<SetsPLObject> {
             exerciseProfile.getSets().add(set);
         }
 
-
-        //ExerciseModel.injectSupersetExercise(exerciseProfile, set);
+        ExerciseModel.injectSupersetExercise(exerciseProfile.getSets().size() - 1,
+                exerciseProfile, set, this);
         set.setInnerType(WorkoutLayoutTypes.SetsPLObject);
         set.isParent = true;
         return set;
@@ -59,10 +59,10 @@ public class SetsItemAdapter implements WorkoutItemAdapter<SetsPLObject> {
 
     @Override
     public void remove(int position, SetsPLObject removedItem) {
-        if(removedItem.type == WorkoutLayoutTypes.IntraSet){
+        if (removedItem.type == WorkoutLayoutTypes.IntraSet) {
             removedItem.setParent.intraSets.remove(removedItem);
         }
-        if (exerciseProfile != null){
+        if (exerciseProfile != null) {
             exerciseProfile.getSets().remove(removedItem);
         }
     }
@@ -82,6 +82,7 @@ public class SetsItemAdapter implements WorkoutItemAdapter<SetsPLObject> {
     public SetsPLObject onDuplicate(int position, SetsPLObject clone) {
         SetsPLObject set = new SetsPLObject(clone);
         exerciseProfile.getSets().add(position, set);
+        ExerciseModel.injectDuplicateSetToSuperset(position + 1, exerciseProfile, set.superSets);
         return set;
     }
 

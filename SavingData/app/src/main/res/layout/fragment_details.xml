@@ -70,9 +70,9 @@
                             android:layout_centerVertical="true"
                             android:layout_marginRight="15dp"
                             android:layout_toLeftOf="@+id/logBtn"
-                            android:text="Bench Press hah"
+                            android:text="New Exercise"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="15dp"
+                            android:textSize="18dp"
                             android:textStyle="bold" />
 
                         <Button

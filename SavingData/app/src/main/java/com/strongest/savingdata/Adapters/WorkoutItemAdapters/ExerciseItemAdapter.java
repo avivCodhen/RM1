@@ -80,6 +80,12 @@ public class ExerciseItemAdapter implements WorkoutItemAdapter<ExerciseProfile> 
         ep.type = WorkoutLayoutTypes.IntraExerciseProfile;
         parent.getExerciseProfiles().add(ep);
         ep.setParent(parent);
+        for (int i = 0; i <parent.getSets().size() ; i++) {
+            PLObject.SetsPLObject intraSet =new PLObject.SetsPLObject();
+            intraSet.innerType = WorkoutLayoutTypes.SuperSetIntraSet;
+            intraSet.type = WorkoutLayoutTypes.SuperSetIntraSet;
+            ep.intraSets.add(intraSet);
+        }
         ep.isParent = false;
         return ep;
     }

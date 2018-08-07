@@ -235,19 +235,8 @@ public class ExerciseDetailsActivity extends BaseActivity implements
     }
 
     @Override
-    public void onSetsClick(MyExpandableAdapter.SetsViewHolder vh, PLObject plObject) {
-        Intent i = new Intent(this, SetsDetailsActivity.class);
-        i.putExtra("set", plObject);
+    public void onSetsClick(MyExpandableAdapter.MyExpandableViewHolder vh, PLObject plObject) {
 
-        Pair<View, String>[] pairs = new Pair[3];
-        vh.restIcon.setTransitionName("icon1");
-        vh.repsIcon.setTransitionName("icon2");
-        vh.weightIcon.setTransitionName("icon3");
-        pairs[0] = Pair.create(vh.restIcon, vh.restIcon.getTransitionName());
-        pairs[1] = Pair.create(vh.repsIcon, vh.repsIcon.getTransitionName());
-        pairs[2] = Pair.create(vh.weightIcon, vh.weightIcon.getTransitionName());
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, pairs);
-        startActivity(i, options.toBundle());
 
     }
 
@@ -262,7 +251,7 @@ public class ExerciseDetailsActivity extends BaseActivity implements
     }
 
     @Override
-    public void onRemoveIntraSet(PLObject.SetsPLObject setsPLObject) {
+    public void onRemoveIntraSet(PLObject.SetsPLObject setsPLObject, int position) {
 
     }
 

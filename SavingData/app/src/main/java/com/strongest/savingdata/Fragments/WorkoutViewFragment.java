@@ -192,12 +192,13 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     }
 
     @Override
-    public void onExerciseEdit(RecyclerView.ViewHolder vh, PLObject plObject, int position) {
+    public void onExerciseEdit(RecyclerView.ViewHolder vh, ExerciseProfile exerciseProfile) {
+        int position = vh.getAdapterPosition();
         selectedExerciseViewModel = ViewModelProviders
                 .of(getActivity())
                 .get(String.valueOf(tag), SelectedExerciseViewModel.class);
 
-        selectedExerciseViewModel.select((ExerciseProfile) plObject);
+        selectedExerciseViewModel.select((ExerciseProfile) exerciseProfile);
         selectedExerciseViewModel.getSelectedExercise().observe(this, (ep) -> {
             int pos = exArray.indexOf(ep);
             if(pos == -1){
@@ -285,7 +286,8 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     }
 
     @Override
-    public void onAddSuperset(ExerciseProfile exerciseProfile, int position) {
+    public void onAddSuperset(RecyclerView.ViewHolder vh,PLObject.ExerciseProfile exerciseProfile) {
+        int position = vh.getAdapterPosition();
         ExerciseItemAdapter exerciseItemAdapter = new ExerciseItemAdapter();
         exerciseItemAdapter.onChild(exerciseProfile);
         adapter.notifyItemChanged(position);

@@ -1,30 +1,25 @@
 package com.strongest.savingdata.Adapters;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
 import com.strongest.savingdata.AModels.WorkoutItemAdapter;
 import com.strongest.savingdata.Adapters.ParentViewAdapters.ExerciseParentViewAdapter;
 import com.strongest.savingdata.Adapters.ParentViewAdapters.ParentView;
 import com.strongest.savingdata.Adapters.ParentViewAdapters.SetParentViewAdapter;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ItemTouchHelperAdapter;
-import com.strongest.savingdata.Adapters.WorkoutAdapter.ItemTouchHelperListener;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ScrollToPositionListener;
-import com.strongest.savingdata.AModels.AlgorithmLayout.ExerciseProfileStats;
 import com.strongest.savingdata.AModels.AlgorithmLayout.LayoutManagerAlertdialog;
-import com.strongest.savingdata.AModels.AlgorithmLayout.LayoutManagerHelper;
 import com.strongest.savingdata.AModels.AlgorithmLayout.OnLayoutManagerDialogPress;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject.BodyText;
@@ -35,14 +30,11 @@ import com.strongest.savingdata.Controllers.OnExerciseInfo;
 import com.strongest.savingdata.Controllers.UISetsClickHandler;
 import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
-import com.strongest.savingdata.Gestures.MyGestureTouchListener;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.SingleNumberChooseView;
 import com.strongest.savingdata.MyViews.WeightKeyBoard.WeightKeyboard;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.ViewHolders.ExerciseViewHolder;
 import com.strongest.savingdata.ViewHolders.LeanExerciseViewHolder;
-import com.strongest.savingdata.ViewHolders.SupersetViewHolder;
-import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -51,7 +43,6 @@ import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         ItemTouchHelperAdapter, WorkoutItemAdapter.ItemAdapter {
@@ -102,7 +93,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         } else if (viewType == WorkoutLayoutTypes.ExerciseProfile.ordinal()) {
             View v3 = inflater.inflate(R.layout.recycler_view_exercises_left_margin, parent, false);
-            return new com.strongest.savingdata.ViewHolders.ExerciseViewHolder(v3);
+            return new com.strongest.savingdata.ViewHolders.ExerciseViewHolder(v3, uiExerciseClickHandler);
 
         } else if (viewType == WorkoutLayoutTypes.IntraExerciseProfile.ordinal()) {
 
@@ -175,7 +166,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (ep.getExercise() != null)
             supersetViewHolder.name.setText(ep.getExercise().getName());
 
-        supersetViewHolder.exerciseInfo.setOnClickListener(v ->{
+        supersetViewHolder.exerciseInfo.setOnClickListener(v -> {
             onExerciseInfo.transitionToExerciseInfo();
         });
 
@@ -244,14 +235,41 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
         vh.reps.setText(exerciseSet.getRep());
-        vh.rest.setText(exerciseSet.getRest());
+        if(position != (exArray.size()-1)){
+            vh.rest.setText(exerciseSet.getRest());
+        }else{
+            vh.rest.setText("");
+        }
         vh.weight.setText(exerciseSet.getWeight() + "kg");
         vh.set.setText(position + 1 + "");
 
         ParentView.loadParent(context, vh.parentViewContainer)
                 .reset()
-                .with(new SetParentViewAdapter(setsPLObject, uiSetsClickHandler))
+                .with(new SetParentViewAdapter(setsPLObject, uiSetsClickHandler, vh))
                 .make();
+
+
+        vh.settings.setOnClickListener((menu) -> {
+
+            PopupMenu popupMenu = new PopupMenu(context, vh.settings);
+            popupMenu.inflate(R.menu.sets_menu);
+            popupMenu.setOnMenuItemClickListener((menuItem) -> {
+                if (uiSetsClickHandler != null) {
+
+                    switch (menuItem.getItemId()) {
+
+                        case R.id.add_dropset:
+                            uiSetsClickHandler.onAddingIntraSet(setsPLObject, vh.getAdapterPosition());
+                            break;
+                    }
+                    return true;
+                }
+                return false;
+            });
+
+            popupMenu.show();
+        });
+
 
     }
 
@@ -282,7 +300,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         vh3.name.setTransitionName("a" + position);
 
 
-        if (vh3.edit != null) {
+       /* if (vh3.edit != null) {
             vh3.edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -291,7 +309,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
 
-        }
+        }*/
 
         vh3.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -328,16 +346,42 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 .reset()
                 .make();
 
-        vh3.addSuperset.setOnClickListener((v) -> {
+        /*vh3.addSuperset.setOnClickListener((v) -> {
+
             if (uiExerciseClickHandler != null) {
                 uiExerciseClickHandler.onAddSuperset(exerciseProfile, position);
             }
-        });
+        });*/
 
 
         vh3.sets.setText("Sets: " + exerciseProfile.getSets().size());
 
         vh3.icon.setTransitionName("tag" + position);
+
+        vh3.edit.setOnClickListener((menu) -> {
+
+            PopupMenu popupMenu = new PopupMenu(context, vh3.edit);
+            popupMenu.inflate(R.menu.exercise_menu);
+            popupMenu.setOnMenuItemClickListener((menuItem) -> {
+                if (uiExerciseClickHandler != null) {
+
+                    switch (menuItem.getItemId()) {
+
+                        case R.id.editExercise:
+                            uiExerciseClickHandler.onExerciseEdit(vh3, exerciseProfile);
+                            break;
+                        case R.id.addSuperset:
+                            uiExerciseClickHandler.onAddSuperset(vh3, exerciseProfile);
+                            break;
+                    }
+                    return true;
+                }
+                return false;
+            });
+
+            popupMenu.show();
+        });
+
 
     }
 

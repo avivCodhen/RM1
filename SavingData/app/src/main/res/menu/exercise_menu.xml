@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/editExercise"
+        android:icon="@drawable/edit_48px"
+        android:title="Edit Exercise"/>
+
+    <item android:id="@+id/addSuperset"
+        android:icon="@drawable/child_red"
+        android:title="Add Superset"/>
+
+    <item android:id="@+id/duplicate_exercise"
+        android:icon="@drawable/child_red"
+        android:title="Duplicate Exercise"/>
+
+</menu>

@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
+import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
 import com.strongest.savingdata.AModels.ExerciseModel;
 import com.strongest.savingdata.AViewModels.SelectedExerciseViewModel;
@@ -152,19 +153,18 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         initToolbar();
         initAdapters();
         initRecycler();
-        ExerciseModel.exerciseToWorkout(exerciseProfile, w -> {
+        ExerciseModel.exerciseToWorkout(setsItemAdapter,exerciseProfile, w -> {
             workout = (Workout) w;
             exerciseAdapter.setExArray(workout.getParents());
-            exerciseAdapter.notifyDataSetChanged();
             try {
-                Thread.sleep(100);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-
+                    exerciseAdapter.notifyDataSetChanged();
                     adapter.setExArray(workout.getExArray());
                     adapter.notifyDataSetChanged();
                     MyJavaAnimator.fadeIn(recyclerView);
@@ -202,7 +202,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                 recyclerView.setVisibility(View.VISIBLE);
                 recyclerView.startAnimation(slideTop);
             }
-        }, 200);
+        }, 100);
 
         exerciseInfo.setOnClickListener(info -> {
             transitionToExerciseDetailsActivity();
@@ -224,7 +224,6 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         LinearLayoutManager lm2 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(setsLayoutManager);
         exerciseRecycler.setLayoutManager(lm2);
-        setsItemAdapter = new SetsItemAdapter(exerciseProfile);
         //recyclerView.setNestedScrollingEnabled(false);
 
         recyclerView.setAdapter(adapter);
@@ -335,7 +334,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
 
     @Override
-    public void onSetsClick(MyExpandableAdapter.SetsViewHolder vh, PLObject plObject) {
+    public void onSetsClick(MyExpandableAdapter.MyExpandableViewHolder vh, PLObject plObject) {
         SelectedSetViewModel selectedSetViewModel = ViewModelProviders.of(getActivity()).get(SelectedSetViewModel.class);
         selectedSetViewModel.select((PLObject.SetsPLObject) plObject);
         selectedSetViewModel.getSelectedExerciseSet().removeObservers(this);
@@ -358,12 +357,17 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
     @Override
     public void onAddingIntraSet(PLObject.SetsPLObject setsPLObject, int position) {
-
+        PLObject.SetsPLObject intraSet = new PLObject.SetsPLObject();
+        intraSet.type = WorkoutLayoutTypes.IntraSet;
+        intraSet.innerType = WorkoutLayoutTypes.IntraSet;
+        setsPLObject.intraSets.add(intraSet);
+        adapter.notifyItemChanged(workout.exArray.indexOf(setsPLObject));
     }
 
     @Override
-    public void onRemoveIntraSet(PLObject.SetsPLObject setsPLObject) {
-
+    public void onRemoveIntraSet(PLObject.SetsPLObject setsPLObject, int intraSetPosition) {
+        setsPLObject.intraSets.remove(intraSetPosition);
+        adapter.notifyItemChanged(workout.exArray.indexOf(setsPLObject));
     }
 
     @Override
