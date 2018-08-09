@@ -46,7 +46,7 @@ public class LogDataManager {
 
     private void inserter(PLObject.ExerciseProfile exerciseProfile) {
         String tableName = trimExerciseNameSpace(exerciseProfile.getExercise().getName());
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date());
+        String date = new SimpleDateFormat("MMMM dd, yyyy", Locale.US).format(new Date());
         String currentTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
         String result = date + ", " + currentTime;
 
@@ -107,11 +107,10 @@ public class LogDataManager {
         return cv;
     }
 
-    public ArrayList<String> readDates(String exerciseName) {
+    public ArrayList<LogData> readDates(String exerciseName) {
         Cursor c = db.rawQuery("SELECT * FROM " + trimExerciseNameSpace(exerciseName), null);
         String date = "";
-        LogData d = new LogData();
-        ArrayList<String> dates = new ArrayList<>();
+        ArrayList<LogData> dates = new ArrayList<>();
         if (c != null && c.moveToFirst()) {
             do {
 
@@ -119,7 +118,8 @@ public class LogDataManager {
                     continue;
                 } else {
                     date = c.getString(c.getColumnIndex(DBLogDataHelper.DATE));
-                    dates.add(date);
+                    String[] arr = date.split(",");
+                    dates.add(new LogData(date,arr[0], arr[1]));
                    /* d.reps = c.getString(c.getColumnIndex(DBLogDataHelper.REP_ID));
                     d.rest = c.getString(c.getColumnIndex(DBLogDataHelper.REST));
                     d.type = c.getString(c.getColumnIndex(DBLogDataHelper.TYPE));
@@ -128,6 +128,7 @@ public class LogDataManager {
                 }
             } while (c.moveToNext());
         }
+
         return dates;
     }
 

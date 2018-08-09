@@ -45,6 +45,7 @@ import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.Controllers.LogDataAdapterOnClick;
 import com.strongest.savingdata.Controllers.UISetsClickHandler;
 import com.strongest.savingdata.Database.Exercise.Beans;
+import com.strongest.savingdata.Database.LogData;
 import com.strongest.savingdata.Database.LogDataManager;
 import com.strongest.savingdata.Fragments.ExerciseLogFragment;
 import com.strongest.savingdata.Handlers.YoutubeHandler;
@@ -172,7 +173,7 @@ public class ExerciseDetailsActivity extends BaseActivity implements
 
     private void initRecycler() {
 
-        LinearLayoutManager lm = new LinearLayoutManager(this);
+        LinearLayoutManager lm = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
         recyclerView.setLayoutManager(lm);
         initAdapters();
         // setsItemAdapter = new SetsItemAdapter(exerciseProfile);
@@ -211,18 +212,21 @@ public class ExerciseDetailsActivity extends BaseActivity implements
             testIv.setImageResource(mui.getImage());
         }
         toolbar.setTitle("");
+        toolbar.setNavigationOnClickListener((navClicked) -> {
+            finish();
+        });
     }
 
     private void initAdapters() {
         //workout = workoutsViewModel.workoutsModel.exerciseToList(ep);
         m = new LogDataManager(this);
-        ArrayList<String> dates;
+        ArrayList<LogData> dates;
 
         try {
             dates = m.readDates(exercise.getName());
         } catch (Exception e) {
             dates = new ArrayList<>();
-            dates.add("No Record Found");
+            dates.add(new LogData("", "No Record Found", ""));
         }
         adapter = new LogDataAdapter(dates);
         adapter.setLogDataAdapterOnClick(this);

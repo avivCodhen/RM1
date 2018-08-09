@@ -40,6 +40,7 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -435,6 +436,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void setOnExerciseInfo(OnExerciseInfo onExerciseInfo) {
         this.onExerciseInfo = onExerciseInfo;
     }
+
 
 /*
 

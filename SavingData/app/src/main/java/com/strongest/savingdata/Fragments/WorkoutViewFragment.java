@@ -221,10 +221,6 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     public void onExerciseDetails(ExerciseViewHolder vh, ExerciseProfile exerciseProfile) {
        // final int selectedPosition = workout.exArray.indexOf(exerciseProfile);
 
-        selectedExerciseViewModel = ViewModelProviders
-                .of(getActivity())
-                .get(String.valueOf(tag), SelectedExerciseViewModel.class);
-
         //this is an object that has observer that applies changes to this fragment's list
         workout.registerExerciseObserver((changedEp)->{
           //  adapter.notifyItemChanged(selectedExerciseViewModel.getSelectedExercisePosition());

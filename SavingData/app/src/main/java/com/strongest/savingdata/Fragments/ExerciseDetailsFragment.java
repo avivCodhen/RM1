@@ -1,5 +1,6 @@
 package com.strongest.savingdata.Fragments;
 
+import android.app.ActivityOptions;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,15 +11,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
@@ -54,6 +60,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ExerciseDetailsFragment extends BaseFragment implements
         Architecture.view.LongClickView, UISetsClickHandler, OnExerciseInfo {
 
+    private static final String DONT_DISPLAY_CHECKBOX = "dont_display_checkbox";
     @BindView(R.id.textview_title)
     TextView textview_title;
     @BindView(R.id.stats)
@@ -138,13 +145,19 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (outState != null) {
-            parentFragmentId = outState.getString(FRAGMENT_TAG);
+            outState.putString(FRAGMENT_TAG, parentFragmentId);
         }
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         icon.setTransitionName("q1");
+
+        if (savedInstanceState != null) {
+            parentFragmentId = savedInstanceState.getString(FRAGMENT_TAG);
+
+        }
+
         selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(parentFragmentId, SelectedExerciseViewModel.class);
         logDataManager = new LogDataManager(getContext());
         //instantiating the cloned exercise profile
@@ -209,12 +222,20 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         });
 
         logBtn.setOnClickListener(btnClicked -> {
-            el.toggle();
+
+            if(el.isExpanded()){
+                showEnterLogModeDialog();
+            }else{
+
+            }
         });
+
 
         saveToLogBtn.setOnClickListener(saveLog -> {
             logDataManager.insert(exerciseProfile);
         });
+
+
 
     }
 
@@ -231,6 +252,8 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         recyclerView.setAlpha(0f);
 
     }
+
+
 
     private void initToolbar() {
 
@@ -276,12 +299,19 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                 getContext());
         adapter.setUiSetsClickHandler(this);
         adapter.setOnExerciseInfo(this);
+        exerciseAdapter.setOnExerciseInfo(this);
 
     }
 
     private void transitionToExerciseDetailsActivity() {
         Intent i = new Intent(getContext(), ExerciseDetailsActivity.class);
         i.putExtra("exercise", exerciseProfile.getExercise());
+       /* Pair<View, String>[] pairs = new Pair[2];
+
+        pairs[0] = Pair.create(icon, "icon");
+        pairs[1] = Pair.create(textview_title, "title");
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), pairs);
+        startActivity(i,options.toBundle());*/
         startActivity(i);
     }
 
@@ -374,4 +404,37 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     public void transitionToExerciseInfo() {
         transitionToExerciseDetailsActivity();
     }
+
+    private void showEnterLogModeDialog(){
+        MaterialDialog.Builder  builder= new MaterialDialog.Builder(getContext())
+                .title("Log Mode")
+                .content("On entering Log Mode, any changes you make will not apply to the program." +
+                        " To save, click Save To Program. ")
+                .positiveText("Enter")
+                .negativeText("Cancel");
+
+        if(!workoutsViewModel.getDataManager().getPrefs().getString(DONT_DISPLAY_CHECKBOX, "").equals(DONT_DISPLAY_CHECKBOX)){
+            builder.checkBoxPromptRes(R.string.log_mode_checkbox, false, (compoundButton, b) -> {
+                if(b == true) workoutsViewModel.getDataManager().getPrefsEditor().putString(DONT_DISPLAY_CHECKBOX, DONT_DISPLAY_CHECKBOX);
+            });
+
+        }
+
+        MaterialDialog dialog = builder.build();
+        dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener((positive)->{
+            el.toggle();
+            dialog.dismiss();
+        });
+        dialog.show();
+
+    }
+
+    private void enterLogMode(){
+
+    }
+
+    private void exitLogMode(){
+
+    }
+
 }

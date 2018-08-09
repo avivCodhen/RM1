@@ -616,4 +616,5 @@
     <string name="my_selector_create_rest_button">Create rest</string>
     <string name="my_selector_create_reps_button">Create reps</string>
     <string name="my_selector_create_sets_button">Create sets</string>
+    <string name="log_mode_checkbox">Don\'t show again</string>
 </resources>
