@@ -36,7 +36,10 @@ public interface ApiInterface {
     @POST("getMusclesDB.php/")
     Call<ArrayList<Muscle>> getMuscles(@Query("muscles") String muscle);
 
-    @GET("getTablesDB.php/")
+    @GET("api/tmp")
     Call<ArrayList<Beans>> getTables(@Query("muscles") String table);
+
+    @GET("api/tmp/")
+    Call<String> getTmp();
 
 }
