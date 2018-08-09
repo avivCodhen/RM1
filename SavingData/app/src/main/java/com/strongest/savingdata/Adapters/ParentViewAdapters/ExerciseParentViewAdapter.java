@@ -46,7 +46,7 @@ public class ExerciseParentViewAdapter extends ParentView.Adapter<SupersetViewHo
             exerciseViewHolder.name.setText(superset.getExercise().getName());
 
         exerciseViewHolder.edit.setOnClickListener(v ->{
-            uiExerciseClickHandler.onExerciseEdit(exerciseViewHolder, superset, position);
+            uiExerciseClickHandler.onExerciseEdit(exerciseViewHolder, superset);
         });
 
         exerciseViewHolder.delete.setOnClickListener(v ->{

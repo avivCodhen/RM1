@@ -8,27 +8,47 @@
     android:focusable="true"
     android:background="@color/colorPrimary"
     android:id="@+id/exercise_main_viewgroup_layout"
-    android:paddingTop="10dp"
     >
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/list_view_exercise_lay1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         >
 
       <TextView
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="30dp"
           android:id="@+id/tv_date"
           android:textColor="@color/colorAccent"
-          android:layout_centerHorizontal="true"
           android:layout_centerVertical="true"
-          android:text="2012-20, 0:9:35"
+          android:text="2012-20"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" />
 
+        <TextView
+            android:id="@+id/tv_time"
+            android:textColor="@color/text_gray"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/icon_forward_gray_48"
+        android:id="@+id/arrow_log_data_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 </RelativeLayout>

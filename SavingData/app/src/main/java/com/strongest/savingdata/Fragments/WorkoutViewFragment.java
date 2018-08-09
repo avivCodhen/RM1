@@ -192,12 +192,13 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     }
 
     @Override
-    public void onExerciseEdit(RecyclerView.ViewHolder vh, PLObject plObject, int position) {
+    public void onExerciseEdit(RecyclerView.ViewHolder vh, ExerciseProfile exerciseProfile) {
+        int position = vh.getAdapterPosition();
         selectedExerciseViewModel = ViewModelProviders
                 .of(getActivity())
                 .get(String.valueOf(tag), SelectedExerciseViewModel.class);
 
-        selectedExerciseViewModel.select((ExerciseProfile) plObject);
+        selectedExerciseViewModel.select((ExerciseProfile) exerciseProfile);
         selectedExerciseViewModel.getSelectedExercise().observe(this, (ep) -> {
             int pos = exArray.indexOf(ep);
             if(pos == -1){
@@ -219,16 +220,12 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     @Override
     public void onExerciseDetails(ExerciseViewHolder vh, ExerciseProfile exerciseProfile) {
        // final int selectedPosition = workout.exArray.indexOf(exerciseProfile);
-        selectedExerciseViewModel = ViewModelProviders
-                .of(getActivity())
-                .get(String.valueOf(tag), SelectedExerciseViewModel.class);
 
         //this is an object that has observer that applies changes to this fragment's list
         workout.registerExerciseObserver((changedEp)->{
           //  adapter.notifyItemChanged(selectedExerciseViewModel.getSelectedExercisePosition());
 
             adapter.notifyItemChanged(exArray.indexOf(changedEp));
-
         });
 
 
@@ -237,7 +234,6 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
          * */
         selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(String.valueOf(tag), SelectedExerciseViewModel.class);
         selectedExerciseViewModel.select(exerciseProfile);
-        selectedExerciseViewModel.setExpandedExerciseList(workoutsViewModel.workoutsModel.exerciseToList(exerciseProfile));
         selectedExerciseViewModel.setParentWorkout(workout);
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -286,7 +282,8 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     }
 
     @Override
-    public void onAddSuperset(ExerciseProfile exerciseProfile, int position) {
+    public void onAddSuperset(RecyclerView.ViewHolder vh,PLObject.ExerciseProfile exerciseProfile) {
+        int position = vh.getAdapterPosition();
         ExerciseItemAdapter exerciseItemAdapter = new ExerciseItemAdapter();
         exerciseItemAdapter.onChild(exerciseProfile);
         adapter.notifyItemChanged(position);

@@ -3,6 +3,7 @@ package com.strongest.savingdata.Adapters.WorkoutItemAdapters;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject.SetsPLObject;
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
+import com.strongest.savingdata.AModels.ExerciseModel;
 import com.strongest.savingdata.AModels.WorkoutItemAdapter;
 
 import java.util.ArrayList;
@@ -28,6 +29,9 @@ public class SetsItemAdapter implements WorkoutItemAdapter<SetsPLObject> {
             set.parent = exerciseProfile;
             exerciseProfile.getSets().add(set);
         }
+
+        ExerciseModel.injectSupersetExercise(exerciseProfile.getSets().size() - 1,
+                exerciseProfile, set, this);
         set.setInnerType(WorkoutLayoutTypes.SetsPLObject);
         set.isParent = true;
         return set;
@@ -55,10 +59,10 @@ public class SetsItemAdapter implements WorkoutItemAdapter<SetsPLObject> {
 
     @Override
     public void remove(int position, SetsPLObject removedItem) {
-        if(removedItem.type == WorkoutLayoutTypes.IntraSet){
+        if (removedItem.type == WorkoutLayoutTypes.IntraSet) {
             removedItem.setParent.intraSets.remove(removedItem);
         }
-        if (exerciseProfile != null){
+        if (exerciseProfile != null) {
             exerciseProfile.getSets().remove(removedItem);
         }
     }
@@ -75,14 +79,16 @@ public class SetsItemAdapter implements WorkoutItemAdapter<SetsPLObject> {
     }
 
     @Override
-    public SetsPLObject onDuplicate(SetsPLObject clone) {
+    public SetsPLObject onDuplicate(int position, SetsPLObject clone) {
         SetsPLObject set = new SetsPLObject(clone);
+        exerciseProfile.getSets().add(position, set);
+        ExerciseModel.injectDuplicateSetToSuperset(position + 1, exerciseProfile, set.superSets);
         return set;
     }
 
     @Override
     public int addingDuplicateTo(SetsPLObject parent) {
-        return 1 + parent.intraSets.size();
+        return 1;
     }
 
     @Override

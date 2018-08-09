@@ -407,7 +407,7 @@ public class HomeActivity extends BaseActivity implements
         pairs[1] = Pair.create(vh.icon, vh.icon.getTransitionName());
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, pairs);
         startActivityForResult(i, EXERCISE_ACTIVITY, options.toBundle());
-    }
+        }
 
 
     @Override

@@ -1,6 +1,7 @@
 package com.strongest.savingdata.Adapters.ParentViewAdapters;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ public class ParentView extends LinearLayout {
 
     private LinearLayout parent;
     private Adapter adapter;
+    private Handler handler;
 
     public ParentView(Context context) {
         super(context);
@@ -21,6 +23,7 @@ public class ParentView extends LinearLayout {
     public static ParentView loadParent(Context context, LinearLayout parent) {
         ParentView parentView = new ParentView(context);
         parentView.parent = parent;
+        parentView.handler = new Handler();
         return parentView;
     }
 
@@ -29,26 +32,30 @@ public class ParentView extends LinearLayout {
         return this;
     }
 
-    public ParentView reset(){
+    public ParentView reset() {
         parent.removeAllViews();
         return this;
     }
 
     public void make() {
+        final ViewGroup container = this;
+        int length = adapter.getCount();
+        if (parent.getChildCount() == length) {
+            return;
+        }
         validate();
 
-        int length = adapter.getCount();
 
         for (int i = 0; i < length; i++) {
 
-            RecyclerView.ViewHolder vh = adapter.onCreateChildViewHolder(this);
-            this.parent.addView(vh.itemView);
+            RecyclerView.ViewHolder vh = adapter.onCreateChildViewHolder(container);
+
+            parent.addView(vh.itemView);
+
+
             adapter.onBindViewHolder(vh, i);
 
-
         }
-
-
     }
 
     private void validate() {

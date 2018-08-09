@@ -1,22 +1,24 @@
 package com.strongest.savingdata.ViewHolders;
 
 import android.media.Image;
+import android.view.ContextMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
+import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
 import com.strongest.savingdata.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ExerciseViewHolder extends MyExpandableAdapter.MyExpandableViewHolder{
-
+public class ExerciseViewHolder extends MyExpandableAdapter.MyExpandableViewHolder {
 
     public ImageView drag_iv;
 
@@ -64,11 +66,27 @@ public class ExerciseViewHolder extends MyExpandableAdapter.MyExpandableViewHold
         return mainLayout;
     }
 
+    public UiExerciseClickHandler uiExerciseClickHandler;
+
+    public void setUiExerciseClickHandler(UiExerciseClickHandler uiExerciseClickHandler) {
+        this.uiExerciseClickHandler = uiExerciseClickHandler;
+    }
+
+    public ExerciseViewHolder(View itemView, UiExerciseClickHandler uiExerciseClickHandler){
+        super(itemView);
+        ButterKnife.bind(this, itemView);
+        this.uiExerciseClickHandler = uiExerciseClickHandler;
+
+
+    }
+
     public ExerciseViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
      // dragLayout = dl ;
       drag_iv = itemView.findViewById(R.id.drag_iv);
 
+
     }
+
 }

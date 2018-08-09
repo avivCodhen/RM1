@@ -9,10 +9,9 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_marginLeft="20dp"
         android:id="@+id/list_view_exercise_lay1"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="1dp"
         android:layout_toRightOf="@+id/intra_set_superset_tag"
         >
@@ -34,45 +33,54 @@
             android:id="@+id/exercise_main_layout"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:paddingTop="3dp">
-
-            <include layout="@layout/layour_side_border"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/exercise_edit_btn">
-
-            </include>
+           >
 
             <ImageView
+                android:layout_marginRight="3dp"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/icon_edit_48px"
-                android:layout_marginRight="10dp"
+                android:src="@drawable/icon_x_gray_48"
+                android:id="@+id/delete"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:elevation="10dp"
+                android:padding="9dp"
+                android:textColor="@color/colorAccent"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+
+                />
+
+
+
+            <ImageView
+                android:layout_marginRight="4dp"
+                android:layout_toLeftOf="@+id/delete"
+                android:src="@drawable/icon_edit_gray_48"
                 android:id="@+id/exercise_edit_btn"
                 android:textStyle="bold"
                 android:textSize="14sp"
-                android:layout_marginLeft="10dp"
-                android:padding="10dp"
                 android:elevation="10dp"
                 android:textColor="@color/colorAccent"
                 android:text="EDIT"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:padding="11dp"
+                android:layout_width="40dp"
+                android:layout_height="match_parent" />
 
 
 
             <ImageView
-                android:layout_toRightOf="@id/intra_set_superset_tag"
+                android:layout_marginLeft="15dp"
                 android:id="@+id/child_arrow_iv"
-                android:paddingLeft="5dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/child_red"
-                android:layout_width="30dp"
-                android:layout_height="match_parent" />
+                android:layout_width="25dp"
+                android:layout_height="20dp" />
 
 
 
 
             <com.wajahatkarim3.easyflipview.EasyFlipView
+                android:visibility="gone"
                 app:flipOnTouch="false"
 
                 android:id="@+id/recyclerview_exercise_flipview"
@@ -113,10 +121,25 @@
             </com.wajahatkarim3.easyflipview.EasyFlipView>
 
             <TextView
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/child_arrow_iv"
+                android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:id="@+id/superset_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Superset"
+                android:textSize="14sp"
+                android:textColor="@color/colorRed"
+                />
+
+            <TextView
                 android:layout_toLeftOf="@+id/exercise_edit_btn"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
-                android:textStyle="bold"
+                android:layout_toRightOf="@+id/superset_tag"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:id="@+id/exerciseView_nameTV"
@@ -124,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:text="Barbell Low Bar Squat"
                 android:textSize="14sp"
-                android:textColor="@color/colorAccent"
+                android:textColor="#888888"
                 />
 
         </RelativeLayout>
@@ -133,6 +156,7 @@
 
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_marginTop="-5dp"
         android:layout_below="@+id/list_view_exercise_lay1"
         android:id="@+id/btns"
@@ -142,18 +166,6 @@
         android:layout_marginLeft="110dp"
         android:layout_height="wrap_content">
 
-        <Button
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:id="@+id/delete"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:padding="10dp"
-            android:elevation="10dp"
-            android:textColor="@color/colorAccent"
-            android:text="DELETE"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
 
 
 

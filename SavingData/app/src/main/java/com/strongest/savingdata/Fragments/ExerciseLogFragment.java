@@ -48,7 +48,7 @@ public class ExerciseLogFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         SelectedLogDataViewModel selectedLogDataViewModel = ViewModelProviders.of(getActivity()).get(SelectedLogDataViewModel.class);
         list = selectedLogDataViewModel.getSets();
-        RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
+        RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(lm);
         adapter = new MyExpandableAdapter(list, getContext());
         recyclerView.setAdapter(adapter);

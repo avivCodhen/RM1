@@ -288,6 +288,7 @@ public class PLObject implements Serializable {
 
         private ExerciseSet ExerciseSet = new ExerciseSet();
         public ArrayList<SetsPLObject> intraSets = new ArrayList<>();
+        public ArrayList<SetsPLObject> superSets = new ArrayList<>();
         public ExerciseProfile parent;
         public SetsPLObject setParent;
         public String tag;

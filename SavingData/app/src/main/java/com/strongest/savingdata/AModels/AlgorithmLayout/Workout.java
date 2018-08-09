@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Workout implements Lister {
 
     public ArrayList<PLObject> exArray = new ArrayList<>();
+    private ArrayList<PLObject> parents = new ArrayList<>();
     public String workoutName;
     private WorkoutObserver workoutObserver;
     private SpecifiecExerciseObserver exerciseObserver;
@@ -37,10 +38,6 @@ public class Workout implements Lister {
         this.exerciseObserver = o;
     }
 
-   /* public void notifyChanges(){
-        workoutObserver.onChange(exArray);
-
-    }*/
 
     @Override
     public WorkoutObserver getObserver() {
@@ -57,4 +54,11 @@ public class Workout implements Lister {
     }
 
 
+    public ArrayList<PLObject> getParents() {
+        return parents;
+    }
+
+    public void setParents(ArrayList<PLObject> parents) {
+        this.parents = parents;
+    }
 }

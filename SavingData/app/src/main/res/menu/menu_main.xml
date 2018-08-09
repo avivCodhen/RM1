@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-   <!-- <item android:id="@+id/buttomBar_one"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home" />
-
-    <item android:id="@+id/buttomBar_two"
-        android:icon="@drawable/ic_content_paste_black_24dp"
-        android:title="Your Workout"/>
-
-    <item android:id="@+id/buttomBar_three"
-        android:icon="@drawable/ic_assessment_black_24dp"
-        android:title="Your Progress"/>
--->
-    <!--<item android:id="@+id/menu_save_program"
-        android:icon="@android:drawable/ic_menu_save"
-        android:title="Save"/>
--->
-
-
 
     <item android:id="@+id/menu_my_programs"
         android:icon="@drawable/folder_24px"

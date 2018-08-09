@@ -31,7 +31,7 @@ public class SupersetViewHolder extends MyExpandableAdapter.MyExpandableViewHold
 
 
     @BindView(R.id.delete)
-    public Button delete;
+    public ImageView delete;
 
     @Override
     public View getMainLayout() {

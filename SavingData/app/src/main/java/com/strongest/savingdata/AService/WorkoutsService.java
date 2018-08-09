@@ -250,7 +250,7 @@ public class WorkoutsService {
 
                         int last2 = workoutsList.get(workoutIndex).exArray.size() - 1;
                         ep = ((PLObject.ExerciseProfile) workoutsList.get(workoutIndex).exArray.get(last2));
-
+                        PLObject.ExerciseProfile supersetParent = ep.getExerciseProfiles().get(ep.getExerciseProfiles().size()-1);
 
                         innerType = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
                         rep = c.getString(c.getColumnIndex(REP_ID));
@@ -264,7 +264,7 @@ public class WorkoutsService {
                         intra2.setExerciseSet(exerciseSet);
                         intra2.setInnerType(innerType);
                         intra2.type = type;
-                        ep.intraSets.add(intra2);
+                        supersetParent.intraSets.add(intra2);
                         break;
 
                 }

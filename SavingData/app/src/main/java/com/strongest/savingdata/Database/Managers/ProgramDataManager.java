@@ -433,7 +433,7 @@ public class ProgramDataManager extends DataManager {
         supersetIntraCV.put(DBExercisesHelper.TYPE, setsPLObject.getType().ordinal());
         supersetIntraCV.put(DBProgramHelper.WORKOUT_ID, setsPLObject.getWorkoutId());
         supersetIntraCV.put(DBExercisesHelper.TYPE, setsPLObject.getType().ordinal());
-        //supersetIntraCV.put(INNER_TYPE, setsPLObject.getInnerType().ordinal());
+        supersetIntraCV.put(INNER_TYPE, setsPLObject.getInnerType().ordinal());
         supersetIntraCV.put(DBProgramHelper.WORKOUT_ID, setsPLObject.getWorkoutId());
         supersetIntraCV.put(REP_ID, setsPLObject.getExerciseSet().getRep());
         supersetIntraCV.put(REST, setsPLObject.getExerciseSet().getRest());

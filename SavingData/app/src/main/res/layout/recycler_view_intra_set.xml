@@ -3,12 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
-    android:foreground="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
     android:id="@+id/sets_main_layout"
-
     >
 
 
@@ -28,15 +23,47 @@
 
     </FrameLayout>
 
+
+
+
     <RelativeLayout
-        android:layout_marginBottom="1dp"
+        android:foreground="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+    <LinearLayout
+        android:paddingTop="7dp"
+        android:id="@+id/wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/superset_tv"
+            android:visibility="gone"
+            android:layout_marginLeft="45dp"
+            android:text=""
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
+
+        <RelativeLayout
+            android:layout_toRightOf="@+id/recycler_view_exercise_details_sets_tv"
+        android:layout_below="@+id/wrapper"
+        android:layout_marginBottom="1dp"
+
         android:gravity="center_vertical"
         android:layout_height="wrap_content"
         android:id="@+id/recycler_view_set_card"
         android:layout_width="match_parent"
-        android:foreground="?attr/selectableItemBackground"
+
         >
 
         <!-- <View
@@ -52,127 +79,116 @@
             android:layout_height="wrap_content">
 
 
-            <LinearLayout
+            <RelativeLayout
+
                 android:gravity="center_horizontal"
+                android:orientation="horizontal"
                 android:layout_weight="1.3"
-                android:layout_height="wrap_content"
-                android:id="@+id/exerciseView_data_linearlayout"
                 android:layout_width="10dp"
-                >
-                <RelativeLayout
+                android:layout_height="wrap_content">
+
+                <CheckBox
+
+                    android:id="@+id/set_checkbox"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:textColor="@color/colorRedTry"
-                        android:id="@+id/recycler_view_exercise_details_sets_tv"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true"
-                        android:textStyle="bold"
-                        android:textSize="16dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="5dp"
+                    android:visibility="gone" />
+            <ImageView
+                android:src="@drawable/child_red"
+                android:id="@+id/recycler_view_exercise_details_sets_tv"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:text="1"
+                android:textAlignment="center"
+                android:elevation="16dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp" />
 
-                        android:text="B"
-                        android:textAlignment="center"
-                        android:elevation="12dp"
-                        android:layout_width="55dp"
-                        android:gravity="center_horizontal"
-                        android:layout_height="wrap_content" />
-
-                    <!--  <de.hdodenhof.circleimageview.CircleImageView
-
-                          app:civ_circle_background_color="#F6F6F6"
-                          app:civ_border_color="#CCCCCC"
-                          app:civ_border_width="1dp"
-                          android:src="@android:color/transparent"
-                          android:layout_centerVertical="true"
-                          android:layout_centerHorizontal="true"
-                          android:id="@+id/recycler_view_exercise_details_fab"
-                          android:layout_width="20dp"
-                          android:layout_height="20dp"
-                          />-->
-                </RelativeLayout>
-
-            </LinearLayout>
-            <include layout="@layout/layour_side_border"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-            </include>
-
+            </RelativeLayout>
 
             <LinearLayout
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_weight="0.1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/sets_reps_icon"
+                    android:textColor="@color/textview_color"
+                    android:src="@drawable/icon_reps_48px"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:text="Reps: "
+                    android:textSize="12sp" />
 
                 <TextView
                     android:src="@drawable/reps_color_accent_icon"
                     android:id="@+id/exerciseView_repsTV"
-                    android:layout_width="55dp"
+                    android:layout_width="50dp"
                     android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
-                    android:text="10-12"
+                    android:text=""
                     android:textSize="14dp" />
 
             </LinearLayout>
 
 
-            <include layout="@layout/layour_side_border"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-            </include>
-
-
             <LinearLayout
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_weight="0.1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/sets_rest_icon"
+                    android:textColor="@color/textview_color"
+                    android:text="Rest: "
+                    android:src="@drawable/icon_time_48px"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:textSize="12sp" />
 
                 <TextView
-
-                    android:text="00:35"
+                    android:layout_width="50dp"
+                    android:gravity="center_horizontal"
+                    android:text=""
                     android:src="@drawable/time_24px"
                     android:id="@+id/exerciseView_restTV"
-                    android:layout_width="55dp"
-                    android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
                     android:textSize="14dp" />
 
             </LinearLayout>
-
-            <include layout="@layout/layour_side_border"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-            </include>
-
-
             <LinearLayout
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
+                <ImageView
+                    android:src="@drawable/icon_weight_48px"
+                    android:textColor="@color/textview_color"
+                    android:id="@+id/sets_weight_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+
+                    android:text="Wgh:"
+                    android:textSize="12sp" />
 
                 <TextView
 
                     android:id="@+id/exerciseView_weightTV"
-                    android:layout_width="55dp"
+                    android:layout_width="60dp"
                     android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
 
-                    android:text="175 kg"
+                    android:text=""
                     android:textSize="14dp" />
 
 
             </LinearLayout>
-
-            <include layout="@layout/layour_side_border"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-            </include>
 
             <LinearLayout
                 android:gravity="center_horizontal"
@@ -183,10 +199,10 @@
 
 
                 <ImageView
-                    android:visibility="visible"
-                    android:id="@+id/sets_settings"
+                    android:visibility="invisible"
+                    android:id="@+id/sets_delete"
                     android:padding="8dp"
-                    android:src="@drawable/icon_edit_48px"
+                    android:src="@drawable/icon_x_gray_48"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"  />
 
@@ -259,5 +275,7 @@
 
     </RelativeLayout>
 
+
+    </RelativeLayout>
 
 </RelativeLayout>

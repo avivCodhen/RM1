@@ -33,7 +33,7 @@ public class WorkoutsModel extends ViewModel implements OnWorkoutViewInterfaceCl
         if (exerciseProfile.isExpand()) {
             collapseExercise(vh);
         } else {
-            expandExercise(vh);
+            expandExerciseSupersets(vh);
         }
     }
 
@@ -113,9 +113,9 @@ public class WorkoutsModel extends ViewModel implements OnWorkoutViewInterfaceCl
     }
 
     @Override
-    public void expandExercise(int adapterPosition) {
+    public void expandExerciseSupersets(int adapterPosition) {
         MyExpandableAdapter.ExerciseViewHolder vh = (MyExpandableAdapter.ExerciseViewHolder) recycler.findViewHolderForLayoutPosition(adapterPosition);
-        expandExercise(vh);
+        expandExerciseSupersets(vh);
     }
 
     @Override
@@ -278,7 +278,7 @@ public class WorkoutsModel extends ViewModel implements OnWorkoutViewInterfaceCl
     }
 
     @Override
-    public void expandExercise(MyExpandableAdapter.ExerciseViewHolder vh) {
+    public void expandExerciseSupersets(MyExpandableAdapter.ExerciseViewHolder vh) {
         int adapterPosition = vh.getAdapterPosition();
         PLObject.ExerciseProfile ep = (PLObject.ExerciseProfile) exArray.get(adapterPosition);
         ArrayList<PLObject.SetsPLObject> sets = ep.getSets();
@@ -336,7 +336,7 @@ public class WorkoutsModel extends ViewModel implements OnWorkoutViewInterfaceCl
             if (plObject.getInnerType() == WorkoutLayoutTypes.ExerciseProfile) {
                 PLObject.ExerciseProfile ep = (PLObject.ExerciseProfile) plObject;
                 if (!ep.isExpand()) {
-                    expandExercise(position);
+                    expandExerciseSupersets(position);
                 }
                 position += (LayoutManagerHelper.calcBlockLength(ep));
                 returnToMenu = true;

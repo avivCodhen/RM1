@@ -35,7 +35,7 @@ public interface WorkoutItemAdapter<T extends PLObject> {
 
     boolean onDestroy();
 
-    T onDuplicate(T clone);
+    T onDuplicate(int positionOfClone, T clone);
 
     int addingDuplicateTo(T parent);
 

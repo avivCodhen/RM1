@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackground"
-    android:focusable="true"
-    android:background="@color/colorPrimary"
     android:id="@+id/exercise_main_viewgroup_layout"
-    android:paddingTop="10dp"
-    >
-
-<include layout="@layout/layout_bottom_border"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"></include>
+    android:background="@color/colorPrimary"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical">
 
- <!--   <FrameLayout
+    <include
+        layout="@layout/layout_bottom_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"></include>
+
+    <!--   <FrameLayout
         android:id="@+id/recyclerview_exercise_drag_layout"
         android:visibility="visible"
         android:elevation="5dp"
@@ -32,75 +31,69 @@
 -->
 
 
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/list_view_exercise_lay1"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-       >
+        android:layout_width="wrap_content"
+        android:layout_height="65dp">
 
-        <include layout="@layout/layour_side_border"
+
+        <ImageView
+            android:id="@+id/exercise_edit_btn"
+            style=""
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/exercise_edit_btn">
-
-        </include>
-
-        <ImageView
-            android:src="@drawable/icon_edit_48px"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:id="@+id/exercise_edit_btn"
-            android:textStyle="bold"
-            style=""
-            android:textSize="14sp"
-            android:layout_marginLeft="10dp"
-            android:padding="10dp"
             android:elevation="10dp"
-            android:textColor="@color/colorAccent"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:src="@drawable/icon_menu_threedots_gray_48"
             android:text="EDIT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
         <ImageView
-            android:layout_centerVertical="true"
             android:id="@+id/drag_iv"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:padding="10dp"
             android:src="@drawable/order_gray_50px"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content" />
+            android:visibility="gone" />
 
 
         <com.wajahatkarim3.easyflipview.EasyFlipView
-            app:flipOnTouch="false"
-            android:layout_toRightOf="@+id/drag_iv"
             android:id="@+id/recyclerview_exercise_flipview"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/drag_iv"
+            app:flipOnTouch="false"
+
 
 
             >
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_gravity="center"
-
                 android:id="@+id/recyclerview_exercise_drag_icon"
+
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                app:civ_circle_background_color="@color/colorPrimary"
-                android:src="@drawable/ic_drag_handle_black_24dp"
+                android:layout_gravity="center"
                 android:backgroundTint="@color/background_color"
-                />
+                android:src="@drawable/ic_drag_handle_black_24dp"
+                app:civ_circle_background_color="@color/colorPrimary" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_gravity="center"
                 android:id="@+id/ex1"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                app:civ_border_color="#A2A2A2"
+                android:layout_gravity="center"
                 android:padding="1dp"
-                app:civ_border_width="1dp"
+                android:elevation="5dp"
                 app:civ_circle_background_color="@color/colorPrimary"
 
 
@@ -112,50 +105,23 @@
 
         <TextView
 
-            android:layout_marginLeft="10dp"
             android:id="@+id/exerciseView_nameTV"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
             android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
-            android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="Barbell Close-Grip Bench Press"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            />
+            android:textSize="14sp" />
 
 
         <LinearLayout
-            android:id="@+id/recycler_view_set_card"
-            android:layout_width="match_parent"
-            android:layout_height="17dp"
-            android:layout_marginLeft="85dp"
-            android:layout_marginRight="17dp"
-            android:layout_marginTop="92dp"
-            android:visibility="gone">
-
-
-            <TextView
-                android:id="@+id/exerciseView_restTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="12dp"
-                android:text="Ttl Rest: 03:00"
-                android:textSize="12sp" />
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:paddingLeft="10dp"
-            android:layout_below="@+id/exerciseView_nameTV"
-            android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
             android:id="@+id/exerciseView_data_layout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            >
+            android:layout_below="@+id/exerciseView_nameTV"
+            android:layout_toRightOf="@+id/recyclerview_exercise_flipview">
 
             <TextView
                 android:id="@+id/exercise_set_tv"
@@ -180,11 +146,11 @@
 
             <TextView
                 android:id="@+id/exerciseView_repsTV"
-                android:ellipsize="end"
-                android:maxLines="1"
                 android:layout_width="110dp"
                 android:layout_height="match_parent"
+                android:ellipsize="end"
                 android:gravity="center_vertical"
+                android:maxLines="1"
                 android:text="Reps: "
                 android:textColor="#888888"
                 android:textSize="12sp" />
@@ -230,29 +196,24 @@
 
 
         <TextView
-            android:visibility="gone"
-
             android:id="@+id/recycler_view_exercise_intraset_tag"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="12dp"
+            android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/exerciseView_data_layout2"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:text="Dropset"
             android:textColor="@color/colorGreenTry"
             android:textSize="12sp"
-          />
+            android:visibility="gone" />
 
 
         <TextView
-            android:visibility="gone"
-            android:maxLength="20"
-            android:textDirection="ltr"
             android:id="@+id/ex_comment_tv"
-            android:gravity="end"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -260,45 +221,48 @@
             android:layout_marginTop="10dp"
             android:layout_toLeftOf="@+id/ex_icon_tag"
             android:layout_toRightOf="@+id/exerciseView_muscleTV"
+            android:gravity="end"
+            android:maxLength="20"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:textColor="#888888"
+            android:textDirection="ltr"
             android:textSize="12sp"
+            android:textStyle="italic"
 
-            android:textStyle="italic" />
+            android:visibility="gone" />
 
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_below="@+id/list_view_exercise_lay1"
         android:id="@+id/btns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/list_view_exercise_lay1"
+        android:layout_marginLeft="110dp"
         android:gravity="right"
         android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="110dp"
-        android:layout_height="wrap_content">
+        android:visibility="gone">
 
         <Button
             android:id="@+id/add_superset"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:padding="10dp"
-            android:elevation="10dp"
-            android:textColor="@color/colorAccent"
-            android:text="ADD SUPERSET"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
-
+            android:elevation="10dp"
+            android:padding="10dp"
+            android:text="ADD SUPERSET"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_below="@+id/btns"
-        android:orientation="vertical"
         android:id="@+id/parent_view_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btns"
+        android:orientation="vertical"></LinearLayout>
 
 </RelativeLayout>

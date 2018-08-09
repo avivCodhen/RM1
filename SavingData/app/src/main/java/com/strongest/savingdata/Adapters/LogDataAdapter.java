@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.strongest.savingdata.Controllers.LogDataAdapterOnClick;
+import com.strongest.savingdata.Database.LogData;
 import com.strongest.savingdata.R;
 
 import java.util.ArrayList;
@@ -17,10 +18,10 @@ import butterknife.ButterKnife;
 public class LogDataAdapter extends RecyclerView.Adapter<LogDataAdapter.LogDataAdapterViewHolder> {
 
 
-    private ArrayList<String> dates;
+    private ArrayList<LogData> dates;
     private LogDataAdapterOnClick logDataAdapterOnClick;
 
-    public  LogDataAdapter(ArrayList<String> dates){
+    public  LogDataAdapter(ArrayList<LogData> dates){
 
         this.dates = dates;
     }
@@ -34,9 +35,10 @@ public class LogDataAdapter extends RecyclerView.Adapter<LogDataAdapter.LogDataA
 
     @Override
     public void onBindViewHolder(LogDataAdapterViewHolder holder, int position) {
-        holder.tv.setText(dates.get(position));
+        holder.tv.setText(dates.get(position).date);
+        holder.timeTV.setText(dates.get(position).time);
         holder.itemView.setOnClickListener(v ->{
-            logDataAdapterOnClick.dateClicked(dates.get(position));
+            logDataAdapterOnClick.dateClicked(dates.get(position).full);
         });
     }
 
@@ -53,9 +55,13 @@ public class LogDataAdapter extends RecyclerView.Adapter<LogDataAdapter.LogDataA
 
         @BindView(R.id.tv_date)
         TextView tv;
+
+        @BindView(R.id.tv_time)
+        TextView timeTV;
         public LogDataAdapterViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
+
 }
