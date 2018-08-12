@@ -60,6 +60,7 @@ import com.strongest.savingdata.ViewHolders.ExerciseViewHolder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import youruserpools.MainActivity;
 
 import static com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel.Actions.Advanced;
 import static com.strongest.savingdata.Activities.TutorialActivity.FIRSTVISIT;
@@ -75,6 +76,7 @@ public class HomeActivity extends BaseActivity implements
     // public WorkoutsModelController workoutsModelController;
 
     public static final int EXERCISE_ACTIVITY = 1;
+    public static final int LOGIN_ACTIVITY = 2;
     public static final String EXERCISE_POSITION = "exercisePosition";
 
     @BindView(R.id.activity_home_toolbar)
@@ -111,6 +113,8 @@ public class HomeActivity extends BaseActivity implements
     private WorkoutsViewModel workoutsViewModel;
     private Workout w;
 
+    private boolean isLoggedIn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,15 +128,32 @@ public class HomeActivity extends BaseActivity implements
         programToolsView.instantiate(programToolsBtn, this);
 
 
-        String newString = dataManager.getPrefs().getString(FIRSTVISIT, "yes");
+        /*String newString = dataManager.getPrefs().getString(FIRSTVISIT, "yes");
         boolean isNew = newString.equals("yes");
         if (isNew) {
             startActivity(new Intent(this, TutorialActivity.class));
         }
+*/
+
 
 
         workoutsViewModel.getWorkoutsList().observe(this, list -> mAdapter.notifyDataSetChanged());
         notifyCurrentWorkout();
+
+    }
+
+    //TODO: call this function when needed
+    private void loggedInUI(){
+        isLoggedIn = false;         //TODO: need to check if the user is logged in
+
+        if(isLoggedIn){
+            mNavigationView.getMenu().clear();
+            mNavigationView.inflateMenu(R.menu.menu_main_logged_in);
+            //TODO: apply any "user logged in" changes such as username
+        }else{
+            mNavigationView.getMenu().clear();
+            mNavigationView.inflateMenu(R.menu.menu_main_logged_out);
+        }
 
     }
 
@@ -242,7 +263,7 @@ public class HomeActivity extends BaseActivity implements
         switch (item.getItemId()) {
             case R.id.menu_create_program:
                 f = new NewProgramFragment();
-                addFragmentToHomeActivity(R.id.activity_home_framelayout,f, "NewProgram");
+                addFragmentToHomeActivity(R.id.activity_home_framelayout, f, "NewProgram");
                 break;
             case R.id.menu_my_programs:
                 f = new MyProgramsFragment();
@@ -253,9 +274,10 @@ public class HomeActivity extends BaseActivity implements
                 addFragmentToHomeActivity(R.id.activity_home_framelayout, f, "CustomExercise");
                 break;
             case R.id.menu_login:
-                f = new RegisterFragment();
-                addFragmentToHomeActivity(R.id.activity_home_framelayout, f,"login");
-
+               startActivityForResult(new Intent(this, MainActivity.class), LOGIN_ACTIVITY);
+                break;
+            case R.id.menu_logout:
+                //TODO: implement a logout function
         }
         mDrawerLayout.closeDrawer(Gravity.START);
 
@@ -324,7 +346,7 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public void onProgramToolsAction(WorkoutsModel.Actions action) {
         if (action == Advanced) {
-            addFragmentToHomeActivity(R.id.activity_home_framelayout,new ProgramSettingsFragment(), "programsettings");
+            addFragmentToHomeActivity(R.id.activity_home_framelayout, new ProgramSettingsFragment(), "programsettings");
         } else {
             workoutsViewModel.workoutsModel.validateActions(
                     workoutsViewModel.getWorkoutsList().getValue(),
@@ -407,20 +429,16 @@ public class HomeActivity extends BaseActivity implements
         pairs[1] = Pair.create(vh.icon, vh.icon.getTransitionName());
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, pairs);
         startActivityForResult(i, EXERCISE_ACTIVITY, options.toBundle());
-        }
+    }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EXERCISE_ACTIVITY) {
+        if (requestCode == LOGIN_ACTIVITY) {
             if (resultCode == RESULT_OK) {
-                PLObject.ExerciseProfile ep = (PLObject.ExerciseProfile) data.getSerializableExtra("exercise");
-                int position = data.getIntExtra(EXERCISE_POSITION, -1);
-               /* w.getExerciseObserver().onChange(
-                        WorkoutsModel.ListModifier.OnWith(w, new ExerciseItemAdapter())
-                        .doReplace(ep, position)
-                );*/
-                workoutsViewModel.saveLayoutToDataBase();
+               //TODO: implement loggedInUI function
+                //TODO: change user name in the activity
+                loggedInUI();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

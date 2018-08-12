@@ -31,8 +31,11 @@ public class IntraSetViewHolder extends MyExpandableAdapter.MyExpandableViewHold
     @BindView(R.id.exerciseView_restTV)
     public TextView rest;
 
-    @BindView(R.id.sets_main_layout)
+    @BindView(R.id.intra_sets_main_layout)
     public ViewGroup mainLayout;
+
+    @BindView(R.id.recycler_view_set_card)
+    public ViewGroup card;
 
     public IntraSetViewHolder(View itemView) {
         super(itemView);

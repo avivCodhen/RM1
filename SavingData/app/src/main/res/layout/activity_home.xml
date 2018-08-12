@@ -141,7 +141,7 @@
         android:layout_gravity="start"
         android:layout_marginRight="30dp"
         android:background="@color/colorPrimary"
-        app:menu="@menu/menu_main">
+        app:menu="@menu/menu_main_logged_in">
 
     </android.support.design.widget.NavigationView>
 

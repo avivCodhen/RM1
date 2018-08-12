@@ -19,17 +19,24 @@
         <activity android:name=".Activities.MainActivity" />
         <activity android:name=".Activities.RegisterActivity" />
         <activity android:name="youruserpools.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Dialogs.DialogMuscleSelect"
             android:theme="@style/AppTheme.CustomeTheme" />
         <activity android:name=".Fragments.Choose.ChooseDialogFragment" />
         <activity android:name=".Activities.WebViewActivity" />
+        <activity android:name=".Activities.HomeActivity" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
+        </activity>
+
         <activity android:name=".TestActivity" />
         <activity android:name=".Activities.TutorialActivity" />
         <activity android:name=".Activities.ExerciseDetailsActivity" />

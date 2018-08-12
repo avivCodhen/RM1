@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/menu_my_programs"
+        android:icon="@drawable/folder_24px"
+        android:title="My Programs"/>
+
+    <item android:id="@+id/menu_create_program"
+        android:icon="@drawable/create_24px_gray"
+        android:title="Create Program"/>
+
+    <item android:id="@+id/menu_custom_exercise"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="Custom Exercise"/>
+
+
+    <item android:id="@+id/menu_logout"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="Logout "/>
+
+
+
+
+</menu>

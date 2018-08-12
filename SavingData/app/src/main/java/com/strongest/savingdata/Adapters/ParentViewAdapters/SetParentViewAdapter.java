@@ -3,6 +3,7 @@ package com.strongest.savingdata.Adapters.ParentViewAdapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
@@ -75,15 +76,16 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
         intraSetViewHolder.reps.setText(exerciseSet.getRep());
         intraSetViewHolder.weight.setText(exerciseSet.getWeight() + "kg");
 
-        intraSetViewHolder.mainLayout.setOnClickListener((itemView)->{
+        intraSetViewHolder.card.setOnClickListener((itemView)->{
             uiSetsClickHandler.onSetsClick(parentViewHolder, setsPLObject);
         });
 
-        intraSetViewHolder.mainLayout.setOnLongClickListener((longClicked)->{
-            uiSetsClickHandler.onSetsLongClick(setsPLObject,intraSetViewHolder);
+        intraSetViewHolder.card.setOnLongClickListener((longClicked)->{
+            uiSetsClickHandler.onSetsLongClick(setsPLObject,parentViewHolder);
             return true;
         });
-
     }
+
+
 
 }
