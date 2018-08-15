@@ -29,6 +29,7 @@ import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
 import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject.ExerciseProfile;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
 import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
+import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.WorkoutView.OnEnterExitChooseFragment;
 import com.strongest.savingdata.MyViews.WorkoutView.OnUpdateLayoutStatsListener;
 import com.strongest.savingdata.R;
@@ -66,6 +67,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     private int tag;
 
     private SelectedExerciseViewModel selectedExerciseViewModel;
+    private LongClickMenuView longclickMenuView;
 
 
     public static WorkoutViewFragment getInstance(int tag) {
@@ -107,14 +109,15 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
             tag = savedInstanceState.getInt(FRAGMENT_TAG);
 
         }
+        longclickMenuView = ((HomeActivity) getActivity()).longClickMenuView;
         workoutsViewModel = ViewModelProviders.of(getActivity()).get(WorkoutsViewModel.class);
         exArray = workoutsViewModel.getWorkoutsList().getValue().get(tag).exArray;
         workout = workoutsViewModel.getWorkoutsList().getValue().get(tag);
         workout.registerObserver((listModifier) -> {
-            listModifier.applyWith(adapter);
+
+            listModifier.applyWith(adapter, null, null);
+
         });
-
-
 
         initViews(view);
     }
@@ -132,6 +135,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
                 getContext()
         );
         adapter.setUiExerciseClickHandler(this);
+        adapter.setLongClickMenuView(longclickMenuView);
     }
 
     private void configurateRecycler() {
@@ -192,14 +196,14 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     }
 
     @Override
-    public void onExerciseEdit(RecyclerView.ViewHolder vh, ExerciseProfile exerciseProfile) {
-        int position = vh.getAdapterPosition();
+    public void onExerciseEdit(int position, ExerciseProfile exerciseProfile) {
         selectedExerciseViewModel = ViewModelProviders
                 .of(getActivity())
                 .get(String.valueOf(tag), SelectedExerciseViewModel.class);
-
+        selectedExerciseViewModel.setSelectedExercisePosition(position);
         selectedExerciseViewModel.select((ExerciseProfile) exerciseProfile);
-        selectedExerciseViewModel.getSelectedExercise().observe(this, (ep) -> {
+        selectedExerciseViewModel.setParentWorkout(workout);
+       /* selectedExerciseViewModel.getSelectedExercise().observe(this, (ep) -> {
             int pos = exArray.indexOf(ep);
             if(pos == -1){
                 adapter.notifyItemChanged(position);
@@ -208,6 +212,10 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
                 adapter.notifyItemChanged(pos);
 
             }
+        });*/
+
+        workout.registerExerciseObserver((ep, pos) -> {
+            adapter.notifyItemChanged(pos);
         });
         ExerciseEditFragment f = ExerciseEditFragment.newInstance(String.valueOf(tag));
         addFragmentChild(getFragmentManager(), f);
@@ -216,16 +224,16 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     /**
      * this is the callback that upon clicking on exercise container
      * it transists to the ExerciseDetailsFragment/Activity
-     * */
+     */
     @Override
     public void onExerciseDetails(ExerciseViewHolder vh, ExerciseProfile exerciseProfile) {
-       // final int selectedPosition = workout.exArray.indexOf(exerciseProfile);
+        // final int selectedPosition = workout.exArray.indexOf(exerciseProfile);
 
         //this is an object that has observer that applies changes to this fragment's list
-        workout.registerExerciseObserver((changedEp)->{
-          //  adapter.notifyItemChanged(selectedExerciseViewModel.getSelectedExercisePosition());
+        workout.registerExerciseObserver((changedEp, pos) -> {
+            //  adapter.notifyItemChanged(selectedExerciseViewModel.getSelectedExercisePosition());
 
-            adapter.notifyItemChanged(exArray.indexOf(changedEp));
+            adapter.notifyItemChanged(pos);
         });
 
 
@@ -237,7 +245,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         selectedExerciseViewModel.setParentWorkout(workout);
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        Fragment nextFragment = ExerciseDetailsFragment.getInstance(String.valueOf(tag));
+        Fragment nextFragment = ExerciseDetailsFragment.getInstance(String.valueOf(tag), vh.getAdapterPosition());
         //Fragment previousFragment = getSupportFragmentManager().getFragments().get(tag);
         // 1. Exit for Previous Fragment
         Fade exitFade = new Fade();
@@ -282,7 +290,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     }
 
     @Override
-    public void onAddSuperset(RecyclerView.ViewHolder vh,PLObject.ExerciseProfile exerciseProfile) {
+    public void onAddSuperset(RecyclerView.ViewHolder vh, PLObject.ExerciseProfile exerciseProfile) {
         int position = vh.getAdapterPosition();
         ExerciseItemAdapter exerciseItemAdapter = new ExerciseItemAdapter();
         exerciseItemAdapter.onChild(exerciseProfile);

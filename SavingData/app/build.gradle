@@ -40,6 +40,7 @@ android {
         }
     }
     repositories {
+        google()
         mavenCentral()
     }
 
@@ -75,6 +76,10 @@ android {
 
         implementation 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.6.8'
 
+
+        //firebase
+        implementation 'com.google.firebase:firebase-core:16.0.0'
+        implementation 'com.google.firebase:firebase-auth:16.0.3'
 
         //material alert dialogs
         implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
@@ -198,6 +203,9 @@ android {
     }
 }
 repositories {
+    google()
+
     mavenCentral()
 }
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'

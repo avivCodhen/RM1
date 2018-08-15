@@ -36,7 +36,7 @@
            >
 
             <ImageView
-                android:layout_marginRight="3dp"
+                android:layout_marginRight="13dp"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/icon_x_gray_48"
                 android:id="@+id/delete"
@@ -145,7 +145,7 @@
                 android:id="@+id/exerciseView_nameTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Barbell Low Bar Squat"
+                android:text=""
                 android:textSize="14sp"
                 android:textColor="#888888"
                 />

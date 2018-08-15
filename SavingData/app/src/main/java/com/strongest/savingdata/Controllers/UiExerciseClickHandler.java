@@ -8,7 +8,7 @@ import com.strongest.savingdata.ViewHolders.ExerciseViewHolder;
 
 public interface UiExerciseClickHandler {
 
-    void onExerciseEdit(RecyclerView.ViewHolder vh, PLObject.ExerciseProfile exerciseProfile);
+    void onExerciseEdit(int position, PLObject.ExerciseProfile exerciseProfile);
     void onExerciseDetails(ExerciseViewHolder vh, PLObject.ExerciseProfile exerciseProfile);
     void onExerciseStartDrag(RecyclerView.ViewHolder vh);
     void onLongClick(PLObject plObject, MyExpandableAdapter.MyExpandableViewHolder vh);

@@ -2,12 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
+
+    <item android:id="@+id/edit_set"
+        android:icon="@drawable/child_red"
+        android:title="Edit Set"/>
+
+
     <item android:id="@+id/add_dropset"
         android:icon="@drawable/child_red"
         android:title="Add Dropset"/>
-    <item android:id="@+id/duplicate_set"
+    <!--<item android:id="@+id/duplicate_set"
         android:icon="@drawable/child_red"
         android:title="Duplicate Set"/>
-
-
+-->
 </menu>

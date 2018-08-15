@@ -50,7 +50,7 @@
             android:src="@drawable/forward_arrow_24px_white"
             android:visibility="gone" />
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/longclick_menu_duplicate"
             android:layout_width="32dp"
 
@@ -65,9 +65,9 @@
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" />-->
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/longclick_menu_child"
             android:layout_width="30dp"
 
@@ -82,7 +82,7 @@
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" />-->
 
         <TextView
             android:id="@+id/longclick_menu_selected"

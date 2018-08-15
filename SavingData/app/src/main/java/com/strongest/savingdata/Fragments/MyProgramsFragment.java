@@ -40,7 +40,7 @@ public class MyProgramsFragment extends BaseCreateProgramFragment{
     }
 
     private void initViews(View v) {
-        currentProgram = ((HomeActivity)getActivity()).programmer.getProgram();
+        currentProgram = ((HomeActivity)getActivity()).workoutsViewModel.getProgram().getValue();
         v.findViewById(R.id.toolbar_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -48,6 +48,15 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
     public void onBindViewHolder(IntraSetViewHolder intraSetViewHolder, int position) {
         PLObject.SetsPLObject set = list.get(position);
         ExerciseSet exerciseSet = set.getExerciseSet();
+
+        if(!exerciseSet.hasSomething()){
+            intraSetViewHolder.editContainer.setVisibility(View.VISIBLE);
+            intraSetViewHolder.editContainer.setOnClickListener((clicked)->{
+
+            });
+        }else{
+            intraSetViewHolder.editContainer.setVisibility(View.GONE);
+        }
         if (list.get(position).type == WorkoutLayoutTypes.SuperSetIntraSet){
                 intraSetViewHolder.supersetTv.setVisibility(View.VISIBLE);
                 PLObject.ExerciseProfile superset = setsPLObject.parent.getExerciseProfiles().get(position);

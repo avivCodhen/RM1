@@ -15,20 +15,19 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"></include>
 
-    <!--   <FrameLayout
+       <FrameLayout
         android:id="@+id/recyclerview_exercise_drag_layout"
         android:visibility="visible"
         android:elevation="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <View
+       <!-- <View
             android:alpha="0.2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></View>
-
-    </FrameLayout>
 -->
+    </FrameLayout>
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -106,13 +105,28 @@
         <TextView
 
             android:id="@+id/exerciseView_nameTV"
-            android:layout_width="250dp"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="Barbell Close-Grip Bench Press"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            android:background="@color/colorPrimary"
+            android:id="@+id/exerciseView_edit_TV"
+            android:layout_width="230dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="13dp"
+            android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Click To Edit Exercise"
             android:textSize="14sp" />
 
 

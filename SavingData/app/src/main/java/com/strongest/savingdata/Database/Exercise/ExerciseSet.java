@@ -28,6 +28,13 @@ public class ExerciseSet implements Serializable {
     public ExerciseSet() {
     }
 
+    public boolean hasSomething(){
+        if (weight == 0 && rest.equals("00:00") && rep.equals("0")){
+            return false;
+        }
+        return true;
+    }
+
     public ExerciseSet(ExerciseSet clone){
         this.exercise = clone.exercise;
         this.rep = clone.rep;

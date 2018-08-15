@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
@@ -55,8 +56,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void addFragmentToHomeActivity(int id, Fragment f, String tag){
 
         getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                .add(id, f, tag)
+                .setTransition( FragmentTransaction.TRANSIT_FRAGMENT_FADE )
+//                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                .replace(id, f, tag)
                 .addToBackStack(tag)
                 .commit();
     }

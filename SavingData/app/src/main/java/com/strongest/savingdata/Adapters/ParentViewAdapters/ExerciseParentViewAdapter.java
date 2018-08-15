@@ -13,10 +13,12 @@ import com.strongest.savingdata.ViewHolders.SupersetViewHolder;
 
 public class ExerciseParentViewAdapter extends ParentView.Adapter<SupersetViewHolder>{
 
+    private ExerciseViewHolder parentViewHolder;
     private PLObject.ExerciseProfile exerciseProfile;
     private UiExerciseClickHandler uiExerciseClickHandler;
 
-    public ExerciseParentViewAdapter(PLObject.ExerciseProfile exerciseProfile, UiExerciseClickHandler uiExerciseClickHandler){
+    public ExerciseParentViewAdapter(ExerciseViewHolder parentViewHolder, PLObject.ExerciseProfile exerciseProfile, UiExerciseClickHandler uiExerciseClickHandler){
+        this.parentViewHolder = parentViewHolder;
 
         this.exerciseProfile = exerciseProfile;
         this.uiExerciseClickHandler = uiExerciseClickHandler;
@@ -46,7 +48,7 @@ public class ExerciseParentViewAdapter extends ParentView.Adapter<SupersetViewHo
             exerciseViewHolder.name.setText(superset.getExercise().getName());
 
         exerciseViewHolder.edit.setOnClickListener(v ->{
-            uiExerciseClickHandler.onExerciseEdit(exerciseViewHolder, superset);
+            uiExerciseClickHandler.onExerciseEdit(parentViewHolder.getAdapterPosition(), superset);
         });
 
         exerciseViewHolder.delete.setOnClickListener(v ->{

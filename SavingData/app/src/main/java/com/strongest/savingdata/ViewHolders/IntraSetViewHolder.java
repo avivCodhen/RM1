@@ -37,6 +37,12 @@ public class IntraSetViewHolder extends MyExpandableAdapter.MyExpandableViewHold
     @BindView(R.id.recycler_view_set_card)
     public ViewGroup card;
 
+    @BindView(R.id.edit_layout)
+    public ViewGroup editContainer;
+
+    @BindView(R.id.edit_container_tv)
+    public TextView editContainerTV;
+
     public IntraSetViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);

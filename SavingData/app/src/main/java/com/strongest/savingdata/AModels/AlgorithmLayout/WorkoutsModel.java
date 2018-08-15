@@ -196,8 +196,8 @@ public class WorkoutsModel implements Architecture.model {
         return list;
     }
 
-    public boolean saveLayoutToDatabase(boolean update, ArrayList<Workout> w, String dbName){
-        return workoutsService.saveLayoutToDataBase(update,w,dbName);
+    public boolean saveLayoutToDatabase(boolean update, ArrayList<Workout> w, String dbName) {
+        return workoutsService.saveLayoutToDataBase(update, w, dbName);
     }
 
     //creates a new program with a special UDBname for the program
@@ -303,7 +303,7 @@ public class WorkoutsModel implements Architecture.model {
     /**
      * this function expands the exercise into exercise and it's childs(superSets)
      * this is not to be confused with expanding the exercise into a list of sets
-     * */
+     */
     public ArrayList<PLObject> expandExercise(ExerciseProfile ep) {
         ArrayList<PLObject> list = new ArrayList<>();
         list.add(ep);
@@ -947,6 +947,21 @@ public class WorkoutsModel implements Architecture.model {
         private PLObject clone;
         private PLObject replacement;
         private int positionReplacement;
+        public String taskTag = "";
+
+
+        public ListModifier setTaskTag(String taskTag) {
+            this.taskTag = taskTag;
+            return listModifier;
+        }
+
+        public int getPositionTo() {
+            return positionTo;
+        }
+
+        public PLObject getNewExercise() {
+            return modifier.newObject;
+        }
 
         private static ListModifier listModifier;
 
@@ -1005,7 +1020,7 @@ public class WorkoutsModel implements Architecture.model {
             return listModifier;
         }
 
-        public ListModifier doReplace(PLObject p, int positionReplacement){
+        public ListModifier doReplace(PLObject p, int positionReplacement) {
             this.replacement = p;
             this.positionReplacement = positionReplacement;
             listModifier.doTasks.add(Replace);
@@ -1013,16 +1028,23 @@ public class WorkoutsModel implements Architecture.model {
         }
 
 
-        public void applyWith(WorkoutItemAdapter.ItemAdapter adapter) {
+        public void applyWith(WorkoutItemAdapter.ItemAdapter adapter, DoBefore doBefore, DoAfter doAfter) {
             listModifier.modifier = new Modifier();
             listModifier.modifier.adapter = adapter;
             listModifier.modifier.workoutList = workoutList;
             listModifier.modifier.workoutItemAdapter = workoutItemAdapters;
             listModifier.modifier.adapterFactory = adapterFactory;
             listModifier.modifier.listModifier = listModifier;
-            apply();
-            listModifier = null;
 
+            if(doBefore != null){
+                doBefore.doBefore();
+            }
+            apply();
+
+            if(doAfter != null){
+                doAfter.doAfter();
+            }
+            listModifier = null;
         }
 
         private void apply() {
@@ -1059,6 +1081,7 @@ public class WorkoutsModel implements Architecture.model {
                         break;
                 }
             }
+
         }
 
         private void adapterOrFactory(PLObject p) {
@@ -1072,23 +1095,33 @@ public class WorkoutsModel implements Architecture.model {
         }
 
 
+        public interface DoBefore{
+            void doBefore();
+        }
+
+        public interface DoAfter{
+            void doAfter();
+        }
+
+
         public static class Modifier {
             Lister workoutList;
             ListModifier listModifier;
             private WorkoutItemAdapter workoutItemAdapter;
             private WorkoutItemAdapter.ItemAdapter adapter;
             private WorkoutItemAdapterFactory adapterFactory;
+            PLObject newObject;
 
 
             private Modifier() {
 
             }
 
-            public ListModifier replace(PLObject p, int pos){
+            public ListModifier replace(PLObject p, int pos) {
                 PLObject trueReplacement = workoutItemAdapter.replace(p);
                 workoutList.getList().set(pos, trueReplacement);
                 boolean funcOverrided =
-                       workoutItemAdapter.notifyReplaced(pos, adapter);
+                        workoutItemAdapter.notifyReplaced(pos, adapter);
 
                 if (!funcOverrided) {
                     adapter.adapterNotifyItemChanged(pos);
@@ -1098,7 +1131,8 @@ public class WorkoutsModel implements Architecture.model {
 
             public ListModifier addNew(int positionTo) {
                 ArrayList list = new ArrayList();
-                list.add(workoutItemAdapter.insert());
+                newObject = workoutItemAdapter.insert();
+                list.add(newObject);
                 workoutList.getList().addAll(positionTo,
                         workoutItemAdapter.onInsert(positionTo, list));
                 workoutItemAdapter.notifyInserted(
@@ -1108,7 +1142,7 @@ public class WorkoutsModel implements Architecture.model {
                 return listModifier;
             }
 
-            public  ListModifier remove(PLObject p) {
+            public ListModifier remove(PLObject p) {
                 int pos = workoutList.getList().indexOf(p);
                 workoutList.getList().remove(p);
                 workoutItemAdapter.remove(pos, p);
@@ -1126,7 +1160,7 @@ public class WorkoutsModel implements Architecture.model {
             public <T> ListModifier duplicate(PLObject toClone) {
                 int originalPosition = workoutList.getList().indexOf(toClone);
                 int appliedPosition = workoutItemAdapter.addingDuplicateTo(toClone);
-                int finalPosition = originalPosition+appliedPosition;
+                int finalPosition = originalPosition + appliedPosition;
                 PLObject clone = workoutItemAdapter.onDuplicate(originalPosition, toClone);
                 workoutList.getList().add(finalPosition, clone);
 

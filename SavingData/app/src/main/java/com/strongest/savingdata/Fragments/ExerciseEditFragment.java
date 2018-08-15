@@ -295,7 +295,8 @@ public class ExerciseEditFragment extends BaseFragment implements
         saveExitToolBar.setSaveButton(saveBtn -> {
             exerciseProfile.setMuscle(selectedMuscle);
             exerciseProfile.setExercise(selectedExercise);
-            selectedExerciseViewModel.setSelectedExercise(exerciseProfile);
+            int exercisePos = selectedExerciseViewModel.getSelectedExercisePosition();
+            selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile, exercisePos);
             workoutsViewModel.saveLayoutToDataBase();
             getFragmentManager().popBackStack();
         });

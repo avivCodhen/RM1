@@ -48,9 +48,9 @@ public class ExerciseViewHolder extends MyExpandableAdapter.MyExpandableViewHold
     public ViewGroup mainLayout;
 
 
-   /* @BindView(R.id.recyclerview_exercise_drag_layout)
+ @BindView(R.id.recyclerview_exercise_drag_layout)
     public View dl;
-*/
+
     @BindView(R.id.parent_view_container)
     public LinearLayout parentContainer;
 
@@ -60,6 +60,9 @@ public class ExerciseViewHolder extends MyExpandableAdapter.MyExpandableViewHold
     @BindView(R.id.exercise_edit_btn)
     public ImageView edit;
 
+
+    @BindView(R.id.exerciseView_edit_TV)
+    public TextView editExerciseTV;
 
     @Override
     public View getMainLayout() {
@@ -83,7 +86,7 @@ public class ExerciseViewHolder extends MyExpandableAdapter.MyExpandableViewHold
     public ExerciseViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-     // dragLayout = dl ;
+      dragLayout = dl ;
       drag_iv = itemView.findViewById(R.id.drag_iv);
 
 

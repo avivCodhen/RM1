@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.strongest.savingdata.R;
 
 import java.util.regex.Matcher;
@@ -23,6 +24,8 @@ public class RegisterActivity extends AppCompatActivity {
     private SharedPreferences settings; // read
     private SharedPreferences.Editor editor; // write
 
+    private FirebaseAuth firebaseAuth;
+
 
     private String email, pass;
 
@@ -34,9 +37,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        getSupportActionBar().setTitle("Register");
 
         emailED = (EditText) findViewById(R.id.register_activity_emailED);
         passED = (EditText) findViewById(R.id.register_activity_passwordED);
@@ -46,6 +46,8 @@ public class RegisterActivity extends AppCompatActivity {
         settings = getSharedPreferences(PREFS_FILE_NAME, MODE_PRIVATE);
         editor = settings.edit();
 
+
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     public void register (View v) {
@@ -56,14 +58,25 @@ public class RegisterActivity extends AppCompatActivity {
             editor.putString("PASS", pass);
             editor.commit();
 
-            Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show();
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+            firebaseAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener((task)->{
+
+                if(task.isSuccessful()){
+
+                    Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+                        }
+                    }, 1500);
+
+                }else{
+                    Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+
                 }
-            }, 1500);
+
+            });
 
 
         }

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "574345193955",
+    "firebase_url": "https://rm1app-19e57.firebaseio.com",
+    "project_id": "rm1app-19e57",
+    "storage_bucket": "rm1app-19e57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574345193955:android:6732e967d0f944d9",
+        "android_client_info": {
+          "package_name": "com.strongest.savingdata"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574345193955-p0c5cgmjoi08f7n46q0bs2gc9h4he9qf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEEhnrAzDtJ8BsrpLzBxQxxB1Q4cYJlKs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

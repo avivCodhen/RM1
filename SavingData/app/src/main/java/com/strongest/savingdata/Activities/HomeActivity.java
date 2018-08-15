@@ -88,7 +88,7 @@ public class HomeActivity extends BaseActivity implements
     @BindView(R.id.home_activity_navigationview)
     NavigationView mNavigationView;
     @BindView(R.id.activity_home_longclick_menu)
-    LongClickMenuView longClickMenuView;
+    public LongClickMenuView longClickMenuView;
     @BindView(R.id.activity_home_viewpager)
     ViewPager mViewPager;
     @BindView(R.id.activity_home_tablayout)
@@ -110,7 +110,7 @@ public class HomeActivity extends BaseActivity implements
 
     private WorkoutsViewPagerAdapter mAdapter;
 
-    private WorkoutsViewModel workoutsViewModel;
+    public WorkoutsViewModel workoutsViewModel;
     private Workout w;
 
     private boolean isLoggedIn;
@@ -139,6 +139,7 @@ public class HomeActivity extends BaseActivity implements
 
         workoutsViewModel.getWorkoutsList().observe(this, list -> mAdapter.notifyDataSetChanged());
         notifyCurrentWorkout();
+        loggedInUI();
 
     }
 
@@ -217,8 +218,6 @@ public class HomeActivity extends BaseActivity implements
             getSupportActionBar().setTitle("");
             //  getSupportActionBar().setElevation(0);
         }
-
-
     }
 
     @Override
@@ -274,7 +273,7 @@ public class HomeActivity extends BaseActivity implements
                 addFragmentToHomeActivity(R.id.activity_home_framelayout, f, "CustomExercise");
                 break;
             case R.id.menu_login:
-               startActivityForResult(new Intent(this, MainActivity.class), LOGIN_ACTIVITY);
+               startActivityForResult(new Intent(this, RegisterActivity.class), LOGIN_ACTIVITY);
                 break;
             case R.id.menu_logout:
                 //TODO: implement a logout function
@@ -316,7 +315,7 @@ public class HomeActivity extends BaseActivity implements
                         .doDuplicate(plObject);
                 break;
             case Delete:
-                listModifier = WorkoutsModel.ListModifier.OnWith(w, new ExerciseItemAdapter())
+                listModifier = WorkoutsModel.ListModifier.OnWith(w, WorkoutItemAdapterFactory.getFactory().create(plObject.getClass()))
                         .doRemove(plObject, 1);
                 longClickMenuView.onHideMenu();
                 break;
@@ -359,6 +358,7 @@ public class HomeActivity extends BaseActivity implements
                             WorkoutsModel.ListModifier
                                     .OnWith(w, new ExerciseItemAdapter())
                                     .doAddNew(w.exArray.size())
+                                    .setTaskTag("new_exercise")
                     );
 
                     break;
@@ -389,7 +389,7 @@ public class HomeActivity extends BaseActivity implements
         mAdapter.notifyDataSetChanged();
     }
 
-    public void test(View v) {
+   /* public void test(View v) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Fragment nextFragment = ExerciseDetailsFragment.getInstance(String.valueOf(mViewPager.getCurrentItem()));
         Fragment previousFragment = getSupportFragmentManager().getFragments().get(mViewPager.getCurrentItem());
@@ -415,7 +415,7 @@ public class HomeActivity extends BaseActivity implements
         fragmentTransaction.replace(R.id.activity_home_framelayout, nextFragment);
         fragmentTransaction.addToBackStack(String.valueOf(mViewPager.getCurrentItem()));
         fragmentTransaction.commitAllowingStateLoss();
-    }
+    }*/
 
     @SuppressLint("RestrictedApi")
     public void navigateToExerciseDetailsActivity(PLObject.ExerciseProfile ep, ExerciseViewHolder vh) {

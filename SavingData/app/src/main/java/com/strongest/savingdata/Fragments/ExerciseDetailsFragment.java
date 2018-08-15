@@ -43,7 +43,9 @@ import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.Controllers.OnExerciseInfo;
 import com.strongest.savingdata.Controllers.UISetsClickHandler;
 import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
+import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.LogDataManager;
+import com.strongest.savingdata.Dialogs.LogModeDialog;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.SaveExitToolBar;
 import com.strongest.savingdata.R;
@@ -61,6 +63,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         Architecture.view.LongClickView, UISetsClickHandler, OnExerciseInfo {
 
     private static final String DONT_DISPLAY_CHECKBOX = "dont_display_checkbox";
+    private static final String EXERCISE_POSITION = "exercise_position";
     @BindView(R.id.textview_title)
     TextView textview_title;
     @BindView(R.id.stats)
@@ -116,10 +119,13 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
     private Handler handler = new Handler();
 
-    public static ExerciseDetailsFragment getInstance(String fragment) {
+    private int exercisePosition;
+
+    public static ExerciseDetailsFragment getInstance(String fragment, int position) {
         ExerciseDetailsFragment f = new ExerciseDetailsFragment();
         Bundle b = new Bundle();
         b.putString(FRAGMENT_TAG, fragment);
+        b.putInt(EXERCISE_POSITION, position);
         f.setArguments(b);
         return f;
     }
@@ -138,15 +144,15 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             parentFragmentId = getArguments().getString(FRAGMENT_TAG);
+            exercisePosition = getArguments().getInt(EXERCISE_POSITION);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (outState != null) {
-            outState.putString(FRAGMENT_TAG, parentFragmentId);
-        }
+        outState.putString(FRAGMENT_TAG, parentFragmentId);
+        outState.putInt(EXERCISE_POSITION, exercisePosition);
     }
 
     @Override
@@ -155,37 +161,22 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
         if (savedInstanceState != null) {
             parentFragmentId = savedInstanceState.getString(FRAGMENT_TAG);
+            exercisePosition = savedInstanceState.getInt(EXERCISE_POSITION);
 
         }
 
         selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(parentFragmentId, SelectedExerciseViewModel.class);
         logDataManager = new LogDataManager(getContext());
         //instantiating the cloned exercise profile
-        exerciseProfile = selectedExerciseViewModel.getSelectedExercise().getValue();
+        getExercise();
+        if(exerciseProfile == null){
+            getFragmentManager().popBackStack();
+        }
         setsItemAdapter = new SetsItemAdapter(exerciseProfile);
         initToolbar();
         initAdapters();
         initRecycler();
-        ExerciseModel.exerciseToWorkout(setsItemAdapter,exerciseProfile, w -> {
-            workout = (Workout) w;
-            exerciseAdapter.setExArray(workout.getParents());
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    exerciseAdapter.notifyDataSetChanged();
-                    adapter.setExArray(workout.getExArray());
-                    adapter.notifyDataSetChanged();
-                    MyJavaAnimator.fadeIn(recyclerView);
-
-                }
-            });
-
-        });
+        getList();
         workoutsViewModel = ViewModelProviders.of(getActivity()).get(WorkoutsViewModel.class);
         //workout = selectedExerciseViewModel.getExerciseAsList().getValue();
 
@@ -217,24 +208,27 @@ public class ExerciseDetailsFragment extends BaseFragment implements
             }
         }, 100);
 
+
         exerciseInfo.setOnClickListener(info -> {
-            transitionToExerciseDetailsActivity();
+            transitionToExerciseDetailsActivity(exerciseProfile.getExercise());
         });
 
         logBtn.setOnClickListener(btnClicked -> {
 
-            if(el.isExpanded()){
+            LogModeDialog l = LogModeDialog.getInstacen(exerciseProfile);
+            l.show(getFragmentManager(), "dialog");
+           /* if (!el.isExpanded()) {
                 showEnterLogModeDialog();
-            }else{
-
-            }
+            } else {
+                el.collapse();
+                exitLogMode();
+            }*/
         });
 
 
         saveToLogBtn.setOnClickListener(saveLog -> {
             logDataManager.insert(exerciseProfile);
         });
-
 
 
     }
@@ -254,7 +248,6 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     }
 
 
-
     private void initToolbar() {
 
         toolbar.setNavigationIcon(R.drawable.icon_back_white);
@@ -269,9 +262,9 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         toolbar.setTitle("");
 
         toolbarAddSet.setOnClickListener(toolBarAddIcon -> {
-            selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile);
+            selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile, exercisePosition);
             WorkoutsModel.ListModifier.OnWith(workout, setsItemAdapter)
-                    .doAddNew(workout.exArray.size()).applyWith(adapter);
+                    .doAddNew(workout.exArray.size()).applyWith(adapter, null, null);
             recyclerView.scrollToPosition(workout.exArray.size() - 1);
 
         });
@@ -300,12 +293,13 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         adapter.setUiSetsClickHandler(this);
         adapter.setOnExerciseInfo(this);
         exerciseAdapter.setOnExerciseInfo(this);
+        adapter.setLongClickMenuView(longClickMenuView);
 
     }
 
-    private void transitionToExerciseDetailsActivity() {
+    private void transitionToExerciseDetailsActivity(Beans exercise) {
         Intent i = new Intent(getContext(), ExerciseDetailsActivity.class);
-        i.putExtra("exercise", exerciseProfile.getExercise());
+        i.putExtra("exercise", exercise);
        /* Pair<View, String>[] pairs = new Pair[2];
 
         pairs[0] = Pair.create(icon, "icon");
@@ -325,7 +319,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
             case Delete:
 
                 listModifier.doRemove(longClickMenuView.getSelectedPLObjects().get(0), 1)
-                        .applyWith(adapter);
+                        .applyWith(adapter, null, null);
                 adapter.notifyItemRangeChanged(0, adapter.getExArray().size());
                 longClickMenuView.onHideMenu();
                 break;
@@ -335,12 +329,12 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                 }
                 longClickMenuView.onHideMenu();
 
-                listModifier.applyWith(adapter);
+                listModifier.applyWith(adapter, null,null);
                 adapter.notifyItemRangeChanged(0, adapter.getExArray().size());
                 break;
             case Duplicate:
                 //int position = workout.exArray.indexOf(longClickMenuView.getSelectedPLObjects().get(0));
-                listModifier.doDuplicate(longClickMenuView.getSelectedPLObjects().get(0)).applyWith(adapter);
+                listModifier.doDuplicate(longClickMenuView.getSelectedPLObjects().get(0)).applyWith(adapter,null,null);
                 break;
 
             /*case Child:
@@ -350,7 +344,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
 
         }
-        selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile);
+        selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile, exercisePosition);
 
         if (workout.exArray.size() == 0) {
             longClickMenuView.onHideMenu();
@@ -401,40 +395,72 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     }
 
     @Override
-    public void transitionToExerciseInfo() {
-        transitionToExerciseDetailsActivity();
+    public void transitionToExerciseInfo(Beans exercise) {
+        transitionToExerciseDetailsActivity(exercise);
     }
 
-    private void showEnterLogModeDialog(){
-        MaterialDialog.Builder  builder= new MaterialDialog.Builder(getContext())
+    private void showEnterLogModeDialog() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getContext())
                 .title("Log Mode")
                 .content("On entering Log Mode, any changes you make will not apply to the program." +
                         " To save, click Save To Program. ")
                 .positiveText("Enter")
                 .negativeText("Cancel");
 
-        if(!workoutsViewModel.getDataManager().getPrefs().getString(DONT_DISPLAY_CHECKBOX, "").equals(DONT_DISPLAY_CHECKBOX)){
+        if (!workoutsViewModel.getDataManager().getPrefs().getString(DONT_DISPLAY_CHECKBOX, "").equals(DONT_DISPLAY_CHECKBOX)) {
             builder.checkBoxPromptRes(R.string.log_mode_checkbox, false, (compoundButton, b) -> {
-                if(b == true) workoutsViewModel.getDataManager().getPrefsEditor().putString(DONT_DISPLAY_CHECKBOX, DONT_DISPLAY_CHECKBOX);
+                if (b == true)
+                    workoutsViewModel.getDataManager().getPrefsEditor().putString(DONT_DISPLAY_CHECKBOX, DONT_DISPLAY_CHECKBOX);
             });
 
         }
 
         MaterialDialog dialog = builder.build();
-        dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener((positive)->{
+        dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener((positive) -> {
             el.toggle();
+            enterLogMode();
             dialog.dismiss();
         });
         dialog.show();
 
     }
 
-    private void enterLogMode(){
+    private void enterLogMode() {
+        exerciseProfile = new PLObject.ExerciseProfile(selectedExerciseViewModel.getSelectedExercise().getValue());
+        getList();
+    }
+
+    private void exitLogMode() {
+        getExercise();
+        getList();
+    }
+
+    private void getExercise(){
+        exerciseProfile = selectedExerciseViewModel.getSelectedExercise().getValue();
 
     }
 
-    private void exitLogMode(){
+    private void getList(){
+            ExerciseModel.exerciseToWorkout(setsItemAdapter, exerciseProfile, w -> {
+                workout = (Workout) w;
+                exerciseAdapter.setExArray(workout.getParents());
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        exerciseAdapter.notifyDataSetChanged();
+                        adapter.setExArray(workout.getExArray());
+                        adapter.notifyDataSetChanged();
+                        MyJavaAnimator.fadeIn(recyclerView);
 
+                    }
+                });
+
+            });
     }
 
 }

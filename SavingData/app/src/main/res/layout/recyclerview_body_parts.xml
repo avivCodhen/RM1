@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/body_parts_linear_layout"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="50dp"
     android:orientation="vertical"
-    android:focusableInTouchMode="true"
-    android:background="#EEEEEE"
-    android:layout_marginBottom="1dp"
+    android:background="@color/background_color"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
 
     >
 
@@ -27,27 +27,25 @@
     </FrameLayout>
 
     <RelativeLayout
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:padding="7dp"
+        android:layout_centerVertical="true"
+
         android:layout_width="match_parent"
         android:layout_height="39dp"
 
         >
-        <View
+       <!-- <View
             android:id="@+id/dummy"
             android:layout_width="1dp"
             android:layout_height="1dp"
             android:focusable="true"
-            android:focusableInTouchMode="true" />
+            android:focusableInTouchMode="true" />-->
 
-        <EditText
+        <TextView
             android:layout_centerVertical="true"
             android:textColor="@color/textGrayColor"
             android:enabled="false"
             android:maxLines="1"
             android:inputType="text"
-            android:background="#F2EEF3"
             android:layout_marginLeft="10dp"
             android:id="@+id/recycler_view_body_parts_TV"
             android:layout_width="wrap_content"
@@ -68,19 +66,19 @@
 
             <ImageView
                 android:id="@+id/body_view_edit_iv"
-                android:alpha="0.4"
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
+               android:padding="11dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_edit_black_18dp"
+                android:src="@drawable/icon_edit_gray_48"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
 
 
     </RelativeLayout>
-    <include layout="@layout/layout_bottom_border"></include>
+    <include
+        layout="@layout/layout_bottom_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"></include>
 
-</LinearLayout>
+</RelativeLayout>
