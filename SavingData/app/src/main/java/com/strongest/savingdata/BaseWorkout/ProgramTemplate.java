@@ -22,6 +22,8 @@ import java.util.Locale;
 //stores the number of exercises per small and big body part
 //
 //****
+
+    @Deprecated
 public class ProgramTemplate implements Serializable {
 
 
@@ -105,9 +107,6 @@ public class ProgramTemplate implements Serializable {
         return stringWorkouts;
     }
 
-    public void setStringWorkouts(String[] stringWorkouts, Context c) {
-        this.stringWorkouts = c.getResources().getStringArray(R.array.workouts);
-    }
 
     public void setDefaultBigParts(int defaultBigParts) {
         this.defaultBigParts = defaultBigParts;

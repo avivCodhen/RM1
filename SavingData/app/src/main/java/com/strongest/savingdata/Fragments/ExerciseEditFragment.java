@@ -2,14 +2,10 @@ package com.strongest.savingdata.Fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
@@ -25,9 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.strongest.savingdata.AViewModels.SelectedExerciseViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Activities.HomeActivity;
@@ -35,8 +27,7 @@ import com.strongest.savingdata.Adapters.ExerciseListAdapter;
 import com.strongest.savingdata.Adapters.GridViewMusclesAdapter;
 import com.strongest.savingdata.Adapters.OnExerciseListAdapterClickListener;
 import com.strongest.savingdata.Adapters.OnGridViewMuscleAdapterClickListener;
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AModels.AlgorithmLayout.ReactLayoutManager;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
@@ -47,14 +38,10 @@ import com.strongest.savingdata.Handlers.FloatingSearchViewHandler;
 import com.strongest.savingdata.Handlers.YoutubeHandler;
 import com.strongest.savingdata.MyViews.SaveExitToolBar;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.YoutubeAPI.VideoItem;
-import com.strongest.savingdata.YoutubeAPI.YoutubeConfig;
-import com.strongest.savingdata.YoutubeAPI.YoutubeConnector;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

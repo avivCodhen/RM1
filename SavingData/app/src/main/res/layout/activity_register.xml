@@ -41,5 +41,11 @@
         android:gravity="center"
        />
 
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/register_activity_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
 </LinearLayout>

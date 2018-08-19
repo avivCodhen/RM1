@@ -5,17 +5,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
+import com.strongest.savingdata.AService.UserService;
+import com.strongest.savingdata.AViewModels.ProgramViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModelFactory;
 import com.strongest.savingdata.BaseWorkout.Programmer;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.DependencyInjection.MainApplication;
-import com.strongest.savingdata.R;
 
 import javax.inject.Inject;
 
@@ -32,12 +32,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public WorkoutsModel workoutsModel;
 
-    public Programmer programmer;
     @Inject
     public DataManager dataManager;
 
     @Inject
     WorkoutsViewModelFactory workoutsViewModelFactory;
+
+    @Inject
+    UserService userService;
 
 
     public WorkoutsViewModel workoutsViewModel;
@@ -71,8 +73,5 @@ public abstract class BaseActivity extends AppCompatActivity {
         return dataManager;
     }
 
-    public Programmer getProgrammer() {
-        return programmer;
-    }
 
 }

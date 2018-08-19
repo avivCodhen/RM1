@@ -1,9 +1,9 @@
 package com.strongest.savingdata.AModels;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModelValidator;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.Workout;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModelValidator;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.SetsItemAdapter;
 import com.strongest.savingdata.Controllers.CallBacks;
 
@@ -44,7 +44,7 @@ public class ExerciseModel {
                     w.exArray.add(s);
 
                 }
-                w.setParents(expandExerciseSupersets(ep));
+             //   w.setParents(expandExerciseSupersets(ep));
 
                 onFinish.onFinish(w);
             }
@@ -65,6 +65,7 @@ public class ExerciseModel {
         return list;
     }
 
+/*
 
 
     public static int getSetPosition(PLObject.ExerciseProfile parent, PLObject.SetsPLObject set) {
@@ -75,6 +76,7 @@ public class ExerciseModel {
     private static boolean hasSupersets(PLObject.ExerciseProfile parent) {
         return parent.getExerciseProfiles().size() > 0;
     }
+*/
 
 
     /**

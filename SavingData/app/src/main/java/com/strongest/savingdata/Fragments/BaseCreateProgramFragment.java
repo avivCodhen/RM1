@@ -94,11 +94,6 @@ public abstract class BaseCreateProgramFragment extends Fragment{
 
     }*/
 
-    public String dedtailsFragmentText() {
-        return getContext().getResources().getString(R.string.details_programCreate);
-
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
       //  inflater.inflate(R.menu.next_button, menu);
@@ -131,11 +126,7 @@ public abstract class BaseCreateProgramFragment extends Fragment{
                 .addToBackStack(null)
                 .commit();
 */
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                .replace(R.id.workout_fragment_layout, fragment)
-                .addToBackStack(null)
-                .commit();
+
     }
 
 

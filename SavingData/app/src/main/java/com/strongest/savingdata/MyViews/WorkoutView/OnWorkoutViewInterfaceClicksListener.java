@@ -2,8 +2,7 @@ package com.strongest.savingdata.MyViews.WorkoutView;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.strongest.savingdata.Adapters.MyExpandableAdapter;
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
 
 /**
  * Created by Cohen on 3/20/2018.

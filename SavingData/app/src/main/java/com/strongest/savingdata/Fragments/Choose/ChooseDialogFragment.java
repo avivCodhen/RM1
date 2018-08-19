@@ -17,21 +17,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
-import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
-import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
-import com.strongest.savingdata.AModels.AlgorithmLayout.LayoutManagerHelper;
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AModels.AlgorithmLayout.ReactLayoutManager;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.Fragments.ExerciseEditFragment;
 import com.strongest.savingdata.Fragments.SetsChooseSingleFragment;
-import com.strongest.savingdata.MyViews.MySelector.MySelectorOnBeansHolderChange;
 import com.strongest.savingdata.MyViews.WorkoutView.OnExerciseChangeListener;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.Fragments.BaseCreateProgramFragment;
@@ -43,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChooseDialogFragment extends BaseCreateProgramFragment implements View.OnClickListener,
-        TabLayout.OnTabSelectedListener, MySelectorOnBeansHolderChange, OnExerciseSetChange {
+        TabLayout.OnTabSelectedListener,  OnExerciseSetChange {
 
     public static final String PLOBJECT = "plobject";
     public static final String POSITION = "position";
@@ -64,7 +59,6 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     private ExerciseEditFragment exerciseEditFragment;
     private String tName;
     private Button backBtn;
-    private ReactLayoutManager mReactLayoutManager;
 
     private OnExerciseChangeListener onExerciseChangeListener;
 
@@ -108,7 +102,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         if (getArguments() != null) {
             //      helper = ((BaseActivity) getActivity()).getProgrammer().layoutManager.mLayoutManagerHelper;
             plObject = (PLObject) getArguments().getSerializable(PLOBJECT);
-            title = LayoutManagerHelper.writeTitle(plObject);
+           // title = LayoutManagerHelper.writeTitle(plObject);
             if (plObject instanceof PLObject.ExerciseProfile) {
                 exerciseProfile = (PLObject.ExerciseProfile) plObject;
                 /*exerciseEditFragment = ExerciseEditFragment.newInstance(exerciseProfile, this);
@@ -272,38 +266,6 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
         this.tName = tName;
 
     }
-
-    @Override
-    public void notifyExerciseProfileBeanChange(String beanType, Beans bean) {
-      /*  if (!exerciseProfile.isHasBeansHolders()) {
-            exerciseProfile.setmSets(new Sets());
-            ArrayList<Sets> arr= new ArrayList<>();
-            arr.add(exerciseProfile.getmSets());
-            exerciseProfile.setSets(arr);
-        }
-        switch (beanType) {
-            case "exercise":
-                exerciseProfile.getmSets().setExercise(bean);
-                break;
-            case "reps":
-                exerciseProfile.getmSets().setRep(bean);
-                break;
-            case "sets":
-                exerciseProfile.getmSets().setSets(bean);
-                break;
-            case "rest":
-                exerciseProfile.getmSets().setRest(bean);
-                break;
-        }
-        onExerciseChangeListener.onExerciseChange(plObjectPosition, beanType);
-*/
-    }
-
-    @Override
-    public void notifyMuscleChange(Muscle m) {
-        exerciseProfile.setMuscle(m);
-    }
-
     public void setOnExerciseChangeListener(OnExerciseChangeListener onExerciseChangeListener) {
         this.onExerciseChangeListener = onExerciseChangeListener;
     }

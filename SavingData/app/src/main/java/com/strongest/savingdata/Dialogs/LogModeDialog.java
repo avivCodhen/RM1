@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.Workout;
 import com.strongest.savingdata.AModels.ExerciseModel;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.SetsItemAdapter;

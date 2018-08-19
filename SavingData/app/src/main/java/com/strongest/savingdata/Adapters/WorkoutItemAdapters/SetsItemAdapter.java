@@ -1,10 +1,9 @@
 package com.strongest.savingdata.Adapters.WorkoutItemAdapters;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject.SetsPLObject;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.PLObject.SetsPLObject;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
 import com.strongest.savingdata.AModels.ExerciseModel;
-import com.strongest.savingdata.AModels.WorkoutItemAdapter;
 
 import java.util.ArrayList;
 

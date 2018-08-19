@@ -1,26 +1,27 @@
 package com.strongest.savingdata.AService;
 
-import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.Workout;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutBro;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
+import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
 import com.strongest.savingdata.BaseWorkout.Muscle;
-import com.strongest.savingdata.BaseWorkout.Program;
+import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.Database.Program.DBProgramHelper;
+import com.strongest.savingdata.Utils.FireBaseUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
-import static com.strongest.savingdata.Activities.BaseActivity.TAG;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.DEFAULT_INT;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.MUSCLE;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.NAME;
@@ -36,7 +37,9 @@ import static com.strongest.savingdata.Database.Program.DBProgramHelper.REST;
 public class WorkoutsService {
     public static final String NO_PROGRAM = "false";
     public static String CURRENT_PROGRAM_DBNAME = "current_program_dbname";
-
+    public static final String CURRENT_WORKOUT = "current_workouts";
+    private final SharedPreferences sharedPreferences;
+    private final SharedPreferences.Editor editor;
 
     private DataManager dataManager;
 
@@ -44,22 +47,73 @@ public class WorkoutsService {
         return dataManager;
     }
 
-    public WorkoutsService(DataManager dataManager) {
+    FirebaseAuth firebaseAuth;
+    DatabaseReference databaseReference;
 
+    public WorkoutsService(DataManager dataManager, SharedPreferences sharedPreferences,
+                           SharedPreferences.Editor editor) {
+        this.sharedPreferences = sharedPreferences;
+        this.editor = editor;
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child(FireBaseUtils.FIRE_BASE_REFERENCE_WORKOUTS);
         this.dataManager = dataManager;
     }
 
-    public boolean saveLayoutToDataBase(final boolean update, ArrayList<Workout> layout, String dbName) {
+    public ArrayList<Workout> provideWorktoutsList() {
+        String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
+        if(programUID.equals("")){
+            throw new IllegalArgumentException("program uid cannot be empty");
+        }
+        ArrayList<Workout> list = readLayoutFromDataBase(programUID);
+        if (list == null) {
+            list = createDefaultWorkoutsList();
+            try {
+                saveLayoutToDataBase(true, list);
+            } catch (Exception e) {
+                saveLayoutToDataBase(false,list);
+                //throw new IllegalArgumentException("could not save layout to database " + e.toString());
+            }
+        }
+        saveWorkoutsToFireBase(list);
+        return list;
+    }
+
+    public ArrayList<Workout> createDefaultWorkoutsList() {
+        ArrayList<Workout> workoutArrayList = new ArrayList<>();
+        Workout w = new Workout();
+        w.workoutName = "Workout 1";
+        w.exArray.add(new ExerciseItemAdapter().insert());
+        workoutArrayList.add(w);
+        return workoutArrayList;
+    }
+
+
+    public void saveWorkoutsToFireBase(ArrayList<Workout> workouts) {
+        String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
+        if(programUID.equals("")){
+            throw  new IllegalArgumentException("there must be an program UID");
+        }
+        for (Workout w : workouts) {
+            WorkoutBro workoutBro = new WorkoutBro();
+            workoutBro.setExArray(w.exArray);
+            workoutBro.setProgramUid(programUID);
+            workoutBro.setWorkoutName(w.workoutName);
+            databaseReference.child(programUID).setValue(workoutBro).addOnCompleteListener(task->{
+                Log.d("aviv", "saveWorkoutsToFireBase: workout saved!");
+            });
+        }
+    }
+
+    public boolean saveLayoutToDataBase(final boolean update, ArrayList<Workout> layout) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 // requestSplitToLayout();
-                try {
 
-                } catch (Exception e) {
-                    throw new IllegalArgumentException("could not save layout to database " + e.toString());
-                }
-                dataManager.getProgramDataManager().insertTables(update, dbName, layout);
+                dataManager.getProgramDataManager().insertTables(update, "workouts", layout);
             }
         }).start();
         return true;
@@ -95,7 +149,7 @@ public class WorkoutsService {
                         //for the workoutList implementation
                         workoutsList.add(new Workout());
                         exArray = new ArrayList<>();
-                        workoutIndex = workoutsList.size()-1;
+                        workoutIndex = workoutsList.size() - 1;
                         workoutsList.get(workoutIndex).setWorkoutName(wName);
 
                         /*bodyTemplate.add(new ArrayList<String>());
@@ -250,7 +304,7 @@ public class WorkoutsService {
 
                         int last2 = workoutsList.get(workoutIndex).exArray.size() - 1;
                         ep = ((PLObject.ExerciseProfile) workoutsList.get(workoutIndex).exArray.get(last2));
-                        PLObject.ExerciseProfile supersetParent = ep.getExerciseProfiles().get(ep.getExerciseProfiles().size()-1);
+                        PLObject.ExerciseProfile supersetParent = ep.getExerciseProfiles().get(ep.getExerciseProfiles().size() - 1);
 
                         innerType = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
                         rep = c.getString(c.getColumnIndex(REP_ID));
@@ -278,7 +332,7 @@ public class WorkoutsService {
         return null;
     }
 
-    //trys to instantiate a program from an existing program in db
+  /*  //trys to instantiate a program from an existing program in db
     //returns the program database name to be used by the layout manager to fetch the program layout
     //returns the NO_PROGRAM value if no program was found in the database
     //and creates a new program
@@ -292,19 +346,22 @@ public class WorkoutsService {
             }
         }
         return null;
-    }
+    }*/
 
     private boolean saveProgramNameToSharedPreference(String dbName) {
         return dataManager.getPrefsEditor().putString(CURRENT_PROGRAM_DBNAME, dbName).commit();
     }
 
-    public void saveProgramToDatabase(Program program) {
+
+    //deprecated
+
+    /*public void saveProgramToDatabase(Program program) {
         dataManager.getProgramDataManager().insertData(
                 DBProgramHelper.TABLE_PROGRAM_REFERENCE,
                 dataManager.getProgramDataManager().getProgramContentValues(program));
-        saveProgramNameToSharedPreference(program.dbName);
+        saveProgramNameToSharedPreference(program.getDbName());
 
-    }
+    }*/
 
 
 }

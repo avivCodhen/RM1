@@ -1,7 +1,7 @@
 package com.strongest.savingdata.Controllers;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
-import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
+import com.strongest.savingdata.AModels.workoutModel.Workout;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 
 public interface Architecture {

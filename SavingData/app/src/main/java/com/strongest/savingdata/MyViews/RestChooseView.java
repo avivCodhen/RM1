@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.ExerciseProfileStats;
+import com.strongest.savingdata.AModels.workoutModel.ExerciseProfileStats;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.NumberChooseManager;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.OnNumberInject;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.SingleNumberChooseView;

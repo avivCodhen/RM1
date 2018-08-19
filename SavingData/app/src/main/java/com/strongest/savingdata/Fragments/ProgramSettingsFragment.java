@@ -16,15 +16,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
+import com.strongest.savingdata.AModels.workoutModel.Workout;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Adapters.MainAdapter;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.DragAndSwipeCallback;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
-import com.strongest.savingdata.AModels.AlgorithmLayout.LayoutManagerAlertdialog;
-import com.strongest.savingdata.AModels.AlgorithmLayout.OnLayoutManagerDialogPress;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
+import com.strongest.savingdata.AModels.workoutModel.LayoutManagerAlertdialog;
+import com.strongest.savingdata.AModels.workoutModel.OnLayoutManagerDialogPress;
 import com.strongest.savingdata.MyViews.WorkoutView.OnProgramToolsActionListener;
 import com.strongest.savingdata.R;
 
@@ -114,7 +114,8 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
             }
         };
 
-        titleText = workoutViewModel.getProgram().getValue().programName;
+        //TODO: fix this
+        //titleText = workoutViewModel.getProgram().getValue().getProgramName();
         editText.setText(titleText);
         editText.addTextChangedListener(textWatcher);
         v.findViewById(R.id.program_title_edit_iv).setOnClickListener(new View.OnClickListener() {
@@ -152,7 +153,7 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
         toolbarTitle.setText(editText.getText());
 
         //TODO: fix this
-        workoutViewModel.getProgram().getValue().programName = input;
+        //workoutViewModel.getProgram().getValue().setProgramName(input);
        /* ((HomeActivity) getActivity()).programmer.getProgram().programName = editText.getText().toString();
         ((HomeActivity) getActivity()).dataManager.getProgramDataManager().updateProgramName(input,
                layoutManager.getDbName() );

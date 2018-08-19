@@ -1,37 +1,38 @@
 package com.strongest.savingdata.AViewModels;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
-import android.util.Log;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
-import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
+import com.strongest.savingdata.AModels.workoutModel.Workout;
+import com.strongest.savingdata.AModels.programModel.Program;
+import com.strongest.savingdata.AService.ProgramService;
 import com.strongest.savingdata.AService.WorkoutsService;
-import com.strongest.savingdata.BaseWorkout.Program;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Managers.DataManager;
-import com.strongest.savingdata.Database.Program.DBProgramHelper;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.strongest.savingdata.Activities.BaseActivity.TAG;
+import io.reactivex.Single;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class WorkoutsViewModel extends ViewModel {
 
 
+    private final WorkoutsService workoutsService;
     @Inject
     public WorkoutsModel workoutsModel;
-    private MutableLiveData<Program> program = new MutableLiveData<>();
+    private final CompositeDisposable compositeDisposable;
+    /*private MutableLiveData<Program> program = new MutableLiveData<>();
+    private MutableLiveData<List<Program>> programs = new MutableLiveData<>();*/
     private MutableLiveData<ArrayList<Workout>> workoutsList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Beans>> allExercisesList = new MutableLiveData<>();
+
+    public boolean safeToSave;
 
     public MutableLiveData<ArrayList<Workout>> getWorkoutsList() {
         return workoutsList;
@@ -41,27 +42,36 @@ public class WorkoutsViewModel extends ViewModel {
         return allExercisesList;
     }
 
-    public MutableLiveData<Program> getProgram() {
-        return program;
-    }
-
-
-    //needs to be changed
+    //TODO: needs to be changed from the LISOV principle
     public DataManager getDataManager() {
         return workoutsModel.getWorkoutsService().getDataManager();
     }
 
     @Inject
-    public WorkoutsViewModel(WorkoutsModel workoutsModel) {
-        program.setValue(workoutsModel.provideProgram());
-        workoutsList.setValue(workoutsModel.provideWorktoutsList(program.getValue().dbName));
+    public WorkoutsViewModel(WorkoutsService workoutsService, WorkoutsModel workoutsModel, CompositeDisposable compositeDisposable) {
+        this.workoutsService = workoutsService;
+        this.workoutsModel = workoutsModel;
+        this.compositeDisposable = compositeDisposable;
+    }
+
+    public void initWorkouts(){
+        workoutsList.setValue(workoutsService.provideWorktoutsList());
+        safeToSave = true;
     }
 
     public void saveLayoutToDataBase() {
-        workoutsModel.saveLayoutToDatabase(true, workoutsList.getValue(), program.getValue().dbName);
+        workoutsService.saveLayoutToDataBase(true,workoutsList.getValue());
+        saveWorkoutToFireBase();
+        // workoutsModel.saveLayoutToDatabase(true, workoutsList.getValue(), program.getValue().getDbName());
+    }
+
+    public void saveWorkoutToFireBase() {
+        workoutsService.saveWorkoutsToFireBase(workoutsList.getValue());
     }
 
     public WorkoutsModel getWorkoutsModel() {
         return workoutsModel;
     }
+
+
 }

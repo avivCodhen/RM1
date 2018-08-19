@@ -30,14 +30,14 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
                 R.drawable.four
         };
 
-        String[] info = new String[]{
+      /*  String[] info = new String[]{
                 getString(R.string.swipe),
                 getString(R.string.swipe_details),
                 getString(R.string.swipe_create),
                 getString(R.string.swipe_improve),
                 getString(R.string.swipe_progress)
         };
-
+*/
         int imageView = R.id.swipe_layout_imageView;
         int textView = R.id.swipe_layout_textView;
 
@@ -45,7 +45,6 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
         findViewById(R.id.login_activity_logInBtn).setOnClickListener(this);
         viewPager = (ViewPager) findViewById(R.id.login_activity_viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabDots);
-        adapter = new SwipeAdapter(this, images, info);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager, true);
 

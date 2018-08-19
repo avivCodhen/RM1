@@ -1,6 +1,6 @@
 package com.strongest.savingdata.MyViews.WorkoutView;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
 
 /**
  * Created by Cohen on 2/15/2018.

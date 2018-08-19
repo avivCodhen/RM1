@@ -4,7 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
 import com.strongest.savingdata.R;

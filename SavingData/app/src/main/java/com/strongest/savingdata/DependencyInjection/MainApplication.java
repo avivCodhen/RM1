@@ -15,9 +15,10 @@ import org.acra.annotation.ReportsCrashes;
 
 @ReportsCrashes(
         mailTo = "kaazz931@gmail.com")
-public class MainApplication extends Application{
+public class MainApplication extends Application {
 
     MainAppComponent appComponent;
+
 
     @Override
     public void onCreate() {
@@ -25,9 +26,12 @@ public class MainApplication extends Application{
         ACRA.init(this);
 
         appComponent = DaggerMainAppComponent.builder()
-                .createProgramModule(new CreateProgramModule(this)).build();
+                .createProgramModule(new CreateProgramModule(this))
+                .userModule(new UserModule(this))
+                .roomModule(new RoomModule(this))
+                .build();
         appComponent.inject(this);
-       // appComponent = DaggerAppComponent.builder().appModule(new CreateProgramModule(this)).build();
+        // appComponent = DaggerAppComponent.builder().appModule(new CreateProgramModule(this)).build();
     }
 
     public MainAppComponent getAppComponent() {

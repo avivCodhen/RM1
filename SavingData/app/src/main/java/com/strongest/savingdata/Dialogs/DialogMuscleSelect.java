@@ -45,7 +45,7 @@ public class DialogMuscleSelect extends Dialog {
 
         // getWindow().setLayout((int) (width * .8), (int) (height * .6));
         if(isActivated){
-            muscles = getContext().getResources().getStringArray(R.array.muscles_arr);
+           // muscles = getContext().getResources().getStringArray(R.array.muscles_arr);
             colors = new int[]{
                     Color.parseColor("#CC0000"),
                     Color.parseColor("#CC6600"),

@@ -2,7 +2,8 @@ package com.strongest.savingdata.BaseWorkout;
 
 import android.content.Context;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
+import com.strongest.savingdata.AModels.programModel.Program;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.Activities.OnProgramInitListener;
 import com.strongest.savingdata.Database.Managers.DataManager;
 

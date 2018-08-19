@@ -1,39 +1,23 @@
 package com.strongest.savingdata.Activities;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityOptions;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import android.media.Image;
 import android.os.PersistableBundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Pair;
-import android.util.TimingLogger;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
-import com.strongest.savingdata.AModels.ExerciseModel;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.Workout;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AViewModels.SelectedExerciseViewModel;
 import com.strongest.savingdata.AViewModels.SelectedLogDataViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
@@ -50,10 +34,7 @@ import com.strongest.savingdata.Database.LogDataManager;
 import com.strongest.savingdata.Fragments.ExerciseLogFragment;
 import com.strongest.savingdata.Handlers.YoutubeHandler;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
-import com.strongest.savingdata.MyViews.SaveExitToolBar;
 import com.strongest.savingdata.R;
-
-import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
 

@@ -10,8 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AModels.AlgorithmLayout.ReactLayoutManager;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.MyViews.MyViewPager;
 import com.strongest.savingdata.R;
 
@@ -33,7 +32,6 @@ public class ChooseContainerFragment extends BaseCreateProgramFragment {
     private int pos;
     private SetsChooseAdapter adapter;
     private String type;
-    private ReactLayoutManager reactLayoutManager;
 
 
     public static ChooseContainerFragment getInstance(PLObject.ExerciseProfile ep, int pos, String type) {
@@ -78,9 +76,6 @@ public class ChooseContainerFragment extends BaseCreateProgramFragment {
         myViewPager.setAdapter(adapter);
     }
 
-    public ReactLayoutManager getReactLayoutManager() {
-        return reactLayoutManager;
-    }
 
     public class SetsChooseAdapter extends FragmentStatePagerAdapter {
 

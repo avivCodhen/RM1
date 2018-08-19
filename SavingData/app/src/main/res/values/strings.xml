@@ -9,77 +9,111 @@
     <string name="transition_rest">method</string>
     <string name="transition_method">sets</string>
 
-    <string name="app_name">Strongest</string>
-    <string name="untrained_description">You do not have experience lifting weights at all, or you have not been training regularly for a year or more.\n\nYour progress will be fast, and the programming will be simple.</string>
-    <string name="intermediate_description">You have been lifting weights regularly for at least a year, and have experience with the basic lifts(squat, deadlift and bench press).\n\nYou will get to choose advanced Methods and unlock advanced progress.</string>
-    <string name="novice_description">You have been training regulary for up to several months, and have experience lifting free weights.\n\nYou will get to choose Methods and more complex progress. </string>
-    <string name="advanced_description">You have been lifting weights regularly for a couple of years, have experience with the basic lifts, and consider yourself strong with the basic lifts(squat, deadlift and bench press).\n\nYou will be introduced to Overriders for maximum results.</string>
-    <string name="fbw1_description">"FBW 1 is a simple full body workout, recommended for trainees that are new to lifting weights or had a long break.\n\nit consists of simple programming and key exercises for each body part for fast and effective results.\n\nRecommended level: Untrained."</string>
-    <string name="fbw2_description">"FBW 2 is a slight more advanced full body workout routine, split into three full body workouts (A,B and C).\n\nit allows for a slight more work as the trainee advances in training.\n\nRecommended level: Novice"</string>
-    <string name="ab1_description">"AB 1 is a split routine, divided into two workouts: A and B.\n\nit allows for more work per body and advanced programming.\n\nRecommended level: Novice-Intermediate"</string>
-    <string name="ab2_description">"AB 2 is a double split routine, dividing the workouts into four workouts:\nA1 - Lower body low intensity\nB1 - Upper body high intensity\nA2 - Lower body high intensity\nB2 - Upper body low intensity.\n\nRecommended level: Novice-Intermediate"</string>
-    <string name="abc1_description">"ABC 1 is a more advanced split routine, dividing the workouts into A, B and C.\n\nit offers more work per body part per workout, and allows for far more complex programming.\n\nRecommended level: Intermediate-Advanced"</string>
-    <string name="abc2_description">"ABC 2 is similar to ABC 1, with the change of working less body parts per workout, but more specific work per body part.\n\nIt's advantage is in more volume for the body parts per workout.\n\nRecommended level: Intermediate-Advanced"</string>
-    <string name="abcde_description">"ABCDE is the most advanced split routine, divided into four different workouts.\n\nIt allows for the highest volume per body part, but has the disadvantage of low frequency training per body part (a body part is only trained once a week)\n\nRecommended level: Advanced"</string>
-    <string name="level_untrained">Recommended level: Untrained</string>
-    <string name="level_novice">Recommended level: Novice</string>
-    <string name="level_novice_intermediate">Recommended level: Novice-Intermediate</string>
-    <string name="level_intermediate_advanced">Recommended level: Intermediate-Advanced</string>
-    <string name="level_advanced">Recommended level: Advanced</string>
-    <string name="toast_noLevelChoose">Please estimate your level and experience</string>
-    <string name="UNTRAINED">Untrained</string>
-    <string name="NOVICE">Novice</string>
-    <string name="INTERMEDIATE">Intermediate</string>
-    <string name="ADVANCED">Advanced</string>
-    <string name="details_programCreate">Welcome to the self design program creation!\n\nIn here, you will be provided with instructions to create your own program, followed by general guidelines based on science for optimum results.</string>
-    <string name="routine_fragment_advice">*We do not advise to choose the most advanced recommended routine. Pick in between and advance from there.</string>
-    <string name="swipe">Swipe to learn more</string>
-    <string name="swipe_details">Strongest is your new fitness life changing app.</string>
-    <string name="swipe_create">Easly create and design profesional workouts.</string>
-    <string name="swipe_improve">New progress system to help you improve, develop and see results.</string>
-    <string name="swipe_progress">Track, manage and compare your progress.</string>
-    <string name="title_estimate">Estimate level</string>
-    <string name="error_estimate">Please estimate your level.</string>
-    <string name="error_frequency">Please choose your training frequency.</string>
-    <string name="title_frequency">Frequency</string>
+    <string name="app_name">RM1</string>
+
+
+    <!--AWW Cognito values-->
+    <string name="app_main_screen">Sign in</string>
+    <string name="app_main_screen_title">Cognito Identity</string>
+    <string name="app_main_desc">A sample app to showcase Cognito Identity and the SDK for Android.</string>
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="nav_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_user">UserActivity</string>
+    <string name="Username">Username</string>
+    <string name="Password">Password</string>
+    <string name="Menu">Menu</string>
+    <string name="pick_MFA">MFA Options</string>
+    <string name="title_activity_about_app">AboutApp</string>
+    <string name="about">Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.\n\nLicensed under the Amazon Software License (the "License").\nYou may not use this file except in compliance with the License.\nA copy of the License is located at\n\nhttp://aws.amazon.com/asl/
+\n\nor in the "license" file accompanying this app. This app is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</string>
+    <string name="more_info">This is a sample app to showcase Cognito Identity and the SDK for Android.</string>
+    <string name="title_activity_sign_up_confirm">SignUpConfirm</string>
+    <string name="title_activity_mfa">MFAActivity</string>
+    <string name="title_activity_choose_mfa">ChooseMFA</string>
+    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="title_activity_verify">VerifyActivity</string>
+    <string name="title_activity_add_attribute">AddAttributeActivity</string>
+    <string name="title_activity_device_settings">DeviceSettings</string>
+    <string name="title_activity_new_password">NewPassword</string>
+    <string name="log_mode_checkbox">Don\'t show again</string>
+
+    <!--activity enter-->
     <string name="log_in">log in</string>
-    <string name="days_discription">How many days per week are you willing to train?</string>
-    <string name="days_suggestion">*We do not recommend to train less than 2 times per week, and more than 6 workouts per week.</string>
-    <string name="days_2">At least 2 times</string>
-    <string name="days_3">3 times at most</string>
-    <string name="days_4">4 times at most</string>
-    <string name="_5_days_5">5 times or more</string>
-    <string name="level_discription">Which level do you estimate your current training experience to be?</string>
-    <string name="routine_discription">Choose your preferred workout routine:</string>
-    <string name="routine_not_recommend">This routine is not recommended for you.</string>
-    <string name="routine_detail_yes">Sounds good</string>
-    <string name="routine_details_no">Let me think</string>
-    <string name="routine_notrecommend">- Not recommended for you.</string>
-    <string name="title_routine">Routine</string>
-    <string name="Error_routine">Please choose a routine.</string>
-    <string name="creatingviewpager_TV">Just before you are ready to design your own profesional workout, please swipe to better understand the program creator.</string>
-    <string name="createviewpager_title">Almost!</string>
-    <string name="rockey_description">"Our Generator is a built on science based algorithms.\"\n\n It can create proffesional workouts for you with a few touches."</string>
-    <string name="rockstar_description">"Create your own program.\"\n\n You will be able to create your own touch-made program easly and fast."</string>
-    <string name="body_part_prompt">Choose body part</string>
-    <string name="limit_tv">Do you trust us or do you trust yourself?</string>
-    <string name="limit_title">Limitations</string>
-    <string name="choose_repetttion_title">Choose Repetition range:</string>
-    <string name="choose_exercise_title">Choose exercise:</string>
-    <string name="choose_method_title">Choose a Method(Optional):</string>
-    <string name="level_determiner_title">Level Determiner</string>
-    <string name="determine_level_tv">Not sure about your level?</string>
-    <string name="level_determiner_btn_text">Determine Level</string>
-    <string name="Error">Error</string>
-    <string name="create_fragment_alert_message">Leaving will reset everything. Are you sure?</string>
-    <string name="im_sure">I\'m sure</string>
-    <string name="wait">wait</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
 
 
+    <!-- <string name="untrained_description">You do not have experience lifting weights at all, or you have not been training regularly for a year or more.\n\nYour progress will be fast, and the programming will be simple.</string>
+     <string name="intermediate_description">You have been lifting weights regularly for at least a year, and have experience with the basic lifts(squat, deadlift and bench press).\n\nYou will get to choose advanced Methods and unlock advanced progress.</string>
+     <string name="novice_description">You have been training regulary for up to several months, and have experience lifting free weights.\n\nYou will get to choose Methods and more complex progress. </string>
+     <string name="advanced_description">You have been lifting weights regularly for a couple of years, have experience with the basic lifts, and consider yourself strong with the basic lifts(squat, deadlift and bench press).\n\nYou will be introduced to Overriders for maximum results.</string>
+     <string name="fbw1_description">"FBW 1 is a simple full body workout, recommended for trainees that are new to lifting weights or had a long break.\n\nit consists of simple programming and key exercises for each body part for fast and effective results.\n\nRecommended level: Untrained."</string>
+     <string name="fbw2_description">"FBW 2 is a slight more advanced full body workout routine, split into three full body workouts (A,B and C).\n\nit allows for a slight more work as the trainee advances in training.\n\nRecommended level: Novice"</string>
+     <string name="ab1_description">"AB 1 is a split routine, divided into two workouts: A and B.\n\nit allows for more work per body and advanced programming.\n\nRecommended level: Novice-Intermediate"</string>
+     <string name="ab2_description">"AB 2 is a double split routine, dividing the workouts into four workouts:\nA1 - Lower body low intensity\nB1 - Upper body high intensity\nA2 - Lower body high intensity\nB2 - Upper body low intensity.\n\nRecommended level: Novice-Intermediate"</string>
+     <string name="abc1_description">"ABC 1 is a more advanced split routine, dividing the workouts into A, B and C.\n\nit offers more work per body part per workout, and allows for far more complex programming.\n\nRecommended level: Intermediate-Advanced"</string>
+     <string name="abc2_description">"ABC 2 is similar to ABC 1, with the change of working less body parts per workout, but more specific work per body part.\n\nIt's advantage is in more volume for the body parts per workout.\n\nRecommended level: Intermediate-Advanced"</string>
+     <string name="abcde_description">"ABCDE is the most advanced split routine, divided into four different workouts.\n\nIt allows for the highest volume per body part, but has the disadvantage of low frequency training per body part (a body part is only trained once a week)\n\nRecommended level: Advanced"</string>
+     <string name="level_untrained">Recommended level: Untrained</string>
+     <string name="level_novice">Recommended level: Novice</string>
+     <string name="level_novice_intermediate">Recommended level: Novice-Intermediate</string>
+     <string name="level_intermediate_advanced">Recommended level: Intermediate-Advanced</string>
+     <string name="level_advanced">Recommended level: Advanced</string>
+     <string name="toast_noLevelChoose">Please estimate your level and experience</string>
+     <string name="UNTRAINED">Untrained</string>
+     <string name="NOVICE">Novice</string>
+     <string name="INTERMEDIATE">Intermediate</string>
+     <string name="ADVANCED">Advanced</string>
+     <string name="details_programCreate">Welcome to the self design program creation!\n\nIn here, you will be provided with instructions to create your own program, followed by general guidelines based on science for optimum results.</string>
+     <string name="routine_fragment_advice">*We do not advise to choose the most advanced recommended routine. Pick in between and advance from there.</string>
+     <string name="swipe">Swipe to learn more</string>
+     <string name="swipe_details">Strongest is your new fitness life changing app.</string>
+     <string name="swipe_create">Easly create and design profesional workouts.</string>
+     <string name="swipe_improve">New progress system to help you improve, develop and see results.</string>
+     <string name="swipe_progress">Track, manage and compare your progress.</string>
+     <string name="title_estimate">Estimate level</string>
+     <string name="error_estimate">Please estimate your level.</string>
+     <string name="error_frequency">Please choose your training frequency.</string>
+     <string name="title_frequency">Frequency</string>
+     <string name="days_discription">How many days per week are you willing to train?</string>
+     <string name="days_suggestion">*We do not recommend to train less than 2 times per week, and more than 6 workouts per week.</string>
+     <string name="days_2">At least 2 times</string>
+     <string name="days_3">3 times at most</string>
+     <string name="days_4">4 times at most</string>
+     <string name="_5_days_5">5 times or more</string>
+     <string name="level_discription">Which level do you estimate your current training experience to be?</string>
+     <string name="routine_discription">Choose your preferred workout routine:</string>
+     <string name="routine_not_recommend">This routine is not recommended for you.</string>
+     <string name="routine_detail_yes">Sounds good</string>
+     <string name="routine_details_no">Let me think</string>
+     <string name="routine_notrecommend">- Not recommended for you.</string>
+     <string name="title_routine">Routine</string>
+     <string name="Error_routine">Please choose a routine.</string>
+     <string name="creatingviewpager_TV">Just before you are ready to design your own profesional workout, please swipe to better understand the program creator.</string>
+     <string name="createviewpager_title">Almost!</string>
+     <string name="rockey_description">"Our Generator is a built on science based algorithms.\"\n\n It can create proffesional workouts for you with a few touches."</string>
+     <string name="rockstar_description">"Create your own program.\"\n\n You will be able to create your own touch-made program easly and fast."</string>
+     <string name="body_part_prompt">Choose body part</string>
+     <string name="limit_tv">Do you trust us or do you trust yourself?</string>
+     <string name="limit_title">Limitations</string>
+     <string name="choose_repetttion_title">Choose Repetition range:</string>
+     <string name="choose_exercise_title">Choose exercise:</string>
+     <string name="choose_method_title">Choose a Method(Optional):</string>
+     <string name="level_determiner_title">Level Determiner</string>
+     <string name="determine_level_tv">Not sure about your level?</string>
+     <string name="level_determiner_btn_text">Determine Level</string>
+     <string name="Error">Error</string>
+     <string name="create_fragment_alert_message">Leaving will reset everything. Are you sure?</string>
+     <string name="im_sure">I\'m sure</string>
+     <string name="wait">wait</string>
+
+ -->
     <!--
     this is for the drawler layout navigation
     -->
-    <string name="open">open</string>
+   <!-- <string name="open">open</string>
     <string name="close">close</string>
     <string-array name="determiner_questions_array">
         <item>How many days are you planning to workout?</item>
@@ -87,8 +121,8 @@
         <item>What would you consider your strength level(do you lift big)?</item>
         <item>How many months IN A ROW have you been working out(not overall)?</item>
     </string-array>
-
-    <string-array name="determiner_answer0_array">
+-->
+    <!--<string-array name="determiner_answer0_array">
         <item>At least 2 times</item>
         <item>3 times at most</item>
         <item>4 times at most</item>
@@ -578,7 +612,7 @@
         <item>Three sets is a fine pick for the number of sets of an exercise</item>
         <item>The lower the repetitions, the more rest you should pick, and vice versa.</item>
     </string-array>
-    <!-- untrained, novice, intermediate, advanced -->
+    &lt;!&ndash; untrained, novice, intermediate, advanced &ndash;&gt;
 
 
     <string-array name="artificial_intelligence_stats">
@@ -594,14 +628,14 @@
         <item>mechanical</item>
     </string-array>
 
-    <!--<string-array name="artificial_intelligence_suggestions_options">
+    &lt;!&ndash;<string-array name="artificial_intelligence_suggestions_options">
         <item>adding at least one more exercise.</item>
         <item>removing an exercise.</item>
         <item>changing one exercise to med rep or high rep.</item>
         <item>changing one exercise to med rep or low rep</item>
         
 
-    </string-array>-->
+    </string-array>&ndash;&gt;
 
     <string name="ai_change_to_more_complex_exercise">You have picked only n complex exercises. You
     should change an exercise to a complex exercise.</string>
@@ -617,33 +651,8 @@
     <string name="my_selector_create_reps_button">Create reps</string>
     <string name="my_selector_create_sets_button">Create sets</string>
 
+-->
 
 
 
-    <!--AWW Cognito values-->
-    <string name="app_main_screen">Sign in</string>
-    <string name="app_main_screen_title">Cognito Identity</string>
-    <string name="app_main_desc">A sample app to showcase Cognito Identity and the SDK for Android.</string>
-    <string name="nav_drawer_open">Open navigation drawer</string>
-    <string name="nav_drawer_close">Close navigation drawer</string>
-    <string name="title_activity_user">UserActivity</string>
-    <string name="Username">Username</string>
-    <string name="Password">Password</string>
-    <string name="Menu">Menu</string>
-    <string name="pick_MFA">MFA Options</string>
-    <string name="title_activity_about_app">AboutApp</string>
-    <string name="about">Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.\n\nLicensed under the Amazon Software License (the "License").\nYou may not use this file except in compliance with the License.\nA copy of the License is located at\n\nhttp://aws.amazon.com/asl/
-\n\nor in the "license" file accompanying this app. This app is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</string>
-    <string name="more_info">This is a sample app to showcase Cognito Identity and the SDK for Android.</string>
-    <string name="title_activity_sign_up_confirm">SignUpConfirm</string>
-    <string name="title_activity_mfa">MFAActivity</string>
-    <string name="title_activity_choose_mfa">ChooseMFA</string>
-    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
-    <string name="title_activity_settings">SettingsActivity</string>
-    <string name="title_activity_change_password">ChangePasswordActivity</string>
-    <string name="title_activity_verify">VerifyActivity</string>
-    <string name="title_activity_add_attribute">AddAttributeActivity</string>
-    <string name="title_activity_device_settings">DeviceSettings</string>
-    <string name="title_activity_new_password">NewPassword</string>
-    <string name="log_mode_checkbox">Don\'t show again</string>
 </resources>

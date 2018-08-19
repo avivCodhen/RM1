@@ -7,14 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
-import com.strongest.savingdata.BaseWorkout.Program;
+import com.strongest.savingdata.AModels.workoutModel.Workout;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
+import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
 import com.strongest.savingdata.Database.Program.DBProgramHelper;
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -273,7 +272,7 @@ public class ProgramDataManager extends DataManager {
                 " WHERE "+LAYOUT_NAME+"=?", new String[]{dbName});*/
     }
 
-    public ArrayList<Program> getAllPrograms() {
+/*    public ArrayList<Program> getAllPrograms() {
         ArrayList<Program> programs = new ArrayList<>();
         Cursor c = getDb(programHelper).rawQuery("Select * from " + TABLE_PROGRAM_REFERENCE, null);
         if (c != null & c.moveToFirst()) {
@@ -289,9 +288,9 @@ public class ProgramDataManager extends DataManager {
             while (c.moveToNext());
         }
         return programs;
-    }
+    }*/
 
-    public Program readProgramTable(String currentDbName) {
+   /* public Program readProgramTable(String currentDbName) {
         String sql = "SELECT * FROM " + TABLE_PROGRAM_REFERENCE + " WHERE " + LAYOUT_NAME + "=?";
         Cursor c = getDb(programHelper).rawQuery(sql, new String[]{currentDbName});
         if (c != null && c.moveToFirst()) {
@@ -309,7 +308,7 @@ public class ProgramDataManager extends DataManager {
         }
         return null;
 
-    }
+    }*/
 
     public Cursor readLayoutTableCursor(String currentDbName) {
         //updateCurrentTables(backBy);
@@ -369,9 +368,9 @@ public class ProgramDataManager extends DataManager {
     public ContentValues getProgramContentValues(Program program) {
         ContentValues v = new ContentValues();
         v.put(DBProgramHelper.LAYOUT_NAME, program.getDbName());
-        v.put(DBProgramHelper.DATE_CREATED, program.programDate);
-        v.put(DBProgramHelper.PROGRAM_NAME, program.programName);
-        v.put(DBProgramHelper.PROGRAM_TIME, program.time);
+        v.put(DBProgramHelper.DATE_CREATED, program.getProgramDate());
+        v.put(DBProgramHelper.PROGRAM_NAME, program.getProgramName());
+        v.put(DBProgramHelper.PROGRAM_TIME, program.getTime());
 
         return v;
     }

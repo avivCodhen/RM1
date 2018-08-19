@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.shehabic.droppy.DroppyMenuItem;
 import com.shehabic.droppy.DroppyMenuPopup;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel.Actions;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel.Actions;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.R;

@@ -1,8 +1,5 @@
 package com.strongest.savingdata.Database;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
-import com.strongest.savingdata.Adapters.LogDataAdapter;
-
 public class LogData {
 
     public String full;

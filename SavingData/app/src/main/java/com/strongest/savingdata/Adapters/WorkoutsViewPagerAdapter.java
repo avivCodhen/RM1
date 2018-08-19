@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
+import com.strongest.savingdata.AModels.workoutModel.Workout;
 import com.strongest.savingdata.Fragments.WorkoutViewFragment;
 
 import java.util.ArrayList;

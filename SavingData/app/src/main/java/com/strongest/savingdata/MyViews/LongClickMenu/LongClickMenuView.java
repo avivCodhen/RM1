@@ -10,10 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel.Actions;
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel.Actions;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
 import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.MyViews.WorkoutView.OnWorkoutViewInterfaceClicksListener;
 import com.strongest.savingdata.R;

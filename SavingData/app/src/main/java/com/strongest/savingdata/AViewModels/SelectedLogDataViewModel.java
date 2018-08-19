@@ -3,7 +3,7 @@ package com.strongest.savingdata.AViewModels;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
 
 import java.util.ArrayList;
 

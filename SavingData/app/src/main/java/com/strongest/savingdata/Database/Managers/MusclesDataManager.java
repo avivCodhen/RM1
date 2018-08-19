@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.strongest.savingdata.BaseWorkout.Muscle;
-import com.strongest.savingdata.BaseWorkout.NewMuscle;
 import com.strongest.savingdata.Database.Muscles.DBMuscleHelper;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package com.strongest.savingdata.MyViews.WorkoutView;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
 
 import java.util.ArrayList;
 

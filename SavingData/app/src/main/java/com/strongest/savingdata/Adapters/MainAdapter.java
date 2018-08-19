@@ -9,13 +9,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
+import com.strongest.savingdata.AModels.workoutModel.Workout;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ItemTouchHelperAdapter;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ScrollToPositionListener;
-import com.strongest.savingdata.AModels.AlgorithmLayout.LayoutManagerAlertdialog;
-import com.strongest.savingdata.AModels.AlgorithmLayout.OnLayoutManagerDialogPress;
-import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
+import com.strongest.savingdata.AModels.workoutModel.LayoutManagerAlertdialog;
+import com.strongest.savingdata.AModels.workoutModel.OnLayoutManagerDialogPress;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment.OnProgramSettingsChange;
 import com.strongest.savingdata.R;
 

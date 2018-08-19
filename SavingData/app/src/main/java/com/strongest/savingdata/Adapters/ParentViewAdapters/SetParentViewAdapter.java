@@ -3,10 +3,9 @@ package com.strongest.savingdata.Adapters.ParentViewAdapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.Controllers.UISetsClickHandler;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;

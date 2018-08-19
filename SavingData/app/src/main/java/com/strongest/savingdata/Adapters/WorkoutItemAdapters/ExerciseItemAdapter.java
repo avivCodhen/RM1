@@ -1,14 +1,13 @@
 package com.strongest.savingdata.Adapters.WorkoutItemAdapters;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
-import com.strongest.savingdata.AModels.WorkoutItemAdapter;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
 
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-import static com.strongest.savingdata.AModels.AlgorithmLayout.PLObject.*;
+import static com.strongest.savingdata.AModels.workoutModel.PLObject.*;
 
 public class ExerciseItemAdapter implements WorkoutItemAdapter<ExerciseProfile> {
 

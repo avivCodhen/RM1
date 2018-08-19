@@ -1,40 +1,33 @@
 package com.strongest.savingdata.Fragments;
 
-import android.app.ActivityOptions;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutLayoutTypes;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.Workout;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AModels.ExerciseModel;
 import com.strongest.savingdata.AViewModels.SelectedExerciseViewModel;
 import com.strongest.savingdata.AViewModels.SelectedSetViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Activities.ExerciseDetailsActivity;
-import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.SetsItemAdapter;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
@@ -42,12 +35,10 @@ import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.Controllers.OnExerciseInfo;
 import com.strongest.savingdata.Controllers.UISetsClickHandler;
-import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.LogDataManager;
 import com.strongest.savingdata.Dialogs.LogModeDialog;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
-import com.strongest.savingdata.MyViews.SaveExitToolBar;
 import com.strongest.savingdata.R;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -169,7 +160,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         logDataManager = new LogDataManager(getContext());
         //instantiating the cloned exercise profile
         getExercise();
-        if(exerciseProfile == null){
+        if (exerciseProfile == null) {
             getFragmentManager().popBackStack();
         }
         setsItemAdapter = new SetsItemAdapter(exerciseProfile);
@@ -284,7 +275,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                 getContext());
 
         exerciseAdapter = new MyExpandableAdapter(
-                workout.getParents(),
+               new ArrayList<>(),
                 getContext());
         exerciseAdapter.setLeanLayout(true);
         adapter = new MyExpandableAdapter(
@@ -329,12 +320,12 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                 }
                 longClickMenuView.onHideMenu();
 
-                listModifier.applyWith(adapter, null,null);
+                listModifier.applyWith(adapter, null, null);
                 adapter.notifyItemRangeChanged(0, adapter.getExArray().size());
                 break;
             case Duplicate:
                 //int position = workout.exArray.indexOf(longClickMenuView.getSelectedPLObjects().get(0));
-                listModifier.doDuplicate(longClickMenuView.getSelectedPLObjects().get(0)).applyWith(adapter,null,null);
+                listModifier.doDuplicate(longClickMenuView.getSelectedPLObjects().get(0)).applyWith(adapter, null, null);
                 break;
 
             /*case Child:
@@ -435,32 +426,33 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         getList();
     }
 
-    private void getExercise(){
+    private void getExercise() {
         exerciseProfile = selectedExerciseViewModel.getSelectedExercise().getValue();
 
     }
 
-    private void getList(){
-            ExerciseModel.exerciseToWorkout(setsItemAdapter, exerciseProfile, w -> {
-                workout = (Workout) w;
-                exerciseAdapter.setExArray(workout.getParents());
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+    private void getList() {
+        ExerciseModel.exerciseToWorkout(setsItemAdapter, exerciseProfile, w -> {
+            workout = (Workout) w;
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.setExArray(workout.getExArray());
+                    adapter.notifyDataSetChanged();
+                    MyJavaAnimator.fadeIn(recyclerView);
+
                 }
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        exerciseAdapter.notifyDataSetChanged();
-                        adapter.setExArray(workout.getExArray());
-                        adapter.notifyDataSetChanged();
-                        MyJavaAnimator.fadeIn(recyclerView);
-
-                    }
-                });
-
             });
+
+        });
+
+        exerciseAdapter.setExArray(ExerciseModel.expandExerciseSupersets(exerciseProfile));
+        exerciseAdapter.notifyDataSetChanged();
     }
 
 }

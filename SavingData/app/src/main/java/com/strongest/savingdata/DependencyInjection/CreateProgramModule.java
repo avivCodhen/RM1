@@ -1,22 +1,17 @@
 package com.strongest.savingdata.DependencyInjection;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
+import android.content.SharedPreferences;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModelValidator;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AService.WorkoutsService;
-import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
-import com.strongest.savingdata.AViewModels.WorkoutsViewModelFactory;
 import com.strongest.savingdata.Database.Managers.DataManager;
-
-import java.util.ArrayList;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by Cohen on 12/20/2017.
@@ -54,8 +49,10 @@ public class CreateProgramModule {
 
     @Provides
     @Singleton
-    static WorkoutsService getWorkoutsService(DataManager dataManager) {
-        return new WorkoutsService(dataManager);
+    static WorkoutsService getWorkoutsService(DataManager dataManager,
+                                              SharedPreferences sharedPreferences,
+                                              SharedPreferences.Editor editor) {
+        return new WorkoutsService(dataManager, sharedPreferences, editor);
     }
 
 
@@ -64,6 +61,22 @@ public class CreateProgramModule {
     static WorkoutsModel getWorkoutsModel(WorkoutsService workoutsService) {
         return new WorkoutsModel(workoutsService);
     }
+
+    @Provides
+    static SharedPreferences getSharedPreferences(Context context) {
+        return context.getSharedPreferences("AppSharedPreferences", Context.MODE_PRIVATE);
+    }
+
+    @Provides
+    static SharedPreferences.Editor getSharedPreferencesEditor(SharedPreferences sharedPreferences) {
+        return sharedPreferences.edit();
+    }
+
+    @Provides
+    static CompositeDisposable getCompositeDisposable() {
+        return new CompositeDisposable();
+    }
+
 
     /*@Provides
     @Singleton

@@ -2,6 +2,7 @@ package com.strongest.savingdata.DependencyInjection;
 
 import android.arch.lifecycle.ViewModel;
 
+import com.strongest.savingdata.AViewModels.ProgramViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 
 import dagger.Binds;
@@ -15,5 +16,10 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(WorkoutsViewModel.class)
     abstract ViewModel bindWorkoutsViewModel(WorkoutsViewModel workoutsViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProgramViewModel.class)
+    abstract ViewModel bindProgramViewModel(ProgramViewModel programViewModel);
 
 }

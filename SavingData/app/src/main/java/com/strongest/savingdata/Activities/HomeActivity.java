@@ -5,28 +5,20 @@ import android.app.ActivityOptions;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.transition.ChangeBounds;
-import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.Slide;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.transition.TransitionSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
@@ -34,24 +26,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel;
-import com.strongest.savingdata.AModels.AlgorithmLayout.PLObject;
-import com.strongest.savingdata.AModels.AlgorithmLayout.Workout;
-import com.strongest.savingdata.AModels.WorkoutItemAdapterFactory;
-import com.strongest.savingdata.AViewModels.SelectedExerciseViewModel;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
+import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.AModels.workoutModel.Workout;
+import com.strongest.savingdata.AViewModels.ProgramViewModel;
+import com.strongest.savingdata.Adapters.WorkoutItemAdapters.WorkoutItemAdapterFactory;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.DividerItemAdapter;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
 import com.strongest.savingdata.Adapters.WorkoutsViewPagerAdapter;
 import com.strongest.savingdata.Controllers.Architecture;
-import com.strongest.savingdata.BaseWorkout.Program;
+import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.Fragments.CustomExerciseFragment;
-import com.strongest.savingdata.Fragments.ExerciseDetailsFragment;
 import com.strongest.savingdata.Fragments.MyProgramsFragment;
 import com.strongest.savingdata.Fragments.NewProgramFragment;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
-import com.strongest.savingdata.Fragments.RegisterFragment;
 import com.strongest.savingdata.Fragments.WorkoutViewFragment;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
@@ -60,10 +50,10 @@ import com.strongest.savingdata.ViewHolders.ExerciseViewHolder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import youruserpools.MainActivity;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-import static com.strongest.savingdata.AModels.AlgorithmLayout.WorkoutsModel.Actions.Advanced;
-import static com.strongest.savingdata.Activities.TutorialActivity.FIRSTVISIT;
+import static com.strongest.savingdata.AModels.workoutModel.WorkoutsModel.Actions.Advanced;
 // import com.roughike.bottombar.OnMenuTabClickListener;
 
 public class HomeActivity extends BaseActivity implements
@@ -111,6 +101,8 @@ public class HomeActivity extends BaseActivity implements
     private WorkoutsViewPagerAdapter mAdapter;
 
     public WorkoutsViewModel workoutsViewModel;
+    public ProgramViewModel programViewModel;
+
     private Workout w;
 
     private boolean isLoggedIn;
@@ -121,12 +113,42 @@ public class HomeActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         workoutsViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(WorkoutsViewModel.class);
+        programViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(ProgramViewModel.class);
         ButterKnife.bind(this);
         setUpToolbar();
-        setUpViewPager();
+
+     /*   programViewModel.getNewProgram().observe(this, newProgram->{
+            Log.d(TAG, "grrrrr: ");
+            title.setText(newProgram.getProgramName());
+        });
+*/
+        programViewModel.getProgram().observe(this, program -> {
+            Log.d(TAG, "onCreate: wtf seriosuly");
+            title.setText(program.getProgramName());
+            programViewModel.getProgram().removeObservers(this);
+            workoutsViewModel.initWorkouts();
+        });
+
+        programViewModel.getNewProgram().observe(this, prog ->{
+            Log.d(TAG, "onCreate: wtf seriosuly");
+            programViewModel.setProgram(programViewModel.getNewProgram());
+            title.setText(prog.getProgramName());
+            workoutsViewModel.initWorkouts();
+
+
+        });
+
+        workoutsViewModel.getWorkoutsList().observe(this, workouts->{
+            Log.d(TAG, "workoutslistobserver: ");
+
+            setUpViewPager();
+            notifyCurrentWorkout();
+        });
+
+
+        //setUpViewPager();
         longClickMenuView.instantiate(this);
         programToolsView.instantiate(programToolsBtn, this);
-
 
         /*String newString = dataManager.getPrefs().getString(FIRSTVISIT, "yes");
         boolean isNew = newString.equals("yes");
@@ -136,22 +158,20 @@ public class HomeActivity extends BaseActivity implements
 */
 
 
-
-        workoutsViewModel.getWorkoutsList().observe(this, list -> mAdapter.notifyDataSetChanged());
-        notifyCurrentWorkout();
+        //workoutsViewModel.getWorkoutsList().observe(this, list -> mAdapter.notifyDataSetChanged());
         loggedInUI();
 
     }
 
     //TODO: call this function when needed
-    private void loggedInUI(){
+    private void loggedInUI() {
         isLoggedIn = false;         //TODO: need to check if the user is logged in
 
-        if(isLoggedIn){
+        if (isLoggedIn) {
             mNavigationView.getMenu().clear();
             mNavigationView.inflateMenu(R.menu.menu_main_logged_in);
             //TODO: apply any "user logged in" changes such as username
-        }else{
+        } else {
             mNavigationView.getMenu().clear();
             mNavigationView.inflateMenu(R.menu.menu_main_logged_out);
         }
@@ -209,15 +229,18 @@ public class HomeActivity extends BaseActivity implements
         mToggle.syncState();
         mToggle.setDrawerIndicatorEnabled(true);
         mNavigationView.setNavigationItemSelectedListener(this);
-        String programName = workoutsViewModel.getProgram().getValue().programName;
-        toolbar.setTitle(programName);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            title.setText(programName);
-            getSupportActionBar().setTitle("");
-            //  getSupportActionBar().setElevation(0);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+    }
+
+    @Override
+    protected void onPause() {
+        if(workoutsViewModel.safeToSave){
+            workoutsViewModel.saveLayoutToDataBase();
         }
+        super.onPause();
     }
 
     @Override
@@ -273,7 +296,7 @@ public class HomeActivity extends BaseActivity implements
                 addFragmentToHomeActivity(R.id.activity_home_framelayout, f, "CustomExercise");
                 break;
             case R.id.menu_login:
-               startActivityForResult(new Intent(this, RegisterActivity.class), LOGIN_ACTIVITY);
+                startActivityForResult(new Intent(this, RegisterActivity.class), LOGIN_ACTIVITY);
                 break;
             case R.id.menu_logout:
                 //TODO: implement a logout function
@@ -436,7 +459,7 @@ public class HomeActivity extends BaseActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == LOGIN_ACTIVITY) {
             if (resultCode == RESULT_OK) {
-               //TODO: implement loggedInUI function
+                //TODO: implement loggedInUI function
                 //TODO: change user name in the activity
                 loggedInUI();
             }
