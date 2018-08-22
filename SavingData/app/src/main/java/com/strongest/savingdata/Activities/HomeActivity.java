@@ -67,6 +67,7 @@ public class HomeActivity extends BaseActivity implements
 
     public static final int EXERCISE_ACTIVITY = 1;
     public static final int LOGIN_ACTIVITY = 2;
+    public static final int REGISTER_ACTIVITY = 2;
     public static final String EXERCISE_POSITION = "exercisePosition";
 
     @BindView(R.id.activity_home_toolbar)
@@ -143,6 +144,7 @@ public class HomeActivity extends BaseActivity implements
 
             setUpViewPager();
             notifyCurrentWorkout();
+            workoutsViewModel.safeToSave = true;
         });
 
 
@@ -296,7 +298,8 @@ public class HomeActivity extends BaseActivity implements
                 addFragmentToHomeActivity(R.id.activity_home_framelayout, f, "CustomExercise");
                 break;
             case R.id.menu_login:
-                startActivityForResult(new Intent(this, RegisterActivity.class), LOGIN_ACTIVITY);
+                startActivityForResult(new Intent(this, LoginActivity2.class), LOGIN_ACTIVITY);
+                //startActivityForResult(new Intent(this, RegisterActivity.class), LOGIN_ACTIVITY);
                 break;
             case R.id.menu_logout:
                 //TODO: implement a logout function

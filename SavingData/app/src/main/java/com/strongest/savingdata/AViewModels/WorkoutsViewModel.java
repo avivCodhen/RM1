@@ -54,14 +54,12 @@ public class WorkoutsViewModel extends ViewModel {
         this.compositeDisposable = compositeDisposable;
     }
 
-    public void initWorkouts(){
-        workoutsList.setValue(workoutsService.provideWorktoutsList());
-        safeToSave = true;
+    public void initWorkouts() {
+        workoutsService.provideWorktoutsList(workoutsList, false);
     }
 
     public void saveLayoutToDataBase() {
-        workoutsService.saveLayoutToDataBase(true,workoutsList.getValue());
-        saveWorkoutToFireBase();
+        workoutsService.saveLayoutToDataBase(true, workoutsList.getValue());
         // workoutsModel.saveLayoutToDatabase(true, workoutsList.getValue(), program.getValue().getDbName());
     }
 
@@ -74,4 +72,7 @@ public class WorkoutsViewModel extends ViewModel {
     }
 
 
+    public void setNewWorkout() {
+        workoutsService.provideWorktoutsList(workoutsList, true);
+    }
 }

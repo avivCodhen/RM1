@@ -5,6 +5,7 @@ import com.strongest.savingdata.Adapters.WorkoutItemAdapters.SpecificExerciseObs
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.WorkoutObserver;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Workout implements Lister {
 
@@ -13,6 +14,8 @@ public class Workout implements Lister {
     public String workoutName;
     private WorkoutObserver workoutObserver;
     private SpecificExerciseObserver exerciseObserver;
+    private String uid;
+    private String programUid;
 
     public  Workout(){
     }
@@ -56,6 +59,22 @@ public class Workout implements Lister {
     @Override
     public SpecificExerciseObserver getExerciseObserver() {
         return exerciseObserver;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getProgramUid() {
+        return programUid;
+    }
+
+    public void setProgramUid(String programUid) {
+        this.programUid = programUid;
     }
 
 

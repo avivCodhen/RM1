@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.strongest.savingdata.AViewModels.ProgramViewModel;
+import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.R;
 
@@ -34,6 +35,8 @@ public class NewProgramFragment extends BaseFragment {
     private void initViews(View v) {
 
         programViewModel = ViewModelProviders.of(getActivity()).get(ProgramViewModel.class);
+        workoutsViewModel = ViewModelProviders.of(getActivity()).get(WorkoutsViewModel.class);
+
         v.findViewById(R.id.toolbar_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,6 +48,7 @@ public class NewProgramFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 programViewModel.setNewProgram();
+                workoutsViewModel.setNewWorkout();
                 getFragmentManager().popBackStack();
             }
         });

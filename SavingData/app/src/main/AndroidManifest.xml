@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:name=".DependencyInjection.MainApplication"
@@ -18,32 +20,25 @@
         tools:replace="android:label, supportsRtl">
         <activity android:name=".Activities.MainActivity" />
         <activity android:name=".Activities.RegisterActivity" />
-        <activity android:name="youruserpools.MainActivity">
-
-        </activity>
+        <activity android:name="youruserpools.MainActivity"></activity>
         <activity
             android:name=".Dialogs.DialogMuscleSelect"
             android:theme="@style/AppTheme.CustomeTheme" />
         <activity android:name=".Fragments.Choose.ChooseDialogFragment" />
         <activity android:name=".Activities.WebViewActivity" />
-        <activity android:name=".Activities.HomeActivity" >
-
+        <activity android:name=".Activities.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
-
         <activity android:name=".TestActivity" />
         <activity android:name=".Activities.TutorialActivity" />
         <activity android:name=".Activities.ExerciseDetailsActivity" />
-        <activity android:name=".Activities.SetsDetailsActivity"></activity>
+        <activity android:name=".Activities.SetsDetailsActivity" />
 
-
-        <!--CognitoActivities -  to delete-->
+        <!-- CognitoActivities -  to delete -->
         <activity
             android:name="youruserpools.UserActivity"
             android:label="@string/title_activity_user"
@@ -95,6 +90,9 @@
             android:name="youruserpools.ChooseMFA"
             android:label="@string/title_activity_choose_mfa"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.LoginActivity2"
+            android:label="@string/title_activity_login2"></activity>
     </application>
 
 </manifest><!--

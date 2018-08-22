@@ -262,7 +262,6 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
         toolbar.setNavigationOnClickListener(navBack -> {
             getFragmentManager().popBackStack();
-            workoutsViewModel.saveLayoutToDataBase();
         });
 
     }

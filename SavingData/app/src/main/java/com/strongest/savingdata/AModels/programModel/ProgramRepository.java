@@ -44,6 +44,16 @@ public class ProgramRepository implements ProgramDAO{
     }
 
     @Override
+    public Single<Program> getCurrentProgram(String key) {
+        return programDAO.getCurrentProgram(key);
+    }
+
+    @Override
+    public void updateProgramCreatorUID(Program program) {
+         programDAO.updateProgramCreatorUID(program);
+    }
+
+    @Override
     public void nukeTable() {
         programDAO.nukeTable();
     }

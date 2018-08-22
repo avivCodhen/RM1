@@ -6,6 +6,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -26,6 +27,11 @@ public interface ProgramDAO {
     @Query("SELECT * FROM program WHERE `key` = :key")
     LiveData<Program> getProgramByKey(String key);
 
+    @Query("SELECT * FROM program WHERE `key` = :key")
+    Single<Program> getCurrentProgram(String key);
+
+    @Update
+    void updateProgramCreatorUID(Program program);
 
     @Query("DELETE FROM program")
     void nukeTable();

@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
+import com.strongest.savingdata.AService.ProgramService;
 import com.strongest.savingdata.AService.UserService;
 import com.strongest.savingdata.AViewModels.ProgramViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModelFactory;
@@ -16,6 +17,7 @@ import com.strongest.savingdata.BaseWorkout.Programmer;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.DependencyInjection.MainApplication;
+import com.strongest.savingdata.R;
 
 import javax.inject.Inject;
 
@@ -41,6 +43,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Inject
     UserService userService;
 
+    @Inject
+    ProgramService programService;
+
 
     public WorkoutsViewModel workoutsViewModel;
 
@@ -58,8 +63,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void addFragmentToHomeActivity(int id, Fragment f, String tag){
 
         getSupportFragmentManager().beginTransaction()
-                .setTransition( FragmentTransaction.TRANSIT_FRAGMENT_FADE )
-//                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                //.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_left, R.anim.slide_out_right)
+                .setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right, R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right)
                 .replace(id, f, tag)
                 .addToBackStack(tag)
                 .commit();

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.strongest.savingdata.Activities.BaseActivity;
 import com.strongest.savingdata.Activities.HomeActivity;
+import com.strongest.savingdata.Activities.LoginActivity2;
 import com.strongest.savingdata.Fragments.BaseFragment;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
 import com.strongest.savingdata.dagger.AppModule;
@@ -28,4 +29,6 @@ public interface MainAppComponent {
 
     void inject(ProgramSettingsFragment programSettingsFragment);
     void inject(BaseFragment baseFragment);
+
+    void inject(LoginActivity2 loginActivity2);
 }

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.strongest.savingdata.AService.ProgramService;
 import com.strongest.savingdata.AViewModels.ProgramViewModel;
+import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.DependencyInjection.MainApplication;
 import com.strongest.savingdata.R;
 
@@ -17,6 +18,7 @@ public class BaseFragment extends Fragment {
     public static final String FRAGMENT_TAG = "tag";
 
     ProgramViewModel programViewModel;
+    WorkoutsViewModel workoutsViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

@@ -28,6 +28,8 @@ import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class ProgramService {
 
@@ -83,6 +85,11 @@ public class ProgramService {
         sharedPreferencesEditor.putString(CURRENT_PROGRAM, key).commit();
     }
 
+    private String getProgramUID(){
+        return sharedPreferences.getString(CURRENT_PROGRAM, "");
+
+    }
+
     private Program createNewProgram() {
 
         Program program = new Program(
@@ -118,6 +125,22 @@ public class ProgramService {
 
     public void cleanCurrentProgramSharedPreferences() {
         sharedPreferencesEditor.remove(CURRENT_PROGRAM).commit();
+    }
+
+
+    public void updateProgram(){
+        String p = getProgramUID();
+        if(p.equals("")){
+            return;
+        }
+        programRepository.getCurrentProgram(p)
+               .observeOn(AndroidSchedulers.mainThread())
+               .subscribeOn(Schedulers.io())
+                .subscribe((program)->{
+                    program.setCreatorUID(getUID());
+                    program.setCreator(getUsername());
+                    programRepository.updateProgramCreatorUID(program);
+                });
     }
 
 }

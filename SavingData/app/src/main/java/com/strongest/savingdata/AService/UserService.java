@@ -3,6 +3,7 @@ package com.strongest.savingdata.AService;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -73,6 +74,20 @@ public class UserService {
 
         });
 
+    }
+
+    public void logInUser(String email, String pass, ProgressBar progressBar, CallBacks.OnFinish onFinish){
+        progressBar.setVisibility(View.VISIBLE);
+        firebaseAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(task->{
+
+            progressBar.setVisibility(View.GONE);
+            if(task.isSuccessful()){
+                Toast.makeText(context, "logged in!", Toast.LENGTH_SHORT).show();
+                onFinish.onFinish(1);
+            }else{
+                Toast.makeText(context, "Wrong credentials", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void saveUsernameToSharedPreferences(String username, String uid) {

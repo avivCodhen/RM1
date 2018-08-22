@@ -34,6 +34,7 @@ import static com.strongest.savingdata.Database.Program.DBProgramHelper.TABLE_LA
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.TABLE_PROGRAM_REFERENCE;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.TABLE_TEMPLATES;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.TABLE_TEMPLATES_REFERENCE;
+import static com.strongest.savingdata.Database.Program.DBProgramHelper.TABLE_WORKOUTS;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.TEMPLATE_NAME;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.WORKOUTS_NAMES_ARRAY;
 
@@ -71,6 +72,11 @@ public class ProgramDataManager extends DataManager {
         //  updateCurrentTables(0);
     }
 
+    private SQLiteDatabase getDb(SQLiteOpenHelper helper) {
+        db = helper.getWritableDatabase();
+        return db;
+    }
+
     public void insertData(String tableName, ArrayList<ContentValues> contentValues) {
         for (ContentValues v : contentValues) {
             getDb(programHelper).insert(tableName,
@@ -91,29 +97,28 @@ public class ProgramDataManager extends DataManager {
         ArrayList<ContentValues> values;
         values = getPLObjectsContentValues(layout);
         //creates a new layout table
-        v = getLayoutReferenceContentValues(dbName);
-        updateCurrentTables(0);
+        //v = getLayoutReferenceContentValues(dbName);
+        //updateCurrentTables(0);
         if (update) {
             try {
                 delete(dbName);
             } catch (Exception e) {
                 Log.d("aviv", "saveLayoutToDataBase: " + e.toString());
+                getDb(programHelper).execSQL(programHelper.getLayoutCommand());
+
             }
         } else {
-            getDb(programHelper).execSQL(programHelper.getLayoutCommand(dbName));
+            //getDb(programHelper).execSQL(programHelper.getLayoutCommand(dbName));
             //inserts name to layout reference
-            insertData(TABLE_LAYOUT_REFERENCE, v);
+
             //creates reference in current program table
             // insertData(currentProgramTable, new ContentValues[]{v});
 
         }
+        insertData(TABLE_WORKOUTS, values);
 
         //inserts data to the new layout table
-        insertData(dbName, values);
-        if (update) {
-
-        }
-
+        //insertData(dbName, values);
        /* String newName = createUserTemplate(p.getTemplateName());
         insertTableToTemplates(newName);*/
     }
@@ -137,7 +142,7 @@ public class ProgramDataManager extends DataManager {
 
     public void delete(String table) {
         getDb(programHelper).delete(table, null, null);
-        getDb(programHelper).delete("SQLITE_SEQUENCE", "NAME = ?", new String[]{table});
+        //getDb(programHelper).delete("SQLITE_SEQUENCE", "NAME = ?", new String[]{table});
     }
 
     //create a table reference for the created program table
@@ -236,10 +241,6 @@ public class ProgramDataManager extends DataManager {
         }
     }
 
-    private SQLiteDatabase getDb(SQLiteOpenHelper helper) {
-        db = helper.getWritableDatabase();
-        return db;
-    }
 
     private double getWeight(int id) {
         String sql = "SELECT " + WEIGHT + " FROM " + currentProgramTable + " WHERE " + EXERCISE_ID + "=" + id;
@@ -315,7 +316,7 @@ public class ProgramDataManager extends DataManager {
         String sql = "SELECT * FROM " + currentDbName;
         Cursor c = null;
         try {
-            c = db.rawQuery(sql, null);
+            c = getDb(programHelper).rawQuery(sql, null);
         } catch (Exception e) {
             return null;
         }

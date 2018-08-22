@@ -69,7 +69,7 @@ public class DBProgramHelper extends SQLiteOpenHelper {
     public static final String TABLE_PROGRAM_REFERENCE = "table_program_reference";
     public static final String TABLE_TEMPLATES_REFERENCE = "table_template_reference";
     public static final String TABLE_LAYOUT_REFERENCE = "table_layout_reference";
-    public static final String TABLE_PROGRAM = "table_layout_reference";
+    public static final String TABLE_WORKOUTS = "table_workouts_reference";
 
 
 
@@ -91,7 +91,7 @@ public class DBProgramHelper extends SQLiteOpenHelper {
             + TABLE_TEMPLATES + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + TEMPLATE_NAME + " TEXT)";*/
 
     //commands
-    private final String LAYOUT_CREATE_COMMAND = "CREATE TABLE " + "programs" + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
+    private final String WORKOUTS_CREATE_COMMAND = "CREATE TABLE " + TABLE_WORKOUTS + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
             + SETS + " TEXT, " + SUPERSET + " INTEGER, " + INNER_TYPE+" INTEGER,"+ NAME + " TEXT," + WORKOUT_ID + " INTEGER," + EXERCISE_PROFILE_ID + " INTEGER, " + TYPE + " INTEGER, "
             + WEIGHT + " TEXT, " + REST + " TEXT, " + FIRST_EXERCISE + " INTEGER, "
             + EXERCISE_ID + " TEXT, "+ REP_ID + " TEXT," + METHOD_ID + " INTEGER DEFAULT -1, " + MUSCLE + " TEXT,"
@@ -134,12 +134,13 @@ public class DBProgramHelper extends SQLiteOpenHelper {
         db.execSQL(LAYOUT_REFERENCE_COMMAND);
         db.execSQL(PROGRAM_REFERENCE_COMMAND);
         db.execSQL(TEMPLATES_REFERENCE_COMMAND);
+        db.execSQL(WORKOUTS_CREATE_COMMAND);
+
         //  db.execSQL(PROGRESSORDATA_TABLE_COMMAND);
     }
 
-    public String getLayoutCommand(String tableName) {
-        String command = LAYOUT_CREATE_COMMAND.replace("programs", tableName);
-        return command;
+    public String getLayoutCommand( ) {
+        return WORKOUTS_CREATE_COMMAND;
     }
 
     public String getTemplateCreateCommand(String tableName) {

@@ -1,15 +1,22 @@
 package com.strongest.savingdata.AService;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.AModels.workoutModel.Workout;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutBro;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutHolder;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
 import com.strongest.savingdata.BaseWorkout.Muscle;
@@ -21,6 +28,7 @@ import com.strongest.savingdata.Database.Program.DBProgramHelper;
 import com.strongest.savingdata.Utils.FireBaseUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.DEFAULT_INT;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.MUSCLE;
@@ -59,61 +67,128 @@ public class WorkoutsService {
                 .getInstance()
                 .getReference()
                 .child(FireBaseUtils.FIRE_BASE_REFERENCE_WORKOUTS);
+
         this.dataManager = dataManager;
     }
 
-    public ArrayList<Workout> provideWorktoutsList() {
+    public void provideWorktoutsList(MutableLiveData<ArrayList<Workout>> mutableLiveDataWorkout, boolean isNew) {
         String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
-        if(programUID.equals("")){
+        if (programUID.equals("")) {
             throw new IllegalArgumentException("program uid cannot be empty");
         }
-        ArrayList<Workout> list = readLayoutFromDataBase(programUID);
-        if (list == null) {
-            list = createDefaultWorkoutsList();
-            try {
-                saveLayoutToDataBase(true, list);
-            } catch (Exception e) {
-                saveLayoutToDataBase(false,list);
-                //throw new IllegalArgumentException("could not save layout to database " + e.toString());
-            }
+        if (isNew) {
+            createDefaultWorkoutsList(mutableLiveDataWorkout, programUID);
+            return;
         }
-        saveWorkoutsToFireBase(list);
-        return list;
+        if (!isWorkoutMatchProgramUID() && !isNew) {
+            getWorkoutsFromFireBase(mutableLiveDataWorkout);
+        }
+
     }
 
-    public ArrayList<Workout> createDefaultWorkoutsList() {
+    public ArrayList<Workout> createDefaultWorkoutsList(MutableLiveData mutableLiveDataWorkout, String programUID) {
         ArrayList<Workout> workoutArrayList = new ArrayList<>();
         Workout w = new Workout();
         w.workoutName = "Workout 1";
         w.exArray.add(new ExerciseItemAdapter().insert());
         workoutArrayList.add(w);
+        saveLayoutToDataBase(false, workoutArrayList);
+        mutableLiveDataWorkout.setValue(workoutArrayList);
         return workoutArrayList;
+    }
+
+    private boolean isWorkoutMatchProgramUID() {
+        return sharedPreferences.getString(CURRENT_WORKOUT, "no")
+                .equals(
+                        sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, " nope")
+                );
+    }
+
+ /*   private boolean saveProgramNameToSharedPreference() {
+        String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
+        return dataManager.getPrefsEditor().putString(CURRENT_PROGRAM_DBNAME, p).commit();
+    }*/
+
+    private void saveWorkoutKeyListToSharedPrefenrece(ArrayList<Workout> w) {
+
     }
 
 
     public void saveWorkoutsToFireBase(ArrayList<Workout> workouts) {
         String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
-        if(programUID.equals("")){
-            throw  new IllegalArgumentException("there must be an program UID");
+        if (programUID.equals("")) {
+            throw new IllegalArgumentException("there must be an program UID");
         }
+        List<WorkoutBro> list = new ArrayList<>();
         for (Workout w : workouts) {
             WorkoutBro workoutBro = new WorkoutBro();
             workoutBro.setExArray(w.exArray);
             workoutBro.setProgramUid(programUID);
             workoutBro.setWorkoutName(w.workoutName);
-            databaseReference.child(programUID).setValue(workoutBro).addOnCompleteListener(task->{
-                Log.d("aviv", "saveWorkoutsToFireBase: workout saved!");
-            });
+            //String key = databaseReference.push().getKey();
+            list.add(workoutBro);
+
+
         }
+
+        WorkoutHolder wor = new WorkoutHolder();
+        wor.setWorkouts(list);
+        databaseReference
+                .child(programUID)
+                .setValue(list)
+                .addOnCompleteListener(task -> {
+
+                    Log.d("aviv", "saveWorkoutsToFireBase: workout saved!");
+                });
+
+    }
+
+    public void getWorkoutsFromFireBase(MutableLiveData mutableLiveDataWorkout) {
+        String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
+
+        databaseReference.child(programUID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //list = dataSnapshot.getValue();
+                if (dataSnapshot.getValue() != null) {
+                    //GenericTypeIndicator<List<WorkoutBro>> gti = new GenericTypeIndicator<>();
+                    //List<WorkoutBro> list = dataSnapshot.getValue(gti);
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+//                        GenericTypeIndicator<List<WorkoutBro>> gti = new GenericTypeIndicator<>();
+                        WorkoutHolder wor = d.getValue(WorkoutHolder.class);
+                       /* ArrayList<Workout> list = new ArrayList<>();
+
+                        for (WorkoutBro w :)*/
+                        mutableLiveDataWorkout.setValue(wor);
+
+                    }
+                } else {
+                    createDefaultWorkoutsList(mutableLiveDataWorkout, programUID);
+                }
+
+                /*for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    list.add(d.getValue(Workout.class));
+                }*/
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                Log.d("aviv", "onCancelled: didn't retrieve");
+            }
+        });
+
     }
 
     public boolean saveLayoutToDataBase(final boolean update, ArrayList<Workout> layout) {
+        saveWorkoutsToFireBase(layout);
+        //  saveProgramNameToSharedPreference(programUID);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 // requestSplitToLayout();
 
-                dataManager.getProgramDataManager().insertTables(update, "workouts", layout);
+                dataManager.getProgramDataManager().insertTables(update, DBProgramHelper.TABLE_WORKOUTS, layout);
             }
         }).start();
         return true;
@@ -347,10 +422,6 @@ public class WorkoutsService {
         }
         return null;
     }*/
-
-    private boolean saveProgramNameToSharedPreference(String dbName) {
-        return dataManager.getPrefsEditor().putString(CURRENT_PROGRAM_DBNAME, dbName).commit();
-    }
 
 
     //deprecated
