@@ -10,6 +10,7 @@ import android.util.Log;
 import com.strongest.savingdata.AModels.workoutModel.Workout;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
 import com.strongest.savingdata.AModels.programModel.Program;
+import com.strongest.savingdata.AService.WorkoutsService;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
 import com.strongest.savingdata.Database.Program.DBProgramHelper;
@@ -93,34 +94,26 @@ public class ProgramDataManager extends DataManager {
     }
 
     public void insertTables(boolean update, String dbName, ArrayList<Workout> layout) {
-        ContentValues v;
         ArrayList<ContentValues> values;
         values = getPLObjectsContentValues(layout);
-        //creates a new layout table
-        //v = getLayoutReferenceContentValues(dbName);
-        //updateCurrentTables(0);
+        try {
+            delete(dbName);
+
+        } catch (Exception e) {
+
+        }
         if (update) {
             try {
                 delete(dbName);
             } catch (Exception e) {
                 Log.d("aviv", "saveLayoutToDataBase: " + e.toString());
-                getDb(programHelper).execSQL(programHelper.getLayoutCommand());
+//                getDb(programHelper).execSQL(programHelper.getLayoutCommand());
 
             }
-        } else {
-            //getDb(programHelper).execSQL(programHelper.getLayoutCommand(dbName));
-            //inserts name to layout reference
-
-            //creates reference in current program table
-            // insertData(currentProgramTable, new ContentValues[]{v});
-
         }
         insertData(TABLE_WORKOUTS, values);
 
-        //inserts data to the new layout table
-        //insertData(dbName, values);
-       /* String newName = createUserTemplate(p.getTemplateName());
-        insertTableToTemplates(newName);*/
+
     }
 
   /*  public String createUserTemplate(String name) {
@@ -141,7 +134,8 @@ public class ProgramDataManager extends DataManager {
 
 
     public void delete(String table) {
-        getDb(programHelper).delete(table, null, null);
+        //getDb(programHelper).execSQL("delete from " + TABLE_WORKOUTS, null);
+        getDb(programHelper).delete(TABLE_WORKOUTS, null, null);
         //getDb(programHelper).delete("SQLITE_SEQUENCE", "NAME = ?", new String[]{table});
     }
 
@@ -380,7 +374,7 @@ public class ProgramDataManager extends DataManager {
         ArrayList<ContentValues> contentValues = new ArrayList<>();
         ContentValues v;
         for (Workout workout : w) {
-            ArrayList<PLObject> p = workout.exArray;
+            ArrayList<PLObject.ExerciseProfile> p = WorkoutsService.exerciseToPLObject((ArrayList) workout.exArray);
             ContentValues workoutV = new ContentValues();
             workoutV.put(DBExercisesHelper.TYPE, WorkoutLayoutTypes.WorkoutView.ordinal());
             workoutV.put(DBProgramHelper.NAME, workout.workoutName);
@@ -388,15 +382,14 @@ public class ProgramDataManager extends DataManager {
             for (PLObject ep : p) {
                 v = new ContentValues();
 
-                if(ep.type == WorkoutLayoutTypes.BodyView){
+                if (ep.type == WorkoutLayoutTypes.BodyView) {
                     v.put(DBExercisesHelper.TYPE, ep.getType().ordinal());
                     v.put(DBProgramHelper.WORKOUT_ID, ep.getWorkoutId());
                     PLObject.BodyText bodyText = (PLObject.BodyText) ep;
                     v.put(DBExercisesHelper.NAME, (bodyText.getTitle()));
                     contentValues.add(v);
                     //    v.put(DBProgramHelper.workou);
-                }
-                else if(ep.type == WorkoutLayoutTypes.ExerciseProfile || ep.type == WorkoutLayoutTypes.IntraSet){
+                } else if (ep.type == WorkoutLayoutTypes.ExerciseProfile /*|| ep.type == WorkoutLayoutTypes.IntraSet*/) {
                     PLObject.ExerciseProfile exerciseProfile = (PLObject.ExerciseProfile) ep;
                     if (exerciseProfile.getInnerType() == WorkoutLayoutTypes.IntraExerciseProfile) {
                         break;
@@ -411,8 +404,8 @@ public class ProgramDataManager extends DataManager {
                         }
                     }
 
-                    for (int j = 0; j < exerciseProfile.getExerciseProfiles().size(); j++) {
-                        PLObject.ExerciseProfile superset = exerciseProfile.getExerciseProfiles().get(j);
+                    for (int j = 0; j < exerciseProfile.exerciseProfiles.size(); j++) {
+                        PLObject.ExerciseProfile superset = exerciseProfile.exerciseProfiles.get(j);
                         contentValues.add(saveExercise(superset));
 
                         for (int k = 0; k < superset.intraSets.size(); k++) {

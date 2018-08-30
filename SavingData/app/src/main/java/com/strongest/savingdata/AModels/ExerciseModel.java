@@ -35,7 +35,7 @@ public class ExerciseModel {
 
                     //each set has to get it's supersets from each superset exercise
                     s.superSets.clear();
-                    for (PLObject.ExerciseProfile superset : ep.getExerciseProfiles()) {
+                    for (PLObject.ExerciseProfile superset : ep.exerciseProfiles) {
                         s.superSets.add(superset.intraSets.get(i));
                         if (i < superset.intraSets.size()) {
                         }
@@ -59,7 +59,7 @@ public class ExerciseModel {
      */
     public static ArrayList<PLObject> expandExerciseSupersets(PLObject.ExerciseProfile ep) {
         ArrayList<PLObject> list = new ArrayList<>();
-        for (PLObject.ExerciseProfile e : ep.getExerciseProfiles()) {
+        for (PLObject.ExerciseProfile e : ep.exerciseProfiles) {
             list.add(e);
         }
         return list;
@@ -88,8 +88,8 @@ public class ExerciseModel {
                                                     PLObject.ExerciseProfile parent,
                                                     ArrayList<PLObject.SetsPLObject> supersetsSets) {
 
-        for (int i = 0; i < parent.getExerciseProfiles().size(); i++) {
-            PLObject.ExerciseProfile superset = parent.getExerciseProfiles().get(i);
+        for (int i = 0; i < parent.exerciseProfiles.size(); i++) {
+            PLObject.ExerciseProfile superset = parent.exerciseProfiles.get(i);
             superset.intraSets.add(positionInList, supersetsSets.get(i));
         }
 
@@ -105,9 +105,9 @@ public class ExerciseModel {
                                               PLObject.SetsPLObject setsPLObject,
                                               SetsItemAdapter setsItemAdapter) {
 
-        int numOfSupersets = parent.getExerciseProfiles().size();
+        int numOfSupersets = parent.exerciseProfiles.size();
         for (int i = 0; i < numOfSupersets; i++) {
-            PLObject.ExerciseProfile superset = parent.getExerciseProfiles().get(i);
+            PLObject.ExerciseProfile superset = parent.exerciseProfiles.get(i);
             PLObject.SetsPLObject intraSet =new PLObject.SetsPLObject();
             intraSet.innerType = WorkoutLayoutTypes.SuperSetIntraSet;
             intraSet.type = WorkoutLayoutTypes.SuperSetIntraSet;

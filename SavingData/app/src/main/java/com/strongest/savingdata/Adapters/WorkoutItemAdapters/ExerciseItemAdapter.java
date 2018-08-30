@@ -64,7 +64,7 @@ public class ExerciseItemAdapter implements WorkoutItemAdapter<ExerciseProfile> 
 
     @Override
     public int addingDuplicateTo(ExerciseProfile parent) {
-        return 1 + parent.getExerciseProfiles().size();
+        return 1 + parent.exerciseProfiles.size();
     }
 
     @Override
@@ -77,8 +77,8 @@ public class ExerciseItemAdapter implements WorkoutItemAdapter<ExerciseProfile> 
     public ExerciseProfile onChild(ExerciseProfile parent) {
         ExerciseProfile ep = new ExerciseProfile();
         ep.type = WorkoutLayoutTypes.IntraExerciseProfile;
-        parent.getExerciseProfiles().add(ep);
-        ep.setParent(parent);
+        parent.exerciseProfiles.add(ep);
+        //ep.setParent(parent);
         for (int i = 0; i <parent.getSets().size() ; i++) {
             PLObject.SetsPLObject intraSet =new PLObject.SetsPLObject();
             intraSet.innerType = WorkoutLayoutTypes.SuperSetIntraSet;
@@ -92,7 +92,7 @@ public class ExerciseItemAdapter implements WorkoutItemAdapter<ExerciseProfile> 
     @Override
     public int onAddingChildToGroup(ExerciseProfile parent, ExerciseProfile child) {
 
-        return parent.getExerciseProfiles().size();
+        return parent.exerciseProfiles.size();
     }
 
     @Override

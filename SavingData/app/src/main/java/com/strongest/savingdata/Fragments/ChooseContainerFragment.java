@@ -100,7 +100,7 @@ public class ChooseContainerFragment extends BaseCreateProgramFragment {
         @Override
         public int getCount() {
             if(type.equals(INTRA_EXERCISE)){
-                return exerciseProfile.getExerciseProfiles().size()+1;
+                return exerciseProfile.exerciseProfiles.size()+1;
             }else if(type.equals(SET)){
               //  return exerciseProfile.getSets().get(pos).getIntraSets().size();
             }

@@ -140,11 +140,6 @@ public class WorkoutsModel implements Architecture.model {
 
 
 
-
-    public boolean saveLayoutToDatabase(boolean update, ArrayList<Workout> w, String dbName) {
-        return workoutsService.saveLayoutToDataBase(update, w);
-    }
-
     //creates a new program with a special UDBname for the program
     //
  /*   private Program createProgram() {
@@ -204,7 +199,7 @@ public class WorkoutsModel implements Architecture.model {
     public ArrayList<PLObject> expandExercise(ExerciseProfile ep) {
         ArrayList<PLObject> list = new ArrayList<>();
         list.add(ep);
-        for (ExerciseProfile e : ep.getExerciseProfiles()) {
+        for (ExerciseProfile e : ep.exerciseProfiles) {
             list.add(e);
         }
         return list;
@@ -242,12 +237,12 @@ public class WorkoutsModel implements Architecture.model {
           return ep;
       }
   */
-    public PLObject.SetsPLObject createSetsPlObject(ExerciseProfile parent, ExerciseSet exerciseSet, WorkoutLayoutTypes innerType) {
+  /*  public PLObject.SetsPLObject createSetsPlObject(ExerciseProfile parent, ExerciseSet exerciseSet, WorkoutLayoutTypes innerType) {
         PLObject.SetsPLObject setsPLObject = new PLObject.SetsPLObject(parent, exerciseSet);
         setsPLObject.setInnerType(innerType);
         return setsPLObject;
 
-    }
+    }*/
 
   /*  public void saveLayoutToDataBase(final boolean update) {
         new Thread(new Runnable() {

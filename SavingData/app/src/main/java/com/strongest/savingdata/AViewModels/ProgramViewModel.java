@@ -28,9 +28,7 @@ public class ProgramViewModel extends ViewModel {
         mediatorLiveData = new MediatorLiveData<>();
 
         program = programService.provideProgram();
-        if(program == null){
-            program = programService.provideNewProgram();
-        }
+
     }
 
     public LiveData<Program> getProgram() {

@@ -55,17 +55,15 @@ public class WorkoutsViewModel extends ViewModel {
     }
 
     public void initWorkouts() {
-        workoutsService.provideWorktoutsList(workoutsList, false);
+      //  workoutsService.provideWorktoutsList(workoutsList, WorkoutsService.CMD.INIT);
+        workoutsService.provideWorktoutsList(workoutsList, WorkoutsService.CMD.SWITCH);
     }
 
     public void saveLayoutToDataBase() {
-        workoutsService.saveLayoutToDataBase(true, workoutsList.getValue());
-        // workoutsModel.saveLayoutToDatabase(true, workoutsList.getValue(), program.getValue().getDbName());
+        workoutsService.saveLayoutToDataBase(true, workoutsList.getValue(), null);
     }
 
-    public void saveWorkoutToFireBase() {
-        workoutsService.saveWorkoutsToFireBase(workoutsList.getValue());
-    }
+
 
     public WorkoutsModel getWorkoutsModel() {
         return workoutsModel;
@@ -73,6 +71,6 @@ public class WorkoutsViewModel extends ViewModel {
 
 
     public void setNewWorkout() {
-        workoutsService.provideWorktoutsList(workoutsList, true);
+        workoutsService.provideWorktoutsList(workoutsList, WorkoutsService.CMD.NEW);
     }
 }

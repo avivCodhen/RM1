@@ -145,12 +145,12 @@ public class PLObject implements Serializable {
         public String comment = "";
         private ArrayList<SetsPLObject> sets = new ArrayList<>();
         public ArrayList<SetsPLObject> intraSets = new ArrayList<>();
-        private ArrayList<ExerciseProfile> exerciseProfiles = new ArrayList<>();
+        public ArrayList<ExerciseProfile> exerciseProfiles = new ArrayList<>();
         private int exerciseProfileId;
         private Muscle muscle;
         public Beans exercise;
         private String tag;
-        private ExerciseProfile parent;
+        //private ExerciseProfile parent;
         private boolean shadowExpand;
         public int rawPosition;
         public boolean showComment;
@@ -170,7 +170,7 @@ public class PLObject implements Serializable {
             this.type = ep.type;
             this.exercise = ep.exercise;
             this.muscle = ep.muscle;
-            this.parent = ep.parent;
+            //this.parent = ep.parent;
             this.tag = ep.tag;
             this.comment = ep.comment;
             this.defaultInt = ep.getDefaultInt();
@@ -191,25 +191,6 @@ public class PLObject implements Serializable {
             this.innerType = innerType;
         }
 
-      /*  public boolean isSelected() {
-            return selected;
-       }*/
-
-//        public void setSelected(boolean selected) {
-//            this.selected = selected;
-//        }
-
-        public int getExerciseProfileId() {
-            return exerciseProfileId;
-        }
-//        public boolean isFirstExercise() {
-//            return firstExercise;
-//        }
-
-//        public void setFirstExercise(boolean firstExercise) {
-//            this.firstExercise = firstExercise;
-//        }
-
         public ArrayList<SetsPLObject> getSets() {
             return sets;
         }
@@ -218,17 +199,6 @@ public class PLObject implements Serializable {
             this.sets = sets;
         }
 
-        /* public Sets getmSets() {
-             return mSets;
-         }
-
-         public void setmSets(Sets mSets) {
-             this.mSets = mSets;
-         }
-         public boolean isHasBeansHolders() {
-             return mSets != null;
-         }
- */
         public Muscle getMuscle() {
             return muscle;
         }
@@ -237,9 +207,6 @@ public class PLObject implements Serializable {
             this.muscle = muscle;
         }
 
-        public ArrayList<ExerciseProfile> getExerciseProfiles() {
-            return exerciseProfiles;
-        }
 
         public String getTag() {
             return tag;
@@ -260,13 +227,13 @@ public class PLObject implements Serializable {
             }
         }
 
-        public ExerciseProfile getParent() {
+      /*  public ExerciseProfile getParent() {
             return parent;
-        }
+        }*/
 
-        public void setParent(ExerciseProfile parent) {
+       /* public void setParent(ExerciseProfile parent) {
             this.parent = parent;
-        }
+        }*/
 
         public boolean isShadowExpand() {
             return shadowExpand;
@@ -286,17 +253,17 @@ public class PLObject implements Serializable {
         private ExerciseSet ExerciseSet = new ExerciseSet();
         public ArrayList<SetsPLObject> intraSets = new ArrayList<>();
         public ArrayList<SetsPLObject> superSets = new ArrayList<>();
-        public ExerciseProfile parent;
+       // public ExerciseProfile parent;
         public SetsPLObject setParent;
         public String tag;
         public String title;
+        public WorkoutLayoutTypes innerType;
 
 
-        public SetsPLObject(ExerciseProfile father, ExerciseSet ExerciseSet) {
+        public SetsPLObject( ExerciseSet ExerciseSet) {
             this.ExerciseSet = ExerciseSet;
             type = WorkoutLayoutTypes.SetsPLObject;
-            parent = father;
-            innerType = WorkoutLayoutTypes.SetsPLObject;
+            //parent = father;
         }
 
         //this is necessary for duplication
@@ -307,6 +274,15 @@ public class PLObject implements Serializable {
             this.intraSets = setsPLObject.intraSets;
             this.isParent = setsPLObject.isParent;
             this.title = setsPLObject.title;
+            this.innerType = setsPLObject.innerType;
+        }
+
+        public ArrayList<SetsPLObject> getIntraSets() {
+            return intraSets;
+        }
+
+        public ArrayList<SetsPLObject> getSuperSets() {
+            return superSets;
         }
 
         public SetsPLObject(){
@@ -314,7 +290,7 @@ public class PLObject implements Serializable {
         }
 
         public WorkoutLayoutTypes getInnerType() {
-            return innerType;
+            return this.innerType;
         }
 
         public void setInnerType(WorkoutLayoutTypes innerType) {
@@ -327,10 +303,6 @@ public class PLObject implements Serializable {
 
         public void setExerciseSet(ExerciseSet exerciseSet) {
             this.ExerciseSet = exerciseSet;
-        }
-
-        public ExerciseProfile getParent() {
-            return parent;
         }
 
     }

@@ -3,6 +3,7 @@ package com.strongest.savingdata.AService;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -19,8 +20,10 @@ import com.strongest.savingdata.AModels.workoutModel.WorkoutBro;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutHolder;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
+import com.strongest.savingdata.Adapters.WorkoutItemAdapters.SetsItemAdapter;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.AModels.programModel.Program;
+import com.strongest.savingdata.Controllers.CallBacks;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
@@ -43,11 +46,17 @@ import static com.strongest.savingdata.Database.Program.DBProgramHelper.REP_ID;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.REST;
 
 public class WorkoutsService {
+
+    public enum CMD {
+        INIT, NEW, SWITCH
+    }
+
     public static final String NO_PROGRAM = "false";
     public static String CURRENT_PROGRAM_DBNAME = "current_program_dbname";
     public static final String CURRENT_WORKOUT = "current_workouts";
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
+    private Handler handler = new Handler();
 
     private DataManager dataManager;
 
@@ -71,28 +80,46 @@ public class WorkoutsService {
         this.dataManager = dataManager;
     }
 
-    public void provideWorktoutsList(MutableLiveData<ArrayList<Workout>> mutableLiveDataWorkout, boolean isNew) {
+    public void provideWorktoutsList(MutableLiveData<ArrayList<Workout>> mutableLiveDataWorkout, CMD cmd) {
         String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
         if (programUID.equals("")) {
             throw new IllegalArgumentException("program uid cannot be empty");
         }
-        if (isNew) {
+
+        if (cmd == CMD.NEW) {
             createDefaultWorkoutsList(mutableLiveDataWorkout, programUID);
             return;
         }
-        if (!isWorkoutMatchProgramUID() && !isNew) {
-            getWorkoutsFromFireBase(mutableLiveDataWorkout);
+
+        if (cmd == CMD.INIT) {
+            ArrayList<Workout> list = null;
+            if (programUID.equals(getCurrentWorkoutUID())) {
+                list = readLayoutFromDataBase(DBProgramHelper.TABLE_WORKOUTS);
+            }
+            if (list != null) {
+                mutableLiveDataWorkout.setValue(list);
+            } else {
+                createDefaultWorkoutsList(mutableLiveDataWorkout, programUID);
+            }
+        }
+        if (cmd == CMD.SWITCH) {
+            getWorkoutsFromFireBase(programUID, mutableLiveDataWorkout);
         }
 
     }
 
     public ArrayList<Workout> createDefaultWorkoutsList(MutableLiveData mutableLiveDataWorkout, String programUID) {
         ArrayList<Workout> workoutArrayList = new ArrayList<>();
-        Workout w = new Workout();
-        w.workoutName = "Workout 1";
-        w.exArray.add(new ExerciseItemAdapter().insert());
-        workoutArrayList.add(w);
-        saveLayoutToDataBase(false, workoutArrayList);
+        for (int i = 0; i < 2; i++) {
+            Workout w = new Workout();
+            w.workoutName = "Workout " + (i + 1);
+            w.exArray.add(new ExerciseItemAdapter().insert());
+            ((PLObject.ExerciseProfile) w.exArray.get(0)).getSets().add(new SetsItemAdapter().insert());
+            ((PLObject.ExerciseProfile) w.exArray.get(0)).getSets().add(new SetsItemAdapter().insert());
+            workoutArrayList.add(w);
+        }
+
+        saveLayoutToDataBase(false, workoutArrayList, null);
         mutableLiveDataWorkout.setValue(workoutArrayList);
         return workoutArrayList;
     }
@@ -104,71 +131,67 @@ public class WorkoutsService {
                 );
     }
 
- /*   private boolean saveProgramNameToSharedPreference() {
-        String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
-        return dataManager.getPrefsEditor().putString(CURRENT_PROGRAM_DBNAME, p).commit();
-    }*/
+    private String getCurrentWorkoutUID() {
+        return sharedPreferences.getString(CURRENT_WORKOUT, "");
+    }
 
-    private void saveWorkoutKeyListToSharedPrefenrece(ArrayList<Workout> w) {
-
+    private boolean saveProgramNameToSharedPreference(String programUID) {
+        return dataManager.getPrefsEditor().putString(CURRENT_WORKOUT, programUID).commit();
     }
 
 
-    public void saveWorkoutsToFireBase(ArrayList<Workout> workouts) {
-        String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
+    public void saveWorkoutsToFireBase(String programUID, ArrayList<Workout> workouts) {
         if (programUID.equals("")) {
             throw new IllegalArgumentException("there must be an program UID");
         }
         List<WorkoutBro> list = new ArrayList<>();
         for (Workout w : workouts) {
             WorkoutBro workoutBro = new WorkoutBro();
-            workoutBro.setExArray(w.exArray);
+            workoutBro.setExArray(exerciseToPLObject((ArrayList) w.exArray));
             workoutBro.setProgramUid(programUID);
             workoutBro.setWorkoutName(w.workoutName);
             //String key = databaseReference.push().getKey();
+            //w.setProgramUid(programUID);
             list.add(workoutBro);
-
-
         }
 
         WorkoutHolder wor = new WorkoutHolder();
         wor.setWorkouts(list);
-        databaseReference
-                .child(programUID)
-                .setValue(list)
-                .addOnCompleteListener(task -> {
+        try {
 
-                    Log.d("aviv", "saveWorkoutsToFireBase: workout saved!");
-                });
+            databaseReference
+                    .child(programUID)
+                    .setValue(wor)
+                    .addOnCompleteListener(task -> {
 
+                        Log.d("aviv", "saveWorkoutsToFireBase: workout saved!");
+                    });
+
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.toString());
+        }
     }
 
-    public void getWorkoutsFromFireBase(MutableLiveData mutableLiveDataWorkout) {
-        String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
+    public void getWorkoutsFromFireBase(String programUID, MutableLiveData mutableLiveDataWorkout) {
 
         databaseReference.child(programUID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //list = dataSnapshot.getValue();
                 if (dataSnapshot.getValue() != null) {
-                    //GenericTypeIndicator<List<WorkoutBro>> gti = new GenericTypeIndicator<>();
-                    //List<WorkoutBro> list = dataSnapshot.getValue(gti);
-                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-//                        GenericTypeIndicator<List<WorkoutBro>> gti = new GenericTypeIndicator<>();
-                        WorkoutHolder wor = d.getValue(WorkoutHolder.class);
-                       /* ArrayList<Workout> list = new ArrayList<>();
+                    WorkoutHolder wor = dataSnapshot.getValue(WorkoutHolder.class);
+                    saveLayoutToDataBase(true, workoutBroParser(wor), (intResult) -> {
+                        ArrayList<Workout> list = readLayoutFromDataBase("");
+                        if (list != null) {
+                            mutableLiveDataWorkout.setValue(list);
+                        } else {
+                            throw new IllegalArgumentException("list is null");
+                        }
+                    });
 
-                        for (WorkoutBro w :)*/
-                        mutableLiveDataWorkout.setValue(wor);
-
-                    }
                 } else {
                     createDefaultWorkoutsList(mutableLiveDataWorkout, programUID);
                 }
 
-                /*for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    list.add(d.getValue(Workout.class));
-                }*/
             }
 
             @Override
@@ -180,15 +203,43 @@ public class WorkoutsService {
 
     }
 
-    public boolean saveLayoutToDataBase(final boolean update, ArrayList<Workout> layout) {
-        saveWorkoutsToFireBase(layout);
-        //  saveProgramNameToSharedPreference(programUID);
+    private ArrayList<Workout> workoutBroParser(WorkoutHolder workoutHolder) {
+        ArrayList<Workout> list = new ArrayList<>();
+        for (WorkoutBro wor : workoutHolder.getWorkouts()) {
+            Workout w = new Workout();
+            w.setProgramUid(wor.getProgramUid());
+            w.setExArray(exerciseToPLObject(wor.getExArray()));
+            w.setWorkoutName(wor.getWorkoutName());
+            list.add(w);
+        }
+        return list;
+    }
+
+    public static ArrayList<PLObject> exerciseToPLObject(List<PLObject.ExerciseProfile> to) {
+        ArrayList<PLObject> list = new ArrayList<>();
+        list.addAll(to);
+        return list;
+    }
+
+    public boolean saveLayoutToDataBase(final boolean update, ArrayList<Workout> layout,
+                                        CallBacks.OnFinish onFinish) {
+        String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
+        saveWorkoutsToFireBase(programUID, layout);
+        saveProgramNameToSharedPreference(programUID);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // requestSplitToLayout();
 
                 dataManager.getProgramDataManager().insertTables(update, DBProgramHelper.TABLE_WORKOUTS, layout);
+                if (onFinish != null) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            onFinish.onFinish(1);
+                        }
+                    });
+                }
+
             }
         }).start();
         return true;
@@ -197,7 +248,7 @@ public class WorkoutsService {
 
     public ArrayList<Workout> readLayoutFromDataBase(String currentDbName) {
         ArrayList<Workout> workoutsList = new ArrayList<>();
-        Cursor c = dataManager.getProgramDataManager().readLayoutTableCursor(currentDbName);
+        Cursor c = dataManager.getProgramDataManager().readLayoutTableCursor(DBProgramHelper.TABLE_WORKOUTS);
         //layout = new ArrayList<>();
         String muscle_str;
         WorkoutLayoutTypes type;
@@ -210,7 +261,7 @@ public class WorkoutsService {
         PLObject.ExerciseProfile currentParent = null;
 
         //for the workoutList implementation
-        ArrayList<PLObject> exArray = null;
+        ArrayList<PLObject.ExerciseProfile> exArray = null;
 
 
         int workoutIndex = 0;
@@ -233,7 +284,9 @@ public class WorkoutsService {
                         break;
                     case BodyView:
                         String bName = c.getString(c.getColumnIndex(NAME));
-                        workoutsList.get(workoutIndex).exArray.add(new PLObject.BodyText(bName));
+
+                        //TODO: FIX THIS!!!
+                        //workoutsList.get(workoutIndex).exArray.add(new PLObject.BodyText(bName));
                         /*drawBody(exArray, bName);
                         drawBody(layout, bName);*/
                         break;
@@ -309,8 +362,8 @@ public class WorkoutsService {
                         ep.comment = c.getString(c.getColumnIndex(COMMENT));
                         ep.showComment = !ep.comment.equals("");
                         if (currentParent != null) {
-                            currentParent.getExerciseProfiles().add(ep);
-                            ep.setParent(currentParent);
+                            currentParent.exerciseProfiles.add(ep);
+                            //ep.setParent(currentParent);
                         }
 
                         //again for the new workoutList implementation
@@ -323,12 +376,12 @@ public class WorkoutsService {
                         innerType = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
                         int pos = workoutsList.get(workoutIndex).exArray.size() - 1;
                         ep = ((PLObject.ExerciseProfile) workoutsList.get(workoutIndex).exArray.get(pos));
-                        PLObject.ExerciseProfile setParent = null;
-                        if (ep.getParent() != null) {
+                      //  PLObject.ExerciseProfile setParent = null;
+                       /* if (ep.getParent() != null) {
                             setParent = ep.getParent();
                         } else {
                             setParent = ep;
-                        }
+                        }*/
                         rep = c.getString(c.getColumnIndex(REP_ID));
                         rest = c.getString(c.getColumnIndex(REST));
                         weight = c.getDouble(c.getColumnIndex(WEIGHT));
@@ -336,9 +389,9 @@ public class WorkoutsService {
                         exerciseSet.setRep(rep);
                         exerciseSet.setRest(rest);
                         exerciseSet.setWeight(weight);
-                        PLObject.SetsPLObject setsPLObjectSet = new PLObject.SetsPLObject(setParent, exerciseSet);
+                        PLObject.SetsPLObject setsPLObjectSet = new PLObject.SetsPLObject(exerciseSet);
                         setsPLObjectSet.setInnerType(innerType);
-                        setParent.getSets().add(setsPLObjectSet);
+                        ep.getSets().add(setsPLObjectSet);
                         setsPLObjectSet.isParent = true;
                         setsPLObjectSet.type = type;
                         break;
@@ -369,7 +422,7 @@ public class WorkoutsService {
                         int position = ep.getSets().size() - 1;
 
 
-                        intra.parent = ep;
+                        //intra.parent = ep;
                         intra.setParent = ep.getSets().get(position);
                         ep.getSets().get(position).intraSets.add(intra);
 
@@ -379,7 +432,7 @@ public class WorkoutsService {
 
                         int last2 = workoutsList.get(workoutIndex).exArray.size() - 1;
                         ep = ((PLObject.ExerciseProfile) workoutsList.get(workoutIndex).exArray.get(last2));
-                        PLObject.ExerciseProfile supersetParent = ep.getExerciseProfiles().get(ep.getExerciseProfiles().size() - 1);
+                        PLObject.ExerciseProfile supersetParent = ep.exerciseProfiles.get(ep.exerciseProfiles.size() - 1);
 
                         innerType = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
                         rep = c.getString(c.getColumnIndex(REP_ID));
@@ -399,7 +452,7 @@ public class WorkoutsService {
                 }
 
                 //add the array to the workoutList
-                workoutsList.get(workoutIndex).exArray = exArray;
+                workoutsList.get(workoutIndex).exArray = exerciseToPLObject(exArray);
             } while (c.moveToNext());
             return workoutsList;
         }

@@ -53,7 +53,7 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
     private FloatingSearchView mSearchView;
     private ImageView searchIv;
     private PLObject plObject;
-    private PLObject.ExerciseProfile exerciseProfile;
+    //private PLObject.ExerciseProfile exerciseProfile;
     private PLObject.SetsPLObject setsPLObject;
     private PLObject.IntraSetPLObject intraSetPLObject;
     private ExerciseEditFragment exerciseEditFragment;
@@ -104,17 +104,17 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
             plObject = (PLObject) getArguments().getSerializable(PLOBJECT);
            // title = LayoutManagerHelper.writeTitle(plObject);
             if (plObject instanceof PLObject.ExerciseProfile) {
-                exerciseProfile = (PLObject.ExerciseProfile) plObject;
+               // exerciseProfile = (PLObject.ExerciseProfile) plObject;
                 /*exerciseEditFragment = ExerciseEditFragment.newInstance(exerciseProfile, this);
                 adapter = new ChooseAdapter(getChildFragmentManager(), exerciseEditFragment);*/
 
             } else if (plObject instanceof PLObject.SetsPLObject) {
                 setsPLObject = (PLObject.SetsPLObject) plObject;
-                exerciseProfile = setsPLObject.getParent();
+              //  exerciseProfile = setsPLObject.parent;
                 adapter = new ChooseAdapter(getChildFragmentManager(), SetsChooseSingleFragment.getInstance());
             } else if (plObject instanceof PLObject.IntraSetPLObject) {
                 intraSetPLObject = (PLObject.IntraSetPLObject) plObject;
-                exerciseProfile = intraSetPLObject.getParent();
+               // exerciseProfile = intraSetPLObject.getParent();
                 adapter = new ChooseAdapter(getChildFragmentManager(), SetsChooseSingleFragment.getInstance());
             }
             plObjectPosition = getArguments().getInt(POSITION);
@@ -258,9 +258,9 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     }
 
-    public void setExerciseProfile(PLObject.ExerciseProfile exerciseProfile) {
+    /*public void setExerciseProfile(PLObject.ExerciseProfile exerciseProfile) {
         this.exerciseProfile = exerciseProfile;
-    }
+    }*/
 
     public void setUniqueTransitionName(String tName) {
         this.tName = tName;
@@ -277,11 +277,13 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
 
     @Override
     public void notifyExerciseSetChange() {
+/*
         if (exerciseProfile.getExercise() != null) {
             searchOnYoutube(exerciseProfile.getExercise().getName());
         }
 
         //myExpandableAdapter.notifyItemChanged(0);
+*/
     }
 
 }

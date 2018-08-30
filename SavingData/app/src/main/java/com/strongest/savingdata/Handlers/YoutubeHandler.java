@@ -44,6 +44,10 @@ public class YoutubeHandler {
                     if (YPlayer != null) {
                         YPlayer.cueVideo(searchResults.get(0).getId());
                     } else {
+                        /**
+                         *
+                         * */
+                        if(youTubePlayerFragment != null)
                         youTubePlayerFragment.initialize(YoutubeConfig.getYoutubeApiKey(), onInitializedListener);
                     }
 

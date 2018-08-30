@@ -1,11 +1,13 @@
 package com.strongest.savingdata.AModels.workoutModel;
 
+import com.strongest.savingdata.AModels.workoutModel.PLObject.ExerciseProfile;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorkoutBro {
 
-    public List<PLObject> exArray;
+    public List<ExerciseProfile> exArray;
     public String workoutName;
     private String programUid;
 
@@ -13,7 +15,7 @@ public class WorkoutBro {
 
     }
 
-    public List<PLObject> getExArray() {
+    public List<ExerciseProfile> getExArray() {
         return exArray;
     }
 
@@ -25,7 +27,7 @@ public class WorkoutBro {
         this.workoutName = workoutName;
     }
 
-    public void setExArray(List<PLObject> exArray) {
+    public void setExArray(List<ExerciseProfile> exArray) {
         this.exArray = exArray;
     }
 

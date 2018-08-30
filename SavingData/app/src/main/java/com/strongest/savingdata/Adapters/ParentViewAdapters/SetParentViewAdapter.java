@@ -58,14 +58,18 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
         }
         if (list.get(position).type == WorkoutLayoutTypes.SuperSetIntraSet){
                 intraSetViewHolder.supersetTv.setVisibility(View.VISIBLE);
-                PLObject.ExerciseProfile superset = setsPLObject.parent.getExerciseProfiles().get(position);
+                //PLObject.ExerciseProfile superset = setsPLObject.parent.exerciseProfiles.get(position);
                 intraSetViewHolder.deleteIV.setVisibility(View.INVISIBLE);
-                if(superset.getExercise()!= null){
 
-                    intraSetViewHolder.supersetTv.setText("Superset of "+superset.getExercise().getName());
+            intraSetViewHolder.supersetTv.setText("Superset of Exercise A");
+
+/*
+            if(superset.getExercise()!= null){
+
                 }else{
                     intraSetViewHolder.supersetTv.setText("Superset");
                 }
+*/
 
             }else{
             intraSetViewHolder.intraSetTag.setImageResource(R.drawable.child_green);

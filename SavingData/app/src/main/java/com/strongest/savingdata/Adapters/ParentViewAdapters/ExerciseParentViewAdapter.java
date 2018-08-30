@@ -33,12 +33,12 @@ public class ExerciseParentViewAdapter extends ParentView.Adapter<SupersetViewHo
 
     @Override
     public int getCount() {
-        return exerciseProfile.getExerciseProfiles().size();
+        return exerciseProfile.exerciseProfiles.size();
     }
 
     @Override
     public void onBindViewHolder(SupersetViewHolder exerciseViewHolder, int position) {
-        PLObject.ExerciseProfile superset = exerciseProfile.getExerciseProfiles().get(position);
+        PLObject.ExerciseProfile superset = exerciseProfile.exerciseProfiles.get(position);
         if(superset.getMuscle() != null){
             Muscle.MuscleUI mui = Muscle.provideMuscleUI(superset.getMuscle());
             exerciseViewHolder.icon.setImageResource(mui.getImage());
@@ -52,7 +52,7 @@ public class ExerciseParentViewAdapter extends ParentView.Adapter<SupersetViewHo
         });
 
         exerciseViewHolder.delete.setOnClickListener(v ->{
-            exerciseProfile.getExerciseProfiles().remove(superset);
+            exerciseProfile.exerciseProfiles.remove(superset);
             uiExerciseClickHandler.onRemoveSuperset(exerciseProfile);
         });
 

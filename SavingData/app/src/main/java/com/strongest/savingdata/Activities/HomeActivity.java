@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -124,7 +125,11 @@ public class HomeActivity extends BaseActivity implements
         });
 */
         programViewModel.getProgram().observe(this, program -> {
-            Log.d(TAG, "onCreate: wtf seriosuly");
+           /* if(program == null) {
+                programViewModel.setNewProgram();
+                return;
+            }*/
+            Log.d(TAG, "onCreate:");
             title.setText(program.getProgramName());
             programViewModel.getProgram().removeObservers(this);
             workoutsViewModel.initWorkouts();

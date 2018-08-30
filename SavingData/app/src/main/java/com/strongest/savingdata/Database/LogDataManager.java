@@ -36,7 +36,7 @@ public class LogDataManager {
 
 
         inserter(exerciseProfile);
-        for (PLObject.ExerciseProfile ep : exerciseProfile.getExerciseProfiles()) {
+        for (PLObject.ExerciseProfile ep : exerciseProfile.exerciseProfiles) {
             if (ep.exercise != null)
                 inserter(ep);
         }

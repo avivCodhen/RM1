@@ -53,9 +53,14 @@ public class ProgramService {
     public LiveData<Program> provideProgram() {
         String programKey = sharedPreferences.getString(CURRENT_PROGRAM, "");
         if (programKey.equals("")) {
-            return null;
+            return provideNewProgram();
         } else {
-            return programRepository.getProgramByKey(programKey);
+            Program p = programRepository.getProgramByKey(programKey).getValue();
+            if(p == null){
+                return provideNewProgram();
+            }else{
+                return programRepository.getProgramByKey(programKey);
+            }
         }
     }
 
