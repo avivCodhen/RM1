@@ -56,7 +56,7 @@ public class WorkoutsViewModel extends ViewModel {
 
     public void initWorkouts() {
       //  workoutsService.provideWorktoutsList(workoutsList, WorkoutsService.CMD.INIT);
-        workoutsService.provideWorktoutsList(workoutsList, WorkoutsService.CMD.SWITCH);
+        workoutsService.provideWorktoutsList(workoutsList, WorkoutsService.CMD.INIT);
     }
 
     public void saveLayoutToDataBase() {

@@ -361,6 +361,7 @@ public class WorkoutsService {
                         }
                         ep.comment = c.getString(c.getColumnIndex(COMMENT));
                         ep.showComment = !ep.comment.equals("");
+
                         if (currentParent != null) {
                             currentParent.exerciseProfiles.add(ep);
                             //ep.setParent(currentParent);

@@ -55,12 +55,7 @@ public class ProgramService {
         if (programKey.equals("")) {
             return provideNewProgram();
         } else {
-            Program p = programRepository.getProgramByKey(programKey).getValue();
-            if(p == null){
-                return provideNewProgram();
-            }else{
-                return programRepository.getProgramByKey(programKey);
-            }
+            return programRepository.getProgramByKey(programKey);
         }
     }
 
@@ -72,7 +67,7 @@ public class ProgramService {
 
     }
 
-    public Program getNewProgram(){
+    public Program getNewProgram() {
         cleanCurrentProgramSharedPreferences();
         return createNewProgram();
     }
@@ -90,7 +85,7 @@ public class ProgramService {
         sharedPreferencesEditor.putString(CURRENT_PROGRAM, key).commit();
     }
 
-    private String getProgramUID(){
+    private String getProgramUID() {
         return sharedPreferences.getString(CURRENT_PROGRAM, "");
 
     }
@@ -133,15 +128,15 @@ public class ProgramService {
     }
 
 
-    public void updateProgram(){
+    public void updateProgram() {
         String p = getProgramUID();
-        if(p.equals("")){
+        if (p.equals("")) {
             return;
         }
         programRepository.getCurrentProgram(p)
-               .observeOn(AndroidSchedulers.mainThread())
-               .subscribeOn(Schedulers.io())
-                .subscribe((program)->{
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe((program) -> {
                     program.setCreatorUID(getUID());
                     program.setCreator(getUsername());
                     programRepository.updateProgramCreatorUID(program);
