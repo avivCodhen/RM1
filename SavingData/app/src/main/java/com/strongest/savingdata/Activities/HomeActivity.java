@@ -119,24 +119,15 @@ public class HomeActivity extends BaseActivity implements
         ButterKnife.bind(this);
         setUpToolbar();
 
-     /*   programViewModel.getNewProgram().observe(this, newProgram->{
-            Log.d(TAG, "grrrrr: ");
-            title.setText(newProgram.getProgramName());
-        });
-*/
+
         programViewModel.getProgram().observe(this, program -> {
-           /* if(program == null) {
-                programViewModel.setNewProgram();
-                return;
-            }*/
-            Log.d(TAG, "onCreate:");
+
             title.setText(program.getProgramName());
             programViewModel.getProgram().removeObservers(this);
             workoutsViewModel.initWorkouts();
         });
 
         programViewModel.getNewProgram().observe(this, prog ->{
-            Log.d(TAG, "onCreate: wtf seriosuly");
             programViewModel.setProgram(programViewModel.getNewProgram());
             title.setText(prog.getProgramName());
             workoutsViewModel.initWorkouts();
@@ -145,7 +136,6 @@ public class HomeActivity extends BaseActivity implements
         });
 
         workoutsViewModel.getWorkoutsList().observe(this, workouts->{
-            Log.d(TAG, "workoutslistobserver: ");
 
             setUpViewPager();
             notifyCurrentWorkout();
@@ -153,19 +143,8 @@ public class HomeActivity extends BaseActivity implements
         });
 
 
-        //setUpViewPager();
         longClickMenuView.instantiate(this);
         programToolsView.instantiate(programToolsBtn, this);
-
-        /*String newString = dataManager.getPrefs().getString(FIRSTVISIT, "yes");
-        boolean isNew = newString.equals("yes");
-        if (isNew) {
-            startActivity(new Intent(this, TutorialActivity.class));
-        }
-*/
-
-
-        //workoutsViewModel.getWorkoutsList().observe(this, list -> mAdapter.notifyDataSetChanged());
         loggedInUI();
 
     }

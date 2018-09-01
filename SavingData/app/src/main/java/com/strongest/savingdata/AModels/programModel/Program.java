@@ -1,6 +1,7 @@
 package com.strongest.savingdata.AModels.programModel;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.security.Key;
@@ -33,6 +34,12 @@ public class Program {
 
         this.programDate = programDate;
     }
+
+    @Ignore
+    public Program(){
+
+    }
+
 
     public String getDbName() {
         return dbName;

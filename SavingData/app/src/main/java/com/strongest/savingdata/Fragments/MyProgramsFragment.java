@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.strongest.savingdata.AService.WorkoutsService;
 import com.strongest.savingdata.AViewModels.ProgramViewModel;
+import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.R;
@@ -27,6 +29,7 @@ public class MyProgramsFragment extends BaseFragment {
     private List<Program> programs;
     private RecyclerView recyclerView;
     private Program currentProgram;
+    private MyProgramsAdapter myProgramsAdapter;
 
     @Nullable
     @Override
@@ -43,7 +46,6 @@ public class MyProgramsFragment extends BaseFragment {
     private void initViews(View v) {
 
         //TODO: fix this
-       // currentProgram = ((HomeActivity) getActivity()).workoutsViewModel.getProgram().getValue();
         v.findViewById(R.id.toolbar_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,25 +54,28 @@ public class MyProgramsFragment extends BaseFragment {
         });
 
         programViewModel = ViewModelProviders.of(getActivity()).get(ProgramViewModel.class);
-        programViewModel.getProgram().observe(this, (program)->{
+        workoutsViewModel = ViewModelProviders.of(getActivity()).get(WorkoutsViewModel.class);
+        currentProgram = programViewModel.getProgram().getValue();
+        initStaticViews(v);
+
+
+        /*programViewModel.getProgram().observe(this, (program)->{
             currentProgram = program;
             initStaticViews(v);
 
 
-        });
+        });*/
 
-        programViewModel.getPrograms().observe(this, (progList)->{
+        programViewModel.fetchAllPrograms();
+        programViewModel.getAllPrograms().observe(this, (progList) -> {
             programs = progList;
-            MyProgramsAdapter adapter = new MyProgramsAdapter();
-            recyclerView.setAdapter(adapter);
+            myProgramsAdapter = new MyProgramsAdapter();
+            recyclerView.setAdapter(myProgramsAdapter);
         });
         recyclerView = (RecyclerView) v.findViewById(R.id.fragment_my_program_recyclerview);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
         recyclerView.setLayoutManager(lm);
         ((TextView) v.findViewById(R.id.tool_bar_title)).setText(" My Programs");
-
-
-
     }
 
     private void initStaticViews(View v) {
@@ -82,7 +87,6 @@ public class MyProgramsFragment extends BaseFragment {
         programTitle.setText(currentProgram.getProgramName());
         programTimeAndDate.setText(currentProgram.getProgramDate() + ", " + currentProgram.getTime());
     }
-
 
 
     private class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.ViewHolder> {
@@ -119,8 +123,11 @@ public class MyProgramsFragment extends BaseFragment {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ((HomeActivity) getActivity()).finish();
-                        ((HomeActivity) getActivity()).startActivity(((HomeActivity) getActivity()).getIntent());
+                       /* ((HomeActivity) getActivity()).finish();
+                        ((HomeActivity) getActivity()).startActivity(((HomeActivity) getActivity()).getIntent());*/
+                        workoutsViewModel.setCmd(WorkoutsService.CMD.SWITCH);
+                        programViewModel.switchProgram(programs.get(getAdapterPosition()));
+
                         getFragmentManager().popBackStack();
                     }
                 });

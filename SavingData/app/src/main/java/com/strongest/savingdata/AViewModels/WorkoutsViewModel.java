@@ -23,6 +23,7 @@ import io.reactivex.disposables.CompositeDisposable;
 public class WorkoutsViewModel extends ViewModel {
 
 
+    private WorkoutsService.CMD cmd;
     private final WorkoutsService workoutsService;
     @Inject
     public WorkoutsModel workoutsModel;
@@ -55,9 +56,13 @@ public class WorkoutsViewModel extends ViewModel {
     }
 
     public void initWorkouts() {
-      //  workoutsService.provideWorktoutsList(workoutsList, WorkoutsService.CMD.INIT);
-        workoutsService.provideWorktoutsList(workoutsList, WorkoutsService.CMD.INIT);
+        if(cmd == null){
+            cmd = WorkoutsService.CMD.INIT;
+        }
+        workoutsService.provideWorktoutsList(workoutsList, cmd);
+        cmd = null;
     }
+
 
     public void saveLayoutToDataBase() {
         workoutsService.saveLayoutToDataBase(true, workoutsList.getValue(), null);
@@ -72,5 +77,13 @@ public class WorkoutsViewModel extends ViewModel {
 
     public void setNewWorkout() {
         workoutsService.provideWorktoutsList(workoutsList, WorkoutsService.CMD.NEW);
+    }
+
+    public void setCmd(WorkoutsService.CMD cmd) {
+        this.cmd = cmd;
+    }
+
+    public WorkoutsService.CMD getCmd() {
+        return cmd;
     }
 }

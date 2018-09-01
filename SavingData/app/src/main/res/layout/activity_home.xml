@@ -135,6 +135,7 @@
 
 
     <android.support.design.widget.NavigationView
+        app:headerLayout="@layout/layout_menu_user_header"
         android:id="@+id/home_activity_navigationview"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

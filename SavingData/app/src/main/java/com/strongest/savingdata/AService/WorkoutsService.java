@@ -33,6 +33,9 @@ import com.strongest.savingdata.Utils.FireBaseUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.DEFAULT_INT;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.MUSCLE;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.NAME;
@@ -58,6 +61,7 @@ public class WorkoutsService {
     private final SharedPreferences.Editor editor;
     private Handler handler = new Handler();
 
+    private static final String TAG = "workoutservice";
     private DataManager dataManager;
 
     public DataManager getDataManager() {
@@ -81,6 +85,7 @@ public class WorkoutsService {
     }
 
     public void provideWorktoutsList(MutableLiveData<ArrayList<Workout>> mutableLiveDataWorkout, CMD cmd) {
+        Log.d(TAG, "provideWorktoutsList: ");
         String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
         if (programUID.equals("")) {
             throw new IllegalArgumentException("program uid cannot be empty");
@@ -136,11 +141,12 @@ public class WorkoutsService {
     }
 
     private boolean saveProgramNameToSharedPreference(String programUID) {
-        return dataManager.getPrefsEditor().putString(CURRENT_WORKOUT, programUID).commit();
+        return editor.putString(CURRENT_WORKOUT, programUID).commit();
     }
 
 
     public void saveWorkoutsToFireBase(String programUID, ArrayList<Workout> workouts) {
+        Log.d(TAG, "saveWorkoutsToFireBase: ");
         if (programUID.equals("")) {
             throw new IllegalArgumentException("there must be an program UID");
         }
@@ -173,10 +179,11 @@ public class WorkoutsService {
     }
 
     public void getWorkoutsFromFireBase(String programUID, MutableLiveData mutableLiveDataWorkout) {
-
-        databaseReference.child(programUID).addValueEventListener(new ValueEventListener() {
+        Log.d(TAG, "getWorkoutsFromFireBase: ");
+        databaseReference.child(programUID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: ");
                 if (dataSnapshot.getValue() != null) {
                     WorkoutHolder wor = dataSnapshot.getValue(WorkoutHolder.class);
                     saveLayoutToDataBase(true, workoutBroParser(wor), (intResult) -> {
@@ -223,13 +230,13 @@ public class WorkoutsService {
 
     public boolean saveLayoutToDataBase(final boolean update, ArrayList<Workout> layout,
                                         CallBacks.OnFinish onFinish) {
+        Log.d(TAG, "saveLayoutToDataBase: ");
         String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
         saveWorkoutsToFireBase(programUID, layout);
         saveProgramNameToSharedPreference(programUID);
         new Thread(new Runnable() {
             @Override
             public void run() {
-
                 dataManager.getProgramDataManager().insertTables(update, DBProgramHelper.TABLE_WORKOUTS, layout);
                 if (onFinish != null) {
                     handler.post(new Runnable() {
@@ -247,6 +254,7 @@ public class WorkoutsService {
 
 
     public ArrayList<Workout> readLayoutFromDataBase(String currentDbName) {
+        Log.d(TAG, "readLayoutFromDataBase: ");
         ArrayList<Workout> workoutsList = new ArrayList<>();
         Cursor c = dataManager.getProgramDataManager().readLayoutTableCursor(DBProgramHelper.TABLE_WORKOUTS);
         //layout = new ArrayList<>();

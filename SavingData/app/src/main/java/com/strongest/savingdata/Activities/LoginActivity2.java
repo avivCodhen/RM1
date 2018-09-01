@@ -65,7 +65,7 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -85,7 +85,7 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
         setContentView(R.layout.activity_login2);
         ButterKnife.bind(this);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (EditText) findViewById(R.id.email);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -207,15 +207,6 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
         return matcher.find();
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -293,7 +284,7 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
                 new ArrayAdapter<>(LoginActivity2.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+        //mEmailView.setAdapter(adapter);
     }
 
 

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,7 +21,9 @@ import com.strongest.savingdata.AModels.programModel.ProgramRepository;
 import com.strongest.savingdata.Utils.FireBaseUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,6 +42,12 @@ public class ProgramService {
     private final ProgramRepository programRepository;
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor sharedPreferencesEditor;
+    private static final String TAG = "programservice";
+
+
+    FirebaseAuth firebaseAuth;
+    DatabaseReference databaseReference;
+
 
     @Inject
     public ProgramService(UserService userService, ProgramRepository programRepository, SharedPreferences sharedPreferences,
@@ -47,6 +56,12 @@ public class ProgramService {
         this.programRepository = programRepository;
         this.sharedPreferences = sharedPreferences;
         this.sharedPreferencesEditor = sharedPreferencesEditor;
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child(FireBaseUtils.FIRE_BASE_REFERENCE_PROGRAMS);
+
     }
 
 
@@ -93,12 +108,12 @@ public class ProgramService {
     private Program createNewProgram() {
 
         Program program = new Program(
-                getUID(), getUsername(),
+                getUID(),
+                getUsername(),
                 "My New Program",
                 new SimpleDateFormat("HH:mm:ss").format(new Date()),
-                new SimpleDateFormat("mm dd, yyyy", Locale.US).format(new Date()),
+                new SimpleDateFormat("m dd, yyyy", Locale.US).format(new Date()),
                 "");
-
 
         return saveProgramToFireBase(program);
     }
@@ -117,6 +132,11 @@ public class ProgramService {
 
         return program;
 
+    }
+
+    public void insertProgram(Program p) {
+        saveProgramKeyToSharedPreferences(p.getKey());
+        programRepository.insertProgram(p);
     }
 
     public LiveData<List<Program>> provideAllPrograms() {
@@ -143,4 +163,37 @@ public class ProgramService {
                 });
     }
 
+    public void fetchAllPrograms(MutableLiveData<ArrayList<Program>> allPrograms) {
+        Log.d(TAG, "fetchAllPrograms: ");
+        ArrayList<Program> programs = new ArrayList<>();
+        databaseReference
+                .orderByChild("creatorUID")
+                .equalTo(getUID())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            programs.add(d.getValue(Program.class));
+                        }
+                        removeCurrentProgram(programs);
+                        allPrograms.setValue(programs);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void removeCurrentProgram(ArrayList<Program> programs) {
+        Iterator<Program> iter = programs.iterator();
+
+        while (iter.hasNext()) {
+            Program p = iter.next();
+            if (p.getKey().equals(getProgramUID())) {
+                iter.remove();
+            }
+        }
+    }
 }
