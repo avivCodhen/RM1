@@ -84,4 +84,8 @@ public class SaveExitToolBar extends LinearLayout{
     public void setCancelButton(OnClickListener onClickListener){
         cancel.setOnClickListener(onClickListener);
     }
+
+    public void noElevation(){
+        setElevation(0);
+    }
 }

@@ -10,6 +10,12 @@
         android:hint="email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/register_activity_nameED"
+        android:layout_gravity="center"
+        android:hint="email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/register_activity_passwordED"

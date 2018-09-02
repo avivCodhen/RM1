@@ -60,7 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void addFragmentToHomeActivity(int id, Fragment f, String tag){
+    public void addFragmentToActivity(int id, Fragment f, String tag){
 
         getSupportFragmentManager().beginTransaction()
                 //.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_left, R.anim.slide_out_right)

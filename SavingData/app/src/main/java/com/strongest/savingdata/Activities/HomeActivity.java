@@ -1,10 +1,7 @@
 package com.strongest.savingdata.Activities;
 
-import android.annotation.SuppressLint;
-import android.app.ActivityOptions;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -19,8 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,12 +42,9 @@ import com.strongest.savingdata.Fragments.WorkoutViewFragment;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
 import com.strongest.savingdata.R;
-import com.strongest.savingdata.ViewHolders.ExerciseViewHolder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.strongest.savingdata.AModels.workoutModel.WorkoutsModel.Actions.Advanced;
 // import com.roughike.bottombar.OnMenuTabClickListener;
@@ -68,7 +60,6 @@ public class HomeActivity extends BaseActivity implements
 
     public static final int EXERCISE_ACTIVITY = 1;
     public static final int LOGIN_ACTIVITY = 2;
-    public static final int REGISTER_ACTIVITY = 2;
     public static final String EXERCISE_POSITION = "exercisePosition";
 
     @BindView(R.id.activity_home_toolbar)
@@ -271,15 +262,15 @@ public class HomeActivity extends BaseActivity implements
         switch (item.getItemId()) {
             case R.id.menu_create_program:
                 f = new NewProgramFragment();
-                addFragmentToHomeActivity(R.id.activity_home_framelayout, f, "NewProgram");
+                addFragmentToActivity(R.id.activity_home_framelayout, f, "NewProgram");
                 break;
             case R.id.menu_my_programs:
                 f = new MyProgramsFragment();
-                addFragmentToHomeActivity(R.id.activity_home_framelayout, f, "MyPrograms");
+                addFragmentToActivity(R.id.activity_home_framelayout, f, "MyPrograms");
                 break;
             case R.id.menu_custom_exercise:
                 f = new CustomExerciseFragment();
-                addFragmentToHomeActivity(R.id.activity_home_framelayout, f, "CustomExercise");
+                addFragmentToActivity(R.id.activity_home_framelayout, f, "CustomExercise");
                 break;
             case R.id.menu_login:
                 startActivityForResult(new Intent(this, LoginActivity2.class), LOGIN_ACTIVITY);
@@ -355,7 +346,7 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public void onProgramToolsAction(WorkoutsModel.Actions action) {
         if (action == Advanced) {
-            addFragmentToHomeActivity(R.id.activity_home_framelayout, new ProgramSettingsFragment(), "programsettings");
+            addFragmentToActivity(R.id.activity_home_framelayout, new ProgramSettingsFragment(), "programsettings");
         } else {
             workoutsViewModel.workoutsModel.validateActions(
                     workoutsViewModel.getWorkoutsList().getValue(),
@@ -427,7 +418,7 @@ public class HomeActivity extends BaseActivity implements
         fragmentTransaction.commitAllowingStateLoss();
     }*/
 
-    @SuppressLint("RestrictedApi")
+  /*  @SuppressLint("RestrictedApi")
     public void navigateToExerciseDetailsActivity(PLObject.ExerciseProfile ep, ExerciseViewHolder vh) {
         Intent i = new Intent(this, ExerciseDetailsActivity.class);
         i.putExtra(EXERCISE_POSITION, vh.getAdapterPosition());
@@ -440,7 +431,7 @@ public class HomeActivity extends BaseActivity implements
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, pairs);
         startActivityForResult(i, EXERCISE_ACTIVITY, options.toBundle());
     }
-
+*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -449,6 +440,10 @@ public class HomeActivity extends BaseActivity implements
                 //TODO: implement loggedInUI function
                 //TODO: change user name in the activity
                 loggedInUI();
+                //TODO: implement changing program creator UID and name
+            }
+            else if (resultCode == RESULT_CANCELED){
+
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

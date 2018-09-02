@@ -275,6 +275,6 @@ public class ExerciseDetailsActivity extends BaseActivity implements
         ArrayList<PLObject> sets = m.readSets(exercise.getName(), date);
         selectedLogDataViewModel.setSets(sets);
 
-        addFragmentToHomeActivity(R.id.exercise_log_frame, new ExerciseLogFragment(), "log");
+        addFragmentToActivity(R.id.exercise_log_frame, new ExerciseLogFragment(), "log");
     }
 }

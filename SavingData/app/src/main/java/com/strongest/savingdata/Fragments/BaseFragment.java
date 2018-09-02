@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.strongest.savingdata.AService.ProgramService;
+import com.strongest.savingdata.AService.UserService;
 import com.strongest.savingdata.AViewModels.ProgramViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.DependencyInjection.MainApplication;
@@ -19,6 +20,7 @@ public class BaseFragment extends Fragment {
 
     ProgramViewModel programViewModel;
     WorkoutsViewModel workoutsViewModel;
+    UserService userService;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.strongest.savingdata.AModels.UserModel.User;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Activities.RegisterActivity;
 import com.strongest.savingdata.MyViews.SaveExitToolBar;
@@ -22,7 +24,7 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RegisterFragment extends BaseFragment implements View.OnClickListener{
+public class RegisterFragment extends BaseFragment implements View.OnClickListener {
 
 
     @BindView(R.id.register_fragment_emailED)
@@ -37,16 +39,22 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
     @BindView(R.id.saveExitToolbar)
     SaveExitToolBar saveExitToolBar;
 
+    @BindView(R.id.register_fragment_progressbar)
+    public ProgressBar progressBar;
+
+    String email;
+    String pass;
+
+
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_register, container, false);
-        ButterKnife.bind(this,v);
+        ButterKnife.bind(this, v);
         return v;
 
     }
@@ -57,25 +65,32 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
         saveExitToolBar.instantiate();
         saveExitToolBar.showBack(true);
         saveExitToolBar.showCancel(false);
-
-        saveExitToolBar.setSaveButton(backBtn ->{
+        saveExitToolBar.noElevation();
+        saveExitToolBar.setSaveButton(backBtn -> {
             getFragmentManager().popBackStack();
         });
     }
 
 
-    public void register (View v) {
+    public void register(View v) {
 
-        if(vaildate(emailED.getText().toString().trim(), passED.getText().toString().trim())) {
+        if (vaildate()) {
 
-         /*   editor.putString("EMAIL", email);
-            editor.putString("PASS", pass);
-            editor.commit();
-*/
+            //TODO:put name textview
+            userService.registerUser(progressBar, email, pass, "", user -> {
 
+                userService.saveUserToServer((User) user, (success -> {
+                    if ((Integer) success == 1) {
 
-        }
-        else{
+                        userService.logInUser(email, pass, progressBar, result -> {
+                            getActivity().finish();
+                        });
+                    }
+
+                }));
+            });
+
+        } else {
             return;
         }
     }
@@ -85,24 +100,24 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
 
     }
 
-    private boolean vaildate(String pass, String email) {
+    private boolean vaildate() {
         boolean valid = true;
         email = emailED.getText().toString().trim();
         pass = passED.getText().toString();
         String confirmPass = confirmED.getText().toString();
-        if(email == null || email.isEmpty()) {
+        if (email == null || email.isEmpty()) {
             valid = false;
             emailED.setError("You must enter email address");
         }
-        if(pass == null || pass.isEmpty()) {
+        if (pass == null || pass.isEmpty()) {
             passED.setError("You must enter password");
             valid = false;
         }
-        if(!validEmail(email)) {
+        if (!validEmail(email)) {
             emailED.setError("Email address is incorrect");
             valid = false;
         }
-        if(!confirmPass.equals(pass) || confirmPass.isEmpty()) {
+        if (!confirmPass.equals(pass) || confirmPass.isEmpty()) {
             confirmED.setError("Password does not match");
             valid = false;
         }
@@ -110,7 +125,7 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
     }
 
     public static boolean validEmail(String emailStr) {
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
     }
 

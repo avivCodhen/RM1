@@ -18,6 +18,33 @@
 
     </style>
 
+    <style name="ThemeTextInputColorAccent">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+    <style name="TextInputColorAccent">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:background">@drawable/aviv_border</item>
+        <item name="android:layout_width">220dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:elevation">5dp</item>
+    </style>
+
+    <style name="editTextLogin">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="whiteButton">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:elevation">5dp</item>
+        <item name="android:layout_width">220dp</item>
+        <item name="android:layout_height">60dp</item>
+    </style>
+
     <!--
     this style is according to aviv levy's style.
     -->

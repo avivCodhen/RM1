@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
 import android.content.CursorLoader;
@@ -18,13 +17,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -35,6 +32,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.strongest.savingdata.Fragments.RegisterFragment;
 import com.strongest.savingdata.R;
 
 import butterknife.BindView;
@@ -71,7 +69,13 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
     private View mLoginFormView;
 
     @BindView(R.id.login_progress)
-     ProgressBar progressBar;
+    ProgressBar progressBar;
+
+    @BindView(R.id.to_sign_activity)
+    View toSignUpBtn;
+
+    @BindView(R.id.activity_login_exit_iv)
+    View exit;
 
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
@@ -108,8 +112,14 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
+       // mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        toSignUpBtn.setOnClickListener(toSignUp -> {
+            addFragmentToActivity(R.id.activity_register_frame, new RegisterFragment(), "");
+        });
+
+        exit.setOnClickListener(exit-> finish());
     }
 
     private void populateAutoComplete() {
@@ -169,17 +179,17 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-         email = mEmailView.getText().toString();
-         pass = mPasswordView.getText().toString();
+        email = mEmailView.getText().toString();
+        pass = mPasswordView.getText().toString();
 
-       if(vaildate()){
+        if (vaildate()) {
 
-           userService.logInUser(email, pass, progressBar, (result)->{
-               if((int) result == 1){
-                   finish();
-               }
-           });
-       }
+            userService.logInUser(email, pass, progressBar, (result) -> {
+                if ((int) result == 1) {
+                    finishActivity(RESULT_OK);
+                }
+            });
+        }
     }
 
     private boolean vaildate() {
@@ -211,7 +221,7 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
     /**
      * Shows the progress UI and hides the login form.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+  /*  @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
@@ -243,7 +253,7 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
-
+*/
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(this,
@@ -338,7 +348,7 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
+        //    showProgress(false);
 
             if (success) {
                 finish();
@@ -351,7 +361,7 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
         @Override
         protected void onCancelled() {
             mAuthTask = null;
-            showProgress(false);
+          //  showProgress(false);
         }
     }
 }
