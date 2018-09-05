@@ -46,15 +46,14 @@ public class UserService {
         this.databaseReference = databaseReference;
     }
 
-    public void registerUser(ProgressBar progressBar, String email, String pass, String name, CallBacks.OnFinish onFinish) {
+    public void registerUser(String email, String pass, String name, CallBacks.OnFinish onFinish) {
 
 
-        progressBar.setVisibility(View.VISIBLE);
         firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener((task) -> {
             if (task.isSuccessful()) {
                 HashMap<String, Object> dateJoined = new HashMap<>();
                 dateJoined.put("dateJoined", ServerValue.TIMESTAMP);
-                User user = new User("", email, dateJoined);
+                User user = new User(name, email, dateJoined);
 
                 Toast.makeText(context, "Account created successfully!", Toast.LENGTH_SHORT).show();
 
@@ -69,18 +68,15 @@ public class UserService {
 
 
             }
-            progressBar.setVisibility(View.INVISIBLE);
 
 
         });
 
     }
 
-    public void logInUser(String email, String pass, ProgressBar progressBar, CallBacks.OnFinish onFinish){
-        progressBar.setVisibility(View.VISIBLE);
+    public void logInUser(String email, String pass, CallBacks.OnFinish onFinish){
         firebaseAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(task->{
 
-            progressBar.setVisibility(View.GONE);
             if(task.isSuccessful()){
                 Toast.makeText(context, "logged in!", Toast.LENGTH_SHORT).show();
                 onFinish.onFinish(1);
@@ -114,7 +110,13 @@ public class UserService {
     public String getUserUID(){
         return firebaseAuth.getCurrentUser().getUid();
     }
+    public String getUsername(){
+        return sharedPreferences.getString(USERNAME, "");
+    }
 
+    public boolean isUserLoggedIn(){
+        return firebaseAuth.getCurrentUser() != null;
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.strongest.savingdata.Fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -33,8 +35,8 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
     @BindView(R.id.register_fragment_passwordED)
     EditText passED;
 
-    @BindView(R.id.register_fragment_confirmED)
-    EditText confirmED;
+    @BindView(R.id.register_fragment_fullnameED)
+    EditText fullNameED;
 
     @BindView(R.id.saveExitToolbar)
     SaveExitToolBar saveExitToolBar;
@@ -42,8 +44,12 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
     @BindView(R.id.register_fragment_progressbar)
     public ProgressBar progressBar;
 
+    @BindView(R.id.register_fragment_registernBtn)
+    Button registerBtn;
+
     String email;
     String pass;
+    String fullName;
 
 
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
@@ -69,6 +75,8 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
         saveExitToolBar.setSaveButton(backBtn -> {
             getFragmentManager().popBackStack();
         });
+
+        registerBtn.setOnClickListener(v -> register(v));
     }
 
 
@@ -77,12 +85,15 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
         if (vaildate()) {
 
             //TODO:put name textview
-            userService.registerUser(progressBar, email, pass, "", user -> {
+            progressBar.setVisibility(View.VISIBLE);
+            userService.registerUser(email, pass, fullName, user -> {
 
                 userService.saveUserToServer((User) user, (success -> {
                     if ((Integer) success == 1) {
 
-                        userService.logInUser(email, pass, progressBar, result -> {
+                        userService.logInUser(email, pass, result -> {
+                            progressBar.setVisibility(View.GONE);
+                            getActivity().setResult(Activity.RESULT_OK);
                             getActivity().finish();
                         });
                     }
@@ -104,7 +115,7 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
         boolean valid = true;
         email = emailED.getText().toString().trim();
         pass = passED.getText().toString();
-        String confirmPass = confirmED.getText().toString();
+        fullName = fullNameED.getText().toString();
         if (email == null || email.isEmpty()) {
             valid = false;
             emailED.setError("You must enter email address");
@@ -117,10 +128,11 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
             emailED.setError("Email address is incorrect");
             valid = false;
         }
-        if (!confirmPass.equals(pass) || confirmPass.isEmpty()) {
-            confirmED.setError("Password does not match");
+        if (fullName.length() < 2) {
+            fullNameED.setError("Please enter your full name");
             valid = false;
         }
+
         return valid;
     }
 

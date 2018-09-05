@@ -115,10 +115,12 @@ public class HomeActivity extends BaseActivity implements
 
             title.setText(program.getProgramName());
             programViewModel.getProgram().removeObservers(this);
-            workoutsViewModel.initWorkouts();
+            if (!workoutsViewModel.workoutsInitialized) {
+                workoutsViewModel.initWorkouts();
+            }
         });
 
-        programViewModel.getNewProgram().observe(this, prog ->{
+        programViewModel.getNewProgram().observe(this, prog -> {
             programViewModel.setProgram(programViewModel.getNewProgram());
             title.setText(prog.getProgramName());
             workoutsViewModel.initWorkouts();
@@ -126,7 +128,7 @@ public class HomeActivity extends BaseActivity implements
 
         });
 
-        workoutsViewModel.getWorkoutsList().observe(this, workouts->{
+        workoutsViewModel.getWorkoutsList().observe(this, workouts -> {
 
             setUpViewPager();
             notifyCurrentWorkout();
@@ -142,16 +144,20 @@ public class HomeActivity extends BaseActivity implements
 
     //TODO: call this function when needed
     private void loggedInUI() {
-        isLoggedIn = false;         //TODO: need to check if the user is logged in
+        isLoggedIn = userService.isUserLoggedIn();         //TODO: need to check if the user is logged in
 
         if (isLoggedIn) {
             mNavigationView.getMenu().clear();
             mNavigationView.inflateMenu(R.menu.menu_main_logged_in);
+            View v = mNavigationView.getHeaderView(0);
+            TextView tv = v.findViewById(R.id.usernameTV);
+            tv.setText(userService.getUsername());
             //TODO: apply any "user logged in" changes such as username
         } else {
             mNavigationView.getMenu().clear();
             mNavigationView.inflateMenu(R.menu.menu_main_logged_out);
         }
+
 
     }
 
@@ -214,7 +220,7 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     protected void onPause() {
-        if(workoutsViewModel.safeToSave){
+        if (workoutsViewModel.safeToSave) {
             workoutsViewModel.saveLayoutToDataBase();
         }
         super.onPause();
@@ -440,9 +446,9 @@ public class HomeActivity extends BaseActivity implements
                 //TODO: implement loggedInUI function
                 //TODO: change user name in the activity
                 loggedInUI();
+                programService.annonymouseToUser(programViewModel.getProgram().getValue());
                 //TODO: implement changing program creator UID and name
-            }
-            else if (resultCode == RESULT_CANCELED){
+            } else if (resultCode == RESULT_CANCELED) {
 
             }
         }

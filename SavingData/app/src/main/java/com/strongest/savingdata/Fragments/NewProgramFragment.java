@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.strongest.savingdata.AViewModels.ProgramViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Activities.HomeActivity;
+import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
 import com.strongest.savingdata.R;
 
 /**
@@ -35,7 +37,7 @@ public class NewProgramFragment extends BaseFragment {
     private void initViews(View v) {
 
         programViewModel = ViewModelProviders.of(getActivity()).get(ProgramViewModel.class);
-        workoutsViewModel = ViewModelProviders.of(getActivity()).get(WorkoutsViewModel.class);
+        workoutsViewModel= ViewModelProviders.of(getActivity()).get(WorkoutsViewModel.class);
 
         v.findViewById(R.id.toolbar_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,9 +49,14 @@ public class NewProgramFragment extends BaseFragment {
         v.findViewById(R.id.fragment_new_program_default_blank_template).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                programViewModel.setNewProgram();
-                workoutsViewModel.setNewWorkout();
-                getFragmentManager().popBackStack();
+                if(userService.isUserLoggedIn() || programViewModel.getProgram().getValue() == null) {
+
+                    programViewModel.setNewProgram();
+                    workoutsViewModel.setNewWorkout();
+                    getFragmentManager().popBackStack();
+                }else{
+                    Toast.makeText(getContext(), "You can only save one prgraom. Log in to save as many as you wish.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

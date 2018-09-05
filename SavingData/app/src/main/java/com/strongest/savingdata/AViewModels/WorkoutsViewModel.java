@@ -23,6 +23,7 @@ import io.reactivex.disposables.CompositeDisposable;
 public class WorkoutsViewModel extends ViewModel {
 
 
+    public boolean workoutsInitialized;
     private WorkoutsService.CMD cmd;
     private final WorkoutsService workoutsService;
     @Inject
@@ -61,6 +62,7 @@ public class WorkoutsViewModel extends ViewModel {
         }
         workoutsService.provideWorktoutsList(workoutsList, cmd);
         cmd = null;
+        workoutsInitialized = true;
     }
 
 

@@ -62,7 +62,7 @@ public class RegisterActivity extends BaseActivity {
 
 
             //TODO:put name textview
-            userService.registerUser(progressBar, email,pass,"", user->{
+            userService.registerUser( email,pass,"", user->{
 
                 userService.saveUserToServer((User) user, (success->{
                     if((Integer)success == 1){

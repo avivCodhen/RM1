@@ -53,6 +53,31 @@
         android:textColorHint="@color/colorPrimary"
         style="@style/TextInputColorAccent">
 
+        <EditText
+            android:id="@+id/register_fragment_fullnameED"
+
+
+            android:padding="10dp"
+            android:background="@color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_fullname"
+            android:imeActionId="6"
+            android:imeActionLabel="@string/prompt_fullname"
+            android:imeOptions="actionUnspecified"
+            android:maxLines="1"
+            android:singleLine="true" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_marginTop="15dp"
+        app:theme="@style/ThemeTextInputColorAccent"
+        android:background="@drawable/aviv_border"
+        android:elevation="5dp"
+        android:textColorHint="@color/colorPrimary"
+        style="@style/TextInputColorAccent">
+
     <EditText
         android:id="@+id/register_fragment_passwordED"
 
@@ -69,30 +94,6 @@
         android:singleLine="true" />
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_marginTop="15dp"
-        app:theme="@style/ThemeTextInputColorAccent"
-        android:background="@drawable/aviv_border"
-        android:elevation="5dp"
-        android:textColorHint="@color/colorPrimary"
-        style="@style/TextInputColorAccent">
-
-    <EditText
-        android:id="@+id/register_fragment_confirmED"
-
-
-        android:padding="10dp"
-        android:background="@color/transparent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/prompt_confirm_password"
-        android:imeActionId="6"
-        android:imeActionLabel="@string/prompt_confirm_password"
-        android:imeOptions="actionUnspecified"
-        android:inputType="textPassword"
-        android:maxLines="1"
-        android:singleLine="true" />
-    </android.support.design.widget.TextInputLayout>
 
 
 
@@ -101,7 +102,6 @@
         style="@style/whiteButton"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:onClick="register"
         android:id="@+id/register_fragment_registernBtn"
         android:text="REGISTER"
 

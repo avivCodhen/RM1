@@ -112,14 +112,14 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
             }
         });
 
-       // mLoginFormView = findViewById(R.id.login_form);
+        // mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
         toSignUpBtn.setOnClickListener(toSignUp -> {
             addFragmentToActivity(R.id.activity_register_frame, new RegisterFragment(), "");
         });
 
-        exit.setOnClickListener(exit-> finish());
+        exit.setOnClickListener(exit -> finish());
     }
 
     private void populateAutoComplete() {
@@ -184,9 +184,10 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
 
         if (vaildate()) {
 
-            userService.logInUser(email, pass, progressBar, (result) -> {
+            userService.logInUser(email, pass,  (result) -> {
                 if ((int) result == 1) {
-                    finishActivity(RESULT_OK);
+                    setResult(RESULT_OK);
+                    finish();
                 }
             });
         }
@@ -348,7 +349,7 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-        //    showProgress(false);
+            //    showProgress(false);
 
             if (success) {
                 finish();
@@ -361,7 +362,7 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
         @Override
         protected void onCancelled() {
             mAuthTask = null;
-          //  showProgress(false);
+            //  showProgress(false);
         }
     }
 }

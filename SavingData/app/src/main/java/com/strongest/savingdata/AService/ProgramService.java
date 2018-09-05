@@ -119,16 +119,19 @@ public class ProgramService {
     }
 
     private Program saveProgramToFireBase(Program program) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-                .getReference()
-                .child(FireBaseUtils.FIRE_BASE_REFERENCE_PROGRAMS);
-        String key = databaseReference.push().getKey();
-        program.setKey(key);
-        programRepository.insertProgram(program);
-        saveProgramKeyToSharedPreferences(key);
-        databaseReference.child(key).setValue(program).addOnCompleteListener(task -> Log.d(
-                "aviv", "onComplete: " + task.getException())
-        );
+        if(userService.isUserLoggedIn()){
+
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+                    .getReference()
+                    .child(FireBaseUtils.FIRE_BASE_REFERENCE_PROGRAMS);
+            String key = databaseReference.push().getKey();
+            program.setKey(key);
+            programRepository.insertProgram(program);
+            saveProgramKeyToSharedPreferences(key);
+            databaseReference.child(key).setValue(program).addOnCompleteListener(task -> Log.d(
+                    "aviv", "onComplete: " + task.getException())
+            );
+        }
 
         return program;
 
@@ -195,5 +198,11 @@ public class ProgramService {
                 iter.remove();
             }
         }
+    }
+
+    public void annonymouseToUser(Program p){
+        p.setCreatorUID(userService.getUserUID());
+        p.setCreator(userService.getUsername());
+        saveProgramToFireBase(p);
     }
 }

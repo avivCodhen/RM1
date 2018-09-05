@@ -48,7 +48,7 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="prompt_fullname">Full name</string>
     <string name="action_log_in">LOG IN</string>
     <string name="action_to_signup">REGISTER</string>
     <string name="action_sign_in_short">Sign in</string>

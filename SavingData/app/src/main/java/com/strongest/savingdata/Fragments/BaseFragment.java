@@ -20,6 +20,8 @@ public class BaseFragment extends Fragment {
 
     ProgramViewModel programViewModel;
     WorkoutsViewModel workoutsViewModel;
+
+    @Inject
     UserService userService;
 
     @Override
