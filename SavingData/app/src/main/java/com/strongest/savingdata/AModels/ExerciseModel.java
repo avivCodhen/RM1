@@ -44,7 +44,7 @@ public class ExerciseModel {
                     w.exArray.add(s);
 
                 }
-             //   w.setParents(expandExerciseSupersets(ep));
+                //   w.setParents(expandExerciseSupersets(ep));
 
                 onFinish.onFinish(w);
             }
@@ -99,7 +99,7 @@ public class ExerciseModel {
     /**
      * this function injects a superset-set in a set(ahm)
      */
-
+/*
     public static void injectSupersetExercise(int positionInList,
                                               PLObject.ExerciseProfile parent,
                                               PLObject.SetsPLObject setsPLObject,
@@ -108,12 +108,25 @@ public class ExerciseModel {
         int numOfSupersets = parent.exerciseProfiles.size();
         for (int i = 0; i < numOfSupersets; i++) {
             PLObject.ExerciseProfile superset = parent.exerciseProfiles.get(i);
-            PLObject.SetsPLObject intraSet =new PLObject.SetsPLObject();
+            PLObject.SetsPLObject intraSet = new PLObject.SetsPLObject();
             intraSet.innerType = WorkoutLayoutTypes.SuperSetIntraSet;
             intraSet.type = WorkoutLayoutTypes.SuperSetIntraSet;
             superset.intraSets.add(positionInList, intraSet);
             setsPLObject.superSets.add(intraSet);
         }
-    }
+    }*/
+    public static void injectSupersetExercise(
+            PLObject.ExerciseProfile parent,
+            PLObject.SetsPLObject setsPLObject) {
 
+        int numOfSupersets = parent.exerciseProfiles.size();
+        for (int i = 0; i < numOfSupersets; i++) {
+
+            PLObject.SetsPLObject intraSet = new PLObject.SetsPLObject();
+            intraSet.innerType = WorkoutLayoutTypes.SuperSetIntraSet;
+            intraSet.type = WorkoutLayoutTypes.SuperSetIntraSet;
+            intraSet.setExerciseName(parent.exerciseProfiles.get(i).getExercise().getName());
+            setsPLObject.superSets.add(intraSet);
+        }
+    }
 }

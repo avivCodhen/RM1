@@ -34,7 +34,7 @@ import static com.strongest.savingdata.AModels.workoutModel.WorkoutsModel.ListMo
  * Created by Cohen on 10/18/2017.
  */
 
-public class WorkoutsModel implements Architecture.model {
+public class WorkoutsModel  {
 
 
     private WorkoutsService workoutsService;
@@ -43,23 +43,8 @@ public class WorkoutsModel implements Architecture.model {
         return workoutsService;
     }
 
-    @Override
-    public void removeItem(Workout w) {
-
-    }
-
-    @Override
-    public void addNewItem(Workout w, Actions a) {
-
-        switch (a) {
-            case NewWorkout:
-
-                break;
-        }
-    }
-
     public enum Actions {
-        Delete, Swap, Add, Duplicate, NewExercise, Child, MultiDelete, NewWorkout, Advanced, NewDivider
+        Delete, Swap, Add, Duplicate, NewExercise, Child, MultiDelete, NewWorkout, Share, Advanced, NewDivider
     }
 
     /*  public String getLayoutName() {

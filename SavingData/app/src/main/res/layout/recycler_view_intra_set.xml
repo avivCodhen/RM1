@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/intra_sets_main_layout"
-    android:background="@color/colorPrimary"
     >
 
 
@@ -50,6 +49,7 @@
             android:visibility="gone"
             android:layout_marginLeft="45dp"
             android:text=""
+            android:textColor="@color/red"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -67,13 +67,37 @@
 
         >
 
+            <LinearLayout
+                android:id="@+id/edit_layout"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold"
+                    android:id="@+id/edit_container_tv"
+                    android:layout_width="230dp"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Tap to edit Dropset"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
 
             <LinearLayout
             android:id="@+id/reps_rest_weight_layout"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
+
+
 
 
             <RelativeLayout
@@ -271,32 +295,6 @@
 
     </RelativeLayout>
 
-        <LinearLayout
-            android:background="@color/colorPrimary"
-            android:layout_centerVertical="true"
-            android:id="@+id/edit_layout"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold"
-                android:background="@color/colorPrimary"
-                android:id="@+id/edit_container_tv"
-                android:layout_width="230dp"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="Click to edit Dropset"
-                android:textSize="14sp" />
-
-        </LinearLayout>
 
 
 

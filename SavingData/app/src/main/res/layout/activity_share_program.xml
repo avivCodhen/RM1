@@ -1,0 +1,42 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.strongest.savingdata.MyViews.SaveExitToolBar
+        android:layout_width="match_parent"
+        android:id="@+id/share_program_toolbar"
+        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
+    <EditText
+        android:id="@+id/share_program_ET"
+        android:hint="Email to share to"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="Aviv Cohen"
+            android:layout_weight="1"
+            android:id="@+id/shared_program_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/share_program_btn"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorAccent"
+            android:layout_weight="1"
+            style="@style/Base.Widget.AppCompat.Button"
+            android:text="Share Program"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

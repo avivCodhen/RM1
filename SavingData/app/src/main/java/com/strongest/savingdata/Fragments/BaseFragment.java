@@ -9,6 +9,7 @@ import com.strongest.savingdata.AService.ProgramService;
 import com.strongest.savingdata.AService.UserService;
 import com.strongest.savingdata.AViewModels.ProgramViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
+import com.strongest.savingdata.AViewModels.WorkoutsViewModelFactory;
 import com.strongest.savingdata.DependencyInjection.MainApplication;
 import com.strongest.savingdata.R;
 
@@ -20,6 +21,10 @@ public class BaseFragment extends Fragment {
 
     ProgramViewModel programViewModel;
     WorkoutsViewModel workoutsViewModel;
+
+    @Inject
+    WorkoutsViewModelFactory workoutsViewModelFactory;
+
 
     @Inject
     UserService userService;

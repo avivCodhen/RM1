@@ -123,14 +123,14 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
     }
 
     private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
+       /* if (!mayRequestContacts()) {
             return;
-        }
+        }*/
 
-        getLoaderManager().initLoader(0, null, this);
+        //getLoaderManager().initLoader(0, null, this);
     }
 
-    private boolean mayRequestContacts() {
+  /*  private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
         }
@@ -150,7 +150,7 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
             requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
         }
         return false;
-    }
+    }*/
 
     /**
      * Callback received when a permissions request has been completed.

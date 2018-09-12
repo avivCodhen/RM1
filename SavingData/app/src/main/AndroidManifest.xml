@@ -20,7 +20,7 @@
         tools:replace="android:label, supportsRtl">
         <activity android:name=".Activities.MainActivity" />
         <activity android:name=".Activities.RegisterActivity" />
-        <activity android:name="youruserpools.MainActivity"></activity>
+        <activity android:name="youruserpools.MainActivity" />
         <activity
             android:name=".Dialogs.DialogMuscleSelect"
             android:theme="@style/AppTheme.CustomeTheme" />
@@ -92,7 +92,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.LoginActivity2"
-            android:label="@string/title_activity_login2"></activity>
+            android:label="@string/title_activity_login2" />
+        <activity android:name=".Activities.MyProgramsActivity" />
+        <activity android:name=".Activities.ShareProgramActivity"></activity>
     </application>
 
 </manifest><!--

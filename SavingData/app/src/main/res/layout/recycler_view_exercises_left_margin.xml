@@ -118,7 +118,6 @@
         <TextView
             android:textColor="@color/colorAccent"
             android:textStyle="bold"
-            android:background="@color/colorPrimary"
             android:id="@+id/exerciseView_edit_TV"
             android:layout_width="230dp"
             android:layout_height="50dp"
@@ -126,7 +125,7 @@
             android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Click To Edit Exercise"
+            android:text="Tap To Edit Exercise"
             android:textSize="14sp" />
 
 

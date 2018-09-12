@@ -432,7 +432,7 @@ public class WorkoutsService {
 
 
                         //intra.parent = ep;
-                        intra.setParent = ep.getSets().get(position);
+                        //intra.setParent = ep.getSets().get(position);
                         ep.getSets().get(position).intraSets.add(intra);
 
                         break;

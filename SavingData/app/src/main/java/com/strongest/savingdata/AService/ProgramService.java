@@ -16,8 +16,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.strongest.savingdata.AModels.UserModel.SharedUser;
+import com.strongest.savingdata.AModels.UserModel.User;
 import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.AModels.programModel.ProgramRepository;
+import com.strongest.savingdata.Activities.MyProgramsActivity;
+import com.strongest.savingdata.Controllers.CallBacks;
 import com.strongest.savingdata.Utils.FireBaseUtils;
 
 import java.text.SimpleDateFormat;
@@ -38,15 +42,19 @@ public class ProgramService {
 
 
     public final static String CURRENT_PROGRAM = "current_program";
+    public final static String NUM_OF_SHARED_PROGRAMS = "number_of_shared_programs";
     private UserService userService;
     private final ProgramRepository programRepository;
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor sharedPreferencesEditor;
     private static final String TAG = "programservice";
+    private ArrayList<SharedUser> sharedList = new ArrayList<>();
+    private int count;
 
 
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
+    DatabaseReference sharedProgramReference;
 
 
     @Inject
@@ -61,6 +69,48 @@ public class ProgramService {
                 .getInstance()
                 .getReference()
                 .child(FireBaseUtils.FIRE_BASE_REFERENCE_PROGRAMS);
+        sharedProgramReference = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child(FireBaseUtils.FIRE_BASE_REFERENCE_SHARED_PROGRAMS);
+
+    }
+
+    public void listenForSharedPrograms(CallBacks.Observer observer) {
+        if (userService.isUserLoggedIn()) {
+            sharedProgramReference.
+                    orderByChild("recieverUID")
+                    .equalTo(userService.getUserUID())
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot != null && dataSnapshot.getChildrenCount() > 0) {
+                                if (dataSnapshot.getChildrenCount() > getNumberOfSharedPrograms()) {
+                                    count = 0;
+                                    sharedList.clear();
+                                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                                        SharedUser sharedUser = d.getValue(SharedUser.class);
+                                        if (!sharedUser.isSeen()) {
+                                            count++;
+                                        }
+                                        sharedList.add(sharedUser);
+                                    }
+                                    observer.notify(count);
+                                    Toast.makeText(userService.context, "Made it", Toast.LENGTH_SHORT).show();
+
+                                }
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Toast.makeText(userService.context, "Error", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+        }
 
     }
 
@@ -82,6 +132,10 @@ public class ProgramService {
 
     }
 
+    public LiveData<Program> getProgramByKey(String key){
+        return programRepository.getProgramByKey(key);
+    }
+
     public Program getNewProgram() {
         cleanCurrentProgramSharedPreferences();
         return createNewProgram();
@@ -100,7 +154,15 @@ public class ProgramService {
         sharedPreferencesEditor.putString(CURRENT_PROGRAM, key).commit();
     }
 
-    private String getProgramUID() {
+    private void saveNumberOfSharedForPrograms(int num) {
+        sharedPreferencesEditor.putInt(NUM_OF_SHARED_PROGRAMS, num).commit();
+    }
+
+    private int getNumberOfSharedPrograms() {
+        return sharedPreferences.getInt(NUM_OF_SHARED_PROGRAMS, -1);
+    }
+
+    public String getProgramUID() {
         return sharedPreferences.getString(CURRENT_PROGRAM, "");
 
     }
@@ -112,14 +174,17 @@ public class ProgramService {
                 getUsername(),
                 "My New Program",
                 new SimpleDateFormat("HH:mm:ss").format(new Date()),
-                new SimpleDateFormat("m dd, yyyy", Locale.US).format(new Date()),
+                new SimpleDateFormat("MMMM dd, yyyy", Locale.US).format(new Date()),
                 "");
 
         return saveProgramToFireBase(program);
     }
 
+    private void updateProgram(Program p){
+        databaseReference.child(p.getKey()).setValue(p);
+    }
     private Program saveProgramToFireBase(Program program) {
-        if(userService.isUserLoggedIn()){
+        if (isUserAllowedToCreateProgram()) {
 
             DatabaseReference databaseReference = FirebaseDatabase.getInstance()
                     .getReference()
@@ -137,13 +202,21 @@ public class ProgramService {
 
     }
 
+    private boolean isUserAllowedToCreateProgram() {
+        if (userService.isUserLoggedIn()) {
+            return true;
+        } else {
+            if (getProgramUID().equals("")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
     public void insertProgram(Program p) {
         saveProgramKeyToSharedPreferences(p.getKey());
         programRepository.insertProgram(p);
-    }
-
-    public LiveData<List<Program>> provideAllPrograms() {
-        return programRepository.getAllPrograms();
     }
 
     public void cleanCurrentProgramSharedPreferences() {
@@ -166,19 +239,20 @@ public class ProgramService {
                 });
     }
 
-    public void fetchAllPrograms(MutableLiveData<ArrayList<Program>> allPrograms) {
+    public void fetchAllPrograms(DatabaseReference databaseReference, MutableLiveData<ArrayList<Program>> allPrograms,
+                                 String orderBy, String equalTo) {
         Log.d(TAG, "fetchAllPrograms: ");
         ArrayList<Program> programs = new ArrayList<>();
         databaseReference
-                .orderByChild("creatorUID")
-                .equalTo(getUID())
-                .addValueEventListener(new ValueEventListener() {
+                .orderByChild(orderBy)
+                .equalTo(equalTo)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot d : dataSnapshot.getChildren()) {
                             programs.add(d.getValue(Program.class));
                         }
-                        removeCurrentProgram(programs);
+                        //removeCurrentProgram(programs);
                         allPrograms.setValue(programs);
                     }
 
@@ -189,7 +263,74 @@ public class ProgramService {
                 });
     }
 
-    public void removeCurrentProgram(ArrayList<Program> programs) {
+    public void fetchProgramByUID(SharedUser sharedUser, CallBacks.OnFinish onFinish) {
+        databaseReference
+                .child(sharedUser.getProgramUID())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Program p = dataSnapshot.getValue(Program.class);
+                        p.isSeen = sharedUser.isSeen();
+                        onFinish.onFinish(p);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void fetchAllProgramsShared(MutableLiveData<ArrayList<Program>> allPrograms,
+                                       String orderBy) {
+
+        ArrayList<Program> programs = new ArrayList<>();
+        ArrayList<SharedUser> shared = new ArrayList<>();
+        sharedProgramReference
+                .orderByChild(orderBy)
+                .equalTo(userService.getUserUID())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            shared.add(d.getValue(SharedUser.class));
+                        }
+
+
+                        for (int i = 0; i < shared.size(); i++) {
+                            fetchProgramByUID(shared.get(i), prog -> {
+                                programs.add((Program) prog);
+                                if (programs.size() == shared.size()) {
+                                    allPrograms.setValue(programs);
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+    }
+
+    public void fetchAllProgramsByTag(MutableLiveData<ArrayList<Program>> allPrograms, String tag) {
+        if (userService.isUserLoggedIn()) {
+
+            if (tag.equals(MyProgramsActivity.FRAGMENT_USER_PROGRAMS)) {
+                fetchAllPrograms(databaseReference, allPrograms, "creatorUID", userService.getUserUID());
+            } else if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY)) {
+                fetchAllProgramsShared(allPrograms, "senderUID");
+
+            } else if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)) {
+                fetchAllProgramsShared(allPrograms, "recieverUID");
+            }
+        }
+    }
+
+    /*public void removeCurrentProgram(ArrayList<Program> programs) {
         Iterator<Program> iter = programs.iterator();
 
         while (iter.hasNext()) {
@@ -199,10 +340,28 @@ public class ProgramService {
             }
         }
     }
-
-    public void annonymouseToUser(Program p){
+*/
+    public void annonymouseToUser(Program p) {
         p.setCreatorUID(userService.getUserUID());
         p.setCreator(userService.getUsername());
-        saveProgramToFireBase(p);
+        updateProgram(p);
+    }
+
+    public void shareProgramWithUser(String programUID, User user) {
+        SharedUser sharedUser = new SharedUser();
+        sharedUser.setProgramUID(programUID);
+        sharedUser.setSenderUID(userService.getUserUID());
+        sharedUser.setRecieverUID(user.getUID());
+        String key = sharedProgramReference.push().getKey();
+        sharedProgramReference.child(key).setValue(sharedUser);
+    }
+
+
+    public ArrayList<SharedUser> getSharedList() {
+        return sharedList;
+    }
+
+    public int getCount() {
+        return count;
     }
 }

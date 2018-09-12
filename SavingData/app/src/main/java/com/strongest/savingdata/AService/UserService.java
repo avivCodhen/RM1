@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,13 +75,18 @@ public class UserService {
 
     }
 
-    public void logInUser(String email, String pass, CallBacks.OnFinish onFinish){
-        firebaseAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(task->{
+    public void logInUser(String email, String pass, CallBacks.OnFinish onFinish) {
+        firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(task -> {
 
-            if(task.isSuccessful()){
-                Toast.makeText(context, "logged in!", Toast.LENGTH_SHORT).show();
-                onFinish.onFinish(1);
-            }else{
+            if (task.isSuccessful()) {
+                findUserByEmail(firebaseAuth.getCurrentUser().getEmail(), serverUser->{
+                    User u = (User) serverUser;
+                    saveUsernameToSharedPreferences(u.getName(), u.getUID() );
+                    onFinish.onFinish(1);
+                    Toast.makeText(context, "logged in!", Toast.LENGTH_SHORT).show();
+
+                });
+            } else {
                 Toast.makeText(context, "Wrong credentials", Toast.LENGTH_SHORT).show();
             }
         });
@@ -107,16 +113,41 @@ public class UserService {
 
     }
 
-    public String getUserUID(){
+    public String getUserUID() {
         return firebaseAuth.getCurrentUser().getUid();
     }
-    public String getUsername(){
+
+    public String getUsername() {
         return sharedPreferences.getString(USERNAME, "");
     }
 
-    public boolean isUserLoggedIn(){
+    public boolean isUserLoggedIn() {
         return firebaseAuth.getCurrentUser() != null;
     }
 
 
+    public void findUserByEmail(String email, CallBacks.OnFinish onFinish) {
+        databaseReference.child("users")
+                .orderByChild("email")
+                .equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() != null) {
+                            for (DataSnapshot d : dataSnapshot.getChildren()) {
+
+                                User user = d.getValue(User.class);
+                                user.setUID(d.getKey());
+                                if (user != null)
+                                onFinish.onFinish(user);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
 }

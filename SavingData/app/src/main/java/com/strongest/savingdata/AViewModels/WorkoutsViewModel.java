@@ -54,6 +54,8 @@ public class WorkoutsViewModel extends ViewModel {
         this.workoutsService = workoutsService;
         this.workoutsModel = workoutsModel;
         this.compositeDisposable = compositeDisposable;
+        cmd = WorkoutsService.CMD.INIT;
+        workoutsService.provideWorktoutsList(workoutsList, cmd);
     }
 
     public void initWorkouts() {

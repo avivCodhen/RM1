@@ -3,6 +3,7 @@ package com.strongest.savingdata.Activities;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.AModels.workoutModel.Workout;
+import com.strongest.savingdata.AService.WorkoutsService;
 import com.strongest.savingdata.AViewModels.ProgramViewModel;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.WorkoutItemAdapterFactory;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
@@ -60,6 +63,7 @@ public class HomeActivity extends BaseActivity implements
 
     public static final int EXERCISE_ACTIVITY = 1;
     public static final int LOGIN_ACTIVITY = 2;
+    public static final int MY_PROGRAM_ACTIVITY = 3;
     public static final String EXERCISE_POSITION = "exercisePosition";
 
     @BindView(R.id.activity_home_toolbar)
@@ -99,34 +103,42 @@ public class HomeActivity extends BaseActivity implements
     private Workout w;
 
     private boolean isLoggedIn;
+    private TextView myProgramBadge;
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("program", program);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            program = (Program) savedInstanceState.getSerializable("program");
+        }
         setContentView(R.layout.activity_home);
-        workoutsViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(WorkoutsViewModel.class);
         programViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(ProgramViewModel.class);
+        workoutsViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(WorkoutsViewModel.class);
         ButterKnife.bind(this);
         setUpToolbar();
 
 
-        programViewModel.getProgram().observe(this, program -> {
-
+        programViewModel.getProgramModel().observe(this, program -> {
+            this.program = program;
             title.setText(program.getProgramName());
-            programViewModel.getProgram().removeObservers(this);
             if (!workoutsViewModel.workoutsInitialized) {
                 workoutsViewModel.initWorkouts();
             }
         });
 
-        programViewModel.getNewProgram().observe(this, prog -> {
+        /*programViewModel.getNewProgram().observe(this, prog -> {
             programViewModel.setProgram(programViewModel.getNewProgram());
             title.setText(prog.getProgramName());
             workoutsViewModel.initWorkouts();
 
 
-        });
+        });*/
 
         workoutsViewModel.getWorkoutsList().observe(this, workouts -> {
 
@@ -139,7 +151,19 @@ public class HomeActivity extends BaseActivity implements
         longClickMenuView.instantiate(this);
         programToolsView.instantiate(programToolsBtn, this);
         loggedInUI();
+        programService.listenForSharedPrograms(count -> showBadgeForMyProgram((int) count));
+    }
 
+    private void showBadgeForMyProgram(int count) {
+        if (count > 0) {
+
+            myProgramBadge = (TextView) MenuItemCompat.getActionView(mNavigationView.getMenu().findItem(R.id.menu_my_programs));
+            myProgramBadge.setGravity(Gravity.CENTER_VERTICAL);
+            myProgramBadge.setTypeface(null, Typeface.BOLD);
+            myProgramBadge.setTextColor(getResources().getColor(R.color.red));
+
+            myProgramBadge.setText(count + "");
+        }
     }
 
     //TODO: call this function when needed
@@ -265,14 +289,19 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment f;
+        Intent i;
         switch (item.getItemId()) {
             case R.id.menu_create_program:
                 f = new NewProgramFragment();
                 addFragmentToActivity(R.id.activity_home_framelayout, f, "NewProgram");
                 break;
             case R.id.menu_my_programs:
-                f = new MyProgramsFragment();
-                addFragmentToActivity(R.id.activity_home_framelayout, f, "MyPrograms");
+               /* f = new MyProgramsFragment();
+                addFragmentToActivity(R.id.activity_home_framelayout, f, "MyPrograms");*/
+                i = new Intent(this, MyProgramsActivity.class);
+                i.putExtra("current_program", program);
+                startActivityForResult(i, MY_PROGRAM_ACTIVITY);
+
                 break;
             case R.id.menu_custom_exercise:
                 f = new CustomExerciseFragment();
@@ -282,6 +311,11 @@ public class HomeActivity extends BaseActivity implements
                 startActivityForResult(new Intent(this, LoginActivity2.class), LOGIN_ACTIVITY);
                 //startActivityForResult(new Intent(this, RegisterActivity.class), LOGIN_ACTIVITY);
                 break;
+
+            case R.id.menu_share_program:
+                i = new Intent(this, ShareProgramActivity.class);
+                i.putExtra("programuid", programService.getProgramUID());
+                startActivity(i);
             case R.id.menu_logout:
                 //TODO: implement a logout function
         }
@@ -353,6 +387,7 @@ public class HomeActivity extends BaseActivity implements
     public void onProgramToolsAction(WorkoutsModel.Actions action) {
         if (action == Advanced) {
             addFragmentToActivity(R.id.activity_home_framelayout, new ProgramSettingsFragment(), "programsettings");
+
         } else {
             workoutsViewModel.workoutsModel.validateActions(
                     workoutsViewModel.getWorkoutsList().getValue(),
@@ -447,9 +482,18 @@ public class HomeActivity extends BaseActivity implements
                 //TODO: change user name in the activity
                 loggedInUI();
                 programService.annonymouseToUser(programViewModel.getProgram().getValue());
+                programService.listenForSharedPrograms(count -> showBadgeForMyProgram((int) count));
                 //TODO: implement changing program creator UID and name
             } else if (resultCode == RESULT_CANCELED) {
 
+            }
+        }
+        else if(requestCode == MY_PROGRAM_ACTIVITY){
+            if (resultCode == RESULT_OK){
+                Program p = (Program) data.getSerializableExtra("program");
+                workoutsViewModel.workoutsInitialized = false;
+                workoutsViewModel.setCmd(WorkoutsService.CMD.SWITCH);
+                programViewModel.updateProgram(p);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

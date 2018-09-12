@@ -1,5 +1,6 @@
 package com.strongest.savingdata.Controllers;
 
+import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AModels.workoutModel.Workout;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
@@ -18,10 +19,15 @@ public interface Architecture {
         void onWorkoutViewFragmentLongClick();
     }
 
-    interface model {
+    interface program {
+        void deleteProgram(Program p);
 
-       void removeItem(Workout w);
-       void addNewItem(Workout w, WorkoutsModel.Actions a);
+        void switchProgram(Program p);
+
+        void shareProgram(Program p);
+
+        void loadProgram(Program p);
     }
+
 
 }

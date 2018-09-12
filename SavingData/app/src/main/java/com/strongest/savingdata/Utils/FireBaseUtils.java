@@ -6,5 +6,6 @@ public class FireBaseUtils {
     public static final String FIRE_BASE_REFERENCE_USERS = "users/";
     public static final String FIRE_BASE_REFERENCE_PROGRAMS = "programs/";
     public static final String FIRE_BASE_REFERENCE_WORKOUTS = "workouts/";
+    public static final String FIRE_BASE_REFERENCE_SHARED_PROGRAMS = "sharedPrograms/";
 
 }

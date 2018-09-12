@@ -143,8 +143,17 @@ public class ExerciseEditFragment extends BaseFragment implements
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(FRAGMENT_TAG, fragmentId);
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (savedInstanceState != null) {
+            fragmentId = savedInstanceState.getString(FRAGMENT_TAG);
+        }
         workoutsViewModel = ViewModelProviders.of(getActivity()).get(WorkoutsViewModel.class);
         selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(fragmentId, SelectedExerciseViewModel.class);
         dataManager = workoutsViewModel.getDataManager();
@@ -238,13 +247,13 @@ public class ExerciseEditFragment extends BaseFragment implements
             float distance = 0;
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) listWrapper.getLayoutParams();
 
-            if(  ((TextView) view).getText().equals("Show Player")){
-                 distance = TypedValue.applyDimension(
+            if (((TextView) view).getText().equals("Show Player")) {
+                distance = TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, 260,
                         getResources().getDisplayMetrics()
                 );
                 ((TextView) view).setText("Hide Player");
-            }else{
+            } else {
                 distance = TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, 55,
                         getResources().getDisplayMetrics());
@@ -257,7 +266,7 @@ public class ExerciseEditFragment extends BaseFragment implements
 
                 @Override
                 protected void applyTransformation(float interpolatedTime, Transformation t) {
-                    params.topMargin = (int)(finalDistance * interpolatedTime);
+                    params.topMargin = (int) (finalDistance * interpolatedTime);
                     listWrapper.setLayoutParams(params);
                 }
             };
@@ -345,7 +354,7 @@ public class ExerciseEditFragment extends BaseFragment implements
      * this function takes the muscle from the clicked exercise(if it has any)
      * and fetchs the exercise corresponding to the muscle
      * it also sorts the list
-     * */
+     */
     private void initExerciseBeans(Muscle m) {
         exerciseBeans = (ArrayList<Beans>)
                 dataManager.getExerciseDataManager().
@@ -383,7 +392,7 @@ public class ExerciseEditFragment extends BaseFragment implements
 
     /**
      * called when an exercise is available or changed
-     *
+     * <p>
      * applies the selectedExercise value to the clicked exercise row in the recyclerview
      * it hides the youtube default text layout
      * makes the youtube layout visible to be displayed
@@ -392,7 +401,7 @@ public class ExerciseEditFragment extends BaseFragment implements
      * calls the youtubeHandler to initialize the player
      * changes the right top tv to the exercise's name
      * update the adapter
-     * */
+     */
     @Override
     public void setExercise(Beans beans) {
         selectedExercise = beans;

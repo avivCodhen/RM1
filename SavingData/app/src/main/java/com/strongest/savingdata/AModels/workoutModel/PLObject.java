@@ -258,6 +258,7 @@ public class PLObject implements Serializable {
         public String tag;
         public String title;
         public WorkoutLayoutTypes innerType;
+        private String ExerciseName;
 
 
         public SetsPLObject( ExerciseSet ExerciseSet) {
@@ -305,6 +306,13 @@ public class PLObject implements Serializable {
             this.ExerciseSet = exerciseSet;
         }
 
+        public String getExerciseName() {
+            return ExerciseName;
+        }
+
+        public void setExerciseName(String exerciseName) {
+            ExerciseName = exerciseName;
+        }
     }
 
     public static class ExerciseStats extends PLObject{

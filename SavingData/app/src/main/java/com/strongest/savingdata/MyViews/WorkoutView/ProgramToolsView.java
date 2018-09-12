@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class ProgramToolsView extends LinearLayout {
 
     public enum Action {
-        NewExercise, NewDivider, NewWorkout, Advanced
+        NewExercise, NewDivider, NewWorkout, Share, Advanced
     }
 
     private Context context;
@@ -125,10 +125,10 @@ public class ProgramToolsView extends LinearLayout {
         int green = ContextCompat.getColor(context, R.color.green_dark);
         int red = ContextCompat.getColor(context, R.color.red);
         int plusIcon = R.drawable.plus_gray_24px;
+        int shareIcon = R.drawable.ic_share_black_24dp;
         buttons.add(new ProgramButton(green, Actions.NewExercise, "New Exercise", plusIcon));
         buttons.add(new ProgramButton(green, Actions.NewDivider, "New Divider", plusIcon));
         buttons.add(new ProgramButton(green, Actions.NewWorkout, "New Workout", plusIcon));
-        //  buttons.add(new ProgramButton(red, DELETE_WORKOUT, "Workout", R.drawable.minus_white_24px));
         buttons.add(new ProgramButton(Color.WHITE, Actions.Advanced, "Advanced", R.drawable.settings_24px_gray));
         mRecyclerview = (RecyclerView) findViewById(R.id.program_tools_view_recyclerview);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(context);

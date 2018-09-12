@@ -7,12 +7,17 @@ public class User {
     private String name;
     private String email;
     private HashMap<String, Object> dateJoined;
+    private String UID;
 
     public User(String name, String email, HashMap<String, Object> dateJoined){
 
         this.name = name;
         this.email = email;
         this.dateJoined = dateJoined;
+    }
+
+    public User(){
+
     }
 
 
@@ -27,5 +32,13 @@ public class User {
 
     public HashMap<String, Object> getDateJoined() {
         return dateJoined;
+    }
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
     }
 }

@@ -4,6 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.security.Key;
 
 import io.reactivex.annotations.NonNull;
@@ -12,17 +13,18 @@ import io.reactivex.annotations.NonNull;
  * Created by Cohen on 10/18/2017.
  */
 @Entity
-public class Program {
+public class Program implements Serializable{
 
     @PrimaryKey(autoGenerate = true)
     private int uid;
-    private String key;
+    private String key = "";
     private String creatorUID;
     private String programName;
     private String time;
     private String creator;
     private String programDate;
     private String dbName;
+    public boolean isSeen;
 
 
     public Program(String creatorUID, String creator, String programName, String time, String programDate, String dbName) {
@@ -100,5 +102,14 @@ public class Program {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Program p = (Program) obj;
+        if (this.getKey().equals(p.getKey())){
+            return true;
+        }
+        return false;
     }
 }

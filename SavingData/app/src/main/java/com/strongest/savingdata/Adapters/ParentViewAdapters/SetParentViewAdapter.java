@@ -20,10 +20,12 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
     private UISetsClickHandler uiSetsClickHandler;
     private ArrayList<PLObject.SetsPLObject> list;
     private MyExpandableAdapter.MyExpandableViewHolder parentViewHolder;
+    private ArrayList<PLObject.ExerciseProfile> supersets;
 
-    public SetParentViewAdapter(PLObject.SetsPLObject setsPLObject, UISetsClickHandler uiSetsClickHandler,
-                                MyExpandableAdapter.MyExpandableViewHolder parentViewHolder){
+    public SetParentViewAdapter(ArrayList<PLObject.ExerciseProfile> supersets, PLObject.SetsPLObject setsPLObject, UISetsClickHandler uiSetsClickHandler,
+                                MyExpandableAdapter.MyExpandableViewHolder parentViewHolder) {
         this.setsPLObject = setsPLObject;
+        this.supersets = supersets;
         this.uiSetsClickHandler = uiSetsClickHandler;
         this.parentViewHolder = parentViewHolder;
         list = new ArrayList<>();
@@ -34,8 +36,8 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
     @Override
     public IntraSetViewHolder onCreateChildViewHolder(ViewGroup container) {
         LayoutInflater inflater = LayoutInflater.from(container.getContext());
-        View v = inflater.inflate(R.layout.recycler_view_intra_set,container, false);
-         return new IntraSetViewHolder(v);
+        View v = inflater.inflate(R.layout.recycler_view_intra_set, container, false);
+        return new IntraSetViewHolder(v);
     }
 
     @Override
@@ -48,21 +50,20 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
         PLObject.SetsPLObject set = list.get(position);
         ExerciseSet exerciseSet = set.getExerciseSet();
 
-        if(!exerciseSet.hasSomething()){
+        if (!exerciseSet.hasSomething()) {
             intraSetViewHolder.editContainer.setVisibility(View.VISIBLE);
-            intraSetViewHolder.editContainer.setOnClickListener((clicked)->{
-
-            });
-        }else{
+            intraSetViewHolder.dataLayout.setVisibility(View.INVISIBLE);
+        } else {
+            intraSetViewHolder.dataLayout.setVisibility(View.VISIBLE);
             intraSetViewHolder.editContainer.setVisibility(View.GONE);
         }
-        if (list.get(position).type == WorkoutLayoutTypes.SuperSetIntraSet){
-                intraSetViewHolder.supersetTv.setVisibility(View.VISIBLE);
-                //PLObject.ExerciseProfile superset = setsPLObject.parent.exerciseProfiles.get(position);
-                intraSetViewHolder.deleteIV.setVisibility(View.INVISIBLE);
+        if (list.get(position).type == WorkoutLayoutTypes.SuperSetIntraSet) {
+            intraSetViewHolder.supersetTv.setVisibility(View.VISIBLE);
+            //PLObject.ExerciseProfile superset = setsPLObject.parent.exerciseProfiles.get(position);
+            intraSetViewHolder.deleteIV.setVisibility(View.INVISIBLE);
 
-            intraSetViewHolder.supersetTv.setText("Superset of Exercise A");
-
+            intraSetViewHolder.supersetTv.setText("Superset of " + supersets.get(position).getExercise().getName());
+            intraSetViewHolder.editContainerTV.setText("Tap to edit Superset");
 /*
             if(superset.getExercise()!= null){
 
@@ -71,33 +72,33 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
                 }
 */
 
-            }else{
+        } else {
+            intraSetViewHolder.editContainerTV.setText("Tap to edit Dropset");
             intraSetViewHolder.intraSetTag.setImageResource(R.drawable.child_green);
-                intraSetViewHolder.deleteIV.setVisibility(View.VISIBLE);
-                intraSetViewHolder.deleteIV.setOnClickListener((delete)->{
-                    uiSetsClickHandler.onRemoveIntraSet(setsPLObject, setsPLObject.intraSets.indexOf(set));
-                });
-            }
+            intraSetViewHolder.deleteIV.setVisibility(View.VISIBLE);
+            intraSetViewHolder.deleteIV.setOnClickListener((delete) -> {
+                uiSetsClickHandler.onRemoveIntraSet(setsPLObject, setsPLObject.intraSets.indexOf(set));
+            });
+        }
 
-        if(position != (list.size()-1)){
+        if (position != (list.size() - 1)) {
             intraSetViewHolder.rest.setText(exerciseSet.getRest());
-        }else{
+        } else {
             intraSetViewHolder.rest.setText("");
         }
 
         intraSetViewHolder.reps.setText(exerciseSet.getRep());
         intraSetViewHolder.weight.setText(exerciseSet.getWeight() + "kg");
 
-        intraSetViewHolder.card.setOnClickListener((itemView)->{
-            uiSetsClickHandler.onSetsClick(parentViewHolder, setsPLObject);
+        intraSetViewHolder.card.setOnClickListener((itemView) -> {
+            uiSetsClickHandler.onSetsClick(parentViewHolder, set);
         });
 
-        intraSetViewHolder.card.setOnLongClickListener((longClicked)->{
-            uiSetsClickHandler.onSetsLongClick(setsPLObject,parentViewHolder);
+        intraSetViewHolder.card.setOnLongClickListener((longClicked) -> {
+            uiSetsClickHandler.onSetsLongClick(setsPLObject, parentViewHolder);
             return true;
         });
     }
-
 
 
 }

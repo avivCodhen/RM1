@@ -1,13 +1,30 @@
-<LinearLayout
+<RelativeLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/background_color">
 
-    <include layout="@layout/tool_bar_layout"></include>
+    <com.strongest.savingdata.MyViews.SaveExitToolBar
+        android:layout_alignParentTop="true"
+        android:id="@+id/my_programs_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
+
+    <TableLayout
+        android:layout_below="@+id/my_programs_toolbar"
+        android:id="@+id/my_programs_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TableLayout>
+    <android.support.v4.view.ViewPager
+        android:layout_above="@+id/my_programs_current"
+        android:layout_below="@+id/my_programs_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
 
     <LinearLayout
+        android:id="@+id/my_programs_current"
+        android:layout_alignParentBottom="true"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -22,21 +39,8 @@
         <include layout="@layout/recycler_view_program_layout_leftmargin"
             android:id="@+id/my_program_view"></include>
 
-        <TextView
-            android:layout_margin="5dp"
-            android:padding="8dp"
-            android:text="Other Programs:"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <include layout="@layout/layout_bottom_border"></include>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_my_program_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
 
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

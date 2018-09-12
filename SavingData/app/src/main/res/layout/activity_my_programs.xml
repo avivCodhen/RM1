@@ -1,0 +1,51 @@
+<RelativeLayout android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/background_color"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.strongest.savingdata.MyViews.SaveExitToolBar
+        android:layout_alignParentTop="true"
+        android:id="@+id/my_programs_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
+
+   <!-- <LinearLayout
+        android:layout_below="@+id/my_programs_toolbar"
+        android:id="@+id/my_programs_current"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_margin="5dp"
+            android:padding="8dp"
+            android:text="Current Program:"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <include layout="@layout/layout_bottom_border"></include>
+        <include layout="@layout/recycler_view_program_layout_leftmargin"
+            android:id="@+id/my_program_view"></include>
+
+
+    </LinearLayout>
+-->
+
+    <com.flyco.tablayout.SlidingTabLayout
+        app:tl_textSelectColor="@color/colorAccent"
+        app:tl_textUnselectColor="@color/black"
+        app:tl_indicator_color="@color/colorAccent"
+        android:layout_below="@+id/my_programs_toolbar"
+        android:id="@+id/my_programs_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"></com.flyco.tablayout.SlidingTabLayout>
+    <android.support.v4.view.ViewPager
+        android:layout_below="@+id/my_programs_tablayout"
+        android:id="@+id/my_program_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+
+
+</RelativeLayout>

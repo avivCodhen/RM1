@@ -269,9 +269,6 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     private void initAdapters() {
         //workout = workoutsViewModel.workoutsModel.exerciseToList(ep);
 
-        adapter = new MyExpandableAdapter(
-                workout.exArray,
-                getContext());
 
         exerciseAdapter = new MyExpandableAdapter(
                new ArrayList<>(),
@@ -282,6 +279,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                 getContext());
         adapter.setUiSetsClickHandler(this);
         adapter.setOnExerciseInfo(this);
+        adapter.setSupersets(exerciseProfile.exerciseProfiles);
         exerciseAdapter.setOnExerciseInfo(this);
         adapter.setLongClickMenuView(longClickMenuView);
 
