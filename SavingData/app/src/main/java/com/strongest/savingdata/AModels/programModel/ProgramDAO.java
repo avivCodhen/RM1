@@ -31,7 +31,7 @@ public interface ProgramDAO {
     Single<Program> getCurrentProgram(String key);
 
     @Update
-    void updateProgramCreatorUID(Program program);
+    void updateProgram(Program program);
 
     @Query("DELETE FROM program")
     void nukeTable();

@@ -1,6 +1,5 @@
 package com.strongest.savingdata.Adapters;
 
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +22,14 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
     private ArrayList<Program> programs;
     private Program currentProgram;
     private Architecture.program listener;
+    private boolean isShared;
 
-    public MyProgramsAdapter(ArrayList<Program> programs, Program currentProgram, Architecture.program listener) {
+    public MyProgramsAdapter(ArrayList<Program> programs, Program currentProgram, Architecture.program listener, boolean isShared) {
 
         this.programs = programs;
         this.currentProgram = currentProgram;
         this.listener = listener;
+        this.isShared = isShared;
     }
 
     @Override
@@ -51,17 +52,38 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
         }
         holder.creatorTV.setText("Created By " + p.getCreator());
 
-        if(p.equals(currentProgram)){
+        if(isCurrentProgram(p)){
             holder.loadProgramBtn.setEnabled(false);
             holder.loadProgramBtn.setClickable(false);
             holder.loadProgramBtn.setAlpha(0.6f);
             holder.currentProgTv.setVisibility(View.VISIBLE);
+            holder.deleteProgIV.setAlpha(0.6f);
         }else{
             holder.currentProgTv.setVisibility(View.GONE);
             holder.loadProgramBtn.setOnClickListener(loadProgramView->{
+                if(isShared)
+                listener.loadSharedProgram(p);
+                else
                 listener.loadProgram(p);
             });
         }
+
+        if(!isCurrentProgram(p))
+        holder.deleteProgIV.setOnClickListener(deleteV->{
+            listener.deleteProgram(p);
+        });
+
+        holder.shareIV.setOnClickListener(share-> listener.shareProgram(p));
+    }
+
+    private boolean isCurrentProgram(Program p){
+        if(currentProgram == null){
+            return true;
+        }
+        if(p.equals(currentProgram)){
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -85,6 +107,11 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
         @BindView(R.id.current_program_tv)
         TextView currentProgTv;
 
+        @BindView(R.id.delete_program)
+        ImageView deleteProgIV;
+
+        @BindView(R.id.share_program)
+        ImageView shareIV;
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

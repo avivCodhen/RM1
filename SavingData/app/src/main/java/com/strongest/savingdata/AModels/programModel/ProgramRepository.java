@@ -3,26 +3,22 @@ package com.strongest.savingdata.AModels.programModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
-public class ProgramRepository implements ProgramDAO{
+public class ProgramRepository implements ProgramDAO {
 
     private final ProgramDAO programDAO;
 
     private MutableLiveData programByKey = new MutableLiveData();
 
     @Inject
-    public ProgramRepository(ProgramDAO programDAO){
+    public ProgramRepository(ProgramDAO programDAO) {
 
         this.programDAO = programDAO;
     }
@@ -49,8 +45,12 @@ public class ProgramRepository implements ProgramDAO{
     }
 
     @Override
-    public void updateProgramCreatorUID(Program program) {
-         programDAO.updateProgramCreatorUID(program);
+    public void updateProgram(Program program) {
+        Completable.fromRunnable(() -> {
+            programDAO.updateProgram(program);
+
+        }).subscribeOn(Schedulers.io())
+                .subscribe();
     }
 
     @Override

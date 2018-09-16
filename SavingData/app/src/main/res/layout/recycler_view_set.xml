@@ -65,7 +65,7 @@
                 android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Click to edit Set"
+                android:text="Tap to edit Set"
                 android:textSize="14sp" />
 
         </LinearLayout>

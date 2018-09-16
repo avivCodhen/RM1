@@ -27,6 +27,8 @@ public interface Architecture {
         void shareProgram(Program p);
 
         void loadProgram(Program p);
+
+        void loadSharedProgram(Program p);
     }
 
 

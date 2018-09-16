@@ -94,7 +94,19 @@
             android:name=".Activities.LoginActivity2"
             android:label="@string/title_activity_login2" />
         <activity android:name=".Activities.MyProgramsActivity" />
-        <activity android:name=".Activities.ShareProgramActivity"></activity>
+        <activity android:name=".Activities.ShareProgramActivity" />
+
+        <service android:name=".AndroidServices.FireBaseMessageService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <activity android:name=".Activities.CreateProgramActivity"></activity>
     </application>
 
 </manifest><!--

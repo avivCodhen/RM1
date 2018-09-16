@@ -62,7 +62,11 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
             //PLObject.ExerciseProfile superset = setsPLObject.parent.exerciseProfiles.get(position);
             intraSetViewHolder.deleteIV.setVisibility(View.INVISIBLE);
 
-            intraSetViewHolder.supersetTv.setText("Superset of " + supersets.get(position).getExercise().getName());
+            String supersetName = "";
+            if(supersets.get(position).getExercise() != null){
+                supersetName = supersets.get(position).getExercise().getName();
+            }
+            intraSetViewHolder.supersetTv.setText("Superset of " +supersetName);
             intraSetViewHolder.editContainerTV.setText("Tap to edit Superset");
 /*
             if(superset.getExercise()!= null){

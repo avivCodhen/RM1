@@ -8,6 +8,7 @@ public class User {
     private String email;
     private HashMap<String, Object> dateJoined;
     private String UID;
+    private String userToken;
 
     public User(String name, String email, HashMap<String, Object> dateJoined){
 
@@ -40,5 +41,13 @@ public class User {
 
     public void setUID(String UID) {
         this.UID = UID;
+    }
+
+    public String getUserToken() {
+        return userToken;
+    }
+
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
     }
 }

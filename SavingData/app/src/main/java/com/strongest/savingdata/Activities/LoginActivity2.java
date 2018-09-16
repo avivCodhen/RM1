@@ -24,6 +24,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.strongest.savingdata.Fragments.RegisterFragment;
+import com.strongest.savingdata.MyViews.SmartProgressBar;
 import com.strongest.savingdata.R;
 
 import butterknife.BindView;
@@ -77,6 +79,12 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
     @BindView(R.id.activity_login_exit_iv)
     View exit;
 
+    @BindView(R.id.logo_iv)
+    ImageView logoIV;
+
+    @BindView(R.id.login_activity_smartprogressbar)
+    SmartProgressBar smartProgressBar;
+
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
@@ -91,7 +99,10 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
         // Set up the login form.
         mEmailView = (EditText) findViewById(R.id.email);
         populateAutoComplete();
-
+        smartProgressBar
+                .setText("Login in...")
+                .setUpWithView(logoIV)
+                .whiteText(true);
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -183,9 +194,11 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
         pass = mPasswordView.getText().toString();
 
         if (vaildate()) {
-
-            userService.logInUser(email, pass,  (result) -> {
+            smartProgressBar.show();
+            userService.logInUser(email, pass, (result) -> {
+                smartProgressBar.hide();
                 if ((int) result == 1) {
+
                     setResult(RESULT_OK);
                     finish();
                 }

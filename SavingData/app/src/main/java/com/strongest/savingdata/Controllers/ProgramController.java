@@ -32,4 +32,9 @@ public class ProgramController implements Architecture.program{
     public void loadProgram(Program p) {
 
     }
+
+    @Override
+    public void loadSharedProgram(Program p) {
+
+    }
 }

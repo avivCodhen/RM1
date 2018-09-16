@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AService.ProgramService;
 import com.strongest.savingdata.AService.UserService;
+import com.strongest.savingdata.AService.WorkoutsService;
 import com.strongest.savingdata.AViewModels.ProgramViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModelFactory;
 import com.strongest.savingdata.BaseWorkout.Programmer;
@@ -46,6 +47,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Inject
     ProgramService programService;
 
+    @Inject
+    WorkoutsService workoutsService;
+
 
     public WorkoutsViewModel workoutsViewModel;
 
@@ -70,6 +74,13 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .commit();
     }
 
+    public void addFragmentToActivityNoTransition(int id, Fragment f, String tag){
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(id, f, tag)
+                .addToBackStack(tag)
+                .commit();
+    }
     public SharedPreferences.Editor getPrefsEditor() {
         return editor = getPrefs().edit();
     }

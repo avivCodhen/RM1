@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.strongest.savingdata.Activities.MyProgramsActivity;
+import com.strongest.savingdata.Fragments.BaseFragment;
 import com.strongest.savingdata.Fragments.MyProgramsFragment;
 import com.strongest.savingdata.Fragments.ProgramsListFragment;
 
@@ -14,9 +15,9 @@ public class MyProgramsPagerAdapter extends FragmentStatePagerAdapter {
 
 
     private final String[] fragmentsTitles;
-    private final ArrayList<ProgramsListFragment> fragments;
+    private final ArrayList<BaseFragment> fragments;
 
-    public MyProgramsPagerAdapter(FragmentManager fm, String[] fragmentsTitles, ArrayList<ProgramsListFragment> fragments) {
+    public MyProgramsPagerAdapter(FragmentManager fm, String[] fragmentsTitles, ArrayList<BaseFragment> fragments) {
         super(fm);
 
         this.fragmentsTitles = fragmentsTitles;

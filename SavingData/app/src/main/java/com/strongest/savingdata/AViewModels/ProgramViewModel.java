@@ -15,13 +15,16 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.schedulers.Schedulers;
+
 public class ProgramViewModel extends ViewModel {
 
     private final ProgramService programService;
 
-    private MutableLiveData<Program> program = new MutableLiveData<>();
+    private MutableLiveData<String> program = new MutableLiveData<>();
     private LiveData<Program> programModel;
     private MutableLiveData<Program> newProgram = new MutableLiveData<>();
+
     /*
     private MediatorLiveData<Program> mediatorLiveData;
     private MutableLiveData<ArrayList<Program>> allPrograms = new MutableLiveData<>();
@@ -31,33 +34,20 @@ public class ProgramViewModel extends ViewModel {
     public ProgramViewModel(ProgramService programService) {
         this.programService = programService;
 
-        programModel = Transformations.switchMap(
-                program, new Function<Program, LiveData<Program>>() {
-                    @Override
-                    public LiveData<Program> apply(Program input) {
-                        return programService.provideProgram();
-                    }
-                }
-        );
-        program.postValue(programService.provideProgram().getValue());
-
+        programModel = Transformations.switchMap(program, input -> programService.getProgramByKey(input));
+        program.postValue(programService.getProgramUID());
     }
 
     /*public void fetchAllPrograms( ) {
         programService.fetchAllPrograms(allPrograms);
     }
 */
-    public LiveData<Program> getProgram() {
-        return program;
-    }
-
-
-   /* public LiveData<Program> getNewProgram() {
-        return newProgram;
-    }
-*/
+    /* public LiveData<Program> getNewProgram() {
+         return newProgram;
+     }
+ */
     public void setNewProgram() {
-        newProgram.setValue(programService.getNewProgram());
+        program.postValue(programService.provideNewProgram());
 
     }
 /*
@@ -70,15 +60,23 @@ public class ProgramViewModel extends ViewModel {
         this.program = program;
     }*/
 
-    public void updateProgram(Program p){
-        programService.insertProgram(p);
-        program.postValue(p);
-       // program = programService.getProgramByKey("asd");
+    public void postProgram(Program p) {
+        programService.insertProgram(p, result -> program.postValue(p.getKey()));
+    }
+
+    public void updateProgram(Program p) {
+        programService.updateProgram(p);
     }
 
     public LiveData<Program> getProgramModel() {
         return programModel;
     }
+
+    public void provideProgram() {
+        program.postValue(programService.getProgramUID());
+    }
+
+
     /*public LiveData<ArrayList<Program>> getAllPrograms() {
         return allPrograms;
     }*/

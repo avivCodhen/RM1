@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,7 +15,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.strongest.savingdata.AModels.UserModel.User;
+import com.strongest.savingdata.AndroidServices.FireBaseMessageService;
 import com.strongest.savingdata.Controllers.CallBacks;
 
 import java.util.HashMap;
@@ -55,11 +56,14 @@ public class UserService {
                 HashMap<String, Object> dateJoined = new HashMap<>();
                 dateJoined.put("dateJoined", ServerValue.TIMESTAMP);
                 User user = new User(name, email, dateJoined);
-
+                String userToken = FireBaseMessageService.getToken(context);
+                saveUsernameToSharedPreferences(name, firebaseAuth.getCurrentUser().getUid());
+                user.setUserToken(userToken);
+                onFinish.onFinish(user);
+                Log.d("aviv", "registerUser: " + userToken);
                 Toast.makeText(context, "Account created successfully!", Toast.LENGTH_SHORT).show();
 
-                saveUsernameToSharedPreferences(name, firebaseAuth.getCurrentUser().getUid());
-                onFinish.onFinish(user);
+
             } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                 Toast.makeText(context,
                         "User with this email already exist.", Toast.LENGTH_SHORT).show();
@@ -79,12 +83,17 @@ public class UserService {
         firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(task -> {
 
             if (task.isSuccessful()) {
-                findUserByEmail(firebaseAuth.getCurrentUser().getEmail(), serverUser->{
-                    User u = (User) serverUser;
-                    saveUsernameToSharedPreferences(u.getName(), u.getUID() );
-                    onFinish.onFinish(1);
-                    Toast.makeText(context, "logged in!", Toast.LENGTH_SHORT).show();
 
+                findUserByEmail(firebaseAuth.getCurrentUser().getEmail(), serverUser -> {
+                    User u = (User) serverUser;
+                    saveUsernameToSharedPreferences(u.getName(), u.getUID());
+                    String userToken = FireBaseMessageService.getToken(context);
+                    u.setUserToken(userToken);
+                    Log.d("aviv", "logInUser: " + userToken);
+                    saveUserToServer(u, result -> {
+                        onFinish.onFinish(1);
+                        Toast.makeText(context, "logged in!", Toast.LENGTH_SHORT).show();
+                    });
                 });
             } else {
                 Toast.makeText(context, "Wrong credentials", Toast.LENGTH_SHORT).show();
@@ -114,7 +123,10 @@ public class UserService {
     }
 
     public String getUserUID() {
+        if(firebaseAuth.getCurrentUser() != null)
         return firebaseAuth.getCurrentUser().getUid();
+        else
+            return "";
     }
 
     public String getUsername() {
@@ -139,7 +151,7 @@ public class UserService {
                                 User user = d.getValue(User.class);
                                 user.setUID(d.getKey());
                                 if (user != null)
-                                onFinish.onFinish(user);
+                                    onFinish.onFinish(user);
                             }
                         }
                     }
@@ -150,4 +162,9 @@ public class UserService {
                     }
                 });
     }
+
+    public void logout() {
+        firebaseAuth.signOut();
+    }
+
 }

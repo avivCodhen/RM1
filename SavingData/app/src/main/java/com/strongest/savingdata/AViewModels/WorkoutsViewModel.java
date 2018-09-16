@@ -69,7 +69,7 @@ public class WorkoutsViewModel extends ViewModel {
 
 
     public void saveLayoutToDataBase() {
-        workoutsService.saveLayoutToDataBase(true, workoutsList.getValue(), null);
+        workoutsService.saveCurrentWorkouts(true, workoutsList.getValue(), null);
     }
 
 

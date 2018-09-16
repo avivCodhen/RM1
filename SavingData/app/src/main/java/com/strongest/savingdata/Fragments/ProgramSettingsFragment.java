@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.AModels.workoutModel.Workout;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Activities.HomeActivity;
@@ -51,7 +52,7 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
     private OnProgramSettingsChange onProgramSettingChange;
 
 
-    public static ProgramSettingsFragment getInstance(OnProgramToolsActionListener onProgramToolsActionListener){
+    public static ProgramSettingsFragment getInstance(OnProgramToolsActionListener onProgramToolsActionListener) {
         ProgramSettingsFragment f = new ProgramSettingsFragment();
         f.setOnProgramToolsActionListener(onProgramToolsActionListener);
         return f;
@@ -73,12 +74,12 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
     }
 
     private void initViews(View v) {
-        ( (TextView)v.findViewById(R.id.tool_bar_title)).setText("Advanced Program Settings");
+        ((TextView) v.findViewById(R.id.tool_bar_title)).setText("Advanced Program Settings");
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.program_settings_recyclerview);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
 
-        MainAdapter adapter = new MainAdapter(getContext(),list, this, null);
+        MainAdapter adapter = new MainAdapter(getContext(), list, this, null);
         adapter.setOnProgramChangeListener(onProgramSettingChange);
         ItemTouchHelper.Callback callback = new DragAndSwipeCallback(adapter);
         itemTouchHelper = new ItemTouchHelper(callback);
@@ -89,7 +90,7 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
         mRecyclerView.setAdapter(adapter);
 
         toolbarIv = (ImageView) v.findViewById(R.id.toolbar_back);
-        toolbarIv.setOnClickListener((view)-> getFragmentManager().popBackStack());
+        toolbarIv.setOnClickListener((view) -> getFragmentManager().popBackStack());
         toolbarTitle = (TextView) v.findViewById(R.id.tool_bar_title);
         editText = (EditText) v.findViewById(R.id.program_settings_program_name_ED);
         textWatcher = new TextWatcher() {
@@ -99,14 +100,18 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ((HomeActivity) getActivity()).getSupportActionBar().setTitle(editText.getText());
-                toolbarTitle.setText(editText.getText());
+
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                ((HomeActivity) getActivity()).title.setText(editText.getText().toString());
+                Program p = ((HomeActivity) getActivity()).program;
+                p.setProgramName(editText.getText().toString());
                 editText.setSelection(s.length());
                 toolbarTitle.setText(editText.getText());
+                ((HomeActivity) getActivity()).programViewModel.updateProgram(p);
 
                 //TODO: fix this
                 //  ((HomeActivity) getActivity()).programmer.getProgram().programName = editText.getText().toString();
@@ -138,6 +143,7 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
         onProgramSettingChange = (OnProgramSettingsChange) context;
 
     }
+
     public void setOnProgramToolsActionListener(OnProgramToolsActionListener onProgramToolsActionListener) {
         this.onProgramToolsActionListener = onProgramToolsActionListener;
     }
@@ -161,7 +167,7 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
     }
 
 
-    public interface OnProgramSettingsChange{
+    public interface OnProgramSettingsChange {
         void notifyAdapter();
     }
 }

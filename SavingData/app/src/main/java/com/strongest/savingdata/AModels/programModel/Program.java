@@ -24,7 +24,7 @@ public class Program implements Serializable{
     private String creator;
     private String programDate;
     private String dbName;
-    public boolean isSeen;
+    public boolean isSeen = true;
 
 
     public Program(String creatorUID, String creator, String programName, String time, String programDate, String dbName) {

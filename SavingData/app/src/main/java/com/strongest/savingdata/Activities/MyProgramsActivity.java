@@ -1,19 +1,18 @@
 package com.strongest.savingdata.Activities;
 
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
-import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.AViewModels.MyProgramsViewModel;
-import com.strongest.savingdata.AViewModels.ProgramViewModel;
 import com.strongest.savingdata.Adapters.MyProgramsPagerAdapter;
+import com.strongest.savingdata.Fragments.BaseFragment;
+import com.strongest.savingdata.Fragments.NewProgramFragment;
 import com.strongest.savingdata.Fragments.ProgramsListFragment;
 import com.strongest.savingdata.MyViews.SaveExitToolBar;
 import com.strongest.savingdata.R;
@@ -23,7 +22,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyProgramsActivity extends BaseActivity implements ProgramsListFragment.MyProgramCallBack{
+public class MyProgramsActivity extends BaseActivity implements
+        ProgramsListFragment.MyProgramCallBack, NewProgramFragment.NewProgramFragmentCallBack{
 
     @BindView(R.id.my_programs_toolbar)
     SaveExitToolBar saveExitToolBar;
@@ -36,11 +36,14 @@ public class MyProgramsActivity extends BaseActivity implements ProgramsListFrag
 
     MyProgramsPagerAdapter myProgramsPagerAdapter;
 
+    @BindView(R.id.my_program_activity_fab)
+    FloatingActionButton floatingActionButton;
 
     MyProgramsViewModel myProgramsViewModel;
-    public static final String FRAGMENT_USER_PROGRAMS = "My Programs";
-    public static final String FRAGMENT_USER_SHARED_FOR = "Shared For";
-    public static final String FRAGMENT_USER_SHARED_BY = "Shared By";
+    public static final String FRAGMENT_USER_PROGRAMS = "Mine";
+    public static final String FRAGMENT_USER_SHARED_FOR = "Shared";
+    public static final String FRAGMENT_USER_SHARED_BY = "Recieved";
+    public static final int FRAGMENT_CREATE_PROGRAM = 3;
 
 
     Program currentProgram;
@@ -50,7 +53,7 @@ public class MyProgramsActivity extends BaseActivity implements ProgramsListFrag
             MyProgramsActivity.FRAGMENT_USER_SHARED_BY,
             MyProgramsActivity.FRAGMENT_USER_SHARED_FOR,
     };
-    private ArrayList<ProgramsListFragment> fragments;
+    private ArrayList<BaseFragment> fragments;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -68,17 +71,42 @@ public class MyProgramsActivity extends BaseActivity implements ProgramsListFrag
         saveExitToolBar.showBack(true);
         saveExitToolBar.showCancel(false);
         saveExitToolBar.setOptionalText("My Programs");
-        saveExitToolBar.setSaveButton(clicked -> finish());
+        saveExitToolBar.setSaveButton(clicked -> onBackPressed());
+        saveExitToolBar.noElevation();
         populateFragments();
         myProgramsPagerAdapter = new MyProgramsPagerAdapter(getSupportFragmentManager(), fragmentsTitles, fragments);
         viewPager.setAdapter(myProgramsPagerAdapter);
         tabLayout.setViewPager(viewPager);
 
         programService.listenForSharedPrograms(count -> {
-            tabLayout.showMsg(1, (int) count);
+            tabLayout.showMsg(2, (int) count);
+            tabLayout.setMsgMargin(2,33,0);
+        });
+
+        if (currentProgram == null) {
+            viewPager.setCurrentItem(fragmentsTitles.length - 1);
+        }
+
+        floatingActionButton.setOnClickListener(v -> {
+            addFragmentToActivityNoTransition(R.id.my_program_framelayout, new NewProgramFragment(), "newProgram");
         });
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStack();
+        }else{
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        floatingActionButton.setVisibility(View.VISIBLE);
+    }
 
     private void populateFragments() {
         fragments = new ArrayList<>();
@@ -105,5 +133,35 @@ public class MyProgramsActivity extends BaseActivity implements ProgramsListFrag
     @Override
     public Program getCurrentProgram() {
         return currentProgram;
+    }
+
+    @Override
+    public void deleteProgram(Program p) {
+        programService.deleteProgram(p);
+        workoutsService.deleteWorkout(p.getKey());
+    }
+
+    @Override
+    public void shareProgram(Program p) {
+        Intent i;
+        i = new Intent(this, ShareProgramActivity.class);
+        i.putExtra("programuid", p.getKey());
+        i.putExtra("program", p);
+        startActivity(i);
+    }
+
+    @Override
+    public void loadSharedProgram(Program p) {
+        String originalKey = p.getKey();
+        Program duplicatedProgram = programService.duplicateProgram(p);
+        workoutsService.duplicateWorkouts(originalKey, duplicatedProgram.getKey(), noResult -> {
+            onLoadProgram(p);
+        });
+    }
+
+    @Override
+    public void createProgram() {
+        setResult(FRAGMENT_CREATE_PROGRAM);
+        finish();
     }
 }

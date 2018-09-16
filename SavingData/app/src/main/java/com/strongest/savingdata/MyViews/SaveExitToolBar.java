@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SaveExitToolBar extends LinearLayout{
+public class SaveExitToolBar extends LinearLayout {
 
 
     private Context context;
@@ -40,52 +40,67 @@ public class SaveExitToolBar extends LinearLayout{
         this.context = context;
     }
 
-    public void instantiate(){
+    public SaveExitToolBar instantiate() {
         inflate(context, R.layout.tool_bar_save_exit, this);
         setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
         setElevation(10);
         ButterKnife.bind(this, this);
+        return this;
     }
 
-    public void showBack(boolean b){
-        if(b){
+    public SaveExitToolBar showBack(boolean b) {
+        if (b) {
             back.setImageResource(R.drawable.back_arrow_24px);
         }
+        return this;
     }
 
-    public void showCancel(boolean b){
-        if(!b){
+    public SaveExitToolBar showCancel(boolean b) {
+        if (!b) {
             cancel.setVisibility(GONE);
-        }else{
+        } else {
             cancel.setVisibility(VISIBLE);
         }
+        return this;
+
     }
 
-    public void setOptionalText(String txt){
+    public SaveExitToolBar setOptionalText(String txt) {
         optionalText.setText(txt);
+        return this;
     }
 
-    public void setOptionalTV(String t, OnClickListener onClickListener){
+    public SaveExitToolBar setOptionalTV(String t, OnClickListener onClickListener) {
         optionalTV.setVisibility(VISIBLE);
         optionalTV.setText(t);
         optionalTV.setOnClickListener(onClickListener);
+        return this;
+
     }
 
-    public void setOptionalIV(int resource, OnClickListener onClickListener){
+    public SaveExitToolBar setOptionalIV(int resource, OnClickListener onClickListener) {
         optionalIV.setVisibility(VISIBLE);
         optionalIV.setImageResource(resource);
         optionalIV.setOnClickListener(onClickListener);
+        return this;
+
     }
 
-    public void setSaveButton(OnClickListener onClickListener){
+    public SaveExitToolBar setSaveButton(OnClickListener onClickListener) {
         back.setOnClickListener(onClickListener);
+        return this;
+
     }
 
-    public void setCancelButton(OnClickListener onClickListener){
+    public SaveExitToolBar setCancelButton(OnClickListener onClickListener) {
         cancel.setOnClickListener(onClickListener);
+        return this;
+
     }
 
-    public void noElevation(){
+    public SaveExitToolBar noElevation() {
         setElevation(0);
+        return this;
+
     }
 }

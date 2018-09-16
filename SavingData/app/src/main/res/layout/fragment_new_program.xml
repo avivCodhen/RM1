@@ -1,16 +1,17 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/background_color"
+    android:background="@color/transparent"
     >
 
-    <include layout="@layout/tool_bar_layout">
-
-
-    </include>
-
+    <com.strongest.savingdata.MyViews.SaveExitToolBar
+        android:layout_width="match_parent"
+        android:id="@+id/new_program_frag_saveexittoolbar"
+        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
     <LinearLayout
+        android:layout_below="@+id/new_program_frag_saveexittoolbar"
         android:id="@+id/fragment_new_program_default_blank_template"
         android:orientation="horizontal"
         android:padding="20dp"
@@ -29,4 +30,12 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-</LinearLayout>
+
+    <com.arlib.floatingsearchview.FloatingSearchView
+        android:layout_width="wrap_content"
+        android:id="@+id/fab_new_program"
+        android:visibility="invisible"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"></com.arlib.floatingsearchview.FloatingSearchView>
+</RelativeLayout>

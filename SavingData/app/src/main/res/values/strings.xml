@@ -60,6 +60,11 @@
         completions."
     </string>
 
+    <!-- Strings related to Firebase -->
+
+    <string name="default_notification_channel_id">"rm1channel"</string>
+    <string name="shared_preferences">AppSharedPreferences</string>
+
 
     <!-- <string name="untrained_description">You do not have experience lifting weights at all, or you have not been training regularly for a year or more.\n\nYour progress will be fast, and the programming will be simple.</string>
      <string name="intermediate_description">You have been lifting weights regularly for at least a year, and have experience with the basic lifts(squat, deadlift and bench press).\n\nYou will get to choose advanced Methods and unlock advanced progress.</string>

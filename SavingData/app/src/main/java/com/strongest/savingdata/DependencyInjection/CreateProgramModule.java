@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AService.WorkoutsService;
 import com.strongest.savingdata.Database.Managers.DataManager;
+import com.strongest.savingdata.R;
 
 import javax.inject.Singleton;
 
@@ -64,7 +65,7 @@ public class CreateProgramModule {
 
     @Provides
     static SharedPreferences getSharedPreferences(Context context) {
-        return context.getSharedPreferences("AppSharedPreferences", Context.MODE_PRIVATE);
+        return context.getSharedPreferences(context.getString(R.string.shared_preferences), Context.MODE_PRIVATE);
     }
 
     @Provides

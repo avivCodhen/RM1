@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
  * Created by Cohen on 3/9/2018.
  */
 
+@Deprecated
 public class MyProgramsFragment extends BaseFragment {
 
     private RecyclerView recyclerView;
@@ -55,7 +56,7 @@ public class MyProgramsFragment extends BaseFragment {
 
         programViewModel = ViewModelProviders.of(getActivity()).get(ProgramViewModel.class);
         workoutsViewModel = ViewModelProviders.of(getActivity()).get(WorkoutsViewModel.class);
-        currentProgram = programViewModel.getProgram().getValue();
+        //currentProgram = programViewModel.getProgram().getValue();
         initStaticViews(v);
 
 

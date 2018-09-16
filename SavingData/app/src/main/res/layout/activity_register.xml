@@ -8,9 +8,12 @@
         android:id="@+id/register_activity_emailED"
         android:layout_gravity="center"
         android:hint="email"
+        android:textColor="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <EditText
+        android:textColor="@color/colorPrimary"
+
         android:id="@+id/register_activity_nameED"
         android:layout_gravity="center"
         android:hint="email"
@@ -18,6 +21,8 @@
         android:layout_height="wrap_content" />
 
     <EditText
+        android:textColor="@color/colorPrimary"
+
         android:id="@+id/register_activity_passwordED"
         android:layout_marginTop="10dp"
         android:layout_gravity="center"
@@ -26,6 +31,8 @@
         android:layout_height="wrap_content" />
 
     <EditText
+        android:textColor="@color/colorPrimary"
+
         android:id="@+id/register_activity_confirmED"
         android:layout_marginTop="10dp"
         android:layout_gravity="center"

@@ -7,14 +7,11 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.strongest.savingdata.AModels.UserModel.SharedUser;
 import com.strongest.savingdata.AModels.UserModel.User;
@@ -27,13 +24,12 @@ import com.strongest.savingdata.Utils.FireBaseUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -96,7 +92,6 @@ public class ProgramService {
                                         sharedList.add(sharedUser);
                                     }
                                     observer.notify(count);
-                                    Toast.makeText(userService.context, "Made it", Toast.LENGTH_SHORT).show();
 
                                 }
 
@@ -115,24 +110,24 @@ public class ProgramService {
     }
 
 
-    public LiveData<Program> provideProgram() {
+   /* public LiveData<Program> provideProgram() {
         String programKey = sharedPreferences.getString(CURRENT_PROGRAM, "");
         if (programKey.equals("")) {
             return provideNewProgram();
         } else {
             return programRepository.getProgramByKey(programKey);
         }
-    }
+    }*/
 
-    public LiveData<Program> provideNewProgram() {
+    public String provideNewProgram() {
         cleanCurrentProgramSharedPreferences();
-        createNewProgram();
-        String programKey = sharedPreferences.getString(CURRENT_PROGRAM, "");
-        return programRepository.getProgramByKey(programKey);
+        Program p = createNewProgram();
+        saveProgramToFireBase(p);
+        return p.getKey();
 
     }
 
-    public LiveData<Program> getProgramByKey(String key){
+    public LiveData<Program> getProgramByKey(String key) {
         return programRepository.getProgramByKey(key);
     }
 
@@ -177,12 +172,14 @@ public class ProgramService {
                 new SimpleDateFormat("MMMM dd, yyyy", Locale.US).format(new Date()),
                 "");
 
-        return saveProgramToFireBase(program);
+        return program;
     }
 
-    private void updateProgram(Program p){
+    public void updateProgram(Program p) {
         databaseReference.child(p.getKey()).setValue(p);
+        programRepository.updateProgram(p);
     }
+
     private Program saveProgramToFireBase(Program program) {
         if (isUserAllowedToCreateProgram()) {
 
@@ -214,9 +211,12 @@ public class ProgramService {
         }
     }
 
-    public void insertProgram(Program p) {
+    public void insertProgram(Program p, CallBacks.OnFinish onFinish) {
         saveProgramKeyToSharedPreferences(p.getKey());
-        programRepository.insertProgram(p);
+        Completable.fromRunnable(() -> programRepository.insertProgram(p))
+                .observeOn(Schedulers.io())
+                .subscribe(() -> onFinish.onFinish(1));
+        return;
     }
 
     public void cleanCurrentProgramSharedPreferences() {
@@ -235,7 +235,7 @@ public class ProgramService {
                 .subscribe((program) -> {
                     program.setCreatorUID(getUID());
                     program.setCreator(getUsername());
-                    programRepository.updateProgramCreatorUID(program);
+                    programRepository.updateProgram(program);
                 });
     }
 
@@ -342,20 +342,30 @@ public class ProgramService {
     }
 */
     public void annonymouseToUser(Program p) {
-        p.setCreatorUID(userService.getUserUID());
-        p.setCreator(userService.getUsername());
-        updateProgram(p);
+        if (p.getCreatorUID().equals("")) {
+
+            p.setCreatorUID(userService.getUserUID());
+            p.setCreator(userService.getUsername());
+            updateProgram(p);
+        }
     }
 
-    public void shareProgramWithUser(String programUID, User user) {
+    public void shareProgramWithUser(Program p, User user) {
         SharedUser sharedUser = new SharedUser();
-        sharedUser.setProgramUID(programUID);
+        sharedUser.setProgramUID(p.getKey());
         sharedUser.setSenderUID(userService.getUserUID());
         sharedUser.setRecieverUID(user.getUID());
+        sharedUser.setSenderName(user.getName());
+        sharedUser.setProgramName(p.getProgramName());
+        sharedUser.setSenderToken(user.getUserToken());
         String key = sharedProgramReference.push().getKey();
         sharedProgramReference.child(key).setValue(sharedUser);
     }
 
+    public void deleteProgram(Program p) {
+        databaseReference.child(p.getKey()).setValue(null);
+
+    }
 
     public ArrayList<SharedUser> getSharedList() {
         return sharedList;
@@ -363,5 +373,14 @@ public class ProgramService {
 
     public int getCount() {
         return count;
+    }
+
+    public Program duplicateProgram(Program p) {
+        String newKey = databaseReference.push().getKey();
+        p.setProgramName("Duplicate " + p.getProgramName());
+        p.setKey(newKey);
+        p.setCreatorUID(userService.getUserUID());
+        databaseReference.child(newKey).setValue(p);
+        return p;
     }
 }

@@ -38,11 +38,11 @@ import com.strongest.savingdata.Adapters.WorkoutsViewPagerAdapter;
 import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.Fragments.CustomExerciseFragment;
-import com.strongest.savingdata.Fragments.MyProgramsFragment;
 import com.strongest.savingdata.Fragments.NewProgramFragment;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
 import com.strongest.savingdata.Fragments.WorkoutViewFragment;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
+import com.strongest.savingdata.MyViews.SmartProgressBar;
 import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
 import com.strongest.savingdata.R;
 
@@ -85,6 +85,8 @@ public class HomeActivity extends BaseActivity implements
     @BindView(R.id.toolbar_title)
     public TextView title;
 
+    @BindView(R.id.home_activity_smartprogressbar)
+    SmartProgressBar smartProgressBar;
 
     //this view is the edit "+" button of the toolbar menu
     //it will be setuped with the programtoolsview on inflating menu
@@ -107,29 +109,45 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putSerializable("program", program);
+        super.onSaveInstanceState(outState);
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             program = (Program) savedInstanceState.getSerializable("program");
         }
         setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
+
+        smartProgressBar.setText("Loading Program...");
+        smartProgressBar.setUpWithView(mViewPager);
+        smartProgressBar.show();
+        if (!userService.isUserLoggedIn()) {
+            startActivityForResult(new Intent(this, LoginActivity2.class), LOGIN_ACTIVITY);
+
+        }
         programViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(ProgramViewModel.class);
         workoutsViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(WorkoutsViewModel.class);
-        ButterKnife.bind(this);
         setUpToolbar();
 
 
         programViewModel.getProgramModel().observe(this, program -> {
             this.program = program;
-            title.setText(program.getProgramName());
-            if (!workoutsViewModel.workoutsInitialized) {
-                workoutsViewModel.initWorkouts();
+            if (program != null) {
+                title.setText(program.getProgramName());
+                if (!workoutsViewModel.workoutsInitialized) {
+                    workoutsViewModel.initWorkouts();
+                }
+                programService.annonymouseToUser(program);
+                smartProgressBar.hide();
+            } else {
+                toMyProgramsActivity();
             }
+
         });
 
         /*programViewModel.getNewProgram().observe(this, prog -> {
@@ -152,6 +170,7 @@ public class HomeActivity extends BaseActivity implements
         programToolsView.instantiate(programToolsBtn, this);
         loggedInUI();
         programService.listenForSharedPrograms(count -> showBadgeForMyProgram((int) count));
+
     }
 
     private void showBadgeForMyProgram(int count) {
@@ -296,11 +315,8 @@ public class HomeActivity extends BaseActivity implements
                 addFragmentToActivity(R.id.activity_home_framelayout, f, "NewProgram");
                 break;
             case R.id.menu_my_programs:
-               /* f = new MyProgramsFragment();
-                addFragmentToActivity(R.id.activity_home_framelayout, f, "MyPrograms");*/
-                i = new Intent(this, MyProgramsActivity.class);
-                i.putExtra("current_program", program);
-                startActivityForResult(i, MY_PROGRAM_ACTIVITY);
+
+                toMyProgramsActivity();
 
                 break;
             case R.id.menu_custom_exercise:
@@ -315,17 +331,25 @@ public class HomeActivity extends BaseActivity implements
             case R.id.menu_share_program:
                 i = new Intent(this, ShareProgramActivity.class);
                 i.putExtra("programuid", programService.getProgramUID());
+                i.putExtra("program", program);
                 startActivity(i);
+                break;
             case R.id.menu_logout:
-                //TODO: implement a logout function
+                userService.logout();
+                break;
         }
         mDrawerLayout.closeDrawer(Gravity.START);
 
         return false;
     }
 
-    //getscreenheight provides the height of the screen
-    //mainly used for the musclegridview allowing to create a symetric grid
+    private void toMyProgramsActivity() {
+        Intent i;
+        i = new Intent(this, MyProgramsActivity.class);
+        i.putExtra("current_program", program);
+        startActivityForResult(i, MY_PROGRAM_ACTIVITY);
+    }
+
     public int getScreenHeight() {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -478,22 +502,26 @@ public class HomeActivity extends BaseActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == LOGIN_ACTIVITY) {
             if (resultCode == RESULT_OK) {
-                //TODO: implement loggedInUI function
-                //TODO: change user name in the activity
                 loggedInUI();
-                programService.annonymouseToUser(programViewModel.getProgram().getValue());
+                programViewModel.provideProgram();
                 programService.listenForSharedPrograms(count -> showBadgeForMyProgram((int) count));
-                //TODO: implement changing program creator UID and name
             } else if (resultCode == RESULT_CANCELED) {
 
             }
-        }
-        else if(requestCode == MY_PROGRAM_ACTIVITY){
-            if (resultCode == RESULT_OK){
+        } else if (requestCode == MY_PROGRAM_ACTIVITY) {
+            if (resultCode == RESULT_OK) {
+                smartProgressBar.show();
                 Program p = (Program) data.getSerializableExtra("program");
+                if (p == null) {
+                    throw new IllegalArgumentException();
+                }
                 workoutsViewModel.workoutsInitialized = false;
                 workoutsViewModel.setCmd(WorkoutsService.CMD.SWITCH);
-                programViewModel.updateProgram(p);
+                programViewModel.postProgram(p);
+            } else if (resultCode == MyProgramsActivity.FRAGMENT_CREATE_PROGRAM) {
+                workoutsViewModel.setNewWorkout();
+                programViewModel.setNewProgram();
+
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -46,10 +46,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:src="@drawable/icon_layer_rm1"
-                android:layout_width="220dp"
-                android:layout_height="wrap_content" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/logo_iv"
+                    android:src="@drawable/icon_layer_rm1"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content" />
+
+                <com.strongest.savingdata.MyViews.SmartProgressBar
+                    android:id="@+id/login_activity_smartprogressbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SmartProgressBar>
+
+            </RelativeLayout>
             <android.support.design.widget.TextInputLayout
                 app:theme="@style/ThemeTextInputColorAccent"
                 android:background="@drawable/aviv_border"
@@ -97,26 +108,31 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:textColor="@color/colorAccent"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
-                android:background="@color/colorPrimary"
                 android:elevation="5dp"
                 android:id="@+id/email_sign_in_button"
                 android:layout_width="220dp"
-                android:layout_height="60dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/colorAccent"
+                android:layout_height="50dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_log_in"
                 android:textStyle="bold" />
 
             <Button
-
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:textColor="@color/colorAccent"
                 android:gravity="center"
                 android:background="@color/colorPrimary"
                 android:elevation="5dp"
                 android:id="@+id/to_sign_activity"
                 android:layout_width="220dp"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_to_signup"
                 android:textStyle="bold" />

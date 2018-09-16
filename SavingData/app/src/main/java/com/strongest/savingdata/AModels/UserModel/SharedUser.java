@@ -6,6 +6,9 @@ public class SharedUser {
     private String senderUID;
     private String recieverUID;
     private boolean seen;
+    private String programName;
+    private String senderName;
+    private String senderToken;
 
     public SharedUser() {
 
@@ -41,5 +44,29 @@ public class SharedUser {
 
     public boolean isSeen() {
         return seen;
+    }
+
+    public String getProgramName() {
+        return programName;
+    }
+
+    public void setProgramName(String programName) {
+        this.programName = programName;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getSenderToken() {
+        return senderToken;
+    }
+
+    public void setSenderToken(String senderToken) {
+        this.senderToken = senderToken;
     }
 }

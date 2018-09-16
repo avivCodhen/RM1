@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -18,7 +19,9 @@ import com.strongest.savingdata.AModels.UserModel.User;
 import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Activities.RegisterActivity;
 import com.strongest.savingdata.MyViews.SaveExitToolBar;
+import com.strongest.savingdata.MyViews.SmartProgressBar;
 import com.strongest.savingdata.R;
+import com.strongest.savingdata.Utils.MyUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,6 +49,12 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
 
     @BindView(R.id.register_fragment_registernBtn)
     Button registerBtn;
+
+    @BindView(R.id.logo_iv)
+    ImageView logoIv;
+
+    @BindView(R.id.register_fragment_smartprogressbar)
+    SmartProgressBar smartProgressBar;
 
     String email;
     String pass;
@@ -77,6 +86,11 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
         });
 
         registerBtn.setOnClickListener(v -> register(v));
+
+        smartProgressBar
+                .whiteText(true)
+                .setUpWithView(logoIv)
+                .setText("Registering...");
     }
 
 
@@ -84,8 +98,9 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
 
         if (vaildate()) {
 
-            //TODO:put name textview
-            progressBar.setVisibility(View.VISIBLE);
+            fullName = MyUtils.toTitleCase(fullName);
+
+            smartProgressBar.show();
             userService.registerUser(email, pass, fullName, user -> {
 
                 userService.saveUserToServer((User) user, (success -> {
@@ -93,6 +108,7 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
 
                         userService.logInUser(email, pass, result -> {
                             progressBar.setVisibility(View.GONE);
+                            smartProgressBar.hide();
                             getActivity().setResult(Activity.RESULT_OK);
                             getActivity().finish();
                         });
@@ -133,7 +149,19 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
             valid = false;
         }
 
+        if (!valid(fullName)) {
+            fullNameED.setError("Please enter your full name");
+        }
+
         return valid;
+    }
+
+    private boolean valid(String fullNameED) {
+
+        if (fullNameED.length() < 1 && fullNameED.contains(" ")) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean validEmail(String emailStr) {

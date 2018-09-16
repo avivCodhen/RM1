@@ -1,7 +1,6 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.strongest.savingdata.MyViews.SaveExitToolBar
@@ -9,6 +8,7 @@
         android:id="@+id/share_program_toolbar"
         android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
     <EditText
+        android:layout_marginTop="20dp"
         android:id="@+id/share_program_ET"
         android:hint="Email to share to"
         android:layout_width="match_parent"
@@ -21,22 +21,32 @@
         <TextView
             android:gravity="center"
             android:textAlignment="center"
-            android:text="Aviv Cohen"
+            android:text=""
             android:layout_weight="1"
             android:id="@+id/shared_program_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <Button
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:id="@+id/share_program_btn"
             android:textColor="@color/colorPrimary"
             android:background="@color/colorAccent"
             android:layout_weight="1"
-            style="@style/Base.Widget.AppCompat.Button"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:text="Share Program"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+
     </LinearLayout>
+
+    <com.strongest.savingdata.MyViews.SmartProgressBar
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:id="@+id/shared_smartprogressbar"
+        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SmartProgressBar>
+
 
 </LinearLayout>

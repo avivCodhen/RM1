@@ -18,6 +18,10 @@
 
     </style>
 
+    <style name="GreenTheme">
+        <item name="colorAccent">@color/colorGreenTry</item> <!-- Whatever color you want-->
+    </style>
+
     <style name="ThemeTextInputColorAccent">
         <item name="colorAccent">@color/colorPrimary</item>
     </style>

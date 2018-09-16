@@ -1,118 +1,136 @@
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimary"
-    android:elevation="5dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-
-<LinearLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:background="@color/colorAccent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:elevation="5dp">
 
-    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.strongest.savingdata.MyViews.SaveExitToolBar
-        android:id="@+id/saveExitToolbar"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        android:gravity="center_horizontal"
 
-    <ImageView
-        android:src="@drawable/icon_layer_rm1"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content" />
-    <android.support.design.widget.TextInputLayout
-        app:theme="@style/ThemeTextInputColorAccent"
-        android:background="@drawable/aviv_border"
-        android:elevation="5dp"
-        android:textColorHint="@color/colorPrimary"
-        style="@style/TextInputColorAccent">
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/register_fragment_emailED"
-        android:padding="10dp"
-        android:background="@color/transparent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/prompt_email"
-        android:imeActionId="6"
-        android:imeActionLabel="@string/action_sign_in_short"
-        android:imeOptions="actionUnspecified"
-        android:inputType="textPassword"
-        android:maxLines="1"
-        android:singleLine="true" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_marginTop="15dp"
-        app:theme="@style/ThemeTextInputColorAccent"
-        android:background="@drawable/aviv_border"
-        android:elevation="5dp"
-        android:textColorHint="@color/colorPrimary"
-        style="@style/TextInputColorAccent">
-
-        <EditText
-            android:id="@+id/register_fragment_fullnameED"
-
-
-            android:padding="10dp"
-            android:background="@color/transparent"
+        <com.strongest.savingdata.MyViews.SaveExitToolBar
+            android:id="@+id/saveExitToolbar"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/logo_iv"
+            android:src="@drawable/icon_layer_rm1"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content" />
+
+        <com.strongest.savingdata.MyViews.SmartProgressBar
+            android:id="@+id/register_fragment_smartprogressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SmartProgressBar>
+        </RelativeLayout>
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/TextInputColorAccent"
+            android:background="@drawable/aviv_border"
+            android:elevation="5dp"
+            android:textColorHint="@color/colorPrimary"
+            app:theme="@style/ThemeTextInputColorAccent">
+
+            <EditText
+                android:id="@+id/register_fragment_emailED"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:hint="@string/prompt_email"
+                android:imeActionId="6"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimary" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/TextInputColorAccent"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/aviv_border"
+            android:elevation="5dp"
+            android:textColorHint="@color/colorPrimary"
+            app:theme="@style/ThemeTextInputColorAccent">
+
+            <EditText
+                android:id="@+id/register_fragment_fullnameED"
+                android:layout_width="match_parent"
+
+
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:hint="@string/prompt_fullname"
+                android:imeActionId="6"
+                android:imeActionLabel="@string/prompt_fullname"
+                android:imeOptions="actionUnspecified"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimary" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/TextInputColorAccent"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/aviv_border"
+            android:elevation="5dp"
+            android:textColorHint="@color/colorPrimary"
+            app:theme="@style/ThemeTextInputColorAccent">
+
+            <EditText
+                android:id="@+id/register_fragment_passwordED"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:hint="@string/prompt_password"
+                android:imeActionId="6"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimary" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/register_fragment_registernBtn"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_width="220dp"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorAccent"
+            android:gravity="center"
+
+            android:text="REGISTER" />
+
+        <ProgressBar
+            android:id="@+id/register_fragment_progressbar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/prompt_fullname"
-            android:imeActionId="6"
-            android:imeActionLabel="@string/prompt_fullname"
-            android:imeOptions="actionUnspecified"
-            android:maxLines="1"
-            android:singleLine="true" />
-    </android.support.design.widget.TextInputLayout>
+            android:visibility="gone" />
 
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_marginTop="15dp"
-        app:theme="@style/ThemeTextInputColorAccent"
-        android:background="@drawable/aviv_border"
-        android:elevation="5dp"
-        android:textColorHint="@color/colorPrimary"
-        style="@style/TextInputColorAccent">
-
-    <EditText
-        android:id="@+id/register_fragment_passwordED"
-
-        android:padding="10dp"
-        android:background="@color/transparent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/prompt_password"
-        android:imeActionId="6"
-        android:imeActionLabel="@string/action_sign_in_short"
-        android:imeOptions="actionUnspecified"
-        android:inputType="textPassword"
-        android:maxLines="1"
-        android:singleLine="true" />
-    </android.support.design.widget.TextInputLayout>
-
-
-
-
-
-    <Button
-        style="@style/whiteButton"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:id="@+id/register_fragment_registernBtn"
-        android:text="REGISTER"
-
-        android:gravity="center"
-        />
-
-    <ProgressBar
-        android:visibility="gone"
-        android:id="@+id/register_fragment_progressbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-</LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
