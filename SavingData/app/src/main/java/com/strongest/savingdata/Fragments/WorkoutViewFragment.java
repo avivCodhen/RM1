@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.strongest.savingdata.AModels.workoutModel.Workout;
+import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AViewModels.SelectedExerciseViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModelFactory;
@@ -30,6 +31,7 @@ import com.strongest.savingdata.AModels.workoutModel.PLObject.ExerciseProfile;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
 import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
+import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.MyViews.WorkoutView.OnEnterExitChooseFragment;
 import com.strongest.savingdata.MyViews.WorkoutView.OnUpdateLayoutStatsListener;
 import com.strongest.savingdata.R;
@@ -38,6 +40,9 @@ import com.strongest.savingdata.ViewHolders.ExerciseViewHolder;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class WorkoutViewFragment extends BaseFragment implements com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener,
@@ -69,6 +74,8 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     private SelectedExerciseViewModel selectedExerciseViewModel;
     private LongClickMenuView longclickMenuView;
 
+    @BindView(R.id.workout_view_smartemptyview)
+    SmartEmptyView smartEmptyView;
 
     public static WorkoutViewFragment getInstance(int tag) {
         WorkoutViewFragment frag = new WorkoutViewFragment();
@@ -91,7 +98,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.workoutview_list, container, false);
-
+        ButterKnife.bind(this, mainView);
         return mainView;
 
     }
@@ -142,12 +149,29 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         lm = new MyExpandableLinearLayoutManager(getContext());
         recycler.setLayoutManager(lm);
         recycler.setAdapter(adapter);
+
         adapter.setOnDragListener(this);
         adapter.setScrollListener(this);
         //   adapter.setHelper(layoutManagerHelper);
         ItemTouchHelper.Callback callback = new DragAndSwipeCallback(adapter);
         touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recycler);
+
+        smartEmptyView
+                .setImage(smartEmptyView.getRocketImage())
+                .setBody("Click on the Plus Icon at the top right, to start adding customizing your exercises.")
+                .setTitle("Looks like you don't have any exercises!")
+                .setButtonText("Or tap here")
+                .setUpWithRecycler(recycler, true)
+        .setActionBtn(v-> {
+            workout.getObserver().onChange(
+                    WorkoutsModel.ListModifier
+                            .OnWith(workout, new ExerciseItemAdapter())
+                            .doAddNew(workout.exArray.size())
+                            .setTaskTag("new_exercise")
+            );
+        });
+
     }
 
 

@@ -2,6 +2,7 @@ package com.strongest.savingdata.Adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.strongest.savingdata.Activities.MyProgramsActivity;
@@ -11,7 +12,7 @@ import com.strongest.savingdata.Fragments.ProgramsListFragment;
 
 import java.util.ArrayList;
 
-public class MyProgramsPagerAdapter extends FragmentStatePagerAdapter {
+public class MyProgramsPagerAdapter extends FragmentPagerAdapter {
 
 
     private final String[] fragmentsTitles;

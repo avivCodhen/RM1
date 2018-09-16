@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/workoutview_list_layout">
 
-    <FrameLayout
+    <!--<FrameLayout
         android:id="@+id/workoutview_list_shared_element_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></FrameLayout>
+        android:layout_height="wrap_content"></FrameLayout>-->
 
+    <com.strongest.savingdata.MyViews.SmartEmptyView
+        android:id="@+id/workout_view_smartemptyview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.strongest.savingdata.MyViews.SmartEmptyView>
     <android.support.v7.widget.RecyclerView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/workoutview_list_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
-</LinearLayout>
+</RelativeLayout>

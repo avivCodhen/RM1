@@ -8,10 +8,13 @@ import android.support.annotation.NonNull;
 import android.support.transition.Explode;
 import android.support.transition.Transition;
 import android.support.transition.TransitionSet;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.view.animation.Transformation;
@@ -29,6 +32,7 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
+import com.strongest.savingdata.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -346,5 +350,34 @@ public class MyJavaAnimator {
             matrix.preTranslate(-centerX, -centerY);
             matrix.postTranslate(centerX, centerY);
         }
+    }
+
+    public static void animateRevealShowCenter(View viewRoot) {
+        int cx = (viewRoot.getLeft() + viewRoot.getRight()) / 2;
+        int cy = (viewRoot.getTop() + viewRoot.getBottom()) / 2;
+        int finalRadius = Math.max(viewRoot.getWidth(), viewRoot.getHeight());
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(viewRoot, cx, cy, 0, finalRadius);
+        viewRoot.setBackgroundColor(ContextCompat.getColor(viewRoot.getContext(), R.color.colorAccent));
+        anim.setDuration(400);
+        anim.setInterpolator(new AccelerateInterpolator());
+        viewRoot.setVisibility(View.VISIBLE);
+
+        anim.start();
+    }
+    public static void animateRevealShow(View viewRoot, View fab) {
+        int[] location = new int[2];
+        fab.getLocationOnScreen(location);
+        int cx = location[0];
+        int cy = location[1];
+        int finalRadius = Math.max(viewRoot.getWidth(), viewRoot.getHeight());
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(viewRoot, cx, cy, 0, finalRadius);
+        viewRoot.setBackgroundColor(ContextCompat.getColor(viewRoot.getContext(), R.color.colorAccent));
+        anim.setDuration(400);
+        anim.setInterpolator(new AccelerateInterpolator());
+        viewRoot.setVisibility(View.VISIBLE);
+
+        anim.start();
     }
 }

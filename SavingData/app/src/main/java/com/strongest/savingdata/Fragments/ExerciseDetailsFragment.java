@@ -229,6 +229,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         setsLayoutManager = new LinearLayoutManager(getContext());
         LinearLayoutManager lm2 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(setsLayoutManager);
+
         exerciseRecycler.setLayoutManager(lm2);
         //recyclerView.setNestedScrollingEnabled(false);
 
@@ -282,6 +283,8 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         adapter.setSupersets(exerciseProfile.exerciseProfiles);
         exerciseAdapter.setOnExerciseInfo(this);
         adapter.setLongClickMenuView(longClickMenuView);
+        adapter.setHasStableIds(true);
+
 
     }
 

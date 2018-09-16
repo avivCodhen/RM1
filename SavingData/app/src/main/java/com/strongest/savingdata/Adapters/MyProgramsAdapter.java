@@ -13,6 +13,7 @@ import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,6 +90,10 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
     @Override
     public int getItemCount() {
         return programs.size();
+    }
+
+    public void setList(ArrayList<Program> list) {
+        this.programs = list;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

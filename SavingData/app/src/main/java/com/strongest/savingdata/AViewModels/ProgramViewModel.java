@@ -35,7 +35,7 @@ public class ProgramViewModel extends ViewModel {
         this.programService = programService;
 
         programModel = Transformations.switchMap(program, input -> programService.getProgramByKey(input));
-        program.postValue(programService.getProgramUID());
+        //program.postValue(programService.getProgramUID());
     }
 
     /*public void fetchAllPrograms( ) {
@@ -62,6 +62,10 @@ public class ProgramViewModel extends ViewModel {
 
     public void postProgram(Program p) {
         programService.insertProgram(p, result -> program.postValue(p.getKey()));
+    }
+
+    public void initProgram(){
+        program.postValue(programService.getProgramUID());
     }
 
     public void updateProgram(Program p) {

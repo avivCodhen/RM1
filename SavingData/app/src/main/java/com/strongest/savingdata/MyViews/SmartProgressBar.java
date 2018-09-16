@@ -2,6 +2,7 @@ package com.strongest.savingdata.MyViews;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -11,11 +12,13 @@ import android.widget.TextView;
 
 import com.strongest.savingdata.R;
 
+
 public class SmartProgressBar extends LinearLayout {
 
     private final Context context;
     private TextView textView;
     private View childView;
+    private Handler handler;
 
     public SmartProgressBar(Context context) {
         super(context);
@@ -31,6 +34,7 @@ public class SmartProgressBar extends LinearLayout {
     }
 
     private void initView() {
+        handler = new Handler();
         inflate(context, R.layout.layout_custom_progress, this);
         textView = findViewById(R.id.loading_tv);
         setAlpha(0);
@@ -53,25 +57,31 @@ public class SmartProgressBar extends LinearLayout {
         return this;
     }
 
+    public void onRabbitHole(int duration, OnEnteringRabbitHole rabbitHole) {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                rabbitHole.breakLoop();
+            }
+        }, duration);
+    }
+
     public void show() {
 
-        animateAlpha(1f, this, childView);
+        animateShow(this);
     }
 
     public void hide() {
-        animateAlpha(0f, this, childView);
+        animateHide(this);
     }
 
     private boolean hasChild() {
         return childView != null;
     }
 
-    private void animateAlpha(float value, View main, View childView) {
-
+    private void animateShow(View main) {
         if (hasChild()) {
-
-
-            childView.animate().alpha(value == 0 ? 1 : 0).setListener(new Animator.AnimatorListener() {
+            childView.animate().alpha(0).setDuration(0).setListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
 
@@ -79,7 +89,7 @@ public class SmartProgressBar extends LinearLayout {
 
                 @Override
                 public void onAnimationEnd(Animator animator) {
-                    main.animate().alpha(value).start();
+                    main.animate().alpha(1).setDuration(0).start();
                 }
 
                 @Override
@@ -94,7 +104,41 @@ public class SmartProgressBar extends LinearLayout {
             }).start();
 
         } else {
-            main.animate().alpha(value).start();
+            main.animate().alpha(1).setDuration(0).start();
         }
+    }
+
+    private void animateHide(View main) {
+        if (hasChild()) {
+            childView.animate().alpha(1).setDuration(0).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    main.animate().alpha(0).setDuration(0).start();
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            }).start();
+
+        } else {
+            main.animate().alpha(0).setDuration(0).start();
+        }
+    }
+
+    public interface OnEnteringRabbitHole {
+
+        void breakLoop();
     }
 }

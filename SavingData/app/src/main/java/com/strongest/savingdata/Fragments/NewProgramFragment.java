@@ -74,7 +74,7 @@ public class NewProgramFragment extends BaseFragment {
             public void onClick(View v) {
                 if (userService.isUserLoggedIn()) {
 
-                    newProgramFragmentCallBack.createProgram();
+                    newProgramFragmentCallBack.createNewProgram();
                     /*programViewModel.setNewProgram();
                     workoutsViewModel.setNewWorkout();
                     getFragmentManager().popBackStack();*/
@@ -102,6 +102,6 @@ public class NewProgramFragment extends BaseFragment {
 
     public  interface NewProgramFragmentCallBack{
 
-        void createProgram();
+        void createNewProgram();
     }
 }

@@ -129,6 +129,8 @@ public class HomeActivity extends BaseActivity implements
         if (!userService.isUserLoggedIn()) {
             startActivityForResult(new Intent(this, LoginActivity2.class), LOGIN_ACTIVITY);
 
+        } else {
+            programViewModel.initProgram();
         }
         programViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(ProgramViewModel.class);
         workoutsViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(WorkoutsViewModel.class);
@@ -145,6 +147,7 @@ public class HomeActivity extends BaseActivity implements
                 programService.annonymouseToUser(program);
                 smartProgressBar.hide();
             } else {
+
                 toMyProgramsActivity();
             }
 

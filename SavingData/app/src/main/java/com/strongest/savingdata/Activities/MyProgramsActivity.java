@@ -80,7 +80,7 @@ public class MyProgramsActivity extends BaseActivity implements
 
         programService.listenForSharedPrograms(count -> {
             tabLayout.showMsg(2, (int) count);
-            tabLayout.setMsgMargin(2,33,0);
+            tabLayout.setMsgMargin(2,43,0);
         });
 
         if (currentProgram == null) {
@@ -161,6 +161,11 @@ public class MyProgramsActivity extends BaseActivity implements
 
     @Override
     public void createProgram() {
+        createNewProgram();
+    }
+
+    @Override
+    public void createNewProgram() {
         setResult(FRAGMENT_CREATE_PROGRAM);
         finish();
     }

@@ -16,8 +16,10 @@ import com.strongest.savingdata.AViewModels.MyProgramsViewModel;
 import com.strongest.savingdata.Activities.MyProgramsActivity;
 import com.strongest.savingdata.Adapters.MyProgramsAdapter;
 import com.strongest.savingdata.Controllers.Architecture;
+import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,7 +27,7 @@ import butterknife.ButterKnife;
 
 public class ProgramsListFragment extends BaseFragment implements Architecture.program {
 
-    private List<Program> programs;
+    private ArrayList<Program> programs = new ArrayList<>();
     private MyProgramsAdapter myProgramsAdapter;
     private MyProgramCallBack myProgramCallBack;
 
@@ -33,10 +35,14 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
     @BindView(R.id.fragment_my_program_recyclerview)
     RecyclerView recyclerView;
 
+    @BindView(R.id.program_list_smartemptyview)
+    SmartEmptyView smartEmptyView;
     MyProgramsViewModel myProgramsViewModel;
 
     Program currentProgram;
     String tag;
+    boolean isShared;
+
 
     public static ProgramsListFragment getInstance(String tag) {
         ProgramsListFragment f = new ProgramsListFragment();
@@ -70,18 +76,34 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
         lm.setStackFromEnd(true);
         recyclerView.setLayoutManager(lm);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+
+        currentProgram = myProgramCallBack.getCurrentProgram();
+
+
         myProgramsViewModel = ViewModelProviders.of(this, workoutsViewModelFactory)
                 .get(tag, MyProgramsViewModel.class);
-        currentProgram = myProgramCallBack.getCurrentProgram();
+        isShared = false;
+        myProgramsAdapter = new MyProgramsAdapter(programs, currentProgram, this, isShared);
+        recyclerView.setAdapter(myProgramsAdapter);
+
+        smartEmptyView
+                .setUpWithRecycler(recyclerView, currentProgram == null)
+                .setButtonText("Create A New Program")
+                .setTitle("You don't have any programs saved.")
+                .setBody("You can click on the Plus Icon to create a new Program")
+                .setButtonText("Or Tap here")
+                .setImage(smartEmptyView.getDocImage())
+                .setActionBtn(view-> myProgramCallBack.createProgram());
+
         myProgramsViewModel.fetchProgramList(tag);
         myProgramsViewModel.getProgramList().observe(this, list -> {
             programs = list;
-            boolean isShared = false;
-            if(tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)){
+            if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)) {
                 isShared = true;
             }
-            myProgramsAdapter = new MyProgramsAdapter(list, currentProgram, this, isShared);
-            recyclerView.setAdapter(myProgramsAdapter);
+            myProgramsAdapter.setList(programs);
+            myProgramsAdapter.notifyDataSetChanged();
+
         });
     }
 
@@ -134,5 +156,7 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
         void shareProgram(Program p);
 
         void loadSharedProgram(Program p);
+
+        void createProgram();
     }
 }
