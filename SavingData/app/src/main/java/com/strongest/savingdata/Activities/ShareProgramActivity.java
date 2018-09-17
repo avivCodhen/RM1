@@ -51,8 +51,7 @@ public class ShareProgramActivity extends BaseActivity {
         p = (Program) getIntent().getSerializableExtra("program");
         saveExitToolBar.instantiate();
         saveExitToolBar.showCancel(false);
-        saveExitToolBar.setOptionalText("Share " + p.getProgramName());
-        saveExitToolBar.showBack(true);
+        saveExitToolBar.setOptionalText("Share Program");
         saveExitToolBar.setSaveButton(v -> finish());
 
 

@@ -8,6 +8,7 @@
     >
 
 
+
     <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@color/background_color"
         android:layout_width="match_parent"
@@ -127,6 +128,12 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
+    <com.strongest.savingdata.MyViews.SmartEmptyView
+        android:elevation="10dp"
+        android:layout_width="match_parent"
+        android:id="@+id/home_activity_smartemptyview"
+        android:layout_marginTop="50dp"
+        android:layout_height="match_parent"></com.strongest.savingdata.MyViews.SmartEmptyView>
 
 
 

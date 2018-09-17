@@ -67,8 +67,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void addFragmentToActivity(int id, Fragment f, String tag){
 
         getSupportFragmentManager().beginTransaction()
-                //.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_left, R.anim.slide_out_right)
-                .setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right, R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right)
+                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_left, R.anim.slide_out_right)
+                //.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left)
                 .replace(id, f, tag)
                 .addToBackStack(tag)
                 .commit();

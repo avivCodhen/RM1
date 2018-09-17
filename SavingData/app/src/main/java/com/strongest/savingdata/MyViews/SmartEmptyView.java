@@ -2,9 +2,11 @@ package com.strongest.savingdata.MyViews;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -31,6 +33,7 @@ public class SmartEmptyView extends LinearLayout {
     private static final int DEFAULT_DURATION = 200;
 
     private RecyclerView recyclerView;
+    private ViewPager viewPager;
 
     public SmartEmptyView(Context context) {
         super(context);
@@ -77,24 +80,38 @@ public class SmartEmptyView extends LinearLayout {
         return this;
     }
 
-    public SmartEmptyView setUpWithRecycler(RecyclerView recycler, boolean startObservertion) {
+    public SmartEmptyView setUpWithRecycler(RecyclerView recycler, boolean observe,  boolean start) {
         this.recyclerView = recycler;
-        observerRecycler();
-        if (startObservertion) {
-            decide();
+        if(observe){
+            observerRecycler();
+        }
+        if (start) {
+            decide(recycler.getAdapter().getItemCount());
         }
         return this;
     }
+    public SmartEmptyView setUpWithViewPager(ViewPager viewPager,boolean observe, boolean start) {
 
-    public SmartEmptyView setButtonText(String text){
+        this.viewPager = viewPager;
+        if(observe){
+            observerViewPager();
+        }
+        if(start){
+            decide(viewPager.getAdapter().getCount());
+        }
+
+        return this;
+    }
+
+    public void onCondition(int count){
+        decide(count);
+    }
+
+        public SmartEmptyView setButtonText(String text){
         actionBtn.setText(text);
         return this;
     }
 
-    public SmartEmptyView hideBtn(){
-        actionBtn.setVisibility(GONE);
-        return this;
-    }
 
     private void observerRecycler() {
         if (recyclerView == null) {
@@ -104,52 +121,71 @@ public class SmartEmptyView extends LinearLayout {
             throw new IllegalArgumentException("Adapter cannot be null");
 
         }
+
         recyclerView.getAdapter().registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
-                decide();
+                decide(recyclerView.getAdapter().getItemCount());
                 super.onChanged();
             }
 
             @Override
             public void onItemRangeChanged(int positionStart, int itemCount) {
-                decide();
+                decide(itemCount);
 
                 super.onItemRangeChanged(positionStart, itemCount);
             }
 
             @Override
             public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
-                decide();
+                decide(itemCount);
 
                 super.onItemRangeChanged(positionStart, itemCount, payload);
             }
 
             @Override
             public void onItemRangeRemoved(int positionStart, int itemCount) {
-                decide();
+                decide(itemCount);
 
                 super.onItemRangeRemoved(positionStart, itemCount);
             }
 
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                decide();
+                decide(itemCount);
 
                 super.onItemRangeInserted(positionStart, itemCount);
             }
         });
     }
 
-    private void decide() {
-        if (recyclerView.getAdapter().getItemCount() == 0) {
-            show();
+    private void observerViewPager(){
+        if(viewPager == null){
+            throw  new IllegalArgumentException("Adapter cannot be null");
+        }
+        if(viewPager.getAdapter() == null){
+            throw new IllegalArgumentException("Adapter cannot be null");
+        }
+        viewPager.getAdapter().registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                decide(viewPager.getAdapter().getCount());
+                super.onChanged();
+            }
+        });
+    }
+
+    private void decide(int itemCount) {
+        View v = recyclerView == null? viewPager : recyclerView;
+
+        if (itemCount == 0) {
+            show(v);
         } else {
-            hide();
+            hide(v);
         }
     }
 
-    private void hide() {
+    private void hide(View v) {
         main.animate().alpha(0f).setDuration(DEFAULT_DURATION).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -171,7 +207,7 @@ public class SmartEmptyView extends LinearLayout {
 
             }
         });
-        recyclerView.animate().alpha(1f).setDuration(DEFAULT_DURATION).setListener(new Animator.AnimatorListener() {
+        v.animate().alpha(1f).setDuration(DEFAULT_DURATION).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
 
@@ -179,7 +215,7 @@ public class SmartEmptyView extends LinearLayout {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                recyclerView.setVisibility(VISIBLE);
+                v.setVisibility(VISIBLE);
             }
 
             @Override
@@ -194,7 +230,7 @@ public class SmartEmptyView extends LinearLayout {
         });
     }
 
-    private void show() {
+    private void show(View v) {
         main.animate().alpha(1f).setDuration(DEFAULT_DURATION).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -216,7 +252,7 @@ public class SmartEmptyView extends LinearLayout {
 
             }
         });
-        recyclerView.animate().alpha(0f).setDuration(DEFAULT_DURATION).setListener(new Animator.AnimatorListener() {
+        v.animate().alpha(0f).setDuration(DEFAULT_DURATION).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
 
@@ -224,7 +260,7 @@ public class SmartEmptyView extends LinearLayout {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                recyclerView.setVisibility(GONE);
+                v.setVisibility(GONE);
             }
 
             @Override
@@ -246,5 +282,10 @@ public class SmartEmptyView extends LinearLayout {
 
     public Drawable getDocImage() {
         return docImage;
+    }
+
+    public interface onCondition{
+
+
     }
 }

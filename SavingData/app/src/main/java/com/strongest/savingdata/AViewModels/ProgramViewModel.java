@@ -25,11 +25,8 @@ public class ProgramViewModel extends ViewModel {
     private LiveData<Program> programModel;
     private MutableLiveData<Program> newProgram = new MutableLiveData<>();
 
-    /*
-    private MediatorLiveData<Program> mediatorLiveData;
-    private MutableLiveData<ArrayList<Program>> allPrograms = new MutableLiveData<>();
+    private LiveData<List<Program>> programs;
 
-*/
     @Inject
     public ProgramViewModel(ProgramService programService) {
         this.programService = programService;
@@ -38,28 +35,14 @@ public class ProgramViewModel extends ViewModel {
         //program.postValue(programService.getProgramUID());
     }
 
-    /*public void fetchAllPrograms( ) {
-        programService.fetchAllPrograms(allPrograms);
+    public void fetchAllPrograms(){
+        programs = programService.getAllPrograms();
     }
-*/
-    /* public LiveData<Program> getNewProgram() {
-         return newProgram;
-     }
- */
+
     public void setNewProgram() {
         program.postValue(programService.provideNewProgram());
 
     }
-/*
-    public MediatorLiveData<Program> getMediatorLiveData() {
-        return mediatorLiveData;
-    }
-*/
-
-   /* public void setProgram(LiveData<Program> program) {
-        this.program = program;
-    }*/
-
     public void postProgram(Program p) {
         programService.insertProgram(p, result -> program.postValue(p.getKey()));
     }
@@ -81,13 +64,7 @@ public class ProgramViewModel extends ViewModel {
     }
 
 
-    /*public LiveData<ArrayList<Program>> getAllPrograms() {
-        return allPrograms;
-    }*/
-
-   /* public void switchProgram(Program p) {
-        programService.insertProgram(p);
-        newProgram.setValue(p);
-
-    }*/
+    public LiveData<List<Program>> getPrograms() {
+        return programs;
+    }
 }

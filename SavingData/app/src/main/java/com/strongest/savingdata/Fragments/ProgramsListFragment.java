@@ -87,7 +87,7 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
         recyclerView.setAdapter(myProgramsAdapter);
 
         smartEmptyView
-                .setUpWithRecycler(recyclerView, currentProgram == null)
+                .setUpWithRecycler(recyclerView, true,currentProgram == null)
                 .setButtonText("Create A New Program")
                 .setTitle("You don't have any programs saved.")
                 .setBody("You can click on the Plus Icon to create a new Program")
@@ -100,7 +100,12 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
             programs = list;
             if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)) {
                 isShared = true;
+                myProgramsAdapter.setShared(isShared);
             }
+            if(list.size() == 0 && currentProgram != null){
+                programs.add(currentProgram);
+            }
+
             myProgramsAdapter.setList(programs);
             myProgramsAdapter.notifyDataSetChanged();
 

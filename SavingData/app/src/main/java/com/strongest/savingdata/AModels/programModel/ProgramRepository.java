@@ -3,6 +3,8 @@ package com.strongest.savingdata.AModels.programModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import com.strongest.savingdata.Controllers.CallBacks;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,7 +13,7 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
-public class ProgramRepository implements ProgramDAO {
+public class ProgramRepository {
 
     private final ProgramDAO programDAO;
 
@@ -24,27 +26,22 @@ public class ProgramRepository implements ProgramDAO {
     }
 
 
-    @Override
     public LiveData<List<Program>> getAllPrograms() {
         return programDAO.getAllPrograms();
     }
 
-    @Override
     public LiveData<Program> getProgramByName(String dbName) {
         return programDAO.getProgramByName(dbName);
     }
 
-    @Override
     public LiveData<Program> getProgramByKey(String key) {
         return programDAO.getProgramByKey(key);
     }
 
-    @Override
     public Single<Program> getCurrentProgram(String key) {
         return programDAO.getCurrentProgram(key);
     }
 
-    @Override
     public void updateProgram(Program program) {
         Completable.fromRunnable(() -> {
             programDAO.updateProgram(program);
@@ -53,20 +50,19 @@ public class ProgramRepository implements ProgramDAO {
                 .subscribe();
     }
 
-    @Override
     public void nukeTable() {
         programDAO.nukeTable();
     }
 
-    @Override
-    public void insertProgram(Program program) {
-        Completable.fromRunnable(()->{
-            programDAO.insertProgram(program);
-        }).subscribeOn(Schedulers.io())
-                .subscribe();
+    public void insertProgram(Program program, CallBacks.OnFinish onFinish) {
+        Completable.fromRunnable(() -> programDAO.insertProgram(program))
+                .subscribeOn(Schedulers.io())
+                .subscribe(() -> {
+                    if (onFinish != null)
+                        onFinish.onFinish(1);
+                });
     }
 
-    @Override
     public void deleteList(Program program) {
         programDAO.deleteList(program);
     }

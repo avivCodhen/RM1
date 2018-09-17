@@ -2,7 +2,10 @@ package com.strongest.savingdata.Fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.transition.Fade;
+import android.support.transition.Transition;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +31,7 @@ import com.strongest.savingdata.Adapters.GridViewMusclesAdapter;
 import com.strongest.savingdata.Adapters.OnExerciseListAdapterClickListener;
 import com.strongest.savingdata.Adapters.OnGridViewMuscleAdapterClickListener;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
@@ -117,6 +121,10 @@ public class ExerciseEditFragment extends BaseFragment implements
     private Beans selectedExercise;
     private Muscle selectedMuscle;
     private String fragmentId;
+    private View mainView;
+
+    int x;
+    int y;
 
     public static ExerciseEditFragment newInstance(String fragmentId) {
         ExerciseEditFragment f = new ExerciseEditFragment();
@@ -139,6 +147,11 @@ public class ExerciseEditFragment extends BaseFragment implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_choose_exercise, container, false);
         ButterKnife.bind(this, v);
+        x = v.getRight();
+        y = v.getBottom();
+        v.setVisibility(View.INVISIBLE);
+
+        mainView = v;
         return v;
     }
 
@@ -171,7 +184,13 @@ public class ExerciseEditFragment extends BaseFragment implements
 
     private void initViews(View v) {
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MyJavaAnimator.animateRevealShowParams(v, true, R.color.colorAccent, x, y, null);
 
+            }
+        }, 100);
         initToolbar();
         int height = ((HomeActivity) getActivity()).getScreenHeight();
         mGridViewAdapter = new GridViewMusclesAdapter(height, getContext(), dataManager, this);
@@ -297,9 +316,15 @@ public class ExerciseEditFragment extends BaseFragment implements
             getFragmentManager().popBackStack();
         });
 
-        saveExitToolBar.setCancelButton(v -> getFragmentManager().popBackStack());
+        saveExitToolBar.setCancelButton(v -> {
+            this.setExitTransition(new Fade());
 
+            MyJavaAnimator.animateRevealShowParams(mainView, false, R.color.background_color, x, y, r -> {
+            getFragmentManager().popBackStack();
 
+        });
+
+});
     }
 
 

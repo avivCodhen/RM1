@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
@@ -42,6 +43,7 @@ import com.strongest.savingdata.Fragments.NewProgramFragment;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
 import com.strongest.savingdata.Fragments.WorkoutViewFragment;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
+import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.MyViews.SmartProgressBar;
 import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
 import com.strongest.savingdata.R;
@@ -85,6 +87,9 @@ public class HomeActivity extends BaseActivity implements
     @BindView(R.id.toolbar_title)
     public TextView title;
 
+    @BindView(R.id.home_activity_smartemptyview)
+    SmartEmptyView smartEmptyView;
+
     @BindView(R.id.home_activity_smartprogressbar)
     SmartProgressBar smartProgressBar;
 
@@ -123,16 +128,17 @@ public class HomeActivity extends BaseActivity implements
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
-        smartProgressBar.setText("Loading Program...");
-        smartProgressBar.setUpWithView(mViewPager);
-        smartProgressBar.show();
+        smartProgressBar.setText("Loading Program...")
+                .setUpWithView(mViewPager)
+                .registerRabitHoleBreaker(5000, () -> programViewModel.initProgram());
+
+
         if (!userService.isUserLoggedIn()) {
             startActivityForResult(new Intent(this, LoginActivity2.class), LOGIN_ACTIVITY);
 
-        } else {
-            programViewModel.initProgram();
         }
         programViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(ProgramViewModel.class);
+        programViewModel.initProgram();
         workoutsViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(WorkoutsViewModel.class);
         setUpToolbar();
 
@@ -145,21 +151,23 @@ public class HomeActivity extends BaseActivity implements
                     workoutsViewModel.initWorkouts();
                 }
                 programService.annonymouseToUser(program);
-                smartProgressBar.hide();
-            } else {
-
-                toMyProgramsActivity();
             }
+            smartProgressBar.hide();
 
         });
 
-        /*programViewModel.getNewProgram().observe(this, prog -> {
-            programViewModel.setProgram(programViewModel.getNewProgram());
-            title.setText(prog.getProgramName());
-            workoutsViewModel.initWorkouts();
+        programViewModel.fetchAllPrograms();
 
+        programViewModel.getPrograms().observe(this, list -> {
+            smartEmptyView.setImage(smartEmptyView.getDocImage())
+                    .setTitle("You haven't Loaded any programs yet.")
+                    .setBody("You can navigate to My Programs and load or create a program there.")
+                    .setButtonText("Navigate To My Programs")
+                    .setActionBtn(v -> toMyProgramsActivity())
+                    .setUpWithViewPager(mViewPager, false, false)
+                    .onCondition(list.size());
 
-        });*/
+        });
 
         workoutsViewModel.getWorkoutsList().observe(this, workouts -> {
 
@@ -173,7 +181,6 @@ public class HomeActivity extends BaseActivity implements
         programToolsView.instantiate(programToolsBtn, this);
         loggedInUI();
         programService.listenForSharedPrograms(count -> showBadgeForMyProgram((int) count));
-
     }
 
     private void showBadgeForMyProgram(int count) {
@@ -509,7 +516,6 @@ public class HomeActivity extends BaseActivity implements
                 programViewModel.provideProgram();
                 programService.listenForSharedPrograms(count -> showBadgeForMyProgram((int) count));
             } else if (resultCode == RESULT_CANCELED) {
-
             }
         } else if (requestCode == MY_PROGRAM_ACTIVITY) {
             if (resultCode == RESULT_OK) {
@@ -522,8 +528,14 @@ public class HomeActivity extends BaseActivity implements
                 workoutsViewModel.setCmd(WorkoutsService.CMD.SWITCH);
                 programViewModel.postProgram(p);
             } else if (resultCode == MyProgramsActivity.FRAGMENT_CREATE_PROGRAM) {
-                workoutsViewModel.setNewWorkout();
+                if(userService.isUserLoggedIn() || program == null){
                 programViewModel.setNewProgram();
+                workoutsViewModel.setNewWorkout();
+
+                }else{
+                    Toast.makeText(this, "You can only save one program. Log in to save as many as you wish.", Toast.LENGTH_SHORT).show();
+
+                }
 
             }
         }

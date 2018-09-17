@@ -19,6 +19,9 @@ public class SmartProgressBar extends LinearLayout {
     private TextView textView;
     private View childView;
     private Handler handler;
+    private boolean hasRabbitHoleBreaker = false;
+    private OnEnteringRabbitHole onEnteringRabbitHole;
+    private int breakLoopDuration = 0;
 
     public SmartProgressBar(Context context) {
         super(context);
@@ -57,18 +60,25 @@ public class SmartProgressBar extends LinearLayout {
         return this;
     }
 
-    public void onRabbitHole(int duration, OnEnteringRabbitHole rabbitHole) {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                rabbitHole.breakLoop();
-            }
-        }, duration);
+    public SmartProgressBar registerRabitHoleBreaker(int duration, OnEnteringRabbitHole rabbitHole) {
+       this.breakLoopDuration = duration;
+       this.onEnteringRabbitHole = rabbitHole;
+       this.hasRabbitHoleBreaker = rabbitHole != null;
+        return this;
     }
 
     public void show() {
 
         animateShow(this);
+        if(hasRabbitHoleBreaker){
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onEnteringRabbitHole.breakLoop();
+                    hide();
+                }
+            }, breakLoopDuration);
+        }
     }
 
     public void hide() {

@@ -20,6 +20,7 @@ import android.provider.ContactsContract;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -76,8 +77,8 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
     @BindView(R.id.to_sign_activity)
     View toSignUpBtn;
 
-    @BindView(R.id.activity_login_exit_iv)
-    View exit;
+    @BindView(R.id.activity_login_exit_layout)
+    ViewGroup exit;
 
     @BindView(R.id.logo_iv)
     ImageView logoIV;
@@ -130,7 +131,15 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
             addFragmentToActivity(R.id.activity_register_frame, new RegisterFragment(), "");
         });
 
-        exit.setOnClickListener(exit -> finish());
+        exit.setOnClickListener(exit -> {
+            setResult(RESULT_CANCELED);
+            finish();
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        return;
     }
 
     private void populateAutoComplete() {

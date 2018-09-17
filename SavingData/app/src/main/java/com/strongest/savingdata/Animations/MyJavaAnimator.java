@@ -32,6 +32,7 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
+import com.strongest.savingdata.Controllers.CallBacks;
 import com.strongest.savingdata.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -90,13 +91,12 @@ public class MyJavaAnimator {
         // Older versions of android (pre API 21) cancel animations for views with a height of 0.
         v.getLayoutParams().height = 1;
         v.setVisibility(View.VISIBLE);
-        Animation a = new Animation()
-        {
+        Animation a = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 v.getLayoutParams().height = interpolatedTime == 1
                         ? ViewGroup.LayoutParams.WRAP_CONTENT
-                        : (int)(targetHeight * interpolatedTime);
+                        : (int) (targetHeight * interpolatedTime);
                 v.requestLayout();
             }
 
@@ -107,21 +107,20 @@ public class MyJavaAnimator {
         };
 
         // 1dp/ms
-        a.setDuration((int)(targetHeight / v.getContext().getResources().getDisplayMetrics().density));
+        a.setDuration((int) (targetHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
     }
 
     public static void collapse(final View v) {
         final int initialHeight = v.getMeasuredHeight();
 
-        Animation a = new Animation()
-        {
+        Animation a = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                if(interpolatedTime == 1){
+                if (interpolatedTime == 1) {
                     v.setVisibility(View.GONE);
-                }else{
-                    v.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
+                } else {
+                    v.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
                     v.requestLayout();
                 }
             }
@@ -133,12 +132,12 @@ public class MyJavaAnimator {
         };
 
         // 1dp/ms
-        a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
+        a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
     }
 
-    public static void fadeInAndOut(final String type, final Object obj, final View...views){
-        for (final View v : views){
+    public static void fadeInAndOut(final String type, final Object obj, final View... views) {
+        for (final View v : views) {
             v.animate().alpha(0f).setDuration(200).setListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
@@ -157,9 +156,9 @@ public class MyJavaAnimator {
 
                 @Override
                 public void onAnimationRepeat(Animator animation) {
-                    switch (type){
-                        case "bodyview":{
-                          //  ((MyExpandableAdapter.MuscleViewHolder) v)
+                    switch (type) {
+                        case "bodyview": {
+                            //  ((MyExpandableAdapter.MuscleViewHolder) v)
                         }
                     }
                 }
@@ -167,11 +166,11 @@ public class MyJavaAnimator {
         }
     }
 
-   public static void fadeInAndOutTextView(final String text, final TextView...tv){
-        for (final TextView v : tv){
+    public static void fadeInAndOutTextView(final String text, final TextView... tv) {
+        for (final TextView v : tv) {
             v.animate().alpha(0f).setListener(new Animator.AnimatorListener() {
                 @Override
-                 public void onAnimationStart(Animator animation) {
+                public void onAnimationStart(Animator animation) {
 
                 }
 
@@ -194,8 +193,8 @@ public class MyJavaAnimator {
         }
     }
 
-    public static void fadeInAndOutImageView(final int resource, final int color, final ImageView...tv){
-        for (final ImageView v : tv){
+    public static void fadeInAndOutImageView(final int resource, final int color, final ImageView... tv) {
+        for (final ImageView v : tv) {
             v.animate().alpha(0f).setListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
@@ -205,8 +204,8 @@ public class MyJavaAnimator {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     v.setImageResource(resource);
-                    if(color != -1){
-                        ((CircleImageView)v).setCircleBackgroundColor(color);
+                    if (color != -1) {
+                        ((CircleImageView) v).setCircleBackgroundColor(color);
                     }
                     v.animate().alpha(1f).start();
                 }
@@ -224,26 +223,27 @@ public class MyJavaAnimator {
         }
     }
 
-    public static void slideOutAndIn(ImageView iv){
+    public static void slideOutAndIn(ImageView iv) {
 
     }
 
-    public static void MoveView(final int amountToMarginLeft, final int amountToMarginRight, final ViewGroup view){
+    public static void MoveView(final int amountToMarginLeft, final int amountToMarginRight, final ViewGroup view) {
         TranslateAnimation anim = new TranslateAnimation(0, 0, 0, 0);
         anim.setDuration(1000);
 
         anim.setAnimationListener(new TranslateAnimation.AnimationListener() {
 
             @Override
-            public void onAnimationStart(Animation animation) { }
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animation animation) { }
+            public void onAnimationRepeat(Animation animation) {
+            }
 
             @Override
-            public void onAnimationEnd(Animation animation)
-            {
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)view.getLayoutParams();
+            public void onAnimationEnd(Animation animation) {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
                 params.leftMargin -= amountToMarginLeft;
                 params.rightMargin += amountToMarginRight;
                 view.setLayoutParams(params);
@@ -254,7 +254,7 @@ public class MyJavaAnimator {
         view.startAnimation(anim);
     }
 
-    public static void explode(RecyclerView.ViewHolder vh, RecyclerView recycler, RecyclerView.Adapter adapter){
+    public static void explode(RecyclerView.ViewHolder vh, RecyclerView recycler, RecyclerView.Adapter adapter) {
         Rect rect = new Rect();
         vh.itemView.getGlobalVisibleRect(rect);
         rect.top = rect.bottom;
@@ -278,7 +278,6 @@ public class MyJavaAnimator {
             }
         }, 1000);
     }
-
 
 
     public static class FlipAnimation extends Animation {
@@ -365,9 +364,10 @@ public class MyJavaAnimator {
 
         anim.start();
     }
-    public static void animateRevealShow(View viewRoot, View fab) {
+
+    public static void animateRevealShow(View viewRoot, View child) {
         int[] location = new int[2];
-        fab.getLocationOnScreen(location);
+        child.getLocationOnScreen(location);
         int cx = location[0];
         int cy = location[1];
         int finalRadius = Math.max(viewRoot.getWidth(), viewRoot.getHeight());
@@ -377,6 +377,63 @@ public class MyJavaAnimator {
         anim.setDuration(400);
         anim.setInterpolator(new AccelerateInterpolator());
         viewRoot.setVisibility(View.VISIBLE);
+
+        anim.start();
+    }
+
+    public static void animateRevealShowParams(View viewRoot, boolean isStart, int color, int x, int y, CallBacks.OnFinish onFinish) {
+        int finalRadius;
+        int startRadius;
+        int duration;
+     //   int cx = viewRoot.getRight();
+       // int cy = viewRoot.getBottom();
+        if (isStart) {
+            duration = 400;
+            finalRadius = (int) Math.hypot(viewRoot.getWidth(), viewRoot.getHeight());
+            startRadius = 0;
+
+        } else {
+            duration = 200;
+            finalRadius = 0;
+            startRadius= Math.max(viewRoot.getWidth(), viewRoot.getHeight());
+
+        }
+
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(viewRoot, x, y, startRadius, finalRadius);
+        anim.setDuration(duration);
+        anim.setInterpolator(new AccelerateInterpolator());
+        if(isStart){
+            viewRoot.setBackgroundColor(ContextCompat.getColor(viewRoot.getContext(), color));
+            viewRoot.setVisibility(View.VISIBLE);
+
+        }else{
+            anim.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    if(onFinish != null){
+                        onFinish.onFinish(1);
+                        viewRoot.setBackgroundColor(ContextCompat.getColor(viewRoot.getContext(), color));
+                        viewRoot.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+        }
 
         anim.start();
     }

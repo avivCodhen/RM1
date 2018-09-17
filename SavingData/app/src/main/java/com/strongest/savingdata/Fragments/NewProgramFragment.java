@@ -72,15 +72,11 @@ public class NewProgramFragment extends BaseFragment {
         v.findViewById(R.id.fragment_new_program_default_blank_template).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userService.isUserLoggedIn()) {
 
                     newProgramFragmentCallBack.createNewProgram();
                     /*programViewModel.setNewProgram();
                     workoutsViewModel.setNewWorkout();
                     getFragmentManager().popBackStack();*/
-                } else {
-                    Toast.makeText(getContext(), "You can only save one prgraom. Log in to save as many as you wish.", Toast.LENGTH_SHORT).show();
-                }
             }
         });
         new Handler().postDelayed(new Runnable() {

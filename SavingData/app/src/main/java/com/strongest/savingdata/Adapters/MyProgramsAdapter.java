@@ -25,6 +25,10 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
     private Architecture.program listener;
     private boolean isShared;
 
+    public void setShared(boolean shared) {
+        isShared = shared;
+    }
+
     public MyProgramsAdapter(ArrayList<Program> programs, Program currentProgram, Architecture.program listener, boolean isShared) {
 
         this.programs = programs;

@@ -162,7 +162,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
                 .setBody("Click on the Plus Icon at the top right, to start adding customizing your exercises.")
                 .setTitle("Looks like you don't have any exercises!")
                 .setButtonText("Or tap here")
-                .setUpWithRecycler(recycler, true)
+                .setUpWithRecycler(recycler, true,true)
         .setActionBtn(v-> {
             workout.getObserver().onChange(
                     WorkoutsModel.ListModifier

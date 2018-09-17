@@ -88,10 +88,14 @@ public class MyProgramsActivity extends BaseActivity implements
         }
 
         floatingActionButton.setOnClickListener(v -> {
-            addFragmentToActivityNoTransition(R.id.my_program_framelayout, new NewProgramFragment(), "newProgram");
+            toNewProgram();
         });
     }
 
+
+    private void toNewProgram(){
+        addFragmentToActivityNoTransition(R.id.my_program_framelayout, new NewProgramFragment(), "newProgram");
+    }
     @Override
     public void onBackPressed() {
 
@@ -161,7 +165,7 @@ public class MyProgramsActivity extends BaseActivity implements
 
     @Override
     public void createProgram() {
-        createNewProgram();
+        toNewProgram();
     }
 
     @Override

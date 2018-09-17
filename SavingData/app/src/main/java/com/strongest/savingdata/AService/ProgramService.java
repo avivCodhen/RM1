@@ -24,6 +24,7 @@ import com.strongest.savingdata.Utils.FireBaseUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -188,7 +189,7 @@ public class ProgramService {
                     .child(FireBaseUtils.FIRE_BASE_REFERENCE_PROGRAMS);
             String key = databaseReference.push().getKey();
             program.setKey(key);
-            programRepository.insertProgram(program);
+            programRepository.insertProgram(program, null);
             saveProgramKeyToSharedPreferences(key);
             databaseReference.child(key).setValue(program).addOnCompleteListener(task -> Log.d(
                     "aviv", "onComplete: " + task.getException())
@@ -213,9 +214,8 @@ public class ProgramService {
 
     public void insertProgram(Program p, CallBacks.OnFinish onFinish) {
         saveProgramKeyToSharedPreferences(p.getKey());
-        Completable.fromRunnable(() -> programRepository.insertProgram(p))
-                .observeOn(Schedulers.io())
-                .subscribe(() -> onFinish.onFinish(1));
+        programRepository.insertProgram(p, onFinish);
+
         return;
     }
 
@@ -258,6 +258,7 @@ public class ProgramService {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
+                        allPrograms.setValue(new ArrayList<>());
 
                     }
                 });
@@ -327,6 +328,8 @@ public class ProgramService {
             } else if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)) {
                 fetchAllProgramsShared(allPrograms, "recieverUID");
             }
+        }else{
+            allPrograms.setValue(new ArrayList<>());
         }
     }
 
@@ -382,5 +385,9 @@ public class ProgramService {
         p.setCreatorUID(userService.getUserUID());
         databaseReference.child(newKey).setValue(p);
         return p;
+    }
+
+    public LiveData<List<Program>> getAllPrograms() {
+        return programRepository.getAllPrograms();
     }
 }
