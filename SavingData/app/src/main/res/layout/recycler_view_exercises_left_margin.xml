@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/exercise_main_viewgroup_layout"
     android:layout_width="match_parent"
@@ -82,6 +82,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
+                app:civ_border_width="0.5dp"
+                app:civ_border_color="@color/black"
                 android:backgroundTint="@color/background_color"
                 android:src="@drawable/ic_drag_handle_black_24dp"
                 app:civ_circle_background_color="@color/colorPrimary" />
@@ -91,6 +93,8 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
+                app:civ_border_width="0.5dp"
+                app:civ_border_color="@color/black"
                 android:padding="1dp"
                 android:elevation="5dp"
                 app:civ_circle_background_color="@color/colorPrimary"
@@ -278,4 +282,4 @@
         android:layout_below="@+id/btns"
         android:orientation="vertical"></LinearLayout>
 
-</RelativeLayout>
+</android.support.v7.widget.CardView>
