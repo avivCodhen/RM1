@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -37,7 +39,8 @@ public class NewProgramFragment extends BaseFragment {
     SaveExitToolBar saveExitToolBar;
 
     @BindView(R.id.fab_new_program)
-            View fab;
+    View fab;
+    View mainView;
 
     NewProgramFragmentCallBack newProgramFragmentCallBack;
 
@@ -47,6 +50,19 @@ public class NewProgramFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_new_program, container, false);
         ButterKnife.bind(this, v);
         v.setVisibility(View.INVISIBLE);
+        mainView = v;
+        v.setFocusableInTouchMode(true);
+        v.requestFocus();
+        v.setFocusable(true);
+        v.setOnKeyListener((v1, keyCode, event) -> {
+            Log.d("aviv", "onCreateView: ");
+
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                MyJavaAnimator.animateRevealShowParams(mainView, false, R.color.background_color, mainView.getRight(), mainView.getBottom(), r -> getFragmentManager().popBackStack());
+                return true;
+            }
+            return false;
+        });
         return v;
     }
 
@@ -64,6 +80,7 @@ public class NewProgramFragment extends BaseFragment {
                 .noElevation()
                 .showCancel(false)
                 .showBack(true)
+                .setSaveButton(view -> MyJavaAnimator.animateRevealShowParams(v, false, R.color.colorAccent, mainView.getRight(), mainView.getBottom(), r -> getFragmentManager().popBackStack()))
                 .setOptionalText("Create New Program");
 
 //        programViewModel = ViewModelProviders.of(getActivity()).get(ProgramViewModel.class);
@@ -73,7 +90,7 @@ public class NewProgramFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
 
-                    newProgramFragmentCallBack.createNewProgram();
+                newProgramFragmentCallBack.createNewProgram();
                     /*programViewModel.setNewProgram();
                     workoutsViewModel.setNewWorkout();
                     getFragmentManager().popBackStack();*/
@@ -82,12 +99,11 @@ public class NewProgramFragment extends BaseFragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                MyJavaAnimator.animateRevealShow(v,fab);
+                MyJavaAnimator.animateRevealShowParams(v, true, R.color.colorAccent, fab.getWidth(), fab.getHeight(), null);
             }
         }, 0);
 
     }
-
 
 
     @Override
@@ -96,7 +112,7 @@ public class NewProgramFragment extends BaseFragment {
         newProgramFragmentCallBack = (NewProgramFragmentCallBack) context;
     }
 
-    public  interface NewProgramFragmentCallBack{
+    public interface NewProgramFragmentCallBack {
 
         void createNewProgram();
     }

@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/exercise_main_viewgroup_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
 
-    <include
-        layout="@layout/layout_bottom_border"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"></include>
 
-       <FrameLayout
-        android:id="@+id/recyclerview_exercise_drag_layout"
-        android:visibility="visible"
-        android:elevation="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-       <!-- <View
-            android:alpha="0.2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></View>
--->
-    </FrameLayout>
-
+<include layout="@layout/layout_bottom_border"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"></include>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/list_view_exercise_lay1"
         android:layout_width="wrap_content"
         android:layout_height="65dp">
+        <FrameLayout
+            android:id="@+id/recyclerview_exercise_drag_layout"
+            android:visibility="visible"
+            android:elevation="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- <View
+                 android:alpha="0.2"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"></View>
+     -->
+        </FrameLayout>
 
 
         <ImageView
@@ -61,49 +59,22 @@
             android:src="@drawable/order_gray_50px"
             android:visibility="gone" />
 
-
-        <com.wajahatkarim3.easyflipview.EasyFlipView
-            android:id="@+id/recyclerview_exercise_flipview"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_toRightOf="@+id/drag_iv"
-            app:flipOnTouch="false"
-
-
-
-            >
-
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/recyclerview_exercise_drag_icon"
-
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                app:civ_border_width="0.5dp"
-                app:civ_border_color="@color/black"
-                android:backgroundTint="@color/background_color"
-                android:src="@drawable/ic_drag_handle_black_24dp"
-                app:civ_circle_background_color="@color/colorPrimary" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_toRightOf="@+id/drag_iv"
                 android:id="@+id/ex1"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
                 android:layout_gravity="center"
-                app:civ_border_width="0.5dp"
-                app:civ_border_color="@color/black"
+
                 android:padding="1dp"
-                android:elevation="5dp"
+                android:elevation="10dp"
                 app:civ_circle_background_color="@color/colorPrimary"
 
 
                 />
-
-
-        </com.wajahatkarim3.easyflipview.EasyFlipView>
 
 
         <TextView
@@ -112,11 +83,13 @@
             android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
-            android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
+            android:layout_toRightOf="@+id/ex1"
             android:ellipsize="end"
+            android:textColor="@color/gray"
+            android:textStyle="bold"
             android:maxLines="1"
             android:text="Barbell Close-Grip Bench Press"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
 
         <TextView
@@ -126,11 +99,11 @@
             android:layout_width="230dp"
             android:layout_height="50dp"
             android:layout_marginTop="13dp"
-            android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
+            android:layout_toRightOf="@+id/ex1"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="Tap To Edit Exercise"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
 
         <LinearLayout
@@ -138,7 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/exerciseView_nameTV"
-            android:layout_toRightOf="@+id/recyclerview_exercise_flipview">
+            android:layout_toRightOf="@+id/ex1">
 
             <TextView
                 android:id="@+id/exercise_set_tv"
@@ -282,4 +255,4 @@
         android:layout_below="@+id/btns"
         android:orientation="vertical"></LinearLayout>
 
-</android.support.v7.widget.CardView>
+</RelativeLayout>

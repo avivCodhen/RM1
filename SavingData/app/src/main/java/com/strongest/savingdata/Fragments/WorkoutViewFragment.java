@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.transition.Fade;
@@ -149,7 +150,6 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         lm = new MyExpandableLinearLayoutManager(getContext());
         recycler.setLayoutManager(lm);
         recycler.setAdapter(adapter);
-
         adapter.setOnDragListener(this);
         adapter.setScrollListener(this);
         //   adapter.setHelper(layoutManagerHelper);
@@ -161,7 +161,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
                 .setImage(smartEmptyView.getRocketImage())
                 .setBody("Click on the Plus Icon at the top right, to start adding customizing your exercises.")
                 .setTitle("Looks like you don't have any exercises!")
-                .setButtonText("Or tap here")
+                .setButtonText("Add A New Exercise")
                 .setUpWithRecycler(recycler, true,true)
         .setActionBtn(v-> {
             workout.getObserver().onChange(

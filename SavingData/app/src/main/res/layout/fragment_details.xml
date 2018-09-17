@@ -25,6 +25,7 @@
 
 
         <android.support.design.widget.AppBarLayout
+            app:elevation="10dp"
             android:id="@+id/activity_exercise_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,7 +33,6 @@
 
 
             <android.support.design.widget.CollapsingToolbarLayout
-
                 android:id="@+id/activity_exercise_collapsingtoolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/exercise_details_activity_toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="55dp"
                     android:background="@color/colorAccent"
                     android:elevation="1dp"
                     android:focusable="true"
@@ -71,7 +71,7 @@
                             android:layout_toLeftOf="@+id/logBtn"
                             android:text="New Exercise"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="18dp"
+                            android:textSize="14dp"
                             android:textStyle="bold" />
 
                         <Button
@@ -151,10 +151,11 @@
                 <RelativeLayout
                     android:id="@+id/collapse_container"
 
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    android:layout_marginTop="67dp"
+                    android:layout_marginTop="75dp"
                     android:background="@color/colorAccent"
                     app:layout_collapseMode="parallax">
 
@@ -234,6 +235,12 @@
         -->
 
 
+        <com.strongest.savingdata.MyViews.SmartEmptyView
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/youtube_expand_layout"
+            android:id="@+id/fragment_exercise_details_smartemptyview"
+            android:layout_height="match_parent"></com.strongest.savingdata.MyViews.SmartEmptyView>
         <android.support.v7.widget.RecyclerView
 
             android:id="@+id/details_fragment_recyclerview"

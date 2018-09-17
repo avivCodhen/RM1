@@ -5,9 +5,6 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
-import java.security.Key;
-
-import io.reactivex.annotations.NonNull;
 
 /**
  * Created by Cohen on 10/18/2017.
@@ -25,6 +22,7 @@ public class Program implements Serializable{
     private String programDate;
     private String dbName;
     public boolean isSeen = true;
+    private boolean unShareable;
 
 
     public Program(String creatorUID, String creator, String programName, String time, String programDate, String dbName) {
@@ -111,5 +109,13 @@ public class Program implements Serializable{
             return true;
         }
         return false;
+    }
+
+    public boolean isUnShareable() {
+        return unShareable;
+    }
+
+    public void setUnShareable(boolean unShareable) {
+        this.unShareable = unShareable;
     }
 }

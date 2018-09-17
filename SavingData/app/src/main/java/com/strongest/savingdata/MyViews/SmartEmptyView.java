@@ -34,6 +34,8 @@ public class SmartEmptyView extends LinearLayout {
 
     private RecyclerView recyclerView;
     private ViewPager viewPager;
+    private View[] views;
+    private boolean hasViews;
 
     public SmartEmptyView(Context context) {
         super(context);
@@ -100,6 +102,12 @@ public class SmartEmptyView extends LinearLayout {
             decide(viewPager.getAdapter().getCount());
         }
 
+        return this;
+    }
+
+    public SmartEmptyView setUpWithMoreViews(View...views){
+        this.views = views;
+        hasViews = views != null;
         return this;
     }
 
@@ -178,6 +186,9 @@ public class SmartEmptyView extends LinearLayout {
     private void decide(int itemCount) {
         View v = recyclerView == null? viewPager : recyclerView;
 
+        if(v == null){
+            throw new IllegalArgumentException("view is null");
+        }
         if (itemCount == 0) {
             show(v);
         } else {
@@ -216,6 +227,8 @@ public class SmartEmptyView extends LinearLayout {
             @Override
             public void onAnimationEnd(Animator animator) {
                 v.setVisibility(VISIBLE);
+                setViewsVisibility(VISIBLE);
+
             }
 
             @Override
@@ -239,6 +252,7 @@ public class SmartEmptyView extends LinearLayout {
 
             @Override
             public void onAnimationEnd(Animator animator) {
+
                 main.setVisibility(VISIBLE);
             }
 
@@ -252,6 +266,7 @@ public class SmartEmptyView extends LinearLayout {
 
             }
         });
+
         v.animate().alpha(0f).setDuration(DEFAULT_DURATION).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -261,6 +276,8 @@ public class SmartEmptyView extends LinearLayout {
             @Override
             public void onAnimationEnd(Animator animator) {
                 v.setVisibility(GONE);
+                setViewsVisibility(GONE);
+
             }
 
             @Override
@@ -273,6 +290,14 @@ public class SmartEmptyView extends LinearLayout {
 
             }
         });
+    }
+
+    private void setViewsVisibility(int visibility){
+        if(hasViews){
+            for (View vews : views){
+                vews.setVisibility(visibility);
+            }
+        }
     }
 
 

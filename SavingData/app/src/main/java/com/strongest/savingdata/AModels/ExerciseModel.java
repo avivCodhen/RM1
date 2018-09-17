@@ -23,9 +23,9 @@ public class ExerciseModel {
                     ep.setSets(new ArrayList<>());
                 }
 
-                if (results == WorkoutsModelValidator.NO_SET) {
+               /* if (results == WorkoutsModelValidator.NO_SET) {
                     setsItemAdapter.insert();
-                }
+                }*/
                 Workout w = new Workout();
 
 
@@ -33,13 +33,13 @@ public class ExerciseModel {
                 for (int i = 0; i < ep.getSets().size(); i++) {
                     PLObject.SetsPLObject s = ep.getSets().get(i);
 
-                    //each set has to get it's supersets from each superset exercise
+                   /* //each set has to get it's supersets from each superset exercise
                     s.superSets.clear();
                     for (PLObject.ExerciseProfile superset : ep.exerciseProfiles) {
                         s.superSets.add(superset.intraSets.get(i));
                         if (i < superset.intraSets.size()) {
                         }
-                    }
+                    }*/
 
                     w.exArray.add(s);
 

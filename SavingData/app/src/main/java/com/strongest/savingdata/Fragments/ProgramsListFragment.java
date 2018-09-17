@@ -20,7 +20,6 @@ import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,7 +82,7 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
         myProgramsViewModel = ViewModelProviders.of(this, workoutsViewModelFactory)
                 .get(tag, MyProgramsViewModel.class);
         isShared = false;
-        myProgramsAdapter = new MyProgramsAdapter(programs, currentProgram, this, isShared);
+        myProgramsAdapter = new MyProgramsAdapter(programs, currentProgram, this, isShared, tag);
         recyclerView.setAdapter(myProgramsAdapter);
 
         smartEmptyView

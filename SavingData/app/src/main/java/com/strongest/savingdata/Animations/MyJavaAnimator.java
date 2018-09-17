@@ -388,7 +388,7 @@ public class MyJavaAnimator {
      //   int cx = viewRoot.getRight();
        // int cy = viewRoot.getBottom();
         if (isStart) {
-            duration = 400;
+            duration = 300;
             finalRadius = (int) Math.hypot(viewRoot.getWidth(), viewRoot.getHeight());
             startRadius = 0;
 

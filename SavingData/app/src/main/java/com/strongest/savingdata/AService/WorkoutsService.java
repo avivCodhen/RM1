@@ -51,7 +51,6 @@ import static com.strongest.savingdata.Database.Program.DBProgramHelper.REST;
 public class WorkoutsService {
 
 
-
     public enum CMD {
         INIT, NEW, SWITCH
     }
@@ -123,9 +122,9 @@ public class WorkoutsService {
         for (int i = 0; i < 2; i++) {
             Workout w = new Workout();
             w.workoutName = "Workout " + (i + 1);
-            w.exArray.add(new ExerciseItemAdapter().insert());
-            ((PLObject.ExerciseProfile) w.exArray.get(0)).getSets().add(new SetsItemAdapter().insert());
-            ((PLObject.ExerciseProfile) w.exArray.get(0)).getSets().add(new SetsItemAdapter().insert());
+            if (i == 1) {
+                w.exArray.add(new ExerciseItemAdapter().insert());
+            }
             workoutArrayList.add(w);
         }
 
@@ -191,7 +190,7 @@ public class WorkoutsService {
                 Log.d(TAG, "onDataChange: ");
                 if (dataSnapshot.getValue() != null) {
                     WorkoutHolder wor = dataSnapshot.getValue(WorkoutHolder.class);
-                    saveLayoutToDataBase(programUID,true, workoutBroParser(wor), (intResult) -> {
+                    saveLayoutToDataBase(programUID, true, workoutBroParser(wor), (intResult) -> {
                         ArrayList<Workout> list = readLayoutFromDataBase("");
                         if (list != null) {
                             onFinish.onFinish(list);
@@ -237,14 +236,14 @@ public class WorkoutsService {
 
     public void duplicateWorkouts(String originalKey, String duplicatedKey, CallBacks.OnFinish onFinish) {
         getWorkoutsFromFireBase(originalKey, list -> {
-            saveLayoutToDataBase(duplicatedKey, false, (ArrayList<Workout>) list, noResult ->{
+            saveLayoutToDataBase(duplicatedKey, false, (ArrayList<Workout>) list, noResult -> {
                 onFinish.onFinish(null);
             });
         });
     }
 
     public void saveCurrentWorkouts(boolean b, ArrayList<Workout> value, CallBacks.OnFinish o) {
-        saveLayoutToDataBase(getCurrentWorkoutUID(),b, value, o);
+        saveLayoutToDataBase(getCurrentWorkoutUID(), b, value, o);
     }
 
 
@@ -451,12 +450,7 @@ public class WorkoutsService {
                         /**
                          * getting the last set from the exercise array
                          * */
-                        int position = ep.getSets().size() - 1;
 
-
-                        //intra.parent = ep;
-                        //intra.setParent = ep.getSets().get(position);
-                        ep.getSets().get(position).intraSets.add(intra);
 
                         break;
 
@@ -464,7 +458,6 @@ public class WorkoutsService {
 
                         int last2 = workoutsList.get(workoutIndex).exArray.size() - 1;
                         ep = ((PLObject.ExerciseProfile) workoutsList.get(workoutIndex).exArray.get(last2));
-                        PLObject.ExerciseProfile supersetParent = ep.exerciseProfiles.get(ep.exerciseProfiles.size() - 1);
 
                         innerType = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(INNER_TYPE)));
                         rep = c.getString(c.getColumnIndex(REP_ID));
@@ -478,7 +471,9 @@ public class WorkoutsService {
                         intra2.setExerciseSet(exerciseSet);
                         intra2.setInnerType(innerType);
                         intra2.type = type;
-                        supersetParent.intraSets.add(intra2);
+
+                        int position = ep.getSets().size() - 1;
+                        ep.getSets().get(position).superSets.add(intra2);
                         break;
 
                 }

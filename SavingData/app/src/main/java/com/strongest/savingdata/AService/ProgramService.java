@@ -29,9 +29,6 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -361,9 +358,12 @@ public class ProgramService {
         sharedUser.setSenderName(user.getName());
         sharedUser.setProgramName(p.getProgramName());
         sharedUser.setSenderToken(user.getUserToken());
+        p.setUnShareable(true);
+        saveProgramToFireBase(p);
         String key = sharedProgramReference.push().getKey();
         sharedProgramReference.child(key).setValue(sharedUser);
     }
+
 
     public void deleteProgram(Program p) {
         databaseReference.child(p.getKey()).setValue(null);

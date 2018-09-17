@@ -27,7 +27,7 @@ public class SetsItemAdapter implements WorkoutItemAdapter<SetsPLObject> {
         if (exerciseProfile != null) {
             //set.parent = exerciseProfile;
             exerciseProfile.getSets().add(set);
-            ExerciseModel.injectSupersetExercise(exerciseProfile, set);
+            //ExerciseModel.injectSupersetExercise(exerciseProfile, set);
         }
 
 

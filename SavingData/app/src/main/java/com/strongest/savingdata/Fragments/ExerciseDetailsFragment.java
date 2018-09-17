@@ -39,6 +39,7 @@ import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.LogDataManager;
 import com.strongest.savingdata.Dialogs.LogModeDialog;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
+import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.R;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -91,6 +92,12 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
     @BindView(R.id.saveToLogBtn)
     Button saveToLogBtn;
+
+    @BindView(R.id.fragment_exercise_details_smartemptyview)
+    SmartEmptyView smartEmptyView;
+
+    @BindView(R.id.collapse_container)
+    View collapseContainer;
 
     private SelectedExerciseViewModel selectedExerciseViewModel;
     private WorkoutsViewModel workoutsViewModel;
@@ -155,6 +162,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
             exercisePosition = savedInstanceState.getInt(EXERCISE_POSITION);
 
         }
+
 
         selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(parentFragmentId, SelectedExerciseViewModel.class);
         logDataManager = new LogDataManager(getContext());
@@ -236,6 +244,14 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         recyclerView.setAdapter(adapter);
         exerciseRecycler.setAdapter(exerciseAdapter);
         recyclerView.setAlpha(0f);
+        smartEmptyView
+                .setTitle("You haven't created any sets for this Exercise yet.")
+                .setBody("Click on the Plus Icon to add new sets.")
+                .setButtonText("Add A New Set")
+                .setUpWithRecycler(recyclerView, true, true)
+                .setImage(smartEmptyView.getRocketImage())
+                .setActionBtn(v-> toolbarAddSet.callOnClick())
+                .onCondition(exerciseProfile.getSets().size());
 
     }
 
@@ -442,8 +458,10 @@ public class ExerciseDetailsFragment extends BaseFragment implements
             handler.post(new Runnable() {
                 @Override
                 public void run() {
+
                     adapter.setExArray(workout.getExArray());
                     adapter.notifyDataSetChanged();
+
                     MyJavaAnimator.fadeIn(recyclerView);
 
                 }

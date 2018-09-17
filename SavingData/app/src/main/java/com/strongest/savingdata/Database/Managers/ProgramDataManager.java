@@ -398,7 +398,14 @@ public class ProgramDataManager extends DataManager {
                     for (int j = 0; j < exerciseProfile.getSets().size(); j++) {
                         PLObject.SetsPLObject setsPLObject = exerciseProfile.getSets().get(j);
                         contentValues.add(saveSets(setsPLObject));
+
+
+                        for (int k = 0; k < setsPLObject.superSets.size(); k++) {
+                            PLObject.SetsPLObject intraSetPLObject = setsPLObject.superSets.get(k);
+                            contentValues.add(saveSets(intraSetPLObject));
+                        }
                         for (int k = 0; k < setsPLObject.intraSets.size(); k++) {
+
                             PLObject.SetsPLObject intraSet = setsPLObject.intraSets.get(k);
                             contentValues.add(saveSets(intraSet));
                         }
@@ -408,10 +415,6 @@ public class ProgramDataManager extends DataManager {
                         PLObject.ExerciseProfile superset = exerciseProfile.exerciseProfiles.get(j);
                         contentValues.add(saveExercise(superset));
 
-                        for (int k = 0; k < superset.intraSets.size(); k++) {
-                            PLObject.SetsPLObject intraSetPLObject = superset.intraSets.get(k);
-                            contentValues.add(saveSets(intraSetPLObject));
-                        }
                     }
 
                 }

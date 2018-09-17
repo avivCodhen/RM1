@@ -6,16 +6,19 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.AViewModels.MyProgramsViewModel;
 import com.strongest.savingdata.Adapters.MyProgramsPagerAdapter;
+import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.Fragments.BaseFragment;
 import com.strongest.savingdata.Fragments.NewProgramFragment;
 import com.strongest.savingdata.Fragments.ProgramsListFragment;
 import com.strongest.savingdata.MyViews.SaveExitToolBar;
 import com.strongest.savingdata.R;
+import com.strongest.savingdata.Utils.MyUtils;
 
 import java.util.ArrayList;
 
@@ -89,23 +92,13 @@ public class MyProgramsActivity extends BaseActivity implements
 
         floatingActionButton.setOnClickListener(v -> {
             toNewProgram();
+            MyUtils.Interface.disableClick(v, 2000);
         });
     }
-
 
     private void toNewProgram(){
         addFragmentToActivityNoTransition(R.id.my_program_framelayout, new NewProgramFragment(), "newProgram");
     }
-    @Override
-    public void onBackPressed() {
-
-        if(getSupportFragmentManager().getBackStackEntryCount() > 0){
-            getSupportFragmentManager().popBackStack();
-        }else{
-            super.onBackPressed();
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -147,11 +140,16 @@ public class MyProgramsActivity extends BaseActivity implements
 
     @Override
     public void shareProgram(Program p) {
-        Intent i;
-        i = new Intent(this, ShareProgramActivity.class);
-        i.putExtra("programuid", p.getKey());
-        i.putExtra("program", p);
-        startActivity(i);
+        if(userService.isUserLoggedIn()){
+
+            Intent i;
+            i = new Intent(this, ShareProgramActivity.class);
+            i.putExtra("programuid", p.getKey());
+            i.putExtra("program", p);
+            startActivity(i);
+        }else{
+            Toast.makeText(this, "You must be logged in to share.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

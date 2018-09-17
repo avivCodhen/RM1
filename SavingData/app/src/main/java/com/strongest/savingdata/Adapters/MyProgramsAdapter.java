@@ -9,11 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.strongest.savingdata.AModels.programModel.Program;
+import com.strongest.savingdata.Activities.MyProgramsActivity;
 import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,16 +25,19 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
     private Architecture.program listener;
     private boolean isShared;
 
+    private String tag;
+
     public void setShared(boolean shared) {
         isShared = shared;
     }
 
-    public MyProgramsAdapter(ArrayList<Program> programs, Program currentProgram, Architecture.program listener, boolean isShared) {
+    public MyProgramsAdapter(ArrayList<Program> programs, Program currentProgram, Architecture.program listener, boolean isShared, String tag) {
 
         this.programs = programs;
         this.currentProgram = currentProgram;
         this.listener = listener;
         this.isShared = isShared;
+        this.tag = tag;
     }
 
     @Override
@@ -50,6 +53,7 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
         holder.progName.setText(p.getProgramName());
         holder.date.setText("Created at " + p.getProgramDate() + ", " + p.getTime());
         if (!p.isSeen) {
+
             holder.alert.setVisibility(View.VISIBLE);
         } else {
             holder.alert.setVisibility(View.GONE);
@@ -57,12 +61,16 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
         }
         holder.creatorTV.setText("Created By " + p.getCreator());
 
+        if(donotShowDeleteButton(p)){
+            holder.deleteProgIV.setAlpha(0f);
+            holder.deleteProgIV.setClickable(false);
+        }
+
         if(isCurrentProgram(p)){
             holder.loadProgramBtn.setEnabled(false);
             holder.loadProgramBtn.setClickable(false);
             holder.loadProgramBtn.setAlpha(0.6f);
             holder.currentProgTv.setVisibility(View.VISIBLE);
-            holder.deleteProgIV.setAlpha(0.6f);
         }else{
             holder.currentProgTv.setVisibility(View.GONE);
             holder.loadProgramBtn.setOnClickListener(loadProgramView->{
@@ -73,12 +81,23 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
             });
         }
 
+        if(p.isUnShareable() ){
+            holder.shareIV.setVisibility(View.GONE);
+        }
+
         if(!isCurrentProgram(p))
         holder.deleteProgIV.setOnClickListener(deleteV->{
             listener.deleteProgram(p);
         });
 
         holder.shareIV.setOnClickListener(share-> listener.shareProgram(p));
+    }
+
+    private boolean donotShowDeleteButton(Program p){
+        if(tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY) || tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR) || isCurrentProgram(p)){
+            return true;
+        }
+        return false;
     }
 
     private boolean isCurrentProgram(Program p){
