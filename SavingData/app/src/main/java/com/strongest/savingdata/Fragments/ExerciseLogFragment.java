@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.AViewModels.SelectedLogDataViewModel;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
+import com.strongest.savingdata.Database.LogData;
 import com.strongest.savingdata.Database.LogDataManager;
 import com.strongest.savingdata.MyViews.SaveExitToolBar;
 import com.strongest.savingdata.R;
@@ -32,7 +33,7 @@ public class ExerciseLogFragment extends BaseFragment {
 
     MyExpandableAdapter adapter;
 
-    ArrayList<PLObject> list;
+    ArrayList<LogData.LogDataSets> list;
     LogDataManager logDataManager;
 
     @Nullable
@@ -50,7 +51,6 @@ public class ExerciseLogFragment extends BaseFragment {
         list = selectedLogDataViewModel.getSets();
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(lm);
-        adapter = new MyExpandableAdapter(list, getContext());
         recyclerView.setAdapter(adapter);
         saveExitToolBar.instantiate();
     }

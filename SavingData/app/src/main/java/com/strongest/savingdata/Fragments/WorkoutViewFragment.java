@@ -31,6 +31,7 @@ import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.AModels.workoutModel.PLObject.ExerciseProfile;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
 import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
+import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.MyViews.WorkoutView.OnEnterExitChooseFragment;
@@ -56,7 +57,6 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     private MyExpandableAdapter adapter;
     private ItemTouchHelper touchHelper;
     //private ArrayList<Workout> exArray;
-    private ArrayList<PLObject> exArray;
     private Workout workout;
     private OnUpdateLayoutStatsListener onUpdateLayoutStatsListener;
     private MyExpandableLinearLayoutManager lm;
@@ -119,7 +119,6 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         }
         longclickMenuView = ((HomeActivity) getActivity()).longClickMenuView;
         workoutsViewModel = ViewModelProviders.of(getActivity()).get(WorkoutsViewModel.class);
-        exArray = workoutsViewModel.getWorkoutsList().getValue().get(tag).exArray;
         workout = workoutsViewModel.getWorkoutsList().getValue().get(tag);
         workout.registerObserver((listModifier) -> {
 
@@ -139,7 +138,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
 
     private void initAdapter() {
         adapter = new MyExpandableAdapter(
-                exArray,
+                workout.exArray,
                 getContext()
         );
         adapter.setUiExerciseClickHandler(this);
@@ -183,7 +182,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     @Override
     public void scrollToPosition(int position, boolean enableScroll, boolean lastVisible) {
         if (lastVisible) {
-            ExerciseProfile ep = (ExerciseProfile) exArray.get(position);
+            ExerciseProfile ep = (ExerciseProfile) workout.exArray.get(position);
             if (position == lm.findLastCompletelyVisibleItemPosition()) {
                 lm.scrollToPosition(position + ep.getSets().size());
             }
@@ -201,10 +200,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     @Override
     public void startDrag(RecyclerView.ViewHolder viewHolder) {
         touchHelper.startDrag(viewHolder);
-        if (onUpdateLayoutStatsListener != null) {
-                /*LayoutManager.UpdateComponents uc = new LayoutManager.UpdateComponents(LayoutManager.SWAP);
-                onUpdateLayoutStatsListener.updateLayout(uc);*/
-        }
+
 
     }
 
@@ -242,7 +238,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
             adapter.notifyItemChanged(pos);
         });
         ExerciseEditFragment f = ExerciseEditFragment.newInstance(String.valueOf(tag));
-        addFragmentChild(getFragmentManager(), f);
+        addFragmentChild(getFragmentManager(), f, ExerciseEditFragment.FRAGMENT_EDIT_EXERCISE);
     }
 
     /**
@@ -323,8 +319,27 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     }
 
     @Override
-    public void onRemoveSuperset(ExerciseProfile exerciseProfile) {
-        adapter.notifyItemChanged(exArray.indexOf(exerciseProfile));
+    public void onRemoveSuperset(ExerciseProfile exerciseProfile, ExerciseProfile superset) {
+
+        MaterialDialogHandler.get()
+                .defaultDeleteBuilder(getContext(),"Delete This Superset?", "DELETE")
+                .buildDialog()
+                .addPositiveActionFunc(v->{
+                    int pos = exerciseProfile.exerciseProfiles.indexOf(superset);
+                    for (int i = 0; i < exerciseProfile.getSets().size(); i++) {
+                        PLObject.SetsPLObject setsPLObject = exerciseProfile.getSets().get(i);
+                        setsPLObject.superSets.remove(pos);
+                    }
+                    exerciseProfile.exerciseProfiles.remove(superset);
+                    adapter.notifyItemChanged(workout.exArray.indexOf(exerciseProfile));
+                }, true)
+                .show();
+    }
+
+    @Override
+    public void onDuplicateExercise(ExerciseProfile exerciseProfile, int position) {
+        WorkoutsModel.ListModifier listModifier = WorkoutsModel.ListModifier.OnWith(workout, new ExerciseItemAdapter());
+        listModifier.doDuplicate(exerciseProfile).applyWith(adapter,null, null);
     }
 
     @Override

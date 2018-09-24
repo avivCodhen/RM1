@@ -11,8 +11,7 @@
     <item android:id="@+id/add_dropset"
         android:icon="@drawable/child_red"
         android:title="Add Dropset"/>
-    <!--<item android:id="@+id/duplicate_set"
+    <item android:id="@+id/duplicate_set"
         android:icon="@drawable/child_red"
         android:title="Duplicate Set"/>
--->
 </menu>

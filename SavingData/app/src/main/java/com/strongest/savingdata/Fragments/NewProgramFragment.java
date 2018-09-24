@@ -49,20 +49,9 @@ public class NewProgramFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_new_program, container, false);
         ButterKnife.bind(this, v);
-        v.setVisibility(View.INVISIBLE);
         mainView = v;
-        v.setFocusableInTouchMode(true);
-        v.requestFocus();
-        v.setFocusable(true);
-        v.setOnKeyListener((v1, keyCode, event) -> {
-            Log.d("aviv", "onCreateView: ");
 
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                MyJavaAnimator.animateRevealShowParams(mainView, false, R.color.background_color, mainView.getRight(), mainView.getBottom(), r -> getFragmentManager().popBackStack());
-                return true;
-            }
-            return false;
-        });
+        v.setVisibility(View.INVISIBLE);
         return v;
     }
 
@@ -113,7 +102,6 @@ public class NewProgramFragment extends BaseFragment {
     }
 
     public interface NewProgramFragmentCallBack {
-
         void createNewProgram();
     }
 }

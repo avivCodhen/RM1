@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.strongest.savingdata.AModels.workoutModel.ExerciseProfileStats;
+import com.strongest.savingdata.Adapters.WorkoutAdapter.ItemTouchHelperListener;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.WorkoutItemAdapter;
 import com.strongest.savingdata.Adapters.ParentViewAdapters.ExerciseParentViewAdapter;
 import com.strongest.savingdata.Adapters.ParentViewAdapters.ParentView;
@@ -25,11 +27,13 @@ import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.AModels.workoutModel.PLObject.BodyText;
 import com.strongest.savingdata.AModels.workoutModel.PLObject.ExerciseProfile;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
+import com.strongest.savingdata.Animations.SelectedColorAnimator;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Controllers.OnExerciseInfo;
 import com.strongest.savingdata.Controllers.UISetsClickHandler;
 import com.strongest.savingdata.Controllers.UiExerciseClickHandler;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
+import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.MyViews.CreateCustomBeansView.SingleNumberChooseView;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.WeightKeyBoard.WeightKeyboard;
@@ -113,9 +117,6 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else if (viewType == WorkoutLayoutTypes.Method.ordinal()) {
             View v3 = inflater.inflate(R.layout.recycler_view_exercises_dropset_superset, parent, false);
             return new ExerciseViewHolder(v3);
-        } else if (viewType == WorkoutLayoutTypes.ExerciseStats.ordinal()) {
-            View eSv = inflater.inflate(R.layout.recycler_view_exercise_stats, parent, false);
-            return new ExerciseStatsViewHolder(eSv);
         }
         return null;
     }
@@ -203,11 +204,34 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void configureViewHolder2(final MuscleViewHolder vh2, final int position) {
-        final BodyText bodyText = (BodyText) exArray.get(position);
-        vh2.bodyTv.setText(bodyText.getTitle());
-        ((BodyText) exArray.get(position)).setTitle(vh2.bodyTv.getText().toString());
-        vh2.mainLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.background_color));
+        final ExerciseProfile bodyText = (ExerciseProfile) exArray.get(position);
+        String title = bodyText.getTitle();
+        if(title == null || title.equals("")){
+            title = "This Is A Title";
+        }
 
+        vh2.edit.setOnClickListener((View v) ->{
+            MaterialDialogHandler.get().defaultBuilder(context,"Edit Title","CHANGe")
+                    .addInput(vh2.bodyTv.getText().toString(), ((dialog, input) -> {
+                        bodyText.setTitle(input.toString());
+                        vh2.bodyTv.setText(input.toString());
+                    }))
+            .buildDialog()
+            .show();
+        });
+
+        vh2.bodyTv.setText(title);
+
+        vh2.itemView.setOnLongClickListener(v->{
+            uiExerciseClickHandler.onLongClick(bodyText, vh2);
+            return false;
+        });
+
+       vh2.itemView.setOnClickListener(v->{
+           if(longClickMenuView.isOn()){
+               uiExerciseClickHandler.onLongClick(bodyText, vh2);
+           }
+       });
     }
 
     public void configurateSets(final SetsViewHolder vh, final int position) {
@@ -216,22 +240,6 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ExerciseSet exerciseSet = null;
         exerciseSet = setsPLObject.getExerciseSet();
 
-
-      /*  if (setsPLObject.type == WorkoutLayoutTypes.SuperSetIntraSet) {
-            allowLongClick = false;
-            // vh.childIcon.setImageResource(R.drawable.child_red);
-        } else if (setsPLObject.type == WorkoutLayoutTypes.IntraSet) {
-            //  vh.childIcon.setImageResource(R.drawable.child_green);
-        }
-        if (allowLongClick) {
-
-            vh.card.setOnLongClickListener((v) -> {
-                if (uiSetsClickHandler != null)
-                    uiSetsClickHandler.onSetsLongClick(setsPLObject, vh);
-                return true;
-            });
-
-        }*/
 
         vh.card.setOnClickListener((clickedV) -> {
             if (longClickMenuView.isOn()) {
@@ -263,17 +271,20 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         }
 
-      /*  vh.editContainer.setOnClickListener((clicked)->{
-            if (longClickMenuView.isOn()) {
-                uiSetsClickHandler.onSetsLongClick(setsPLObject, vh);
-            } else if (uiSetsClickHandler != null) {
-                uiSetsClickHandler.onSetsClick(vh, setsPLObject);
-            }
-        });*/
+        int color;
+        if(longClickMenuView.isOn() && longClickMenuView.objectIsSelected(setsPLObject)){
+            color = ContextCompat.getColor(context, R.color.colorAccent);
+        }else{
+            color = ContextCompat.getColor(context, R.color.colorPrimary);
+        }
+        vh.mainLayout.setBackgroundColor(color);
+
+
+
 
         ParentView.loadParent(context, vh.parentViewContainer)
                 .reset()
-                .with(new SetParentViewAdapter(supersets,setsPLObject, uiSetsClickHandler, vh))
+                .with(new SetParentViewAdapter(supersets,setsPLObject, uiSetsClickHandler, vh, longClickMenuView))
                 .make();
 
 
@@ -291,6 +302,9 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             break;
                         case R.id.edit_set:
                             uiSetsClickHandler.onSetsClick(vh, setsPLObject);
+                        case R.id.duplicate_set:
+                            uiSetsClickHandler.onDuplicate(setsPLObject);
+
                     }
                     return true;
                 }
@@ -321,6 +335,8 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             vh3.icon.setImageResource(android.R.color.transparent);
         }
 
+        vh3.reps.setText(ExerciseProfileStats.getAllRepsString(exerciseProfile));
+
         if (exerciseProfile.getExercise() != null) {
             vh3.editExerciseTV.setVisibility(View.GONE);
             vh3.name.setVisibility(View.VISIBLE);
@@ -334,28 +350,6 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         vh3.name.setTransitionName("a" + position);
 
 
-       /* if (vh3.edit != null) {
-            vh3.edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (uiExerciseClickHandler != null)
-                        uiExerciseClickHandler.onExerciseEdit(vh3, exerciseProfile, position);
-                }
-            });
-
-        }*/
-/*
-
-       vh3.editExerciseTV.setOnClickListener((edit)->{
-           if (longClickMenuView.isOn()) {
-               uiExerciseClickHandler.onLongClick(exerciseProfile, vh3);
-           } else if (uiExerciseClickHandler != null) {
-
-           }
-
-       });
-*/
-
         vh3.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -365,7 +359,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 } else if (uiExerciseClickHandler != null) {
 
                     if(exerciseProfile.getExercise() == null){
-                        uiExerciseClickHandler.onExerciseEdit(position, exerciseProfile);
+                        uiExerciseClickHandler.onExerciseEdit(vh3.getAdapterPosition(), exerciseProfile);
                     }else{
                         uiExerciseClickHandler.onExerciseDetails(vh3, exerciseProfile);
 
@@ -387,28 +381,20 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
         }
 
+        int color;
+        if(longClickMenuView.isOn() && longClickMenuView.objectIsSelected(exerciseProfile)){
+            color = ContextCompat.getColor(context, R.color.colorAccent);
+        }else{
+            color = ContextCompat.getColor(context, R.color.colorPrimary);
+        }
+        vh3.mainLayout.setBackgroundColor(color);
 
-          /*  vh3.mainLayout.setOnTouchListener((v, event) -> {
-                if (longClickMenuView.isOn() && longClickMenuView.isSingleItem()){
-                    onDragListener.startDrag(vh3);
-                    return true;
-                }
-                return false;
-            });
-*/
 
         ParentView
                 .loadParent(context, vh3.parentContainer)
                 .with(new ExerciseParentViewAdapter(vh3, exerciseProfile, uiExerciseClickHandler))
                 .reset()
                 .make();
-
-        /*vh3.addSuperset.setOnClickListener((v) -> {
-
-            if (uiExerciseClickHandler != null) {
-                uiExerciseClickHandler.onAddSuperset(exerciseProfile, position);
-            }
-        });*/
 
 
         vh3.sets.setText("Sets: " + exerciseProfile.getSets().size());
@@ -425,11 +411,14 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     switch (menuItem.getItemId()) {
 
                         case R.id.editExercise:
-                            uiExerciseClickHandler.onExerciseEdit(position, exerciseProfile);
+                            uiExerciseClickHandler.onExerciseEdit(vh3.getAdapterPosition(), exerciseProfile);
                             break;
                         case R.id.addSuperset:
                             uiExerciseClickHandler.onAddSuperset(vh3, exerciseProfile);
                             break;
+
+                        case R.id.duplicate_exercise:
+                            uiExerciseClickHandler.onDuplicateExercise(exerciseProfile, vh3.getAdapterPosition());
                     }
                     return true;
                 }
@@ -620,21 +609,22 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             //   easyFlipView = (EasyFlipView) itemView.findViewById(R.id.body_part_edit);
             edit = (ImageView) itemView.findViewById(R.id.body_view_edit_iv);
             dragLayout = (View) itemView.findViewById(R.id.recyclerview_exercise_drag_layout);
-            edit.setOnClickListener(new View.OnClickListener() {
+          /*  edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     LayoutManagerAlertdialog.getInputAlertDialog(context, MuscleViewHolder.this, bodyTv.getText().toString(), getAdapterPosition());
                 }
-            });
+            });*/
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+
+           /* itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     uiExerciseClickHandler.onLongClick(exArray.get(getAdapterPosition()),
                             MuscleViewHolder.this);
                     return true;
                 }
-            });
+            });*/
 
             mainLayout.setOnClickListener((v) -> {
                 if (longClickMenuView.isOn()) {
@@ -656,6 +646,16 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((BodyText) exArray.get(position)).setTitle(input);
 
             //TODO: have this save the program, or else it will not save!!
+
+        }
+
+        @Override
+        public void onItemSelected() {
+
+        }
+
+        @Override
+        public void onItemClear() {
 
         }
     }
@@ -709,6 +709,16 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
         }
+
+        @Override
+        public void onItemSelected() {
+
+        }
+
+        @Override
+        public void onItemClear() {
+
+        }
     }
 
     private class ProgressPLObjectViewHolder extends RecyclerView.ViewHolder {
@@ -746,7 +756,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    public static class ExerciseStatsViewHolder extends MyExpandableViewHolder {
+    public static abstract class ExerciseStatsViewHolder extends MyExpandableViewHolder {
 
         @Override
         public View getMainLayout() {
@@ -759,14 +769,16 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    public static abstract class MyExpandableViewHolder extends RecyclerView.ViewHolder {
+    public static abstract class MyExpandableViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperListener {
 
         public View dragLayout;
+        public SelectedColorAnimator.AnimatorHolder animatorHolder;
 
         public abstract View getMainLayout();
 
         public MyExpandableViewHolder(View itemView) {
             super(itemView);
+            animatorHolder = new SelectedColorAnimator.AnimatorHolder(itemView.getSolidColor());
         }
     }
 

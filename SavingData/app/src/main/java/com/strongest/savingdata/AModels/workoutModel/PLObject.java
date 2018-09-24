@@ -155,6 +155,7 @@ public class PLObject implements Serializable {
         public int rawPosition;
         public boolean showComment;
         private int defaultInt;
+        private String title;
         public ExerciseProfile(Muscle muscle, int workoutId, int bodyId, int exerciseProfileId) {
             //    this.mSets = mSets;
             this.sets = sets;
@@ -182,6 +183,15 @@ public class PLObject implements Serializable {
             type = WorkoutLayoutTypes.ExerciseProfile;
 
         }
+
+        public static ExerciseProfile getBodyTextInstance(){
+            ExerciseProfile ep = new ExerciseProfile();
+            ep.type = WorkoutLayoutTypes.BodyView;
+            ep.innerType = WorkoutLayoutTypes.BodyView;
+            return ep;
+        }
+
+
 
         public WorkoutLayoutTypes getInnerType() {
             return innerType;
@@ -245,6 +255,14 @@ public class PLObject implements Serializable {
 
         public int getDefaultInt() {
             return defaultInt;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
         }
     }
 

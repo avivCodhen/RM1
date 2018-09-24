@@ -33,4 +33,14 @@ public class LeanExerciseViewHolder extends MyExpandableAdapter.MyExpandableView
     public View getMainLayout() {
         return null;
     }
+
+    @Override
+    public void onItemSelected() {
+
+    }
+
+    @Override
+    public void onItemClear() {
+
+    }
 }

@@ -56,4 +56,13 @@ public class IntraSetViewHolder extends MyExpandableAdapter.MyExpandableViewHold
         return mainLayout;
     }
 
+    @Override
+    public void onItemSelected() {
+
+    }
+
+    @Override
+    public void onItemClear() {
+
+    }
 }

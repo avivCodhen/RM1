@@ -2,7 +2,9 @@ package com.strongest.savingdata.Adapters.WorkoutItemAdapters;
 
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
+import com.strongest.savingdata.Utils.MyUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
@@ -57,7 +59,14 @@ public class ExerciseItemAdapter implements WorkoutItemAdapter<ExerciseProfile> 
 
     @Override
     public ExerciseProfile onDuplicate(int position, ExerciseProfile clone) {
-        return new ExerciseProfile(clone);
+        try {
+            return MyUtils.clone(clone);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalArgumentException("object cannot be cloned");
 
     }
 

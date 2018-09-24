@@ -63,7 +63,6 @@
                     android:id="@+id/ex1"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    android:src="@drawable/back"
                     app:civ_circle_background_color="@color/colorPrimary"
 
 
@@ -81,13 +80,14 @@
                 android:layout_height="15dp" />
 
             <TextView
-                android:textSize="12dp"
+                android:id="@+id/exercise_lean_tag_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/child_arrow_iv"
                 android:text="Superset"
                 android:textColor="@color/background_color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="12dp" />
 
 
 

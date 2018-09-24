@@ -4,22 +4,32 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.Database.LogData;
 
 import java.util.ArrayList;
 
 public class SelectedLogDataViewModel extends ViewModel {
 
-    private MutableLiveData<ArrayList<PLObject>> sets = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<LogData.LogDataSets>> sets = new MutableLiveData<>();
+    private String date;
 
     public SelectedLogDataViewModel(){
 
     }
 
-    public ArrayList<PLObject> getSets(){
+    public ArrayList<LogData.LogDataSets> getSets(){
         return sets.getValue();
     }
 
-    public void setSets(ArrayList<PLObject> sets){
+    public void setSets(ArrayList<LogData.LogDataSets> sets){
         this.sets.setValue(sets);
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

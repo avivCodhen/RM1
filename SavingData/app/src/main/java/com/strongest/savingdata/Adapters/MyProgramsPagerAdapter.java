@@ -12,7 +12,7 @@ import com.strongest.savingdata.Fragments.ProgramsListFragment;
 
 import java.util.ArrayList;
 
-public class MyProgramsPagerAdapter extends FragmentPagerAdapter {
+public class MyProgramsPagerAdapter extends FragmentStatePagerAdapter {
 
 
     private final String[] fragmentsTitles;

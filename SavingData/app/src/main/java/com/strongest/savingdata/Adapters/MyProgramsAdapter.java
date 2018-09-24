@@ -8,9 +8,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.Activities.MyProgramsActivity;
 import com.strongest.savingdata.Controllers.Architecture;
+import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.R;
 
 import java.util.ArrayList;
@@ -88,6 +90,7 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
         if(!isCurrentProgram(p))
         holder.deleteProgIV.setOnClickListener(deleteV->{
             listener.deleteProgram(p);
+
         });
 
         holder.shareIV.setOnClickListener(share-> listener.shareProgram(p));
@@ -102,7 +105,7 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
 
     private boolean isCurrentProgram(Program p){
         if(currentProgram == null){
-            return true;
+            return false;
         }
         if(p.equals(currentProgram)){
             return true;

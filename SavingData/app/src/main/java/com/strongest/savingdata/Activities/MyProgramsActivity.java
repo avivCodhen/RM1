@@ -1,5 +1,6 @@
 package com.strongest.savingdata.Activities;
 
+import android.app.Fragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,7 @@ import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.Fragments.BaseFragment;
 import com.strongest.savingdata.Fragments.NewProgramFragment;
 import com.strongest.savingdata.Fragments.ProgramsListFragment;
+import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.MyViews.SaveExitToolBar;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.Utils.MyUtils;
@@ -26,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MyProgramsActivity extends BaseActivity implements
-        ProgramsListFragment.MyProgramCallBack, NewProgramFragment.NewProgramFragmentCallBack{
+        ProgramsListFragment.MyProgramCallBack, NewProgramFragment.NewProgramFragmentCallBack {
 
     @BindView(R.id.my_programs_toolbar)
     SaveExitToolBar saveExitToolBar;
@@ -47,6 +49,7 @@ public class MyProgramsActivity extends BaseActivity implements
     public static final String FRAGMENT_USER_SHARED_FOR = "Shared";
     public static final String FRAGMENT_USER_SHARED_BY = "Recieved";
     public static final int FRAGMENT_CREATE_PROGRAM = 3;
+    public static final int LOG_IN = 4;
 
 
     Program currentProgram;
@@ -83,11 +86,15 @@ public class MyProgramsActivity extends BaseActivity implements
 
         programService.listenForSharedPrograms(count -> {
             tabLayout.showMsg(2, (int) count);
-            tabLayout.setMsgMargin(2,43,0);
+            tabLayout.setMsgMargin(2, 43, 0);
         });
 
-        if (currentProgram == null) {
-            viewPager.setCurrentItem(fragmentsTitles.length - 1);
+        if (!MyUtils.isNetworkConnected(this)) {
+            MaterialDialogHandler.get()
+                    .defaultBuilder(this, "No Internet Connection", "OK")
+                    .addContent("Without internet connection, we cannot fetch your data.")
+                    .hideNegativeButton()
+                    .buildDialog().show();
         }
 
         floatingActionButton.setOnClickListener(v -> {
@@ -96,9 +103,26 @@ public class MyProgramsActivity extends BaseActivity implements
         });
     }
 
-    private void toNewProgram(){
+    private void toNewProgram() {
         addFragmentToActivityNoTransition(R.id.my_program_framelayout, new NewProgramFragment(), "newProgram");
     }
+
+    @Override
+    public void onBackPressed() {
+
+        android.support.v4.app.Fragment f = getSupportFragmentManager().findFragmentByTag("newProgram");
+        if (f != null) {
+            View v = f.getView();
+            MyJavaAnimator.animateRevealShowParams(v, false, R.color.background_color, 0, 0, r -> {
+                super.onBackPressed();
+                return;
+            });
+        } else {
+            super.onBackPressed();
+        }
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -140,14 +164,14 @@ public class MyProgramsActivity extends BaseActivity implements
 
     @Override
     public void shareProgram(Program p) {
-        if(userService.isUserLoggedIn()){
+        if (userService.isUserLoggedIn()) {
 
             Intent i;
             i = new Intent(this, ShareProgramActivity.class);
             i.putExtra("programuid", p.getKey());
             i.putExtra("program", p);
             startActivity(i);
-        }else{
+        } else {
             Toast.makeText(this, "You must be logged in to share.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -164,6 +188,12 @@ public class MyProgramsActivity extends BaseActivity implements
     @Override
     public void createProgram() {
         toNewProgram();
+    }
+
+    @Override
+    public void logIn() {
+        setResult(LOG_IN);
+        finish();
     }
 
     @Override

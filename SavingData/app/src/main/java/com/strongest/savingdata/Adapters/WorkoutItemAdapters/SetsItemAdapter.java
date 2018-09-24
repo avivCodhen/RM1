@@ -4,7 +4,9 @@ import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.AModels.workoutModel.PLObject.SetsPLObject;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
 import com.strongest.savingdata.AModels.ExerciseModel;
+import com.strongest.savingdata.Utils.MyUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class SetsItemAdapter implements WorkoutItemAdapter<SetsPLObject> {
@@ -27,11 +29,12 @@ public class SetsItemAdapter implements WorkoutItemAdapter<SetsPLObject> {
         if (exerciseProfile != null) {
             //set.parent = exerciseProfile;
             exerciseProfile.getSets().add(set);
-            //ExerciseModel.injectSupersetExercise(exerciseProfile, set);
+            ExerciseModel.injectSupersetExercise(exerciseProfile, set);
         }
 
 
         set.setInnerType(WorkoutLayoutTypes.SetsPLObject);
+
         set.isParent = true;
         return set;
     }
@@ -79,10 +82,17 @@ public class SetsItemAdapter implements WorkoutItemAdapter<SetsPLObject> {
 
     @Override
     public SetsPLObject onDuplicate(int position, SetsPLObject clone) {
-        SetsPLObject set = new SetsPLObject(clone);
-        exerciseProfile.getSets().add(position, set);
-        ExerciseModel.injectDuplicateSetToSuperset(position + 1, exerciseProfile, set.superSets);
-        return set;
+        SetsPLObject setsPLObject;
+        try {
+            setsPLObject = MyUtils.clone(clone);
+            exerciseProfile.getSets().add(setsPLObject);
+            return setsPLObject;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalArgumentException("object cannot be cloned");
     }
 
     @Override

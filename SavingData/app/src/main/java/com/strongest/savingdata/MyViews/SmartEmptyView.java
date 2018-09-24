@@ -27,6 +27,7 @@ public class SmartEmptyView extends LinearLayout {
 
     private Drawable rocketImage;
     private Drawable docImage;
+    private Drawable logInImage;
 
     private View main = this;
 
@@ -54,6 +55,7 @@ public class SmartEmptyView extends LinearLayout {
         this.setVisibility(GONE);
         rocketImage = ContextCompat.getDrawable(context, R.drawable.empty_rocket);
         docImage = ContextCompat.getDrawable(context, R.drawable.empty_doc);
+        logInImage= ContextCompat.getDrawable(context, R.drawable.empty_login);
         inflate(context, R.layout.layout_smart_empty_view, this);
         this.setAlpha(0);
         image = findViewById(R.id.empty_image);
@@ -62,6 +64,10 @@ public class SmartEmptyView extends LinearLayout {
         actionBtn = findViewById(R.id.empty_actionbtn);
     }
 
+    public SmartEmptyView noButton(){
+        this.actionBtn.setVisibility(GONE);
+        return this;
+    }
     public SmartEmptyView setImage(Drawable drawable) {
         image.setImageDrawable(drawable);
         return this;
@@ -307,6 +313,10 @@ public class SmartEmptyView extends LinearLayout {
 
     public Drawable getDocImage() {
         return docImage;
+    }
+
+    public Drawable getLogInImage() {
+        return logInImage;
     }
 
     public interface onCondition{

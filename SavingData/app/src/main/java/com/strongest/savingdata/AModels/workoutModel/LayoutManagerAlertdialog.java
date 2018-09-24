@@ -29,9 +29,9 @@ public class LayoutManagerAlertdialog {
     public static AlertDialog getInputAlertDialog(Context context, final OnLayoutManagerDialogPress callback, final String text, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final EditText input = new EditText(context);
-        input.setHint(text);
         input.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setText(text);
         builder.setView(input)
                 .setCancelable(true)
                 .setMessage("Change item text")

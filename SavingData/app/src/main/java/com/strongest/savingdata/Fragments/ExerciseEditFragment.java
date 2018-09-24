@@ -57,6 +57,7 @@ import butterknife.ButterKnife;
 public class ExerciseEditFragment extends BaseFragment implements
         OnExerciseListAdapterClickListener, OnGridViewMuscleAdapterClickListener {
 
+    public static final String FRAGMENT_EDIT_EXERCISE = "exerciseeditfragment";
     private OnExerciseSetChange onExerciseSetChange;
 
     @BindView(R.id.muscle_tv)
@@ -313,18 +314,21 @@ public class ExerciseEditFragment extends BaseFragment implements
             int exercisePos = selectedExerciseViewModel.getSelectedExercisePosition();
             selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile, exercisePos);
             workoutsViewModel.saveLayoutToDataBase();
-            getFragmentManager().popBackStack();
+            MyJavaAnimator.animateRevealShowParams(mainView, false, R.color.background_color, x, y, r -> {
+                getFragmentManager().popBackStack();
+
+            });
         });
 
         saveExitToolBar.setCancelButton(v -> {
             this.setExitTransition(new Fade());
 
             MyJavaAnimator.animateRevealShowParams(mainView, false, R.color.background_color, x, y, r -> {
-            getFragmentManager().popBackStack();
+                getFragmentManager().popBackStack();
+
+            });
 
         });
-
-});
     }
 
 

@@ -9,6 +9,7 @@ import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.Controllers.UISetsClickHandler;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
+import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.ViewHolders.IntraSetViewHolder;
 
@@ -21,13 +22,15 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
     private ArrayList<PLObject.SetsPLObject> list;
     private MyExpandableAdapter.MyExpandableViewHolder parentViewHolder;
     private ArrayList<PLObject.ExerciseProfile> supersets;
+    private LongClickMenuView longClickMenuView;
 
     public SetParentViewAdapter(ArrayList<PLObject.ExerciseProfile> supersets, PLObject.SetsPLObject setsPLObject, UISetsClickHandler uiSetsClickHandler,
-                                MyExpandableAdapter.MyExpandableViewHolder parentViewHolder) {
+                                MyExpandableAdapter.MyExpandableViewHolder parentViewHolder, LongClickMenuView longClickMenuView) {
         this.setsPLObject = setsPLObject;
         this.supersets = supersets;
         this.uiSetsClickHandler = uiSetsClickHandler;
         this.parentViewHolder = parentViewHolder;
+        this.longClickMenuView = longClickMenuView;
         list = new ArrayList<>();
         list.addAll(setsPLObject.superSets);
         list.addAll(setsPLObject.intraSets);
@@ -62,11 +65,12 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
             //PLObject.ExerciseProfile superset = setsPLObject.parent.exerciseProfiles.get(position);
             intraSetViewHolder.deleteIV.setVisibility(View.INVISIBLE);
 
-            String supersetName = "";
             if(supersets.get(position).getExercise() != null){
-                supersetName = supersets.get(position).getExercise().getName();
+                set.setExerciseName(supersets.get(position).getExercise().getName());
+                intraSetViewHolder.supersetTv.setText("Superset of " +set.getExerciseName());
+            }else{
+                intraSetViewHolder.supersetTv.setText("No exercise picked for this superset");
             }
-            intraSetViewHolder.supersetTv.setText("Superset of " +supersetName);
             intraSetViewHolder.editContainerTV.setText("Tap to edit Superset");
 /*
             if(superset.getExercise()!= null){
@@ -95,7 +99,15 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
         intraSetViewHolder.weight.setText(exerciseSet.getWeight() + "kg");
 
         intraSetViewHolder.card.setOnClickListener((itemView) -> {
-            uiSetsClickHandler.onSetsClick(parentViewHolder, set);
+
+            if(longClickMenuView != null &&longClickMenuView.isOn()){
+                uiSetsClickHandler.onSetsLongClick(setsPLObject, parentViewHolder);
+
+            }else{
+                uiSetsClickHandler.onSetsClick(parentViewHolder, set);
+
+            }
+
         });
 
         intraSetViewHolder.card.setOnLongClickListener((longClicked) -> {

@@ -47,6 +47,7 @@ import static com.strongest.savingdata.Database.Program.DBProgramHelper.EXERCISE
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.INNER_TYPE;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.REP_ID;
 import static com.strongest.savingdata.Database.Program.DBProgramHelper.REST;
+import static com.strongest.savingdata.Database.Program.DBProgramHelper.TITLE;
 
 public class WorkoutsService {
 
@@ -86,7 +87,6 @@ public class WorkoutsService {
     }
 
     public void provideWorktoutsList(MutableLiveData<ArrayList<Workout>> mutableLiveDataWorkout, CMD cmd) {
-        Log.d(TAG, "provideWorktoutsList: ");
         String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
         ArrayList<Workout> list = null;
         if (programUID.equals("")) {
@@ -106,7 +106,14 @@ public class WorkoutsService {
             if (list != null) {
                 mutableLiveDataWorkout.setValue(list);
             } else {
-                list = createDefaultWorkoutsList(programUID);
+                getWorkoutsFromFireBase(programUID, resultList -> {
+                    if (resultList != null) {
+                        mutableLiveDataWorkout.setValue((ArrayList<Workout>) resultList);
+                    } else {
+                       mutableLiveDataWorkout.setValue(createDefaultWorkoutsList(programUID));
+
+                    }
+                });
             }
         }
         if (cmd == CMD.SWITCH) {
@@ -183,7 +190,6 @@ public class WorkoutsService {
     }
 
     public void getWorkoutsFromFireBase(String programUID, CallBacks.OnFinish onFinish) {
-        Log.d(TAG, "getWorkoutsFromFireBase: ");
         databaseReference.child(programUID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -192,12 +198,9 @@ public class WorkoutsService {
                     WorkoutHolder wor = dataSnapshot.getValue(WorkoutHolder.class);
                     saveLayoutToDataBase(programUID, true, workoutBroParser(wor), (intResult) -> {
                         ArrayList<Workout> list = readLayoutFromDataBase("");
-                        if (list != null) {
-                            onFinish.onFinish(list);
-                            // mutableLiveDataWorkout.setValue(list);
-                        } else {
-                            throw new IllegalArgumentException("list is null");
-                        }
+
+                        onFinish.onFinish(list);
+
                     });
 
                 } else {
@@ -230,6 +233,9 @@ public class WorkoutsService {
 
     public static ArrayList<PLObject> exerciseToPLObject(List<PLObject.ExerciseProfile> to) {
         ArrayList<PLObject> list = new ArrayList<>();
+        if(to == null){
+            to = new ArrayList<>();
+        }
         list.addAll(to);
         return list;
     }
@@ -314,6 +320,9 @@ public class WorkoutsService {
                         break;
                     case BodyView:
                         String bName = c.getString(c.getColumnIndex(NAME));
+                        PLObject.ExerciseProfile bodyText = PLObject.ExerciseProfile.getBodyTextInstance();
+                        bodyText.setTitle(c.getString(c.getColumnIndex(TITLE)));
+                        exArray.add(bodyText);
 
                         //TODO: FIX THIS!!!
                         //workoutsList.get(workoutIndex).exArray.add(new PLObject.BodyText(bName));

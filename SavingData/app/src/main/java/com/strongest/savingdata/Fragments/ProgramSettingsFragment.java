@@ -26,6 +26,7 @@ import com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AModels.workoutModel.LayoutManagerAlertdialog;
 import com.strongest.savingdata.AModels.workoutModel.OnLayoutManagerDialogPress;
+import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.MyViews.WorkoutView.OnProgramToolsActionListener;
 import com.strongest.savingdata.R;
 
@@ -123,11 +124,18 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
         //titleText = workoutViewModel.getProgram().getValue().getProgramName();
         editText.setText(titleText);
         editText.addTextChangedListener(textWatcher);
-        v.findViewById(R.id.program_title_edit_iv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LayoutManagerAlertdialog.getInputAlertDialog(getContext(), ProgramSettingsFragment.this, editText.getText().toString(), -1);
-            }
+        v.findViewById(R.id.program_title_edit_iv).setOnClickListener(v1 -> {
+
+            MaterialDialogHandler
+                    .get()
+                    .defaultBuilder(getContext(),"Edit Program Name", "CHANGE")
+                    .addInput(titleText, (dialog, input) -> {
+                        editText.setText(input.toString());
+                        toolbarTitle.setText(editText.getText().toString());
+                        ((HomeActivity)getActivity()).program.setProgramName(input.toString());
+                    })
+                    .buildDialog()
+                    .show();
         });
     }
 

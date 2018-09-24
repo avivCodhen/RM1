@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.strongest.savingdata.AViewModels.MyProgramsViewModel;
 import com.strongest.savingdata.Activities.MyProgramsActivity;
 import com.strongest.savingdata.Adapters.MyProgramsAdapter;
 import com.strongest.savingdata.Controllers.Architecture;
+import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.R;
 
@@ -86,29 +88,53 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
         recyclerView.setAdapter(myProgramsAdapter);
 
         smartEmptyView
-                .setUpWithRecycler(recyclerView, true,currentProgram == null)
+                .setUpWithRecycler(recyclerView, true, false)
                 .setButtonText("Create A New Program")
                 .setTitle("You don't have any programs saved.")
                 .setBody("You can click on the Plus Icon to create a new Program")
                 .setButtonText("Or Tap here")
                 .setImage(smartEmptyView.getDocImage())
-                .setActionBtn(view-> myProgramCallBack.createProgram());
+                .setActionBtn(view -> myProgramCallBack.createProgram());
 
         myProgramsViewModel.fetchProgramList(tag);
         myProgramsViewModel.getProgramList().observe(this, list -> {
+            Log.d("aviv", "ProgramList : "+tag);
             programs = list;
             if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)) {
                 isShared = true;
                 myProgramsAdapter.setShared(isShared);
             }
-            if(list.size() == 0 && currentProgram != null){
+            if (tag.equals(MyProgramsActivity.FRAGMENT_USER_PROGRAMS) && list.size() == 0 && currentProgram != null) {
                 programs.add(currentProgram);
+            }
+
+            if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR) || tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY)) {
+                if (!userService.isUserLoggedIn()) {
+                    smartEmptyView.setTitle("You are not logged in.")
+                            .setBody("Log in to send and recieve programs from other users.")
+                            .setButtonText("Log In")
+                            .setImage(smartEmptyView.getLogInImage())
+                            .setActionBtn(view->myProgramCallBack.logIn());
+                }else if(tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)){
+                    smartEmptyView.setTitle("You haven't shared any programs.")
+                            .setImage(smartEmptyView.getDocImage())
+                            .setBody("Don't be shy. Share a program and make a trainee happy!")
+                            .noButton();
+                }else if(tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY )){
+                    smartEmptyView.setTitle("No one has shared a program with you yet.")
+                            .setBody("Don't worry. We are sure someone will share a program with you!")
+                            .setImage(smartEmptyView.getDocImage())
+                            .noButton();
+                }
+
             }
 
             myProgramsAdapter.setList(programs);
             myProgramsAdapter.notifyDataSetChanged();
 
         });
+
+
     }
 
     @Override
@@ -123,10 +149,22 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
 
     @Override
     public void deleteProgram(Program p) {
-        int pos = programs.indexOf(p);
-        programs.remove(pos);
-        myProgramsAdapter.notifyItemRemoved(pos);
-        myProgramCallBack.deleteProgram(p);
+        MaterialDialogHandler
+                .get()
+                .defaultDeleteBuilder(getContext(),
+                        "Delete This Program?"
+                        ,
+                        "DELETE")
+                .buildDialog()
+                .addPositiveActionFunc(v -> {
+                    int pos = programs.indexOf(p);
+                    programs.remove(pos);
+                    myProgramsAdapter.notifyItemRemoved(pos);
+                    myProgramCallBack.deleteProgram(p);
+
+                }, true).show();
+
+
     }
 
     @Override
@@ -162,5 +200,7 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
         void loadSharedProgram(Program p);
 
         void createProgram();
+
+        void logIn();
     }
 }

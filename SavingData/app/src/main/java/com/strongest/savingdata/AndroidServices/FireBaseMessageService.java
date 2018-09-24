@@ -2,7 +2,9 @@ package com.strongest.savingdata.AndroidServices;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -10,6 +12,8 @@ import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.strongest.savingdata.Activities.MyProgramsActivity;
+import com.strongest.savingdata.Activities.ShareProgramActivity;
 import com.strongest.savingdata.R;
 
 import java.util.Map;
@@ -20,7 +24,6 @@ public class FireBaseMessageService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0) {
             Map<String, String> payload = remoteMessage.getData();
-
             sendNotification(payload);
         }
     }
@@ -31,6 +34,14 @@ public class FireBaseMessageService extends FirebaseMessagingService {
                 .setSmallIcon(R.drawable.rm1_logo)
                 .setContentTitle(payload.get("title") + " sent you a program")
                 .setContentText("check out "+payload.get("body"));
+
+        Intent resultIntent = new Intent(this, MyProgramsActivity.class);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                resultIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(resultPendingIntent);
 
         int notificationId = (int)System.currentTimeMillis();
 

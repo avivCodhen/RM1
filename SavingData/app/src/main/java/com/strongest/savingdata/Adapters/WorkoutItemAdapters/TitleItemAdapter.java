@@ -4,14 +4,14 @@ import com.strongest.savingdata.AModels.workoutModel.PLObject;
 
 import java.util.ArrayList;
 
-public class DividerItemAdapter implements WorkoutItemAdapter<PLObject.BodyText> {
+public class TitleItemAdapter implements WorkoutItemAdapter<PLObject.ExerciseProfile> {
     @Override
-    public PLObject.BodyText insert() {
-        return new PLObject.BodyText();
+    public PLObject.ExerciseProfile insert() {
+        return PLObject.ExerciseProfile.getBodyTextInstance();
     }
 
     @Override
-    public ArrayList<PLObject.BodyText> onInsert(int pos, ArrayList<PLObject.BodyText> itemsHolder) {
+    public ArrayList<PLObject.ExerciseProfile> onInsert(int pos, ArrayList<PLObject.ExerciseProfile> itemsHolder) {
         return itemsHolder;
     }
 
@@ -22,7 +22,7 @@ public class DividerItemAdapter implements WorkoutItemAdapter<PLObject.BodyText>
     }
 
     @Override
-    public void remove(int position, PLObject.BodyText removedItem) {
+    public void remove(int position, PLObject.ExerciseProfile removedItem) {
 
     }
 
@@ -38,13 +38,13 @@ public class DividerItemAdapter implements WorkoutItemAdapter<PLObject.BodyText>
     }
 
     @Override
-    public PLObject.BodyText onDuplicate(int position, PLObject.BodyText clone) {
+    public PLObject.ExerciseProfile onDuplicate(int position, PLObject.ExerciseProfile clone) {
         return null;
     }
 
 
     @Override
-    public int addingDuplicateTo(PLObject.BodyText parent) {
+    public int addingDuplicateTo(PLObject.ExerciseProfile parent) {
         return 0;
     }
 
@@ -54,12 +54,12 @@ public class DividerItemAdapter implements WorkoutItemAdapter<PLObject.BodyText>
     }
 
     @Override
-    public PLObject.BodyText onChild(PLObject.BodyText parent) {
+    public PLObject.ExerciseProfile onChild(PLObject.ExerciseProfile parent) {
         return null;
     }
 
     @Override
-    public int onAddingChildToGroup(PLObject.BodyText parent, PLObject.BodyText child) {
+    public int onAddingChildToGroup(PLObject.ExerciseProfile parent, PLObject.ExerciseProfile child) {
         return 0;
     }
 
@@ -69,7 +69,7 @@ public class DividerItemAdapter implements WorkoutItemAdapter<PLObject.BodyText>
     }
 
     @Override
-    public PLObject.BodyText replace(PLObject.BodyText toReplace) {
+    public PLObject.ExerciseProfile replace(PLObject.ExerciseProfile toReplace) {
         return null;
     }
 

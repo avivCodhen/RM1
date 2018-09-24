@@ -41,6 +41,7 @@ public class DBProgramHelper extends SQLiteOpenHelper {
     public static final String INNER_TYPE = "inner_type";
     public static final String COMMENT = "exercise_comment";
     public static final String DEFAULT_INT= "default_int";
+    public static final String TITLE= "title";
 
     //template fields
     public static final String BODY_TEMPLATE_STR = "body_template_str",
@@ -95,7 +96,7 @@ public class DBProgramHelper extends SQLiteOpenHelper {
             + TABLE_WORKOUTS + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
             + SETS + " TEXT, " + SUPERSET + " INTEGER, " + INNER_TYPE+" INTEGER,"+ NAME + " TEXT," + WORKOUT_ID + " INTEGER," + EXERCISE_PROFILE_ID + " INTEGER, " + TYPE + " INTEGER, "
             + WEIGHT + " TEXT, " + REST + " TEXT, " + FIRST_EXERCISE + " INTEGER, "
-            + EXERCISE_ID + " TEXT, "+ REP_ID + " TEXT," + METHOD_ID + " INTEGER DEFAULT -1, " + MUSCLE + " TEXT,"
+            + EXERCISE_ID + " TEXT, "+ REP_ID + " TEXT," + TITLE+ " TEXT DEFAULT -1, " + MUSCLE + " TEXT,"
             + COMMENT +" , " + DEFAULT_INT+" INTEGER, "
             + STATS_DAMAGE + " INTEGER," + STATS_MECHANICAL + " INTEGER, " + STATS_METABOLIC + " INTEGER )";
 
@@ -105,7 +106,7 @@ public class DBProgramHelper extends SQLiteOpenHelper {
             + TEMPLATE_NAME + " TEXT, " + WORKOUTS_NAMES_ARRAY + " TEXT, "
             + ROUNDS_PER_WEEK + " INTEGER, " + RECOMMENDED_WORKOUTS + " INTEGER, " + BODY_TEMPLATE_STR + " TEXT)";
 
-    private final String LAYOUT_REFERENCE_COMMAND = "CREATE TABLE "
+   /* private final String LAYOUT_REFERENCE_COMMAND = "CREATE TABLE "
             + TABLE_LAYOUT_REFERENCE + " (id INTEGER PRIMARY KEY AUTOINCREMENT, " + LAYOUT_NAME + " TEXT, " +
             DATE_CREATED + " TEXT)";
 
@@ -121,7 +122,7 @@ public class DBProgramHelper extends SQLiteOpenHelper {
     private final String PROGRAM_COMMAND = "CREATE TABLE "
             + "programs" + " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             LAYOUT_NAME + " TEXT)";;
-
+*/
    /* private final String PROGRESSORDATA_TABLE_COMMAND = "CREATE TABLE " + TABLE_PROGRESSOR
             + " (id INTEGER PRIMARY KEY AUTOINCREMENT," + EXERCISE_ID+" INTEGER, "+SETS+" INTEGER,"
             + REPS +" TEXT, "+REST+" TEXT,"+WEIGHT+" TEXT)";*/
@@ -132,9 +133,9 @@ public class DBProgramHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(LAYOUT_REFERENCE_COMMAND);
-        db.execSQL(PROGRAM_REFERENCE_COMMAND);
-        db.execSQL(TEMPLATES_REFERENCE_COMMAND);
+     //   db.execSQL(LAYOUT_REFERENCE_COMMAND);
+       // db.execSQL(PROGRAM_REFERENCE_COMMAND);
+       // db.execSQL(TEMPLATES_REFERENCE_COMMAND);
         db.execSQL(WORKOUTS_CREATE_COMMAND);
 
         //  db.execSQL(PROGRESSORDATA_TABLE_COMMAND);
@@ -149,10 +150,10 @@ public class DBProgramHelper extends SQLiteOpenHelper {
         return command;
     }
 
-    public String getProgramCreateCommand(String tableName){
+    /*public String getProgramCreateCommand(String tableName){
         String command = PROGRAM_COMMAND.replace("programs", tableName);
         return command;
-    }
+    }*/
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

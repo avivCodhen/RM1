@@ -42,4 +42,14 @@ public class SupersetViewHolder extends MyExpandableAdapter.MyExpandableViewHold
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
+
+    @Override
+    public void onItemSelected() {
+
+    }
+
+    @Override
+    public void onItemClear() {
+
+    }
 }

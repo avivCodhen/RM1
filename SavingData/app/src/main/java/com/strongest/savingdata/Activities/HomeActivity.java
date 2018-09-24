@@ -33,12 +33,14 @@ import com.strongest.savingdata.AViewModels.ProgramViewModel;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.WorkoutItemAdapterFactory;
 import com.strongest.savingdata.AViewModels.WorkoutsViewModel;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
-import com.strongest.savingdata.Adapters.WorkoutItemAdapters.DividerItemAdapter;
+import com.strongest.savingdata.Adapters.WorkoutItemAdapters.TitleItemAdapter;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
 import com.strongest.savingdata.Adapters.WorkoutsViewPagerAdapter;
+import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.Fragments.CustomExerciseFragment;
+import com.strongest.savingdata.Fragments.ExerciseEditFragment;
 import com.strongest.savingdata.Fragments.NewProgramFragment;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
 import com.strongest.savingdata.Fragments.WorkoutViewFragment;
@@ -133,10 +135,6 @@ public class HomeActivity extends BaseActivity implements
                 .registerRabitHoleBreaker(5000, () -> programViewModel.initProgram());
 
 
-        if (!userService.isUserLoggedIn()) {
-            startActivityForResult(new Intent(this, LoginActivity2.class), LOGIN_ACTIVITY);
-
-        }
         programViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(ProgramViewModel.class);
         programViewModel.initProgram();
         workoutsViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(WorkoutsViewModel.class);
@@ -285,7 +283,16 @@ public class HomeActivity extends BaseActivity implements
             longClickMenuView.onHideMenu();
             return;
         }
-        super.onBackPressed();
+        Fragment f = getSupportFragmentManager().findFragmentByTag(ExerciseEditFragment.FRAGMENT_EDIT_EXERCISE);
+        if(f != null){
+            View v= f.getView();
+            MyJavaAnimator.animateRevealShowParams(v, false, R.color.background_color,0, 0, r -> {
+                super.onBackPressed();
+                return;
+            });
+        }else{
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -353,6 +360,10 @@ public class HomeActivity extends BaseActivity implements
         return false;
     }
 
+    private void toLogInActivity(){
+        startActivityForResult(new Intent(this, LoginActivity2.class), LOGIN_ACTIVITY);
+    }
+
     private void toMyProgramsActivity() {
         Intent i;
         i = new Intent(this, MyProgramsActivity.class);
@@ -381,7 +392,7 @@ public class HomeActivity extends BaseActivity implements
     public void onLongClickAction(LongClickMenuView longClickMenuView, WorkoutsModel.Actions action) {
         WorkoutsModel.ListModifier listModifier = null;
         int position = longClickMenuView.getViewPosition();
-        PLObject plObject = w.exArray.get(position);
+        PLObject plObject = longClickMenuView.getSelectedPLObjects().get(0);
 
         switch (action) {
             case Duplicate:
@@ -447,7 +458,7 @@ public class HomeActivity extends BaseActivity implements
                 case NewDivider:
                     w.getObserver().onChange(
                             WorkoutsModel.ListModifier
-                                    .OnWith(w, new DividerItemAdapter())
+                                    .OnWith(w, new TitleItemAdapter())
                                     .doAddNew(w.exArray.size())
                     );
                     break;
@@ -537,6 +548,9 @@ public class HomeActivity extends BaseActivity implements
 
                 }
 
+            }
+            else if( resultCode == MyProgramsActivity.LOG_IN){
+                toLogInActivity();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

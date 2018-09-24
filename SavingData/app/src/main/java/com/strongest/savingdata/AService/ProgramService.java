@@ -294,16 +294,22 @@ public class ProgramService {
                             shared.add(d.getValue(SharedUser.class));
                         }
 
+                        if(shared.size() == 0){
+                            allPrograms.setValue(programs);
+                        }else{
 
-                        for (int i = 0; i < shared.size(); i++) {
-                            fetchProgramByUID(shared.get(i), prog -> {
-                                programs.add((Program) prog);
-                                if (programs.size() == shared.size()) {
-                                    allPrograms.setValue(programs);
+                            for (int i = 0; i < shared.size(); i++) {
+                                fetchProgramByUID(shared.get(i), prog -> {
+                                    programs.add((Program) prog);
+                                    if (programs.size() == shared.size()) {
+                                        allPrograms.setValue(programs);
 
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
+
+
                     }
 
                     @Override

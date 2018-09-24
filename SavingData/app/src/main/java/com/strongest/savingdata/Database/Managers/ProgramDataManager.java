@@ -124,13 +124,13 @@ public class ProgramDataManager extends DataManager {
     }*/
 
 
-    public void createNewProgramTable(String dbName) {
+   /* public void createNewProgramTable(String dbName) {
         String newDBName = generateTableName(dbName);
         getDb(programHelper).execSQL(programHelper.getProgramCreateCommand(newDBName));
         ContentValues v = new ContentValues();
         v.put(PROGRAM_NAME, newDBName);
         insertData(TABLE_PROGRAM_REFERENCE, v);
-    }
+    }*/
 
 
     public void delete(String table) {
@@ -385,8 +385,10 @@ public class ProgramDataManager extends DataManager {
                 if (ep.type == WorkoutLayoutTypes.BodyView) {
                     v.put(DBExercisesHelper.TYPE, ep.getType().ordinal());
                     v.put(DBProgramHelper.WORKOUT_ID, ep.getWorkoutId());
-                    PLObject.BodyText bodyText = (PLObject.BodyText) ep;
+                    PLObject.ExerciseProfile bodyText = (PLObject.ExerciseProfile) ep;
                     v.put(DBExercisesHelper.NAME, (bodyText.getTitle()));
+                    v.put(INNER_TYPE, bodyText.innerType.ordinal());
+                    v.put(DBProgramHelper.TITLE, bodyText.getTitle());
                     contentValues.add(v);
                     //    v.put(DBProgramHelper.workou);
                 } else if (ep.type == WorkoutLayoutTypes.ExerciseProfile /*|| ep.type == WorkoutLayoutTypes.IntraSet*/) {

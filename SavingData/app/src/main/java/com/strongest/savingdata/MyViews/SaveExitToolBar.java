@@ -50,7 +50,7 @@ public class SaveExitToolBar extends LinearLayout {
 
     public SaveExitToolBar showBack(boolean b) {
         if (b) {
-            back.setImageResource(R.drawable.back_arrow_24px);
+            back.setImageResource(R.drawable.icon_back_white);
         }
         return this;
     }

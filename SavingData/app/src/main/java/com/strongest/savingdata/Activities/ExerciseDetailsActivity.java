@@ -43,7 +43,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ExerciseDetailsActivity extends BaseActivity implements
-        Architecture.view.LongClickView, UISetsClickHandler, AppBarLayout.OnOffsetChangedListener, LogDataAdapterOnClick {
+        Architecture.view.LongClickView, AppBarLayout.OnOffsetChangedListener, LogDataAdapterOnClick {
 
 
     /*   @BindView(R.id.btn_container)
@@ -220,28 +220,6 @@ public class ExerciseDetailsActivity extends BaseActivity implements
     }
 
     @Override
-    public void onSetsClick(MyExpandableAdapter.MyExpandableViewHolder vh, PLObject plObject) {
-
-
-    }
-
-    @Override
-    public void onSetsLongClick(PLObject plObject, MyExpandableAdapter.MyExpandableViewHolder vh) {
-        // longClickMenuView.onShowMenu(vh, plObject);
-    }
-
-    @Override
-    public void onAddingIntraSet(PLObject.SetsPLObject setsPLObject, int position) {
-
-    }
-
-    @Override
-    public void onRemoveIntraSet(PLObject.SetsPLObject setsPLObject, int position) {
-
-    }
-
-
-    @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
         int maxScroll = appBarLayout.getTotalScrollRange();
         float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
@@ -257,6 +235,7 @@ public class ExerciseDetailsActivity extends BaseActivity implements
            return true;
        }
    */
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -272,9 +251,8 @@ public class ExerciseDetailsActivity extends BaseActivity implements
     public void dateClicked(String date) {
         SelectedLogDataViewModel selectedLogDataViewModel = ViewModelProviders.of(this)
                 .get(SelectedLogDataViewModel.class);
-        ArrayList<PLObject> sets = m.readSets(exercise.getName(), date);
+        ArrayList<LogData.LogDataSets> sets = m.readSets(exercise.getName(), date);
         selectedLogDataViewModel.setSets(sets);
-
         addFragmentToActivity(R.id.exercise_log_frame, new ExerciseLogFragment(), "log");
     }
 }

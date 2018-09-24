@@ -15,6 +15,7 @@ import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
 import com.strongest.savingdata.Controllers.Architecture;
+import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.MyViews.WorkoutView.OnWorkoutViewInterfaceClicksListener;
 import com.strongest.savingdata.R;
 
@@ -41,10 +42,10 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     ImageView backBtn;
     @BindView(R.id.longclick_menu_delete)
     ImageView delete;
-   /* @BindView(R.id.longclick_menu_duplicate)
-    ImageView duplicate;
-    @BindView(R.id.longclick_menu_child)
-    ImageView child;*/
+    /* @BindView(R.id.longclick_menu_duplicate)
+     ImageView duplicate;
+     @BindView(R.id.longclick_menu_child)
+     ImageView child;*/
     @BindView(R.id.longclick_menu_selected)
     TextView selectedNum;
 
@@ -103,12 +104,12 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
 
     private void enableDisableBtns() {
         if (highlightedViews.size() > 1) {
-           // disableBtns(duplicate, child);
+            // disableBtns(duplicate, child);
         } else if (!selectedPLObjects.get(0).isParent) {
-        //    enableBtns(duplicate);
-         //   disableBtns(child);
+            //    enableBtns(duplicate);
+            //   disableBtns(child);
         } else {
-          //  enableBtns(duplicate, child);
+            //  enableBtns(duplicate, child);
         }
         /*else{
             enableBtns(more);
@@ -143,23 +144,23 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
 
 
     public void onShowMenu(MyExpandableAdapter.MyExpandableViewHolder vh, PLObject plObject) {
-        if(!checkIfItemExist(plObject)){
+        if (!checkIfItemExist(plObject)) {
 
-        isOn = true;
-        selectedPLObjects.add(plObject);
-        View hView = vh.getMainLayout();
-        hView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.longClickBackground));
-        highlightedViews.add(vh);
+            isOn = true;
+            selectedPLObjects.add(plObject);
+            View hView = vh.getMainLayout();
+            hView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.longClickBackground));
+            highlightedViews.add(vh);
 
-        currentVH = vh;
-        viewPosition = vh.getAdapterPosition();
-        setVisibility(VISIBLE);
+            currentVH = vh;
+            viewPosition = vh.getAdapterPosition();
+            setVisibility(VISIBLE);
 
             animate().alpha(1f);
             selectedNum.setText(highlightedViews.size() + "");
-        setAlpha(1f);
-        setVisibility(VISIBLE);
-        enableDisableBtns();
+            setAlpha(1f);
+            setVisibility(VISIBLE);
+            enableDisableBtns();
 
         }
 
@@ -235,9 +236,9 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
         }*/
     }
 
-    private boolean checkIfItemExist(PLObject plObject){
-        for (PLObject p : selectedPLObjects){
-            if (p == plObject){
+    private boolean checkIfItemExist(PLObject plObject) {
+        for (PLObject p : selectedPLObjects) {
+            if (p == plObject) {
                 return true;
             }
         }
@@ -266,8 +267,20 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
                 break;*/
 
             case R.id.longclick_menu_delete:
-                Actions a = highlightedViews.size() > 1 ? Actions.MultiDelete : Actions.Delete;
-                listener.onLongClickAction(this, a);
+                String s = selectedPLObjects.size() > 1 ? "All Of This" : "This";
+                MaterialDialogHandler
+                        .get()
+                        .defaultDeleteBuilder(getContext(),
+                                "Delete " + s + "?"
+                                , "DELETE")
+                        .buildDialog()
+                        .addPositiveActionFunc(view -> {
+
+                            Actions a = highlightedViews.size() > 1 ? Actions.MultiDelete : Actions.Delete;
+                            listener.onLongClickAction(this, a);
+                        }, true).show();
+
+
                 break;
             case R.id.longclick_menu_selected:
                 //TODO: need to change the callback
@@ -314,10 +327,18 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
         return viewPosition;
     }
 
-    public boolean isSingleItem(){
-        if(selectedPLObjects.size() == 1)
+    public boolean isSingleItem() {
+        if (selectedPLObjects.size() == 1)
             return true;
         else
             return false;
+    }
+
+    public boolean objectIsSelected(PLObject plObject) {
+
+        if(selectedPLObjects.indexOf(plObject) != -1){
+            return true;
+        }
+        return false;
     }
 }

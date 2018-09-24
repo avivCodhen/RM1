@@ -11,13 +11,13 @@ import com.strongest.savingdata.R;
 import com.strongest.savingdata.ViewHolders.ExerciseViewHolder;
 import com.strongest.savingdata.ViewHolders.SupersetViewHolder;
 
-public class ExerciseParentViewAdapter extends ParentView.Adapter<SupersetViewHolder>{
+public class ExerciseParentViewAdapter extends ParentView.Adapter<SupersetViewHolder> {
 
     private ExerciseViewHolder parentViewHolder;
     private PLObject.ExerciseProfile exerciseProfile;
     private UiExerciseClickHandler uiExerciseClickHandler;
 
-    public ExerciseParentViewAdapter(ExerciseViewHolder parentViewHolder, PLObject.ExerciseProfile exerciseProfile, UiExerciseClickHandler uiExerciseClickHandler){
+    public ExerciseParentViewAdapter(ExerciseViewHolder parentViewHolder, PLObject.ExerciseProfile exerciseProfile, UiExerciseClickHandler uiExerciseClickHandler) {
         this.parentViewHolder = parentViewHolder;
 
         this.exerciseProfile = exerciseProfile;
@@ -39,21 +39,21 @@ public class ExerciseParentViewAdapter extends ParentView.Adapter<SupersetViewHo
     @Override
     public void onBindViewHolder(SupersetViewHolder exerciseViewHolder, int position) {
         PLObject.ExerciseProfile superset = exerciseProfile.exerciseProfiles.get(position);
-        if(superset.getMuscle() != null){
+        if (superset.getMuscle() != null) {
             Muscle.MuscleUI mui = Muscle.provideMuscleUI(superset.getMuscle());
             exerciseViewHolder.icon.setImageResource(mui.getImage());
         }
 
-        if(superset.getExercise() != null)
+        if (superset.getExercise() != null)
             exerciseViewHolder.name.setText(superset.getExercise().getName());
 
-        exerciseViewHolder.edit.setOnClickListener(v ->{
+        exerciseViewHolder.edit.setOnClickListener(v -> {
             uiExerciseClickHandler.onExerciseEdit(parentViewHolder.getAdapterPosition(), superset);
         });
 
-        exerciseViewHolder.delete.setOnClickListener(v ->{
-            exerciseProfile.exerciseProfiles.remove(superset);
-            uiExerciseClickHandler.onRemoveSuperset(exerciseProfile);
+        exerciseViewHolder.delete.setOnClickListener(v -> {
+            uiExerciseClickHandler.onRemoveSuperset(exerciseProfile, superset);
+
         });
 
 

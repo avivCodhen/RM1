@@ -9,6 +9,7 @@ import android.util.Log;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
+import com.strongest.savingdata.Database.Program.DBProgramHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,33 +36,27 @@ public class LogDataManager {
     public void insert(PLObject.ExerciseProfile exerciseProfile) {
 
 
-        inserter(exerciseProfile);
-        for (PLObject.ExerciseProfile ep : exerciseProfile.exerciseProfiles) {
-            if (ep.exercise != null)
-                inserter(ep);
-        }
-
+        inserter(exerciseProfile.getExercise().name, exerciseProfile);
     }
 
-    private void inserter(PLObject.ExerciseProfile exerciseProfile) {
-        String tableName = trimExerciseNameSpace(exerciseProfile.getExercise().getName());
+    private void inserter(String tableNameToTrim, PLObject.ExerciseProfile exerciseProfile) {
+        String tableName = trimExerciseNameSpace(tableNameToTrim);
         String date = new SimpleDateFormat("MMMM dd, yyyy", Locale.US).format(new Date());
         String currentTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
         String result = date + ", " + currentTime;
-
+        ArrayList<LogData.LogDataSets> list = exerciseToLogDataSetList(exerciseProfile);
         if (isTableExists(tableName)) {
-            for (PLObject.SetsPLObject set : exerciseProfile.getSets()){
-                db.insert(tableName, null, getContentValues(result,set ));
-
+            for (LogData.LogDataSets l : list) {
+                db.insert(tableName, null, getContentValues(l, result));
             }
+
         } else {
             //this means table does not exist
-            Log.d("aviv", "insert from LogDataManager:  table does not exist");
+
             createTable(tableName);
             if (isTableExists(tableName)) {
-                for (PLObject.SetsPLObject set : exerciseProfile.getSets()) {
-                    db.insert(tableName, null, getContentValues(result, set));
-
+                for (LogData.LogDataSets l : list) {
+                    db.insert(tableName, null, getContentValues(l, result));
                 }
             }
 
@@ -70,6 +65,7 @@ public class LogDataManager {
     }
 
     public boolean isTableExists(String tableName) {
+        tableName = trimExerciseNameSpace(tableName);
         boolean isExist = false;
         Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + tableName + "'", null);
         if (cursor != null) {
@@ -82,6 +78,7 @@ public class LogDataManager {
     }
 
     private void createTable(String tableName) {
+        tableName = trimExerciseNameSpace(tableName);
         db.execSQL(dbLogDataHelper.getCreateCommand(tableName));
     }
 
@@ -92,16 +89,66 @@ public class LogDataManager {
         return trimmed;
     }
 
+    public LogData.LogDataSets setToLogDataSet(int position, PLObject.SetsPLObject setsPLObject) {
 
-    public ContentValues getContentValues(String date, PLObject.SetsPLObject setsPLObject) {
+        String title = "";
+        switch (setsPLObject.getInnerType()) {
+            case SuperSetIntraSet:
+                title += "Superset " + setsPLObject.getExerciseName();
+                break;
+            case IntraSet:
+                title = "Dropset ";
+                break;
+
+            default:
+                title = "Set " + (position + 1);
+                break;
+        }
+        return new LogData.LogDataSets(
+                title,
+                setsPLObject.getExerciseSet().getRep(),
+                setsPLObject.getExerciseSet().getRest(),
+                setsPLObject.getExerciseSet().getWeight()
+        );
+
+    }
+
+    public ArrayList<LogData.LogDataSets> setToLogDataSetList(PLObject.SetsPLObject setsPLObject, int position) {
+        ArrayList<LogData.LogDataSets> list = new ArrayList<>();
+        list.add(setToLogDataSet(position, setsPLObject));
+        for (int j = 0; j < setsPLObject.getSuperSets().size(); j++) {
+            list.add(setToLogDataSet(j, setsPLObject.getSuperSets().get(j)));
+        }
+        for (int j = 0; j < setsPLObject.getIntraSets().size(); j++) {
+            list.add(setToLogDataSet(j, setsPLObject.getIntraSets().get(j)));
+
+        }
+
+        return list;
+
+    }
+
+    public ArrayList<LogData.LogDataSets> exerciseToLogDataSetList(PLObject.ExerciseProfile exerciseProfile) {
+        ArrayList<LogData.LogDataSets> list = new ArrayList<>();
+
+        for (int i = 0; i < exerciseProfile.getSets().size(); i++) {
+            PLObject.SetsPLObject set = exerciseProfile.getSets().get(i);
+            list.addAll(setToLogDataSetList(set, i));
+        }
+
+        return list;
+
+    }
+
+
+    public ContentValues getContentValues(LogData.LogDataSets logDataSets, String date) {
 
         ContentValues cv = new ContentValues();
-            ExerciseSet e = setsPLObject.getExerciseSet();
-            cv.put(DBLogDataHelper.REP_ID, e.getRep());
-            cv.put(DBLogDataHelper.REST, e.getRest());
-            cv.put(DBLogDataHelper.WEIGHT, e.getWeight());
-            cv.put(DBLogDataHelper.DATE, date);
-            cv.put(DBLogDataHelper.TYPE, setsPLObject.type.ordinal());
+        cv.put(DBLogDataHelper.REP_ID, logDataSets.rep);
+        cv.put(DBLogDataHelper.REST, logDataSets.rest);
+        cv.put(DBLogDataHelper.WEIGHT, logDataSets.weight);
+        cv.put(DBLogDataHelper.DATE, date);
+        cv.put(DBLogDataHelper.TITLE, logDataSets.title);
 
         return cv;
     }
@@ -118,7 +165,7 @@ public class LogDataManager {
                 } else {
                     date = c.getString(c.getColumnIndex(DBLogDataHelper.DATE));
                     String[] arr = date.split(",");
-                    dates.add(new LogData(date,arr[0], arr[1]));
+                    dates.add(new LogData(date, arr[0], arr[1]));
                    /* d.reps = c.getString(c.getColumnIndex(DBLogDataHelper.REP_ID));
                     d.rest = c.getString(c.getColumnIndex(DBLogDataHelper.REST));
                     d.type = c.getString(c.getColumnIndex(DBLogDataHelper.TYPE));
@@ -131,23 +178,28 @@ public class LogDataManager {
         return dates;
     }
 
-    public ArrayList<PLObject> readSets(String exerciseName, String dates){
-        Cursor c = db.rawQuery("SELECT * FROM "
-                + trimExerciseNameSpace(exerciseName)+" WHERE "+DBLogDataHelper.DATE+"=?", new String[]{dates});
-        ArrayList<PLObject> sets = new ArrayList<>();
+    public ArrayList<LogData.LogDataSets> readSets(String exerciseName, String dates) {
+        if (!isTableExists(exerciseName)) {
+            createTable(exerciseName);
+        }
+        Cursor c;
+        c = db.rawQuery("SELECT * FROM "
+                + trimExerciseNameSpace(exerciseName) + " WHERE " + DBLogDataHelper.DATE + "=?", new String[]{dates});
+        ArrayList<LogData.LogDataSets> list = new ArrayList<>();
+        LogData.LogDataSets logData;
         if (c != null && c.moveToFirst()) {
             do {
-                PLObject.SetsPLObject set = new PLObject.SetsPLObject();
-                ExerciseSet e = new ExerciseSet();
-                    e.setRep(c.getString(c.getColumnIndex(DBLogDataHelper.REP_ID)));
-                   e.setRest(c.getString(c.getColumnIndex(DBLogDataHelper.REST)));
-                   e.setWeight(c.getDouble(c.getColumnIndex(DBLogDataHelper.WEIGHT)));
-                   set.type = WorkoutLayoutTypes.getEnum(c.getInt(c.getColumnIndex(DBLogDataHelper.TYPE)));
-                   set.setExerciseSet(e);
-                   sets.add(set);
+                logData = new LogData.LogDataSets(
+                        c.getString(c.getColumnIndex(DBLogDataHelper.TITLE)),
+                        c.getString(c.getColumnIndex(DBLogDataHelper.REP_ID)),
+                        c.getString(c.getColumnIndex(DBLogDataHelper.REST)),
+                        c.getDouble(c.getColumnIndex(DBLogDataHelper.WEIGHT))
+
+                );
+                list.add(logData);
 
             } while (c.moveToNext());
         }
-        return sets;
+        return list;
     }
 }

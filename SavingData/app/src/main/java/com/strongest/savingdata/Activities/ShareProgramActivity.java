@@ -11,9 +11,11 @@ import android.widget.TextView;
 
 import com.strongest.savingdata.AModels.UserModel.User;
 import com.strongest.savingdata.AModels.programModel.Program;
+import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.MyViews.SaveExitToolBar;
 import com.strongest.savingdata.MyViews.SmartProgressBar;
 import com.strongest.savingdata.R;
+import com.strongest.savingdata.Utils.MyUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +57,14 @@ public class ShareProgramActivity extends BaseActivity {
         saveExitToolBar.setSaveButton(v -> finish());
 
 
+        if (!MyUtils.isNetworkConnected(this)) {
+            MaterialDialogHandler.get()
+                    .defaultBuilder(this, "No Internet Connection", "OK")
+                    .addContent("Without internet connection, we cannot fetch your data.")
+                    .hideNegativeButton()
+                    .buildDialog().show();
+        }
+
         textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -94,5 +104,11 @@ public class ShareProgramActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
     }
 }

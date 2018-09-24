@@ -9,6 +9,7 @@ public class DBLogDataHelper extends SQLiteOpenHelper{
 
     private static final int version = 1;
     private static final String DB_NAME = "logdata.db";
+    public static final String TITLE = "title";
     public final String LOG_TABLE_REPLACE = "logtable";
     public static final String DATE= "date";
     public static final String REP_ID = "rep";
@@ -20,7 +21,7 @@ public class DBLogDataHelper extends SQLiteOpenHelper{
 
     private final String LAYOUT_CREATE_COMMAND = "CREATE TABLE " + LOG_TABLE_REPLACE + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
             + SETS + " TEXT, " + INNER_TYPE+" INTEGER,"+ DATE + " TEXT,"+ " INTEGER, " + TYPE + " INTEGER, "
-            + WEIGHT + " TEXT, " + REST + " TEXT, "
+            + WEIGHT + " TEXT, " + TITLE + "TEXT, "+ REST + " TEXT, "
             + REP_ID + " TEXT)";
 
     public DBLogDataHelper(Context context) {

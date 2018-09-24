@@ -137,10 +137,7 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        return;
-    }
+
 
     private void populateAutoComplete() {
        /* if (!mayRequestContacts()) {

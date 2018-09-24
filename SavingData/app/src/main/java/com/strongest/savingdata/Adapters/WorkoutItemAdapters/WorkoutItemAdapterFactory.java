@@ -15,7 +15,7 @@ public class WorkoutItemAdapterFactory extends ItemAdapterFactory{
         }
 
         if(plObject.isAssignableFrom(PLObject.BodyText.class)){
-            return new DividerItemAdapter();
+            return new TitleItemAdapter();
         }
 
 

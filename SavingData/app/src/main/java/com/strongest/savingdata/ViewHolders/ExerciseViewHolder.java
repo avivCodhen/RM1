@@ -1,13 +1,11 @@
 package com.strongest.savingdata.ViewHolders;
 
-import android.media.Image;
-import android.view.ContextMenu;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.strongest.savingdata.Adapters.MyExpandableAdapter;
@@ -48,7 +46,7 @@ public class ExerciseViewHolder extends MyExpandableAdapter.MyExpandableViewHold
     public ViewGroup mainLayout;
 
 
- @BindView(R.id.recyclerview_exercise_drag_layout)
+    @BindView(R.id.recyclerview_exercise_drag_layout)
     public View dl;
 
     @BindView(R.id.parent_view_container)
@@ -75,7 +73,7 @@ public class ExerciseViewHolder extends MyExpandableAdapter.MyExpandableViewHold
         this.uiExerciseClickHandler = uiExerciseClickHandler;
     }
 
-    public ExerciseViewHolder(View itemView, UiExerciseClickHandler uiExerciseClickHandler){
+    public ExerciseViewHolder(View itemView, UiExerciseClickHandler uiExerciseClickHandler) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.uiExerciseClickHandler = uiExerciseClickHandler;
@@ -86,10 +84,20 @@ public class ExerciseViewHolder extends MyExpandableAdapter.MyExpandableViewHold
     public ExerciseViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-      dragLayout = dl ;
-      drag_iv = itemView.findViewById(R.id.drag_iv);
+        dragLayout = dl;
+        drag_iv = itemView.findViewById(R.id.drag_iv);
 
 
     }
 
+    @Override
+    public void onItemSelected() {
+        int color = ContextCompat.getColor(parentContainer.getContext(), R.color.background_color);
+        this.animatorHolder.makeSelectedColor(mainLayout, mainLayout.getSolidColor());
+    }
+
+    @Override
+    public void onItemClear() {
+        this.animatorHolder.revertPrevColor();
+    }
 }

@@ -58,6 +58,7 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE
 public class SetsChooseSingleFragment extends BaseCreateProgramFragment implements OnSingleChoiceAdapterOnclickListener {
 
 
+    public static final String SETS_CHOOSE_FRAGMENT = "setsfragment";
     @BindView(R.id.fragment_sets_choose_rangenumberview)
     RangeNumberChooseView mRangeNumberChoose;
 

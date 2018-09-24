@@ -57,8 +57,9 @@ public class ExerciseModel {
      * this function expands the exercise into exercise and it's childs(superSets)
      * this is not to be confused with expanding the exercise into a list of sets
      */
-    public static ArrayList<PLObject> expandExerciseSupersets(PLObject.ExerciseProfile ep) {
-        ArrayList<PLObject> list = new ArrayList<>();
+    public static ArrayList<PLObject.ExerciseProfile> expandExerciseSupersets(PLObject.ExerciseProfile ep) {
+        ArrayList<PLObject.ExerciseProfile> list = new ArrayList<>();
+        list.add(ep);
         for (PLObject.ExerciseProfile e : ep.exerciseProfiles) {
             list.add(e);
         }
@@ -125,7 +126,6 @@ public class ExerciseModel {
             PLObject.SetsPLObject intraSet = new PLObject.SetsPLObject();
             intraSet.innerType = WorkoutLayoutTypes.SuperSetIntraSet;
             intraSet.type = WorkoutLayoutTypes.SuperSetIntraSet;
-            intraSet.setExerciseName(parent.exerciseProfiles.get(i).getExercise().getName());
             setsPLObject.superSets.add(intraSet);
         }
     }

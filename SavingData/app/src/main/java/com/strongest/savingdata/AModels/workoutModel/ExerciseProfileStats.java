@@ -27,6 +27,18 @@ public class ExerciseProfileStats {
         return epStats;
     }
 
+    public static String getAllRepsString(ExerciseProfile exerciseProfile){
+        String reps = "";
+        for (int i = 0; i < exerciseProfile.getSets().size(); i++) {
+            PLObject.SetsPLObject setsPLObject = exerciseProfile.getSets().get(i);
+            reps += setsPLObject.getExerciseSet().getRep();
+            if( i != exerciseProfile.getSets().size()-1){
+                reps+= ", ";
+            }
+        }
+        return reps;
+    }
+
     public ExerciseProfileStats() {
 
     }
