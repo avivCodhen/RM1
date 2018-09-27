@@ -8,9 +8,6 @@
         app:actionViewClass="android.widget.TextView"
         android:title="My Programs"/>
 
-    <item android:id="@+id/menu_create_program"
-        android:icon="@drawable/create_24px_gray"
-        android:title="Create Program"/>
 
     <item android:id="@+id/menu_custom_exercise"
         android:icon="@android:drawable/ic_menu_save"

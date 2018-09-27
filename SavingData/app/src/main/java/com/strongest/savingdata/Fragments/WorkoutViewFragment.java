@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
@@ -161,14 +162,39 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
                 .setBody("Click on the Plus Icon at the top right, to start adding customizing your exercises.")
                 .setTitle("Looks like you don't have any exercises!")
                 .setButtonText("Add A New Exercise")
-                .setUpWithRecycler(recycler, true,true)
-        .setActionBtn(v-> {
-            workout.getObserver().onChange(
-                    WorkoutsModel.ListModifier
-                            .OnWith(workout, new ExerciseItemAdapter())
-                            .doAddNew(workout.exArray.size())
-                            .setTaskTag("new_exercise")
-            );
+                .setUpWithRecycler(recycler, true, true)
+                .setActionBtn(v -> {
+                    workout.getObserver().onChange(
+                            WorkoutsModel.ListModifier
+                                    .OnWith(workout, new ExerciseItemAdapter())
+                                    .doAddNew(workout.exArray.size())
+                                    .setTaskTag("new_exercise")
+                    );
+                });
+
+        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                FloatingActionButton fab = ((HomeActivity) getActivity() ).getFab();
+
+                if (dy > 0 ) {
+                    fab.hide();
+                }else{
+                    fab.show();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+              /*  FloatingActionButton fab = ((HomeActivity) getActivity() ).getFab();
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                {
+                    fab.show();
+                }*/
+
+                super.onScrollStateChanged(recyclerView, newState);
+            }
         });
 
     }
@@ -322,9 +348,9 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     public void onRemoveSuperset(ExerciseProfile exerciseProfile, ExerciseProfile superset) {
 
         MaterialDialogHandler.get()
-                .defaultDeleteBuilder(getContext(),"Delete This Superset?", "DELETE")
+                .defaultDeleteBuilder(getContext(), "Delete This Superset?", "DELETE")
                 .buildDialog()
-                .addPositiveActionFunc(v->{
+                .addPositiveActionFunc(v -> {
                     int pos = exerciseProfile.exerciseProfiles.indexOf(superset);
                     for (int i = 0; i < exerciseProfile.getSets().size(); i++) {
                         PLObject.SetsPLObject setsPLObject = exerciseProfile.getSets().get(i);
@@ -339,7 +365,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     @Override
     public void onDuplicateExercise(ExerciseProfile exerciseProfile, int position) {
         WorkoutsModel.ListModifier listModifier = WorkoutsModel.ListModifier.OnWith(workout, new ExerciseItemAdapter());
-        listModifier.doDuplicate(exerciseProfile).applyWith(adapter,null, null);
+        listModifier.doDuplicate(exerciseProfile).applyWith(adapter, null, null);
     }
 
     @Override

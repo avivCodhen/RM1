@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item android:id="@+id/menu_new_exercise"
+        android:icon="@drawable/icon_exercise"
+        app:actionViewClass="android.widget.TextView"
+        android:title="New Exercise"/>
+
+    <item android:id="@+id/menu_new_title"
+        android:icon="@drawable/icon_text"
+        android:title="New Title"/>
+
+    <item android:id="@+id/menu_new_workout"
+        android:icon="@drawable/icon_benchpress"
+        android:title="New Workout"/>
+
+    <item android:id="@+id/menu_advanced_settings"
+        android:icon="@drawable/icon_settings_white"
+        android:title="Advanced Settings"/>
+
+
+</menu>

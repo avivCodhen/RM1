@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,7 +46,8 @@ public class ProgramToolsView extends LinearLayout {
     private ExpandableLayout openProgramToolsEL /*, showExpandedToolsButton*/;
 
 
-    View programToolsBtn;
+    FloatingActionButton fab;
+    FrameLayout clickSpaceView;
 
     private RecyclerView mRecyclerview;
     private ArrayList<ProgramButton> buttons;
@@ -65,7 +68,7 @@ public class ProgramToolsView extends LinearLayout {
 
     public void initDropMenu() {
 
-        DroppyMenuPopup.Builder droppyBuilder = new DroppyMenuPopup.Builder(context, programToolsBtn);
+        DroppyMenuPopup.Builder droppyBuilder = new DroppyMenuPopup.Builder(context, fab);
 
         for (ProgramButton pbtn : buttons) {
             droppyBuilder.addMenuItem(new DroppyMenuItem(pbtn.tv_name, R.drawable.plus_gray_24px))
@@ -79,8 +82,8 @@ public class ProgramToolsView extends LinearLayout {
 
     }
 
-    public void instantiate(View programToolsBtn, Architecture.view.ProgramTools listener) {
-        this.programToolsBtn = programToolsBtn;
+    public void instantiate(FloatingActionButton programToolsBtn, Architecture.view.ProgramTools listener) {
+        this.fab = programToolsBtn;
         this.listener = listener;
         initViews();
     }
@@ -88,23 +91,20 @@ public class ProgramToolsView extends LinearLayout {
     private void initViews() {
         inflate(context, R.layout.layout_program_tools_view, this);
         initProgramToolsViews();
-        setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    openProgramToolsEL.toggle();
-                    if (openProgramToolsEL.isExpanded()) {
-                        setVisibility(VISIBLE);
+        clickSpaceView.setOnClickListener(v->{
+            fab.setClickable(false);
+            new Handler()
+                    .postDelayed(() -> fab.setClickable(true),300);
+            openProgramToolsEL.toggle();
+            if (openProgramToolsEL.isExpanded()) {
+                setVisibility(VISIBLE);
+                fab.setImageResource(R.drawable.cancel_48px_white);
 
-                    } else {
-                        setVisibility(GONE);
-                        MyJavaAnimator.rotateView(programToolsBtn, 315, 360);
+            } else {
+                fab.setImageResource(R.drawable.edit_48px);
+                display(GONE);
+                //MyJavaAnimator.rotateView(programToolsBtn, 315, 360);
 
-                    }
-                    return false;
-                }
-
-                return false;
             }
         });
         mWorkoutViewModes = new WorkoutViewModes();
@@ -112,44 +112,50 @@ public class ProgramToolsView extends LinearLayout {
     }
 
     public void display(final int visi) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setVisibility(visi);
-            }
-        }, 200);
+        new Handler().postDelayed(() -> setVisibility(visi), 200);
     }
 
     private void initProgramToolsViews() {
         buttons = new ArrayList<>();
+        clickSpaceView = findViewById(R.id.clickSpace);
         int green = ContextCompat.getColor(context, R.color.green_dark);
         int red = ContextCompat.getColor(context, R.color.red);
-        int plusIcon = R.drawable.plus_gray_24px;
-        int shareIcon = R.drawable.ic_share_black_24dp;
-        buttons.add(new ProgramButton(green, Actions.NewExercise, "New Exercise", plusIcon));
-        buttons.add(new ProgramButton(green, Actions.NewDivider, "New Divider", plusIcon));
-        buttons.add(new ProgramButton(green, Actions.NewWorkout, "New Workout", plusIcon));
-        buttons.add(new ProgramButton(Color.WHITE, Actions.Advanced, "Advanced", R.drawable.settings_24px_gray));
+        int exerciseIcon = R.drawable.icon_exercise;
+        int workoutIcon = R.drawable.icon_benchpress;
+        int settingsIcon = R.drawable.icon_settings_white;
+        int titleIcon = R.drawable.icon_text;
+        buttons.add(new ProgramButton(Actions.NewExercise, "New Exercise", exerciseIcon));
+        buttons.add(new ProgramButton(Actions.NewDivider, "New Title", titleIcon));
+        buttons.add(new ProgramButton(Actions.NewWorkout, "New Workout", workoutIcon));
+        buttons.add(new ProgramButton(Actions.Advanced, "Advanced", settingsIcon));
         mRecyclerview = (RecyclerView) findViewById(R.id.program_tools_view_recyclerview);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(context);
         ProgramToolsAdapter adapter = new ProgramToolsAdapter();
         mRecyclerview.setLayoutManager(lm);
         mRecyclerview.setAdapter(adapter);
         openProgramToolsEL = (ExpandableLayout) findViewById(R.id.workout_view_program_tools_expandable);
+        openProgramToolsEL.setOrientation(ExpandableLayout.HORIZONTAL);
     }
 
     //this function expands the expandable layout
     //it also takes into consideration the
     public void expand() {
+
         openProgramToolsEL.toggle();
         if (openProgramToolsEL.isExpanded()) {
             setVisibility(VISIBLE);
-            MyJavaAnimator.rotateView(programToolsBtn, 360, 315);
+            fab.setImageResource(R.drawable.cancel_48px_white);
+
+          /*  int cx = (getLeft() + getRight()) / 2;
+            int y = getTop() / 2;*/
+            //MyJavaAnimator.animateRevealShowParams(this, true,R.color.colorAccent,cx, y, null);
+            //MyJavaAnimator.rotateView(programToolsBtn, 360, 315);
 
 
         } else {
+            fab.setImageResource(R.drawable.edit_48px);
             display(GONE);
-            MyJavaAnimator.rotateView(programToolsBtn, 315, 360);
+            //MyJavaAnimator.rotateView(programToolsBtn, 315, 360);
         }
 
     }
@@ -159,8 +165,12 @@ public class ProgramToolsView extends LinearLayout {
         return mWorkoutViewModes;
     }
 
-    public void setProgramToolsBtn(View programToolsBtn) {
-        this.programToolsBtn = programToolsBtn;
+    public void setProgramToolsBtn(FloatingActionButton view) {
+        view.setOnClickListener(v -> {
+            if (fab != null)
+                expand();
+        });
+        this.fab = view;
     }
 
     public class WorkoutViewModes {
@@ -245,12 +255,11 @@ public class ProgramToolsView extends LinearLayout {
     class ProgramButton {
         String tv_name;
         Actions type;
-        int color;
+
         int image;
 
-        ProgramButton(int color, Actions type, String tv_name, int image) {
+        ProgramButton(Actions type, String tv_name, int image) {
 
-            this.color = color;
             this.type = type;
             this.tv_name = tv_name;
             this.image = image;

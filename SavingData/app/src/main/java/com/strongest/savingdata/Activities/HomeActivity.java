@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hlab.fabrevealmenu.listeners.OnFABMenuSelectedListener;
+import com.hlab.fabrevealmenu.view.FABRevealMenu;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.AModels.workoutModel.Workout;
@@ -64,7 +67,8 @@ public class HomeActivity extends BaseActivity implements
         WorkoutViewFragment.WorkoutViewFragmentListener,
         Architecture.view.LongClickView,
         Architecture.view.ProgramTools,
-        ProgramSettingsFragment.OnProgramSettingsChange {
+        ProgramSettingsFragment.OnProgramSettingsChange,
+        OnFABMenuSelectedListener{
 
     // public WorkoutsModelController workoutsModelController;
 
@@ -82,6 +86,8 @@ public class HomeActivity extends BaseActivity implements
     DrawerLayout mDrawerLayout;
     @BindView(R.id.home_activity_navigationview)
     NavigationView mNavigationView;
+    @BindView(R.id.home_activity_navigationview_program)
+    NavigationView programNavigationView;
     @BindView(R.id.activity_home_longclick_menu)
     public LongClickMenuView longClickMenuView;
     @BindView(R.id.activity_home_viewpager)
@@ -98,6 +104,12 @@ public class HomeActivity extends BaseActivity implements
 
     @BindView(R.id.home_activity_smartprogressbar)
     SmartProgressBar smartProgressBar;
+
+    @BindView(R.id.home_activity_fab)
+    FloatingActionButton fab;
+
+    @BindView(R.id.fabMenu)
+    FABRevealMenu fabRevealMenu;
 
     //this view is the edit "+" button of the toolbar menu
     //it will be setuped with the programtoolsview on inflating menu
@@ -128,6 +140,9 @@ public class HomeActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
+
         if (savedInstanceState != null) {
             program = (Program) savedInstanceState.getSerializable("program");
         }
@@ -142,12 +157,13 @@ public class HomeActivity extends BaseActivity implements
                     .show();
         }
 
+       /* fabRevealMenu.bindAnchorView(fab);
+        fabRevealMenu.setOnFABMenuSelectedListener(this);*/
+
 
         if(userService.firstTimeClient()){
             toLogInActivity();
         }
-        setContentView(R.layout.activity_home);
-        ButterKnife.bind(this);
 
         smartProgressBar.setText("Loading Program...")
                 .setUpWithView(mViewPager)
@@ -195,7 +211,8 @@ public class HomeActivity extends BaseActivity implements
 
 
         longClickMenuView.instantiate(this);
-        programToolsView.instantiate(programToolsBtn, this);
+        programToolsView.instantiate(fab, this);
+        programToolsView.setProgramToolsBtn(fab);
         loggedInUI();
         programService.listenForSharedPrograms(count -> showBadgeForMyProgram((int) count));
     }
@@ -316,7 +333,7 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.aviv_menu_program, menu);
+        //getMenuInflater().inflate(R.menu.aviv_menu_program, menu);
 
         return true;
     }
@@ -324,8 +341,8 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        programToolsBtn = findViewById(R.id.edit_menu);
-        programToolsView.setProgramToolsBtn(programToolsBtn);
+       // programToolsBtn = findViewById(R.id.edit_menu);
+        //programToolsView.setProgramToolsBtn(programToolsBtn);
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -574,5 +591,14 @@ public class HomeActivity extends BaseActivity implements
             Log.d(TAG, "onActivityResult: " + data.getStringExtra("userName"));
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onMenuItemSelected(View view, int id) {
+
+    }
+
+    public FloatingActionButton getFab() {
+        return fab;
     }
 }

@@ -49,11 +49,11 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
 
         if (position == selectedIndex) {
             holder.checkMark.setVisibility(View.VISIBLE);
-            holder.exercise.setTextColor(ContextCompat.getColor(context, R.color.colorGreenTry));
+            holder.exercise.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
         } else {
 
             holder.checkMark.setVisibility(View.GONE);
-            holder.exercise.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+            holder.exercise.setTextColor(ContextCompat.getColor(context, R.color.gray));
 
         }
         holder.exercise.setText(exerciseBeans.get(position).getName());

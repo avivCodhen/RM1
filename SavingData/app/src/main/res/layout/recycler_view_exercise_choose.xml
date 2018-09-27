@@ -27,9 +27,8 @@
                 android:layout_height="20dp" />
             <TextView
                 android:id="@+id/exercise_tv"
-
+                android:textColor="@color/gray"
                 android:textStyle="bold"
-                android:textColor="@color/colorAccent"
                 android:text="Barbell Bench Press"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content" />
