@@ -19,6 +19,7 @@ import com.strongest.savingdata.Adapters.MyProgramsAdapter;
 import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.MyViews.SmartEmptyView;
+import com.strongest.savingdata.MyViews.SmartProgressBar;
 import com.strongest.savingdata.R;
 
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
     SmartEmptyView smartEmptyView;
     MyProgramsViewModel myProgramsViewModel;
 
+    @BindView(R.id.programlist_fragment_smartprogressbar)
+    SmartProgressBar smartProgressBar;
     Program currentProgram;
     String tag;
     boolean isShared;
@@ -79,7 +82,7 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
         currentProgram = myProgramCallBack.getCurrentProgram();
-
+        smartProgressBar.show();
 
         myProgramsViewModel = ViewModelProviders.of(this, workoutsViewModelFactory)
                 .get(tag, MyProgramsViewModel.class);
@@ -131,6 +134,7 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
 
             myProgramsAdapter.setList(programs);
             myProgramsAdapter.notifyDataSetChanged();
+            smartProgressBar.hide();
 
         });
 

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.strongest.savingdata.Activities.HomeActivity;
 import com.strongest.savingdata.Activities.MyProgramsActivity;
 import com.strongest.savingdata.Activities.ShareProgramActivity;
 import com.strongest.savingdata.R;
@@ -19,6 +20,7 @@ import com.strongest.savingdata.R;
 import java.util.Map;
 
 public class FireBaseMessageService extends FirebaseMessagingService {
+
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -29,16 +31,18 @@ public class FireBaseMessageService extends FirebaseMessagingService {
     }
 
     private void sendNotification(Map<String, String> payload) {
+        String userName = payload.get("title");
         NotificationCompat.Builder builder = new NotificationCompat
                 .Builder(this, getString(R.string.default_notification_channel_id))
                 .setSmallIcon(R.drawable.rm1_logo)
-                .setContentTitle(payload.get("title") + " sent you a program")
+                .setContentTitle(userName + " sent you a program")
                 .setContentText("check out "+payload.get("body"));
 
-        Intent resultIntent = new Intent(this, MyProgramsActivity.class);
+        Intent resultIntent = new Intent(this, HomeActivity.class);
+        resultIntent.putExtra("userName", userName);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 this,
-                0,
+                HomeActivity.NOTIFICATION,
                 resultIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);

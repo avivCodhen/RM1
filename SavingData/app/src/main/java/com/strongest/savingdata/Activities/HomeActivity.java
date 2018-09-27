@@ -18,10 +18,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,7 @@ import com.strongest.savingdata.Fragments.ExerciseEditFragment;
 import com.strongest.savingdata.Fragments.NewProgramFragment;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
 import com.strongest.savingdata.Fragments.WorkoutViewFragment;
+import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.MyViews.SmartProgressBar;
@@ -68,6 +71,7 @@ public class HomeActivity extends BaseActivity implements
     public static final int EXERCISE_ACTIVITY = 1;
     public static final int LOGIN_ACTIVITY = 2;
     public static final int MY_PROGRAM_ACTIVITY = 3;
+    public static final int NOTIFICATION = 4;
     public static final String EXERCISE_POSITION = "exercisePosition";
 
     @BindView(R.id.activity_home_toolbar)
@@ -126,6 +130,21 @@ public class HomeActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             program = (Program) savedInstanceState.getSerializable("program");
+        }
+        String userName = getIntent().getStringExtra("userName");
+        if (userName != null && !userName.equals("")) {
+            getIntent().removeExtra("userName");
+            MaterialDialogHandler.get()
+                    .defaultBuilder(this, userName + " has sent you a program!", "VIEW")
+                    .addContent("You can view the program in My Programs.")
+                    .buildDialog()
+                    .addPositiveActionFunc(v -> toMyProgramsActivity(), true)
+                    .show();
+        }
+
+
+        if(userService.firstTimeClient()){
+            toLogInActivity();
         }
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
@@ -284,13 +303,13 @@ public class HomeActivity extends BaseActivity implements
             return;
         }
         Fragment f = getSupportFragmentManager().findFragmentByTag(ExerciseEditFragment.FRAGMENT_EDIT_EXERCISE);
-        if(f != null){
-            View v= f.getView();
-            MyJavaAnimator.animateRevealShowParams(v, false, R.color.background_color,0, 0, r -> {
+        if (f != null) {
+            View v = f.getView();
+            MyJavaAnimator.animateRevealShowParams(v, false, R.color.background_color, 0, 0, r -> {
                 super.onBackPressed();
                 return;
             });
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
@@ -360,7 +379,7 @@ public class HomeActivity extends BaseActivity implements
         return false;
     }
 
-    private void toLogInActivity(){
+    private void toLogInActivity() {
         startActivityForResult(new Intent(this, LoginActivity2.class), LOGIN_ACTIVITY);
     }
 
@@ -539,19 +558,20 @@ public class HomeActivity extends BaseActivity implements
                 workoutsViewModel.setCmd(WorkoutsService.CMD.SWITCH);
                 programViewModel.postProgram(p);
             } else if (resultCode == MyProgramsActivity.FRAGMENT_CREATE_PROGRAM) {
-                if(userService.isUserLoggedIn() || program == null){
-                programViewModel.setNewProgram();
-                workoutsViewModel.setNewWorkout();
+                if (userService.isUserLoggedIn() || program == null) {
+                    programViewModel.setNewProgram();
+                    workoutsViewModel.setNewWorkout();
 
-                }else{
+                } else {
                     Toast.makeText(this, "You can only save one program. Log in to save as many as you wish.", Toast.LENGTH_SHORT).show();
 
                 }
 
-            }
-            else if( resultCode == MyProgramsActivity.LOG_IN){
+            } else if (resultCode == MyProgramsActivity.LOG_IN) {
                 toLogInActivity();
             }
+        } else if (requestCode == NOTIFICATION) {
+            Log.d(TAG, "onActivityResult: " + data.getStringExtra("userName"));
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

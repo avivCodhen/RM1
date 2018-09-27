@@ -123,8 +123,8 @@ public class UserService {
     }
 
     public String getUserUID() {
-        if(firebaseAuth.getCurrentUser() != null)
-        return firebaseAuth.getCurrentUser().getUid();
+        if (firebaseAuth.getCurrentUser() != null)
+            return firebaseAuth.getCurrentUser().getUid();
         else
             return "";
     }
@@ -167,4 +167,12 @@ public class UserService {
         firebaseAuth.signOut();
     }
 
+    public boolean firstTimeClient() {
+
+        if (!sharedPreferences.getString("firstTime", "").equals("no") && !isUserLoggedIn()) {
+            editor.putString("firstTime", "no").commit();
+            return true;
+        }
+        return false;
+    }
 }

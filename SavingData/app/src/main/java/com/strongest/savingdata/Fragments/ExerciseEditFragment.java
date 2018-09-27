@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -41,6 +42,7 @@ import com.strongest.savingdata.Fragments.Choose.OnExerciseSetChange;
 import com.strongest.savingdata.Handlers.FloatingSearchViewHandler;
 import com.strongest.savingdata.Handlers.YoutubeHandler;
 import com.strongest.savingdata.MyViews.SaveExitToolBar;
+import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.R;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -90,8 +92,6 @@ public class ExerciseEditFragment extends BaseFragment implements
     @BindView(R.id.exercise_choose_search_view)
     FloatingSearchView mSearchView;
 
-    @BindView(R.id.youtube_textview_hiddner)
-    TextView youtubeHiddnerTV;
 
     @BindView(R.id.youtube_fragment)
     FrameLayout youtubeLayout;
@@ -103,6 +103,15 @@ public class ExerciseEditFragment extends BaseFragment implements
     @BindView(R.id.exercise_layout)
     RelativeLayout listWrapper;
 
+
+    @BindView(R.id.my_exercise_smart_empty_view)
+    SmartEmptyView myExerciseSmartView;
+
+    @BindView(R.id.change_btn)
+    Button changeBtn;
+
+    @BindView(R.id.no_exercise_wrapper)
+    ViewGroup noExerciseWrapper;
 
     public static final String EXERCISE_PROFILE = "exercise_profile";
     public ArrayList<Beans> exerciseBeans = new ArrayList<>();
@@ -127,6 +136,7 @@ public class ExerciseEditFragment extends BaseFragment implements
     int x;
     int y;
 
+    boolean clickedOnce;
     public static ExerciseEditFragment newInstance(String fragmentId) {
         ExerciseEditFragment f = new ExerciseEditFragment();
         Bundle bundle = new Bundle();
@@ -238,6 +248,13 @@ public class ExerciseEditFragment extends BaseFragment implements
             mExpandable.toggle();
         });
 
+
+        changeBtn.setOnClickListener(changeBtn->{
+            if(!clickedOnce){
+                mChangeMuscleTV.callOnClick();
+            }
+            clickedOnce = true;
+        });
         /**
          * this is used to show the user's custom exercises
          * */
@@ -303,7 +320,8 @@ public class ExerciseEditFragment extends BaseFragment implements
      */
     private void initToolbar() {
 
-        saveExitToolBar.instantiate();
+        saveExitToolBar.instantiate()
+        .noElevation();
         if (selectedExercise != null) {
             saveExitToolBar.setOptionalText(exerciseProfile.getExercise().getName());
         }
@@ -437,8 +455,7 @@ public class ExerciseEditFragment extends BaseFragment implements
         if (beans != null) {
 
             //hides the default text that overlays the youtube player
-            youtubeHiddnerTV.setVisibility(View.GONE);
-
+            noExerciseWrapper.setVisibility(View.GONE);
             //makes the youtube player visible
             youtubeLayout.setVisibility(View.VISIBLE);
 

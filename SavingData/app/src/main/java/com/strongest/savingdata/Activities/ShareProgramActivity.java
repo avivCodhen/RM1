@@ -92,7 +92,7 @@ public class ShareProgramActivity extends BaseActivity {
             if (toUser != null) {
                 smartProgressBar.setText("Sharing program with " + toUser.getName() + "...")
                         .show();
-                programService.shareProgramWithUser(p, toUser);
+                programService.shareProgramWithUser(this,p, toUser);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

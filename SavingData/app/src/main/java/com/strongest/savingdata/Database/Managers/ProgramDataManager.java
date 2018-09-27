@@ -386,7 +386,6 @@ public class ProgramDataManager extends DataManager {
                     v.put(DBExercisesHelper.TYPE, ep.getType().ordinal());
                     v.put(DBProgramHelper.WORKOUT_ID, ep.getWorkoutId());
                     PLObject.ExerciseProfile bodyText = (PLObject.ExerciseProfile) ep;
-                    v.put(DBExercisesHelper.NAME, (bodyText.getTitle()));
                     v.put(INNER_TYPE, bodyText.innerType.ordinal());
                     v.put(DBProgramHelper.TITLE, bodyText.getTitle());
                     contentValues.add(v);

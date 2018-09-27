@@ -121,6 +121,14 @@ public class SmartEmptyView extends LinearLayout {
         decide(count);
     }
 
+    public void onCondition(OnCondition onCondition){
+        if(onCondition.condition() == false){
+            decide(0);
+        }else{
+            decide(1);
+        }
+    }
+
         public SmartEmptyView setButtonText(String text){
         actionBtn.setText(text);
         return this;
@@ -319,8 +327,9 @@ public class SmartEmptyView extends LinearLayout {
         return logInImage;
     }
 
-    public interface onCondition{
+    public interface OnCondition{
 
+        boolean condition();
 
     }
 }

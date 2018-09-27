@@ -2,6 +2,7 @@ package com.strongest.savingdata.AService;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.strongest.savingdata.AModels.UserModel.User;
 import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.AModels.programModel.ProgramRepository;
 import com.strongest.savingdata.Activities.MyProgramsActivity;
+import com.strongest.savingdata.AndroidServices.FireBaseMessageService;
 import com.strongest.savingdata.Controllers.CallBacks;
 import com.strongest.savingdata.Utils.FireBaseUtils;
 
@@ -294,9 +296,9 @@ public class ProgramService {
                             shared.add(d.getValue(SharedUser.class));
                         }
 
-                        if(shared.size() == 0){
+                        if (shared.size() == 0) {
                             allPrograms.setValue(programs);
-                        }else{
+                        } else {
 
                             for (int i = 0; i < shared.size(); i++) {
                                 fetchProgramByUID(shared.get(i), prog -> {
@@ -331,7 +333,7 @@ public class ProgramService {
             } else if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)) {
                 fetchAllProgramsShared(allPrograms, "recieverUID");
             }
-        }else{
+        } else {
             allPrograms.setValue(new ArrayList<>());
         }
     }
@@ -356,19 +358,25 @@ public class ProgramService {
         }
     }
 
-    public void shareProgramWithUser(Program p, User user) {
+    public void shareProgramWithUser(Context context, Program p, User user) {
         SharedUser sharedUser = new SharedUser();
         sharedUser.setProgramUID(p.getKey());
         sharedUser.setSenderUID(userService.getUserUID());
         sharedUser.setRecieverUID(user.getUID());
         sharedUser.setSenderName(user.getName());
         sharedUser.setProgramName(p.getProgramName());
-        sharedUser.setSenderToken(user.getUserToken());
+        String userToken = user.getUserToken();
+        if(userToken.equals("")){
+            userToken = FireBaseMessageService.getToken(context);
+        }
+        sharedUser.setSenderToken(userToken);
         p.setUnShareable(true);
-        saveProgramToFireBase(p);
+        updateProgram(p);
         String key = sharedProgramReference.push().getKey();
         sharedProgramReference.child(key).setValue(sharedUser);
     }
+
+
 
 
     public void deleteProgram(Program p) {

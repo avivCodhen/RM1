@@ -158,6 +158,16 @@ public class MyProgramsActivity extends BaseActivity implements
 
     @Override
     public void deleteProgram(Program p) {
+        if (p.isUnShareable()) {
+            MaterialDialogHandler.get()
+                    .defaultBuilder(this, "You cannot delete a program you shared.", "OK")
+                    .hideNegativeButton()
+                    .buildDialog()
+                    .addPositiveActionFunc(v -> {
+                    }, true)
+                    .show();
+
+        }
         programService.deleteProgram(p);
         workoutsService.deleteWorkout(p.getKey());
     }

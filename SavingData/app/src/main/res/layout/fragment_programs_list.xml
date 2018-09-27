@@ -8,6 +8,11 @@
         android:id="@+id/program_list_smartemptyview"
         android:layout_height="match_parent"></com.strongest.savingdata.MyViews.SmartEmptyView>
 
+    <com.strongest.savingdata.MyViews.SmartProgressBar
+        android:layout_width="match_parent"
+        android:id="@+id/programlist_fragment_smartprogressbar"
+        android:layout_height="match_parent"></com.strongest.savingdata.MyViews.SmartProgressBar>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment_my_program_recyclerview"
         android:layout_width="match_parent"
