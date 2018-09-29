@@ -61,6 +61,7 @@ public class WorkoutsService {
     public static final String CURRENT_WORKOUT = "current_workouts";
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
+    private UserService userService;
     private Handler handler = new Handler();
 
     private static final String TAG = "workoutservice";
@@ -74,9 +75,10 @@ public class WorkoutsService {
     DatabaseReference databaseReference;
 
     public WorkoutsService(DataManager dataManager, SharedPreferences sharedPreferences,
-                           SharedPreferences.Editor editor) {
+                           SharedPreferences.Editor editor, UserService userService) {
         this.sharedPreferences = sharedPreferences;
         this.editor = editor;
+        this.userService = userService;
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase
                 .getInstance()
@@ -110,7 +112,7 @@ public class WorkoutsService {
                     if (resultList != null) {
                         mutableLiveDataWorkout.setValue((ArrayList<Workout>) resultList);
                     } else {
-                       mutableLiveDataWorkout.setValue(createDefaultWorkoutsList(programUID));
+                        mutableLiveDataWorkout.setValue(createDefaultWorkoutsList(programUID));
 
                     }
                 });
@@ -161,31 +163,34 @@ public class WorkoutsService {
         if (programUID.equals("")) {
             throw new IllegalArgumentException("there must be an program UID");
         }
-        List<WorkoutBro> list = new ArrayList<>();
-        for (Workout w : workouts) {
-            WorkoutBro workoutBro = new WorkoutBro();
-            workoutBro.setExArray(exerciseToPLObject((ArrayList) w.exArray));
-            workoutBro.setProgramUid(programUID);
-            workoutBro.setWorkoutName(w.workoutName);
-            //String key = databaseReference.push().getKey();
-            //w.setProgramUid(programUID);
-            list.add(workoutBro);
-        }
+        if (userService.isUserLoggedIn()) {
 
-        WorkoutHolder wor = new WorkoutHolder();
-        wor.setWorkouts(list);
-        try {
+            List<WorkoutBro> list = new ArrayList<>();
+            for (Workout w : workouts) {
+                WorkoutBro workoutBro = new WorkoutBro();
+                workoutBro.setExArray(exerciseToPLObject((ArrayList) w.exArray));
+                workoutBro.setProgramUid(programUID);
+                workoutBro.setWorkoutName(w.workoutName);
+                //String key = databaseReference.push().getKey();
+                //w.setProgramUid(programUID);
+                list.add(workoutBro);
+            }
 
-            databaseReference
-                    .child(programUID)
-                    .setValue(wor)
-                    .addOnCompleteListener(task -> {
+            WorkoutHolder wor = new WorkoutHolder();
+            wor.setWorkouts(list);
+            try {
 
-                        Log.d("aviv", "saveWorkoutsToFireBase: workout saved!");
-                    });
+                databaseReference
+                        .child(programUID)
+                        .setValue(wor)
+                        .addOnCompleteListener(task -> {
 
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e.toString());
+                            Log.d("aviv", "saveWorkoutsToFireBase: workout saved!");
+                        });
+
+            } catch (Exception e) {
+                throw new IllegalArgumentException(e.toString());
+            }
         }
     }
 
@@ -233,7 +238,7 @@ public class WorkoutsService {
 
     public static ArrayList<PLObject> exerciseToPLObject(List<PLObject.ExerciseProfile> to) {
         ArrayList<PLObject> list = new ArrayList<>();
-        if(to == null){
+        if (to == null) {
             to = new ArrayList<>();
         }
         list.addAll(to);

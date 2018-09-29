@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
+import com.strongest.savingdata.AService.UserService;
 import com.strongest.savingdata.AService.WorkoutsService;
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.R;
@@ -52,8 +53,9 @@ public class CreateProgramModule {
     @Singleton
     static WorkoutsService getWorkoutsService(DataManager dataManager,
                                               SharedPreferences sharedPreferences,
-                                              SharedPreferences.Editor editor) {
-        return new WorkoutsService(dataManager, sharedPreferences, editor);
+                                              SharedPreferences.Editor editor,
+                                              UserService userService) {
+        return new WorkoutsService(dataManager, sharedPreferences, editor, userService);
     }
 
 

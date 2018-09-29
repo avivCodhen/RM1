@@ -162,6 +162,23 @@ public class Muscle implements Serializable {
         return arr;
     }
 
+    public static String getParsedMuscles(String musclesString){
+        String muscle = "";
+        String[] muscles = Muscle.parseMuscles(musclesString);
+        int index = 0;
+        for (String m : muscles) {
+            m = m.replace("_"," ");
+            muscle += m;
+            if (index == 0 || index != muscle.length() && index != 0) {
+                muscle += ", ";
+            }
+            index++;
+        }
+
+        muscle = muscle.substring(0, muscle.length() - 2);
+        return muscle;
+    }
+
     public static class MuscleUI {
 
         private int color;
@@ -210,7 +227,7 @@ public class Muscle implements Serializable {
             case "biceps":
                 return new MuscleUI(R.color.color_arms, R.drawable.arms);
             case "triceps":
-                return new MuscleUI(R.color.color_arms, R.drawable.arms);
+                return new MuscleUI(R.color.color_arms, R.drawable.triceps);
             case "core":
                 return new MuscleUI(R.color.color_arms, R.drawable.core);
 
@@ -218,32 +235,6 @@ public class Muscle implements Serializable {
         return null;
     }
 
-    public static class MuscleStatObject {
-        private Muscle m;
-        private int times;
-        private MuscleUI mui;
-
-        public MuscleStatObject(Muscle m) {
-            this.m = m;
-            this.mui = Muscle.provideMuscleUI(m);
-        }
-
-        public void incrementTimes() {
-            this.times++;
-        }
-
-        public Muscle getM() {
-            return m;
-        }
-
-        public MuscleUI getMui() {
-            return mui;
-        }
-
-        public int getTimes() {
-            return times;
-        }
-    }
 
 }
 

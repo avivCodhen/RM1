@@ -8,7 +8,7 @@
         android:icon="@drawable/folder_24px"
         android:title="My Programs"
         app:actionViewClass="android.widget.TextView" />
-    
+
     <item
         android:id="@+id/menu_custom_exercise"
         android:icon="@android:drawable/ic_menu_save"

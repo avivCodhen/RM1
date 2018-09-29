@@ -217,6 +217,10 @@ public class ExerciseEditFragment extends BaseFragment implements
         recyclerView.addItemDecoration(itemDecor);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
         int selectedIndex = getSelectedIndex();
+
+        if(selectedIndex != -1){
+            recyclerView.scrollToPosition(selectedIndex);
+        }
         mAdapter = new ExerciseListAdapter(selectedIndex,
                 getContext(),
                 this,
@@ -362,40 +366,7 @@ public class ExerciseEditFragment extends BaseFragment implements
         selectedIndex = -1;
         return selectedIndex;
     }
-/*
 
-    private void initComment(View v) {
-        commentET.setText(exerciseProfile.comment);
-        commentCB.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            commentET.setEnabled(isChecked);
-            exerciseProfile.showComment = isChecked;
-            if (isChecked) {
-                exerciseProfile.comment = commentET.getText().toString();
-            }
-        });
-
-        commentCB.setChecked(exerciseProfile.showComment);
-        commentET.setEnabled(commentCB.isChecked());
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                exerciseProfile.comment = commentET.getText().toString();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                commentET.setSelection(s.length());
-                exerciseProfile.comment = commentET.getText().toString();
-
-            }
-        };
-        commentET.addTextChangedListener(textWatcher);
-    }
-*/
 
     /**
      * this function takes the muscle from the clicked exercise(if it has any)
@@ -459,7 +430,7 @@ public class ExerciseEditFragment extends BaseFragment implements
             //makes the youtube player visible
             youtubeLayout.setVisibility(View.VISIBLE);
 
-            selectedMuscle = beans.muscle;
+            //selectedMuscle = beans.muscle;
 
             //updates the selected index in the dapter
             mAdapter.setSelectedIndex(getSelectedIndex());

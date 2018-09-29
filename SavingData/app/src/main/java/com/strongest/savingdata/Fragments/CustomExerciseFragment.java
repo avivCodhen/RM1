@@ -125,7 +125,7 @@ public class CustomExerciseFragment extends Fragment implements OnGridViewMuscle
                     exercise.name = choosedText;
                     exercise.muscle = choosedMuscle;
                     exercise.primaryMuscle = choosedMuscle.getMuscle_display();
-                    exercise.setDefault_int(1); //1 = exercise is not deault(is not a part of my database)
+                    exercise.setDefault_int(1); // 1 = exercise is not deafult(is not a part of my database)
                     ArrayList<Beans> userExercises = (ArrayList<Beans>) dataManager.getExerciseDataManager().readByTable(DBExercisesHelper.TABLE_EXERCISES_CUSTOM);
                     if (validateNameInList(userExercises)) {
                         dataManager.getExerciseDataManager().insertData(DBExercisesHelper.TABLE_EXERCISES_CUSTOM, exercise);

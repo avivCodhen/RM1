@@ -64,6 +64,9 @@
 
     <string name="default_notification_channel_id">"rm1channel"</string>
     <string name="shared_preferences">AppSharedPreferences</string>
+    <string name="share_program">Share Program</string>
+    <string name="no_program">You haven\'t loaded any programs yet.</string>
+    <string name="load_program_to_share">Load or create a program to share.</string>
 
 
     <!-- <string name="untrained_description">You do not have experience lifting weights at all, or you have not been training regularly for a year or more.\n\nYour progress will be fast, and the programming will be simple.</string>

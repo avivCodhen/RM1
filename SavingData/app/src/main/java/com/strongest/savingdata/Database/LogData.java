@@ -18,7 +18,7 @@ public class LogData {
         public String rep;
         public String rest;
         public double weight;
-        public boolean dontAdd;
+        public boolean add;
 
         public LogDataSets(String title, String rep, String rest, double weight){
 

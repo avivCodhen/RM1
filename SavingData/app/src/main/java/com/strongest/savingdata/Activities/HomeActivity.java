@@ -60,6 +60,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.strongest.savingdata.AModels.workoutModel.WorkoutsModel.Actions.Advanced;
+import static com.strongest.savingdata.AModels.workoutModel.WorkoutsModel.Actions.Share;
 // import com.roughike.bottombar.OnMenuTabClickListener;
 
 public class HomeActivity extends BaseActivity implements
@@ -68,7 +69,7 @@ public class HomeActivity extends BaseActivity implements
         Architecture.view.LongClickView,
         Architecture.view.ProgramTools,
         ProgramSettingsFragment.OnProgramSettingsChange,
-        OnFABMenuSelectedListener{
+        OnFABMenuSelectedListener {
 
     // public WorkoutsModelController workoutsModelController;
 
@@ -86,8 +87,7 @@ public class HomeActivity extends BaseActivity implements
     DrawerLayout mDrawerLayout;
     @BindView(R.id.home_activity_navigationview)
     NavigationView mNavigationView;
-    @BindView(R.id.home_activity_navigationview_program)
-    NavigationView programNavigationView;
+
     @BindView(R.id.activity_home_longclick_menu)
     public LongClickMenuView longClickMenuView;
     @BindView(R.id.activity_home_viewpager)
@@ -161,7 +161,7 @@ public class HomeActivity extends BaseActivity implements
         fabRevealMenu.setOnFABMenuSelectedListener(this);*/
 
 
-        if(userService.firstTimeClient()){
+        if (userService.firstTimeClient()) {
             toLogInActivity();
         }
 
@@ -237,8 +237,11 @@ public class HomeActivity extends BaseActivity implements
             mNavigationView.getMenu().clear();
             mNavigationView.inflateMenu(R.menu.menu_main_logged_in);
             View v = mNavigationView.getHeaderView(0);
-            TextView tv = v.findViewById(R.id.usernameTV);
-            tv.setText(userService.getUsername());
+            TextView untv = v.findViewById(R.id.usernameTV);
+            TextView emtv = v.findViewById(R.id.emailTV);
+
+            untv.setText(userService.getUsername());
+            emtv.setText(userService.getEmail());
             //TODO: apply any "user logged in" changes such as username
         } else {
             mNavigationView.getMenu().clear();
@@ -270,6 +273,7 @@ public class HomeActivity extends BaseActivity implements
                 mViewPager.setCurrentItem(tab.getPosition());
                 longClickMenuView.onHideMenu();
                 notifyCurrentWorkout();
+                fab.show();
                 //layoutManager.mLayoutManagerHelper.updateLayoutManagerHelper(mViewPager.getCurrentItem());
             }
 
@@ -341,7 +345,7 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-       // programToolsBtn = findViewById(R.id.edit_menu);
+        // programToolsBtn = findViewById(R.id.edit_menu);
         //programToolsView.setProgramToolsBtn(programToolsBtn);
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
@@ -363,10 +367,10 @@ public class HomeActivity extends BaseActivity implements
         Fragment f;
         Intent i;
         switch (item.getItemId()) {
-            case R.id.menu_create_program:
+          /*  case R.id.menu_create_program:
                 f = new NewProgramFragment();
                 addFragmentToActivity(R.id.activity_home_framelayout, f, "NewProgram");
-                break;
+                break;*/
             case R.id.menu_my_programs:
 
                 toMyProgramsActivity();
@@ -382,18 +386,39 @@ public class HomeActivity extends BaseActivity implements
                 break;
 
             case R.id.menu_share_program:
-                i = new Intent(this, ShareProgramActivity.class);
-                i.putExtra("programuid", programService.getProgramUID());
-                i.putExtra("program", program);
-                startActivity(i);
+                toShareActivity();
                 break;
             case R.id.menu_logout:
                 userService.logout();
+                finish();
+                toLogInActivity();
                 break;
         }
         mDrawerLayout.closeDrawer(Gravity.START);
 
         return false;
+    }
+
+    private void toShareActivity() {
+
+        if (program == null) {
+            MaterialDialogHandler
+                    .get()
+                    .defaultBuilder(this, getString(R.string.no_program), "My Programs")
+                    .addContent(getString(R.string.load_program_to_share))
+                    .buildDialog()
+                    .addPositiveActionFunc(v -> toMyProgramsActivity(), true)
+                    .show();
+        } else if (!userService.isUserLoggedIn()) {
+            MaterialDialogHandler.get().showNotLoggedInDialog(this, v -> toLogInActivity());
+        } else {
+
+            Intent i = new Intent(this, ShareProgramActivity.class);
+            i.putExtra("programuid", programService.getProgramUID());
+            i.putExtra("program", program);
+            startActivity(i);
+
+        }
     }
 
     private void toLogInActivity() {
@@ -469,7 +494,10 @@ public class HomeActivity extends BaseActivity implements
         if (action == Advanced) {
             addFragmentToActivity(R.id.activity_home_framelayout, new ProgramSettingsFragment(), "programsettings");
 
-        } else {
+        }else if (action == Share){
+            toShareActivity();
+        }
+        else {
             workoutsViewModel.workoutsModel.validateActions(
                     workoutsViewModel.getWorkoutsList().getValue(),
                     mViewPager.getCurrentItem(),

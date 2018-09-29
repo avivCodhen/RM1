@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,6 +49,7 @@ public class ProgramToolsView extends LinearLayout {
 
     FloatingActionButton fab;
     FrameLayout clickSpaceView;
+    Button shareProgramBtn;
 
     private RecyclerView mRecyclerview;
     private ArrayList<ProgramButton> buttons;
@@ -135,6 +137,12 @@ public class ProgramToolsView extends LinearLayout {
         mRecyclerview.setAdapter(adapter);
         openProgramToolsEL = (ExpandableLayout) findViewById(R.id.workout_view_program_tools_expandable);
         openProgramToolsEL.setOrientation(ExpandableLayout.HORIZONTAL);
+
+        shareProgramBtn = findViewById(R.id.share_program_programtoolsview);
+
+        shareProgramBtn.setOnClickListener(shareView->{
+            listener.onProgramToolsAction(Actions.Share);
+        });
     }
 
     //this function expands the expandable layout

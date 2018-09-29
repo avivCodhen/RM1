@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,12 +108,11 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
 
             @Override
             public void afterTextChanged(Editable s) {
-                ((HomeActivity) getActivity()).title.setText(editText.getText().toString());
+              /*  ((HomeActivity) getActivity()).title.setText(editText.getText().toString());
                 Program p = ((HomeActivity) getActivity()).program;
                 p.setProgramName(editText.getText().toString());
                 editText.setSelection(s.length());
-                toolbarTitle.setText(editText.getText());
-                ((HomeActivity) getActivity()).programViewModel.updateProgram(p);
+                toolbarTitle.setText(editText.getText());*/
 
                 //TODO: fix this
                 //  ((HomeActivity) getActivity()).programmer.getProgram().programName = editText.getText().toString();
@@ -128,11 +128,13 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
 
             MaterialDialogHandler
                     .get()
-                    .defaultBuilder(getContext(),"Edit Program Name", "CHANGE")
-                    .addInput(titleText, (dialog, input) -> {
+                    .defaultBuilder(getContext(), "Edit Program Name", "CHANGE")
+                    .addInput(InputType.TYPE_CLASS_TEXT, titleText, (dialog, input) -> {
                         editText.setText(input.toString());
                         toolbarTitle.setText(editText.getText().toString());
-                        ((HomeActivity)getActivity()).program.setProgramName(input.toString());
+                        Program p = ((HomeActivity) getActivity()).program;
+                        p.setProgramName(input.toString());
+                        ((HomeActivity) getActivity()).programViewModel.updateProgram(p);
                     })
                     .buildDialog()
                     .show();

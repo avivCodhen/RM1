@@ -45,7 +45,6 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="45dp"
                 android:text=""
-                android:textColor="@color/red"
                 android:visibility="gone" />
 
         </LinearLayout>
@@ -136,7 +135,7 @@
                         android:id="@+id/sets_reps_icon"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
-                        android:src="@drawable/icon_reps_48px"
+                        android:src="@drawable/icon_reps"
                         android:text="Reps: "
                         android:textColor="@color/textview_color"
                         android:textSize="12sp" />
@@ -164,7 +163,7 @@
                         android:id="@+id/sets_rest_icon"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
-                        android:src="@drawable/icon_time_48px"
+                        android:src="@drawable/icon_clock"
                         android:text="Rest: "
                         android:textColor="@color/textview_color"
                         android:textSize="12sp" />
@@ -191,7 +190,7 @@
                         android:id="@+id/sets_weight_icon"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:src="@drawable/icon_weight_48px"
+                        android:src="@drawable/icon_weight"
                         android:text="Wgh:"
 
                         android:textColor="@color/textview_color"

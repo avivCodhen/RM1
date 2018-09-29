@@ -58,7 +58,7 @@ public class ExerciseRecyclerAdapter extends RecyclerView.Adapter<ExerciseRecycl
             holder.name.setText(exerciseProfile.getExercise().getName());
 
         holder.exerciseInfo.setOnClickListener(v -> {
-            if (exerciseProfile.getExercise() != null) {
+            if (exerciseProfile.getExercise() == null) {
                 Toast.makeText(context, "You did not choose any exercises", Toast.LENGTH_SHORT).show();
 
             } else {
@@ -66,6 +66,9 @@ public class ExerciseRecyclerAdapter extends RecyclerView.Adapter<ExerciseRecycl
             }
         });
 
+        if(exerciseProfile.getExercise().getDefault_int() == 1){
+            holder.exerciseInfo.setVisibility(View.GONE);
+        }
         if (exerciseProfile.type == WorkoutLayoutTypes.IntraExerciseProfile) {
             holder.tag.setText("Superset");
             holder.childTag.setVisibility(View.VISIBLE);

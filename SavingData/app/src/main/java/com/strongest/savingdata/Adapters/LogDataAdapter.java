@@ -35,8 +35,14 @@ public class LogDataAdapter extends RecyclerView.Adapter<LogDataAdapter.LogDataA
 
     @Override
     public void onBindViewHolder(LogDataAdapterViewHolder holder, int position) {
-        holder.tv.setText(dates.get(position).date);
-        holder.timeTV.setText(dates.get(position).time);
+        LogData  l = dates.get(position);
+        String fullText;
+        if(l.time.equals("")){
+            fullText = l.date;
+        }else{
+            fullText = l.date + "," + l.time;
+        }
+        holder.tv.setText(fullText);
         holder.itemView.setOnClickListener(v ->{
             logDataAdapterOnClick.dateClicked(dates.get(position).full);
         });

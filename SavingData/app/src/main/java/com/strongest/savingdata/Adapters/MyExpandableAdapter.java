@@ -3,6 +3,7 @@ package com.strongest.savingdata.Adapters;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -211,8 +212,8 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         vh2.edit.setOnClickListener((View v) ->{
-            MaterialDialogHandler.get().defaultBuilder(context,"Edit Title","CHANGe")
-                    .addInput(vh2.bodyTv.getText().toString(), ((dialog, input) -> {
+            MaterialDialogHandler.get().defaultBuilder(context,"Edit Title","CHANGE")
+                    .addInput(InputType.TYPE_CLASS_TEXT,vh2.bodyTv.getText().toString(), ((dialog, input) -> {
                         bodyText.setTitle(input.toString());
                         vh2.bodyTv.setText(input.toString());
                     }))

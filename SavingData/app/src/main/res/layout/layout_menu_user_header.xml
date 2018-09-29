@@ -1,16 +1,31 @@
-<LinearLayout android:layout_height="wrap_content"
+<RelativeLayout android:layout_height="170dp"
     android:background="@color/colorAccent"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
+<LinearLayout
+    android:layout_alignParentBottom="true"
+    android:padding="10dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <TextView
         android:id="@+id/usernameTV"
-        android:padding="30dp"
         android:textSize="20dp"
         android:textColor="@color/colorPrimary"
-        android:text="Aviv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:layout_marginTop="2dp"
+        android:textColor="@color/colorPrimary"
+        android:id="@+id/emailTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
 </LinearLayout>
+
+</RelativeLayout>

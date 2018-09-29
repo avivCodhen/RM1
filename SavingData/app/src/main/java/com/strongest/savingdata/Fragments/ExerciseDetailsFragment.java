@@ -42,6 +42,7 @@ import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.LogData;
 import com.strongest.savingdata.Database.LogDataManager;
 import com.strongest.savingdata.Dialogs.LogModeDialog;
+import com.strongest.savingdata.LogDataActivity;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.R;
@@ -170,6 +171,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         getExercise();
         if (exerciseProfile == null) {
             getFragmentManager().popBackStack();
+            return;
         }
         setsItemAdapter = new SetsItemAdapter(exerciseProfile);
         initToolbar();
@@ -226,7 +228,12 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
         saveToLogBtn.setOnClickListener(saveLog -> {
             // logDataManager.insert(exerciseProfile);
-            addFragmentChild(getFragmentManager(), ExerciseLogDataFragment.getInstance("", exerciseProfile), "log");
+
+            Intent i = new Intent(getContext(), LogDataActivity.class);
+            i.putExtra(LogDataActivity.EXERCISE, exerciseProfile);
+            i.putExtra(LogDataActivity.DATE, LogDataManager.getDateString());
+            startActivity(i);
+            // addFragmentChild(getFragmentManager(), ExerciseLogDataFragment.getInstance("", exerciseProfile), "log");
         });
 
 
@@ -258,9 +265,10 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
     private void initToolbar() {
 
-        toolbar.setNavigationIcon(R.drawable.back_arrow_24px);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         // textview_title.setText( selectedExerciseViewModel.getParentWorkout().getWorkoutName());
         if (exerciseProfile.getExercise() != null) {
+            textview_title.setText(exerciseProfile.getExercise().getName());
 
             //used to put exercisename here
         }
@@ -309,7 +317,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
     private void transitionToExerciseDetailsActivity(Beans exercise) {
         Intent i = new Intent(getContext(), ExerciseDetailsActivity.class);
-        i.putExtra("exercise", exercise);
+        i.putExtra("exercise", exerciseProfile);
        /* Pair<View, String>[] pairs = new Pair[2];
 
         pairs[0] = Pair.create(icon, "icon");
@@ -460,7 +468,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                     adapter.setExArray(workout.getExArray());
                     adapter.notifyDataSetChanged();
 
-                    MyJavaAnimator.fadeIn(recyclerView);
+                    MyJavaAnimator.fadeIn(300,recyclerView);
 
                 }
             });

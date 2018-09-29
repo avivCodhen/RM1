@@ -176,27 +176,40 @@ public class ProgramService {
     }
 
     public void updateProgram(Program p) {
-        databaseReference.child(p.getKey()).setValue(p);
+        if (isuserAllowedToSaveProgramToDatabase()) {
+            databaseReference.child(p.getKey()).setValue(p);
+        }
         programRepository.updateProgram(p);
     }
 
     private Program saveProgramToFireBase(Program program) {
+        String key = databaseReference.push().getKey();
+        program.setKey(key);
         if (isUserAllowedToCreateProgram()) {
-
+            programRepository.insertProgram(program, null);
+            saveProgramKeyToSharedPreferences(key);
+        }
+        if (isuserAllowedToSaveProgramToDatabase()) {
             DatabaseReference databaseReference = FirebaseDatabase.getInstance()
                     .getReference()
                     .child(FireBaseUtils.FIRE_BASE_REFERENCE_PROGRAMS);
-            String key = databaseReference.push().getKey();
-            program.setKey(key);
+
             programRepository.insertProgram(program, null);
-            saveProgramKeyToSharedPreferences(key);
             databaseReference.child(key).setValue(program).addOnCompleteListener(task -> Log.d(
                     "aviv", "onComplete: " + task.getException())
             );
         }
 
+
         return program;
 
+    }
+
+    private boolean isuserAllowedToSaveProgramToDatabase() {
+        if (userService.isUserLoggedIn()) {
+            return true;
+        }
+        return false;
     }
 
     private boolean isUserAllowedToCreateProgram() {
@@ -366,7 +379,7 @@ public class ProgramService {
         sharedUser.setSenderName(user.getName());
         sharedUser.setProgramName(p.getProgramName());
         String userToken = user.getUserToken();
-        if(userToken.equals("")){
+        if (userToken.equals("")) {
             userToken = FireBaseMessageService.getToken(context);
         }
         sharedUser.setSenderToken(userToken);
@@ -375,8 +388,6 @@ public class ProgramService {
         String key = sharedProgramReference.push().getKey();
         sharedProgramReference.child(key).setValue(sharedUser);
     }
-
-
 
 
     public void deleteProgram(Program p) {

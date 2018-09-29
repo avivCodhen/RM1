@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
+        android:id="@+id/title_tv"
         android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -14,6 +15,7 @@
         android:layout_height="wrap_content">
 
         <CheckBox
+            android:id="@+id/checkbox"
             android:checked="true"
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
@@ -21,33 +23,34 @@
 
         <LinearLayout
             android:gravity="center"
-
+            android:id="@+id/reps_lay"
             android:layout_weight="1"
             android:padding="5dp"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <TextView
+            <ImageView
+                android:src="@drawable/icon_reps"
                 android:textSize="16dp"
                 android:layout_marginBottom="5dp"
                 android:text="Reps:"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="@dimen/sets_icons_size"
+                android:layout_height="@dimen/sets_icons_size" />
 
 
             <TextView
-                android:textColor="@color/colorPrimary"
-
+                android:textColor="@color/colorAccent"
+                android:id="@+id/reps_tv"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:background="@color/colorAccent"
                 android:layout_gravity="center"
                 android:text="10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
@@ -55,30 +58,33 @@
             android:gravity="center"
             android:layout_weight="1"
             android:padding="5dp"
+
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <TextView
+            <ImageView
+                android:src="@drawable/icon_clock"
                 android:textSize="16dp"
                 android:layout_marginBottom="5dp"
                 android:text="Rest:"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="@dimen/sets_icons_size"
+                android:layout_height="@dimen/sets_icons_size"/>
 
 
             <TextView
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/black"
 
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:background="@color/colorAccent"
                 android:layout_gravity="center"
                 android:text="10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:id="@+id/rest_tv"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
@@ -87,30 +93,32 @@
 
             android:layout_weight="1"
             android:padding="5dp"
+            android:id="@+id/weight_lay"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <TextView
-
+            <ImageView
+                android:src="@drawable/icon_weight"
                 android:textSize="16dp"
                 android:layout_marginBottom="5dp"
                 android:text="Weight:"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="@dimen/sets_icons_size"
+                android:layout_height="@dimen/sets_icons_size" />
 
 
             <TextView
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/colorAccent"
 
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:background="@color/colorAccent"
                 android:layout_gravity="center"
                 android:text="10"
-                android:layout_width="wrap_content"
+                android:id="@+id/weight_tv"
+                android:gravity="center"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>

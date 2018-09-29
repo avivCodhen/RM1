@@ -175,4 +175,12 @@ public class UserService {
         }
         return false;
     }
+
+    public String getEmail() {
+        if (firebaseAuth.getCurrentUser() == null) {
+            return "";
+        } else {
+            return firebaseAuth.getCurrentUser().getEmail();
+        }
+    }
 }

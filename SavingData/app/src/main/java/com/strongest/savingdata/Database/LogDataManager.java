@@ -33,18 +33,14 @@ public class LogDataManager {
         db = dbLogDataHelper.getWritableDatabase();
     }
 
-    public void insert(PLObject.ExerciseProfile exerciseProfile) {
-
-
-        inserter(exerciseProfile.getExercise().name, exerciseProfile);
+    public void insert(String exerciseName, ArrayList<LogData.LogDataSets> list) {
+        inserter(exerciseName, list);
     }
 
-    private void inserter(String tableNameToTrim, PLObject.ExerciseProfile exerciseProfile) {
+    private void inserter(String tableNameToTrim, ArrayList<LogData.LogDataSets> list) {
         String tableName = trimExerciseNameSpace(tableNameToTrim);
-        String date = new SimpleDateFormat("MMMM dd, yyyy", Locale.US).format(new Date());
-        String currentTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
-        String result = date + ", " + currentTime;
-        ArrayList<LogData.LogDataSets> list = exerciseToLogDataSetList(exerciseProfile);
+        String result = getDateString();
+       // ArrayList<LogData.LogDataSets> list = exerciseToLogDataSetList(exerciseProfile);
         if (isTableExists(tableName)) {
             for (LogData.LogDataSets l : list) {
                 db.insert(tableName, null, getContentValues(l, result));
@@ -86,7 +82,15 @@ public class LogDataManager {
     //trims spaces to "_"
     public static String trimExerciseNameSpace(String exerciseName) {
         String trimmed = exerciseName.replace(" ", "_");
+        trimmed = trimmed.replace("-","_");
         return trimmed;
+    }
+
+    public static String getDateString(){
+        String date = new SimpleDateFormat("MMMM dd, yyyy", Locale.US).format(new Date());
+        String currentTime = new SimpleDateFormat("HH:mm").format(new Date());
+        String result = date + ", " + currentTime;
+        return result;
     }
 
     public LogData.LogDataSets setToLogDataSet(int position, PLObject.SetsPLObject setsPLObject) {
@@ -166,11 +170,7 @@ public class LogDataManager {
                     date = c.getString(c.getColumnIndex(DBLogDataHelper.DATE));
                     String[] arr = date.split(",");
                     dates.add(new LogData(date, arr[0], arr[1]));
-                   /* d.reps = c.getString(c.getColumnIndex(DBLogDataHelper.REP_ID));
-                    d.rest = c.getString(c.getColumnIndex(DBLogDataHelper.REST));
-                    d.type = c.getString(c.getColumnIndex(DBLogDataHelper.TYPE));
-                    d.weight = c.getString(c.getColumnIndex(DBLogDataHelper.WEIGHT));
-                    d.date = date;*/
+
                 }
             } while (c.moveToNext());
         }

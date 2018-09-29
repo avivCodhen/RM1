@@ -127,6 +127,11 @@ public class ExerciseModel {
             intraSet.innerType = WorkoutLayoutTypes.SuperSetIntraSet;
             intraSet.type = WorkoutLayoutTypes.SuperSetIntraSet;
             setsPLObject.superSets.add(intraSet);
+            String exerciseName = "";
+            if (parent.exerciseProfiles.get(i).getExercise() != null) {
+                exerciseName = parent.exerciseProfiles.get(i).getExercise().getName();
+            }
+            intraSet.setExerciseName(parent.exerciseProfiles.get(i).getExercise().getName());
         }
     }
 }

@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.R;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,21 +22,21 @@ import java.io.Serializable;
 public class MyUtils {
 
 
-public static class Interface{
+    public static class Interface {
 
-    public static void disableClick(final View v, int time){
-        v.setClickable(false);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                v.setClickable(true);
-            }
-        }, time);
-    }
+        public static void disableClick(final View v, int time) {
+            v.setClickable(false);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    v.setClickable(true);
+                }
+            }, time);
+        }
     }
 
-    public static String[] stringsToArray(String...strings){
-            return strings;
+    public static String[] stringsToArray(String... strings) {
+        return strings;
     }
 
 
@@ -77,14 +78,18 @@ public static class Interface{
         bos.close();
         byte[] byteData = bos.toByteArray();
         ByteArrayInputStream bais = new ByteArrayInputStream(byteData);
-        PLObject object = (PLObject)  new ObjectInputStream(bais).readObject();
-        return (T)object;
+        PLObject object = (PLObject) new ObjectInputStream(bais).readObject();
+        return (T) object;
     }
 
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null;
+    }
+
+    public static int color(Context context, int color) {
+        return ContextCompat.getColor(context, color);
     }
 }
 

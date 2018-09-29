@@ -29,27 +29,39 @@
             android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/header"
                 android:padding="10dp"
                 android:id="@+id/program_tools_view_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
-            <TextView
-                android:id="@+id/commandTV"
-                android:layout_marginLeft="10dp"
-                android:layout_above="@+id/iv"
-                android:text="Added a new Exercise."
-                android:textColor="@color/colorPrimary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:id="@+id/iv"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/rocket_happy"
-                android:layout_alignParentBottom="true"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                />
+          <LinearLayout
+              android:id="@+id/header"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+              <ImageView
+                  android:id="@+id/iv"
+                    android:layout_gravity="center_horizontal"
+                  android:src="@drawable/rocket_happy"
+                  android:layout_width="150dp"
+                  android:layout_height="150dp"
+                  />
+
+              <Button
+                  android:id="@+id/share_program_programtoolsview"
+                    android:backgroundTint="@color/colorPrimary"
+                  android:text="@string/share_program"
+                  android:textColor="@color/colorAccent"
+                  android:layout_gravity="center_horizontal"
+                  style="@style/Widget.AppCompat.Button.Colored"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" />
+
+
+          </LinearLayout>
 
         </RelativeLayout>
 

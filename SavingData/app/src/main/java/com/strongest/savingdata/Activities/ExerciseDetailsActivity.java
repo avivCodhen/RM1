@@ -45,13 +45,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ExerciseDetailsActivity extends BaseActivity implements
         Architecture.view.LongClickView, AppBarLayout.OnOffsetChangedListener, LogDataAdapterOnClick {
 
-
-    /*   @BindView(R.id.btn_container)
-       LinearLayout btnContainer;*/
-
-    /* @BindView(R.id.nestedScrollView)
-     NestedScrollView nestedScrollView;
- */
     @BindView(R.id.textview_title)
     TextView textview_title;
 
@@ -63,44 +56,24 @@ public class ExerciseDetailsActivity extends BaseActivity implements
 
     @BindView(R.id.details_fragment_recyclerview)
     RecyclerView recyclerView;
-    @BindView(R.id.fragment_details_recycler_exercises)
-    RecyclerView exerciseRecycler;
+
     @BindView(R.id.exercise_details_activity_toolbar)
     Toolbar toolbar;
 
     @BindView(R.id.youtube_fragment)
     FrameLayout youtubeFragment;
-    /*@BindView(R.id.fragment_details_saveExitToolbar)
-    SaveExitToolBar saveExitToolBar;*/
 
-    /*@BindView(R.id.play_fav)
-    FloatingActionButton fab;*/
+    @BindView(R.id.muscles_tv)
+    TextView musclesTV;
 
-    /*@BindView(R.id.youtube_expand_layout)
-    ExpandableLayout el;*/
+    @BindView(R.id.type_tv)
+    TextView typeTV;
 
-   /* @BindView(R.id.add_set_btn)
-    FloatingActionButton addSet;*/
-
-   /* @BindView(R.id.activity_exercise_collapsingtoolbar)
-    CollapsingToolbarLayout mCollapseToolbarLayout;
-
-    @BindView(R.id.activity_exercise_app_bar)
-    AppBarLayout mAppbar;*/
 
     LogDataAdapter adapter;
-    private Workout workout;
 
-
-    private SelectedExerciseViewModel selectedExerciseViewModel;
-    private WorkoutsViewModel workoutsViewModel;
-    private SetsItemAdapter setsItemAdapter;
-
-    //private PLObject.ExerciseProfile exerciseProfile;
-    private Beans exercise;
+    private PLObject.ExerciseProfile exercise;
     private YoutubeHandler youtubeHandler;
-    private LinearLayoutManager setsLayoutManager;
-
 
     /**
      * this is related to the toolbar and appbar offsets
@@ -124,12 +97,8 @@ public class ExerciseDetailsActivity extends BaseActivity implements
         setContentView(R.layout.activity_exercise_details);
         ButterKnife.bind(this);
         testIv.setTransitionName(getIntent().getStringExtra("transitionName"));
-        exercise = (Beans) getIntent().getSerializableExtra("exercise");
-        //exerciseProfile = new PLObject.ExerciseProfile((PLObject.ExerciseProfile) getIntent().getSerializableExtra("exercise"));
+        exercise = (PLObject.ExerciseProfile) getIntent().getSerializableExtra("exercise");
         initToolbar();
-        //textview_title.setTransitionName("q");
-        //testIv.setTransitionName("q1");
-        //    mAppbar.addOnOffsetChangedListener(this);
         initRecycler();
 
         toolbarAddSet.setOnClickListener(toolBarAddIcon -> {
@@ -137,7 +106,7 @@ public class ExerciseDetailsActivity extends BaseActivity implements
         });
         youtubeHandler = YoutubeHandler.getHandler(this);
         youtubeHandler.init(R.id.youtube_fragment, getSupportFragmentManager())
-                .searchOnYoutube(exercise.getName());
+                .searchOnYoutube(exercise.getExercise().getName());
     }
 
     @Override
@@ -169,14 +138,14 @@ public class ExerciseDetailsActivity extends BaseActivity implements
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (outState != null) {
-            exercise = (Beans) outState.getSerializable("exercise");
+            exercise = (PLObject.ExerciseProfile) outState.getSerializable("exercise");
         }
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        exercise = ((Beans) getIntent().getSerializableExtra("exercise"));
+        exercise = ((PLObject.ExerciseProfile) getIntent().getSerializableExtra("exercise"));
 
     }
 
@@ -185,13 +154,16 @@ public class ExerciseDetailsActivity extends BaseActivity implements
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (exercise != null) {
-            textview_title.setText(exercise.getName());
+            textview_title.setText(exercise.getExercise().getName());
 
         }
         if (exercise.getMuscle() != null) {
             Muscle.MuscleUI mui = Muscle.provideMuscleUI(exercise.getMuscle());
             testIv.setImageResource(mui.getImage());
+            musclesTV.setText(Muscle.getParsedMuscles(exercise.getExercise().getMuscles()));
         }
+
+        typeTV.setText(exercise.getExercise().getType());
         toolbar.setTitle("");
         toolbar.setNavigationOnClickListener((navClicked) -> {
             finish();
@@ -204,7 +176,7 @@ public class ExerciseDetailsActivity extends BaseActivity implements
         ArrayList<LogData> dates;
 
         try {
-            dates = m.readDates(exercise.getName());
+            dates = m.readDates(exercise.getExercise().getName());
         } catch (Exception e) {
             dates = new ArrayList<>();
             dates.add(new LogData("", "No Record Found", ""));
@@ -251,7 +223,7 @@ public class ExerciseDetailsActivity extends BaseActivity implements
     public void dateClicked(String date) {
         SelectedLogDataViewModel selectedLogDataViewModel = ViewModelProviders.of(this)
                 .get(SelectedLogDataViewModel.class);
-        ArrayList<LogData.LogDataSets> sets = m.readSets(exercise.getName(), date);
+        ArrayList<LogData.LogDataSets> sets = m.readSets(exercise.getExercise().getName(), date);
         selectedLogDataViewModel.setSets(sets);
         addFragmentToActivity(R.id.exercise_log_frame, new ExerciseLogFragment(), "log");
     }

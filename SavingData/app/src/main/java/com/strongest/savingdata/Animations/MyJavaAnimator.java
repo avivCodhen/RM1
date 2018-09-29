@@ -67,18 +67,18 @@ public class MyJavaAnimator {
         }).start();
     }
 
-    public static void fadeIn(View... v) {
+    public static void fadeIn(int duration, View... v) {
         int j = v.length - 1;
         while (j > -1) {
-            v[j].animate().alpha(1.0f).setDuration(600).start();
+            v[j].animate().alpha(1.0f).setDuration(duration).start();
             v[j].setVisibility(View.VISIBLE);
             j--;
         }
     }
 
-    public static void fadeOut(View... v) {
+    public static void fadeOut(int duration,View... v) {
         for (View view : v) {
-            view.animate().alpha(0.0f).setDuration(600).start();
+            view.animate().alpha(0.0f).setDuration(duration).start();
             //view.setVisibility(View.INVISIBLE);
         }
     }
