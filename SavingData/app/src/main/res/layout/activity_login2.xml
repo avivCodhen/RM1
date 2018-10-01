@@ -88,6 +88,7 @@
                 style="@style/TextInputColorAccent">
 
                 <EditText
+                    android:textColor="@color/colorPrimary"
                     android:padding="10dp"
                     android:background="@color/transparent"
                     android:id="@+id/password"

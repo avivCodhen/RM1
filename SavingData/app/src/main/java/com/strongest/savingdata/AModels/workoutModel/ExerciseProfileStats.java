@@ -2,6 +2,7 @@ package com.strongest.savingdata.AModels.workoutModel;
 
 import com.strongest.savingdata.AModels.workoutModel.PLObject.ExerciseProfile;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
+import com.strongest.savingdata.Database.LogData;
 
 import java.util.ArrayList;
 
@@ -27,13 +28,22 @@ public class ExerciseProfileStats {
         return epStats;
     }
 
-    public static String getAllRepsString(ExerciseProfile exerciseProfile){
+    public static ExerciseProfileStats getInstance(ArrayList<LogData.LogDataSets> logDataSets) {
+        ExerciseProfileStats epStats = new ExerciseProfileStats();
+        epStats.totalSets = logDataSets.size();
+        epStats.totalReps = calculateTotalReps(logDataSets);
+        epStats.totalRest = calculateTotalRest(logDataSets);
+        epStats.totalVolume = calculateTotalVolume(logDataSets);
+        return epStats;
+    }
+
+    public static String getAllRepsString(ExerciseProfile exerciseProfile) {
         String reps = "";
         for (int i = 0; i < exerciseProfile.getSets().size(); i++) {
             PLObject.SetsPLObject setsPLObject = exerciseProfile.getSets().get(i);
             reps += setsPLObject.getExerciseSet().getRep();
-            if( i != exerciseProfile.getSets().size()-1){
-                reps+= ", ";
+            if (i != exerciseProfile.getSets().size() - 1) {
+                reps += ", ";
             }
         }
         return reps;
@@ -54,37 +64,53 @@ public class ExerciseProfileStats {
         }
         boolean notSame = false;
         for (int j = 1; j < repsList.size(); j++) {
-            if(repsList.get(j-1).equals(repsList.get(j))){
+            if (repsList.get(j - 1).equals(repsList.get(j))) {
 
-            }else{
+            } else {
                 notSame = true;
                 break;
             }
         }
-        if(!notSame){
-            if(repsList.size() != 0)
-            all_reps = repsList.get(0);
-        }else{
+        if (!notSame) {
+            if (repsList.size() != 0)
+                all_reps = repsList.get(0);
+        } else {
             all_reps = all_reps.substring(0, all_reps.length() - 2);
         }
 
         return all_reps;
     }
 
-    public static double calcSetVolume(ExerciseSet exerciseSet) {
+    public static double calcSetVolume(String reps, double weight) {
         double totalSetVolume = 0;
-        int rep = calcRep(exerciseSet.getRep());
-        totalSetVolume = rep * exerciseSet.getWeight();
+        int rep = calcRep(reps);
+        totalSetVolume = rep * weight;
         return totalSetVolume;
     }
 
     public static double calculateTotalVolume(ExerciseProfile ep) {
         double totalVolume = 0;
         for (int i = 0; i < ep.getSets().size(); i++) {
-            totalVolume += calcSetVolume(ep.getSets().get(i).getExerciseSet());
+            ExerciseSet e = ep.getSets().get(i).getExerciseSet();
+            totalVolume += calcSetVolume(e.getRep(), e.getWeight());
             for (int j = 0; j < ep.getSets().get(i).intraSets.size(); j++) {
-                totalVolume += calcSetVolume(ep.getSets().get(i).intraSets.get(j).getExerciseSet());
+                ExerciseSet e2 = ep.getSets().get(i).intraSets.get(j).getExerciseSet();
+
+                totalVolume += calcSetVolume(e2.getRep(), e2.getWeight());
             }
+            for (int j = 0; j < ep.getSets().get(i).superSets.size(); j++) {
+                ExerciseSet e3 = ep.getSets().get(i).superSets.get(j).getExerciseSet();
+
+                totalVolume += calcSetVolume(e3.getRep(), e3.getWeight());
+            }
+        }
+        return totalVolume;
+    }
+
+    public static double calculateTotalVolume(ArrayList<LogData.LogDataSets> list) {
+        double totalVolume = 0;
+        for (LogData.LogDataSets l : list) {
+            totalVolume += calcSetVolume(l.rep, l.weight);
         }
         return totalVolume;
     }
@@ -100,6 +126,18 @@ public class ExerciseProfileStats {
                 String intraRest = ep.getSets().get(i).intraSets.get(j).getExerciseSet().getRest();
                 totalRest += calcRest(intraRest);
             }
+            for (int j = 0; j < ep.getSets().get(i).superSets.size(); j++) {
+                String intraRest = ep.getSets().get(i).superSets.get(j).getExerciseSet().getRest();
+                totalRest += calcRest(intraRest);
+            }
+        }
+        return restToString(totalRest);
+    }
+
+    public static String calculateTotalRest(ArrayList<LogData.LogDataSets> list) {
+        int totalRest = 0;
+        for (LogData.LogDataSets l : list) {
+            totalRest += calcRest(l.rest);
         }
         return restToString(totalRest);
     }
@@ -149,9 +187,22 @@ public class ExerciseProfileStats {
                 String intraRep = ep.getSets().get(i).intraSets.get(j).getExerciseSet().getRep();
                 totalReps += calcRep(intraRep);
             }
+            for (int j = 0; j < ep.getSets().get(i).superSets.size(); j++) {
+                String intraRep = ep.getSets().get(i).superSets.get(j).getExerciseSet().getRep();
+                totalReps += calcRep(intraRep);
+            }
         }
         return totalReps;
 
+    }
+
+    public static int calculateTotalReps(ArrayList<LogData.LogDataSets> list) {
+        int totalReps = 0;
+        for (int j = 0; j < list.size(); j++) {
+            String intraRep = list.get(j).rep;
+            totalReps += calcRep(intraRep);
+        }
+        return totalReps;
     }
 
     public static int calculateTotalSets(ExerciseProfile ep) {
@@ -160,6 +211,9 @@ public class ExerciseProfileStats {
         for (int i = 0; i < numOfSets; i++) {
             totalSets++;
             for (int j = 0; j < ep.getSets().get(i).intraSets.size(); j++) {
+                totalSets++;
+            }
+            for (int j = 0; j < ep.getSets().get(i).superSets.size(); j++) {
                 totalSets++;
             }
         }

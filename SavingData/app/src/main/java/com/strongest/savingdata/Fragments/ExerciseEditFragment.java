@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.transition.Fade;
 import android.support.transition.Transition;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -62,15 +64,15 @@ public class ExerciseEditFragment extends BaseFragment implements
     public static final String FRAGMENT_EDIT_EXERCISE = "exerciseeditfragment";
     private OnExerciseSetChange onExerciseSetChange;
 
-    @BindView(R.id.muscle_tv)
+   /* @BindView(R.id.muscle_tv)
     TextView mMuscleText;
-
+*/
     @BindView(R.id.choose_change_Tv)
     TextView mChangeMuscleTV;
 
-    @BindView(R.id.choose_cancel_Tv)
+    /*@BindView(R.id.choose_cancel_Tv)
     TextView mCancelMuscleTV;
-
+*/
     @BindView(R.id.exercise_edit_fragment_saveExitToolbar)
     SaveExitToolBar saveExitToolBar;
 
@@ -83,11 +85,25 @@ public class ExerciseEditFragment extends BaseFragment implements
     @BindView(R.id.choose_recyclerview)
     RecyclerView recyclerView;
 
-    @BindView(R.id.choose_exercise_comment_cb)
+    /*@BindView(R.id.choose_exercise_comment_cb)
     CheckBox commentCB;
 
     @BindView(R.id.choose_exercise_comment_et)
     EditText commentET;
+*/
+
+    @BindView(R.id.edit_exercise_arrow_iv)
+    ImageView muscleArrow;
+
+    @BindView(R.id.choose_exercise_muscle_icon)
+    ImageView muscleIcon;
+
+    @BindView(R.id._choose_exercise_muscle_name_tv)
+    TextView muscleTV;
+
+    @BindView(R.id.player_btn)
+    FloatingActionButton fabPlayerBtn;
+
 
     @BindView(R.id.exercise_choose_search_view)
     FloatingSearchView mSearchView;
@@ -97,7 +113,7 @@ public class ExerciseEditFragment extends BaseFragment implements
     FrameLayout youtubeLayout;
 
     @BindView(R.id.youtube_player_wrapper)
-    ViewGroup youtubeWrapper;
+    ExpandableLayout youtubeWrapperEL;
 
 
     @BindView(R.id.exercise_layout)
@@ -137,6 +153,7 @@ public class ExerciseEditFragment extends BaseFragment implements
     int y;
 
     boolean clickedOnce;
+
     public static ExerciseEditFragment newInstance(String fragmentId) {
         ExerciseEditFragment f = new ExerciseEditFragment();
         Bundle bundle = new Bundle();
@@ -182,6 +199,10 @@ public class ExerciseEditFragment extends BaseFragment implements
         selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(fragmentId, SelectedExerciseViewModel.class);
         dataManager = workoutsViewModel.getDataManager();
         exerciseProfile = selectedExerciseViewModel.getSelectedExercise().getValue();
+        if(exerciseProfile == null){
+            getFragmentManager().popBackStack();
+            return;
+        }
         selectedExercise = exerciseProfile.exercise;
         selectedMuscle = exerciseProfile.getMuscle();
 
@@ -201,14 +222,14 @@ public class ExerciseEditFragment extends BaseFragment implements
                 MyJavaAnimator.animateRevealShowParams(v, true, R.color.colorAccent, x, y, null);
 
             }
-        }, 100);
+        }, 200);
         initToolbar();
         int height = ((HomeActivity) getActivity()).getScreenHeight();
         mGridViewAdapter = new GridViewMusclesAdapter(height, getContext(), dataManager, this);
         mGridView.setAdapter(mGridViewAdapter);
 
         if (exerciseProfile.getMuscle() != null) {
-            mMuscleText.setText(exerciseProfile.getMuscle().getMuscle_display());
+            muscleTV.setText(exerciseProfile.getMuscle().getMuscle_display());
             initExerciseBeans(exerciseProfile.getMuscle());
         }
 
@@ -218,7 +239,7 @@ public class ExerciseEditFragment extends BaseFragment implements
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
         int selectedIndex = getSelectedIndex();
 
-        if(selectedIndex != -1){
+        if (selectedIndex != -1) {
             recyclerView.scrollToPosition(selectedIndex);
         }
         mAdapter = new ExerciseListAdapter(selectedIndex,
@@ -243,18 +264,16 @@ public class ExerciseEditFragment extends BaseFragment implements
          * */
         mChangeMuscleTV.setOnClickListener(v12 -> {
             mExpandable.toggle();
-            mChangeMuscleTV.setVisibility(View.GONE);
-            mCancelMuscleTV.setVisibility(View.VISIBLE);
-        });
-        mCancelMuscleTV.setOnClickListener(v1 -> {
-            mCancelMuscleTV.setVisibility(View.GONE);
-            mChangeMuscleTV.setVisibility(View.VISIBLE);
-            mExpandable.toggle();
+            if(mExpandable.isExpanded()){
+                muscleArrow.setImageResource(R.drawable.sort_down_white_96dp);
+            }else{
+                muscleArrow.setImageResource(R.drawable.sort_up_white_96dp);
+
+            }
         });
 
-
-        changeBtn.setOnClickListener(changeBtn->{
-            if(!clickedOnce){
+        changeBtn.setOnClickListener(changeBtn -> {
+            if (!clickedOnce) {
                 mChangeMuscleTV.callOnClick();
             }
             clickedOnce = true;
@@ -280,11 +299,19 @@ public class ExerciseEditFragment extends BaseFragment implements
             setExercise(b);
         });
 
+        fabPlayerBtn.setOnClickListener(fab -> {
+            youtubeWrapperEL.toggle();
+            if (youtubeWrapperEL.isExpanded()) {
+                fabPlayerBtn.setImageResource(R.drawable.sort_up_white_96dp);
+            } else {
+                fabPlayerBtn.setImageResource(R.drawable.sort_down_white_96dp);
+            }
+        });
 
         /**
          * test porpuses only
          * */
-        v.findViewById(R.id.hide_player_edit_exercise_fragment).setOnClickListener(view -> {
+      /*  v.findViewById(R.id.hide_player_edit_exercise_fragment).setOnClickListener(view -> {
             float distance = 0;
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) listWrapper.getLayoutParams();
 
@@ -315,7 +342,7 @@ public class ExerciseEditFragment extends BaseFragment implements
             listWrapper.startAnimation(a);
 
         });
-
+*/
     }
 
     /**
@@ -325,7 +352,7 @@ public class ExerciseEditFragment extends BaseFragment implements
     private void initToolbar() {
 
         saveExitToolBar.instantiate()
-        .noElevation();
+                .noElevation();
         if (selectedExercise != null) {
             saveExitToolBar.setOptionalText(exerciseProfile.getExercise().getName());
         }
@@ -383,21 +410,19 @@ public class ExerciseEditFragment extends BaseFragment implements
     private void showUserCustomExercises() {
         exerciseBeans = (ArrayList<Beans>) dataManager.getExerciseDataManager().readByTable(DBExercisesHelper.TABLE_EXERCISES_CUSTOM);
         mAdapter.setExerciseBeans(exerciseBeans);
-
-
         collapseExpandableLayout();
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onMuscleChange(GridViewMusclesAdapter.MusclesContentHolder mch) {
-        mCancelMuscleTV.setVisibility(View.GONE);
-        mChangeMuscleTV.setVisibility(View.VISIBLE);
+        muscleArrow.setImageResource(R.drawable.sort_down_white_96dp);
+        muscleIcon.setImageResource(mch.icon);
+        muscleTV.setText(mch.text);
         initExerciseBeans(mch.m);
         mAdapter.setExerciseBeans(exerciseBeans);
         selectedMuscle = mch.m;
         selectedExercise = null;
-        mMuscleText.setText(mch.text);
         mAdapter.setSelectedIndex(-1);
         mAdapter.notifyDataSetChanged();
 

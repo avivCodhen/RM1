@@ -1,11 +1,13 @@
 package com.strongest.savingdata.Adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -27,6 +29,7 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
     private Architecture.program listener;
     private boolean isShared;
 
+    Context context;
     private String tag;
 
     public void setShared(boolean shared) {
@@ -45,6 +48,7 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        this.context = parent.getContext();
         View v = inflater.inflate(R.layout.recycler_view_program_layout_rightmargin, parent, false);
         return new ViewHolder(v);
     }
@@ -53,61 +57,63 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         Program p = programs.get(position);
         holder.progName.setText(p.getProgramName());
-        holder.date.setText("Created at " + p.getProgramDate() + ", " + p.getTime());
+        holder.date.setText("Created " + p.getProgramDate());
         if (!p.isSeen) {
 
             holder.alert.setVisibility(View.VISIBLE);
         } else {
             holder.alert.setVisibility(View.GONE);
-
-        }
-        holder.creatorTV.setText("Created By " + p.getCreator());
-
-        if(donotShowDeleteButton(p)){
-            holder.deleteProgIV.setAlpha(0f);
-            holder.deleteProgIV.setClickable(false);
         }
 
-        if(isCurrentProgram(p)){
-            holder.loadProgramBtn.setEnabled(false);
-            holder.loadProgramBtn.setClickable(false);
-            holder.loadProgramBtn.setAlpha(0.6f);
-            holder.currentProgTv.setVisibility(View.VISIBLE);
-        }else{
-            holder.currentProgTv.setVisibility(View.GONE);
-            holder.loadProgramBtn.setOnClickListener(loadProgramView->{
-                if(isShared)
-                listener.loadSharedProgram(p);
-                else
-                listener.loadProgram(p);
-            });
-        }
+        holder.creatorTV.setText(p.getCreator());
 
-        if(p.isUnShareable() ){
+
+       /* if (p.isUnShareable()) {
             holder.shareIV.setVisibility(View.GONE);
-        }
+        }*/
 
-        if(!isCurrentProgram(p))
-        holder.deleteProgIV.setOnClickListener(deleteV->{
-            listener.deleteProgram(p);
+        holder.sharedTV.setText(p.numOfShared <= 0 ? "No Shares" : "Shared with " + p.numOfShared + " people");
+
+
+        holder.shareIV.setOnClickListener(share -> listener.shareProgram(p));
+
+        holder.options.setOnClickListener(optionsView -> {
+            PopupMenu popupMenu = new PopupMenu(context, holder.options);
+            popupMenu.inflate(R.menu.my_program_program_menu);
+            popupMenu.setOnMenuItemClickListener((menuItem) -> {
+
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_program_delete_program:
+                        listener.deleteProgram(p);
+                        break;
+                    case R.id.menu_program_share_program:
+                        listener.shareProgram(p);
+                        break;
+                    case R.id.menu_program_load_program:
+                        listener.loadProgram(p);
+                        break;
+
+                }
+                return true;
+            });
+            popupMenu.show();
 
         });
-
-        holder.shareIV.setOnClickListener(share-> listener.shareProgram(p));
     }
 
-    private boolean donotShowDeleteButton(Program p){
-        if(tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY) || tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR) || isCurrentProgram(p)){
+
+    private boolean donotShowDeleteButton(Program p) {
+        if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY) || isCurrentProgram(p)) {
             return true;
         }
         return false;
     }
 
-    private boolean isCurrentProgram(Program p){
-        if(currentProgram == null){
+    private boolean isCurrentProgram(Program p) {
+        if (currentProgram == null) {
             return false;
         }
-        if(p.equals(currentProgram)){
+        if (p.equals(currentProgram)) {
             return true;
         }
         return false;
@@ -132,17 +138,24 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
         @BindView(R.id.program_alert)
         ImageView alert;
 
-        @BindView(R.id.load_program_btn)
-        Button loadProgramBtn;
+        @BindView(R.id.shared_with_tv)
+        TextView sharedTV;
 
-        @BindView(R.id.current_program_tv)
-        TextView currentProgTv;
+        @BindView(R.id.program_options)
+        ImageView options;
 
-        @BindView(R.id.delete_program)
-        ImageView deleteProgIV;
+        /* @BindView(R.id.load_program_btn)
+         Button loadProgramBtn;
 
+         @BindView(R.id.current_program_tv)
+         TextView currentProgTv;
+
+         @BindView(R.id.delete_program)
+         ImageView deleteProgIV;
+ */
         @BindView(R.id.share_program)
         ImageView shareIV;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.strongest.savingdata.Controllers.CallBacks;
 import com.strongest.savingdata.Database.LogData;
 import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.R;
@@ -25,12 +26,14 @@ public class LogDataSetsAdapter extends RecyclerView.Adapter<LogDataSetsAdapter.
     private ArrayList<LogData.LogDataSets> list;
     private boolean editable;
     Context context;
+    private CallBacks.Change onChange;
 
-    public LogDataSetsAdapter(Context context, ArrayList<LogData.LogDataSets> list,boolean editable) {
+    public LogDataSetsAdapter(Context context, ArrayList<LogData.LogDataSets> list,boolean editable, CallBacks.Change onChange) {
         this.context = context;
 
         this.list = list;
         this.editable = editable;
+        this.onChange = onChange;
     }
 
 
@@ -68,9 +71,10 @@ public class LogDataSetsAdapter extends RecyclerView.Adapter<LogDataSetsAdapter.
                         (dialog,input)-> {
                             l.rep = input.toString();
                             notifyItemChanged(position);
+                            onChange.onChange();
+
                         }
                 );
-                notifyItemChanged(holder.getAdapterPosition());
             });
 
             holder.weightLay.setOnClickListener(repLayView->{
@@ -81,8 +85,8 @@ public class LogDataSetsAdapter extends RecyclerView.Adapter<LogDataSetsAdapter.
                         "Change Weight",
                         (dialog,input)-> {
                             l.weight = Double.parseDouble(input.toString());
-                            notifyItemChanged(holder.getAdapterPosition());
-
+                            notifyItemChanged(position);
+                            onChange.onChange();
                         }
                 );
 

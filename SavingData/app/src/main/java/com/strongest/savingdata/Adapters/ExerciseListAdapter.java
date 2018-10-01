@@ -46,7 +46,7 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
 
     @Override
     public void onBindViewHolder(final ExerciseListAdapter.ViewHolder holder, final int position) {
-
+        Beans e = exerciseBeans.get(position);
         if (position == selectedIndex) {
             holder.checkMark.setVisibility(View.VISIBLE);
             holder.exercise.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
@@ -56,10 +56,15 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             holder.exercise.setTextColor(ContextCompat.getColor(context, R.color.gray));
 
         }
-        holder.exercise.setText(exerciseBeans.get(position).getName());
-        if (exerciseBeans.get(position).getMuscles() != null) {
-
-            holder.muscles.setText(Muscle.getParsedMuscles(exerciseBeans.get(position).getMuscles()));
+        holder.exercise.setText(e.getName());
+        if ( e.getMuscle()!= null) {
+            String muscleText;
+            if(e.getDefault_int() == 1){
+                muscleText = e.getMuscle().getMuscle_display();
+            }else{
+                muscleText = Muscle.getParsedMuscles(e.getMuscles());
+            }
+            holder.muscles.setText(muscleText);
             holder.type.setText(exerciseBeans.get(position).getType());
         }
 

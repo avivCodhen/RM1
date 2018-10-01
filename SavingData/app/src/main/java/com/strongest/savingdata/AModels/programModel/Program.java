@@ -23,6 +23,7 @@ public class Program implements Serializable{
     private String dbName;
     public boolean isSeen = true;
     private boolean unShareable;
+    public int numOfShared;
 
 
     public Program(String creatorUID, String creator, String programName, String time, String programDate, String dbName) {
@@ -100,6 +101,14 @@ public class Program implements Serializable{
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public int getNumOfShared() {
+        return numOfShared;
+    }
+
+    public void setNumOfShared(int numOfShared) {
+        this.numOfShared = numOfShared;
     }
 
     @Override

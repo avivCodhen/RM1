@@ -23,6 +23,7 @@
             android:layout_height="200px"></android.support.v7.widget.CardView>
 
         <TextView
+            android:textColor="@color/colorPrimary"
             android:layout_marginLeft="35dp"
             android:layout_gravity="center_vertical"
             android:text="Default Blank template"

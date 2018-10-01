@@ -101,7 +101,7 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
         mEmailView = (EditText) findViewById(R.id.email);
         populateAutoComplete();
         smartProgressBar
-                .setText("Login in...")
+                .setText("Loggin in...")
                 .setUpWithView(logoIV)
                 .whiteText(true);
         mPasswordView = (EditText) findViewById(R.id.password);

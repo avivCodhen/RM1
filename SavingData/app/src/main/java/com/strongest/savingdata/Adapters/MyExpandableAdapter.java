@@ -322,7 +322,6 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void configureViewHolder3(final com.strongest.savingdata.ViewHolders.ExerciseViewHolder vh3, final int position) {
         final ExerciseProfile exerciseProfile = (ExerciseProfile) exArray.get(position);
 
-
         Muscle.MuscleUI mui = null;
 
         if (position == 0) {
@@ -336,7 +335,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             vh3.icon.setImageResource(android.R.color.transparent);
         }
 
-        vh3.reps.setText(ExerciseProfileStats.getAllRepsString(exerciseProfile));
+        vh3.reps.setText("Reps: "+ExerciseProfileStats.getAllRepsString(exerciseProfile));
 
         if (exerciseProfile.getExercise() != null) {
             vh3.editExerciseTV.setVisibility(View.GONE);
@@ -420,6 +419,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                         case R.id.duplicate_exercise:
                             uiExerciseClickHandler.onDuplicateExercise(exerciseProfile, vh3.getAdapterPosition());
+                            break;
                     }
                     return true;
                 }

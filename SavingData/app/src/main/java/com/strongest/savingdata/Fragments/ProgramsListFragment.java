@@ -95,35 +95,34 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
                 .setButtonText("Create A New Program")
                 .setTitle("You don't have any programs saved.")
                 .setBody("You can click on the Plus Icon to create a new Program")
-                .setButtonText("Or Tap here")
+                .setButtonText("Create New Program")
                 .setImage(smartEmptyView.getDocImage())
                 .setActionBtn(view -> myProgramCallBack.createProgram());
 
         myProgramsViewModel.fetchProgramList(tag);
         myProgramsViewModel.getProgramList().observe(this, list -> {
-            Log.d("aviv", "ProgramList : "+tag);
             programs = list;
-            if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)) {
+            /*if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)) {
                 isShared = true;
                 myProgramsAdapter.setShared(isShared);
-            }
+            }*/
             if (tag.equals(MyProgramsActivity.FRAGMENT_USER_PROGRAMS) && list.size() == 0 && currentProgram != null) {
                 programs.add(currentProgram);
             }
 
-            if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR) || tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY)) {
+            if (/*tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR) ||*/ tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY)) {
                 if (!userService.isUserLoggedIn()) {
                     smartEmptyView.setTitle("You are not logged in.")
                             .setBody("Log in to send and recieve programs from other users.")
                             .setButtonText("Log In")
                             .setImage(smartEmptyView.getLogInImage())
                             .setActionBtn(view->myProgramCallBack.logIn());
-                }else if(tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)){
+                }/*else if(tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)){
                     smartEmptyView.setTitle("You haven't shared any programs.")
                             .setImage(smartEmptyView.getDocImage())
                             .setBody("Don't be shy. Share a program and make a trainee happy!")
                             .noButton();
-                }else if(tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY )){
+                }*/else if(tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY )){
                     smartEmptyView.setTitle("No one has shared a program with you yet.")
                             .setBody("Don't worry. We are sure someone will share a program with you!")
                             .setImage(smartEmptyView.getDocImage())

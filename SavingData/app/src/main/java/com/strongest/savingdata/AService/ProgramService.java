@@ -262,9 +262,9 @@ public class ProgramService {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            Program p = d.getValue(Program.class);
                             programs.add(d.getValue(Program.class));
                         }
-                        //removeCurrentProgram(programs);
                         allPrograms.setValue(programs);
                     }
 
@@ -335,6 +335,33 @@ public class ProgramService {
 
     }
 
+    public void findSharedUsers(Program p, CallBacks.OnFinish onFinish) {
+        sharedProgramReference
+                .orderByChild("programUID")
+                .equalTo(p.getKey())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int count = 0;
+                        if (dataSnapshot == null) {
+                            count = 0;
+                            onFinish.onFinish(count);
+                            return;
+                        } else {
+                            for (DataSnapshot d : dataSnapshot.getChildren()) {
+                                count++;
+                            }
+                            onFinish.onFinish(count);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        onFinish.onFinish(-1);
+                    }
+                });
+    }
+
     public void fetchAllProgramsByTag(MutableLiveData<ArrayList<Program>> allPrograms, String tag) {
         if (userService.isUserLoggedIn()) {
 
@@ -343,9 +370,9 @@ public class ProgramService {
             } else if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY)) {
                 fetchAllProgramsShared(allPrograms, "senderUID");
 
-            } else if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)) {
+            }/* else if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)) {
                 fetchAllProgramsShared(allPrograms, "recieverUID");
-            }
+            }*/
         } else {
             allPrograms.setValue(new ArrayList<>());
         }
@@ -384,6 +411,7 @@ public class ProgramService {
         }
         sharedUser.setSenderToken(userToken);
         p.setUnShareable(true);
+        p.setNumOfShared(p.getNumOfShared()+1);
         updateProgram(p);
         String key = sharedProgramReference.push().getKey();
         sharedProgramReference.child(key).setValue(sharedUser);

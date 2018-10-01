@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ import com.strongest.savingdata.Database.LogData;
 import com.strongest.savingdata.Database.LogDataManager;
 import com.strongest.savingdata.Dialogs.LogModeDialog;
 import com.strongest.savingdata.LogDataActivity;
+import com.strongest.savingdata.MyViews.ExerciseStatsView;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.R;
@@ -64,7 +66,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     @BindView(R.id.textview_title)
     TextView textview_title;
     @BindView(R.id.stats)
-    View stats;
+    ExerciseStatsView stats;
 
     @BindView(R.id.toolbar_add_set_btn)
     ImageView toolbarAddSet;
@@ -173,6 +175,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
             getFragmentManager().popBackStack();
             return;
         }
+        stats.instantiate(exerciseProfile);
         setsItemAdapter = new SetsItemAdapter(exerciseProfile);
         initToolbar();
         initAdapters();
@@ -279,14 +282,12 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         toolbar.setTitle("");
 
         toolbarAddSet.setOnClickListener(toolBarAddIcon -> {
-            if (isResumed()) {
-                selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile, exercisePosition);
-                WorkoutsModel.ListModifier.OnWith(workout, setsItemAdapter)
-                        .doAddNew(workout.exArray.size()).applyWith(adapter, null, null);
-                recyclerView.scrollToPosition(workout.exArray.size() - 1);
-            }
 
-
+            selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile, exercisePosition);
+            WorkoutsModel.ListModifier.OnWith(workout, setsItemAdapter)
+                    .doAddNew(workout.exArray.size()).applyWith(adapter, null, null);
+            recyclerView.scrollToPosition(workout.exArray.size() - 1);
+            stats.updateStats();
         });
 
         toolbar.setNavigationOnClickListener(navBack -> {
@@ -358,6 +359,8 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         if (workout.exArray.size() == 0) {
             longClickMenuView.onHideMenu();
         }
+        stats.updateStats();
+
     }
 
 
@@ -368,6 +371,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         selectedSetViewModel.getSelectedExerciseSet().removeObservers(this);
         selectedSetViewModel.getSelectedExerciseSet().observe(this, (exerciseSet) -> {
             adapter.notifyDataSetChanged();
+            stats.updateStats();
         });
 
         SetsChooseSingleFragment f = SetsChooseSingleFragment.getInstance();
@@ -390,12 +394,17 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         intraSet.innerType = WorkoutLayoutTypes.IntraSet;
         setsPLObject.intraSets.add(intraSet);
         adapter.notifyItemChanged(workout.exArray.indexOf(setsPLObject));
+
+        stats.updateStats();
     }
 
     @Override
     public void onRemoveIntraSet(PLObject.SetsPLObject setsPLObject, int intraSetPosition) {
         setsPLObject.intraSets.remove(intraSetPosition);
         adapter.notifyItemChanged(workout.exArray.indexOf(setsPLObject));
+
+        stats.updateStats();
+
     }
 
     @Override
@@ -405,6 +414,9 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         listModifier.doDuplicate(setsPLObject).applyWith(adapter, null, null);
         selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile, exercisePosition);
         adapter.notifyItemRangeChanged(0, adapter.getExArray().size());
+
+        stats.updateStats();
+
     }
 
     @Override
@@ -468,7 +480,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                     adapter.setExArray(workout.getExArray());
                     adapter.notifyDataSetChanged();
 
-                    MyJavaAnimator.fadeIn(300,recyclerView);
+                    MyJavaAnimator.fadeIn(300, recyclerView);
 
                 }
             });
@@ -477,6 +489,19 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
         exerciseAdapter.setList(ExerciseModel.expandExerciseSupersets(exerciseProfile));
         exerciseAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("aviv", "onResume: yer");
+        stats.updateStats();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("aviv", "onStart: ");
     }
 
 }

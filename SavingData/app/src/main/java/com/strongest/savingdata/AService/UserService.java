@@ -92,7 +92,6 @@ public class UserService {
                     Log.d("aviv", "logInUser: " + userToken);
                     saveUserToServer(u, result -> {
                         onFinish.onFinish(1);
-                        Toast.makeText(context, "logged in!", Toast.LENGTH_SHORT).show();
                     });
                 });
             } else {

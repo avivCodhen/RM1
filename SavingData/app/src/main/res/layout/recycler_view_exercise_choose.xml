@@ -29,7 +29,6 @@
                 android:id="@+id/exercise_tv"
                 android:textColor="@color/gray"
                 android:textStyle="bold"
-                android:text="Barbell Bench Press"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content" />
 
@@ -41,7 +40,6 @@
             android:id="@+id/exercise_muscles_tv"
             android:textSize="12sp"
             android:textColor="@color/text_gray"
-            android:text="Hip, Quadriceps, hamstrings"
             android:layout_width="250dp"
 
             android:layout_height="wrap_content" />
@@ -54,7 +52,6 @@
         android:layout_alignParentRight="true"
         android:textSize="12sp"
         android:textColor="@color/much_lighter_gray_text"
-        android:text="Compound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

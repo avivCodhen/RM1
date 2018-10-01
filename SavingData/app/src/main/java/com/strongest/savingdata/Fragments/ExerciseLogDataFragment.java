@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@Deprecated
 public class ExerciseLogDataFragment extends BaseFragment {
 
 
@@ -88,7 +89,7 @@ public class ExerciseLogDataFragment extends BaseFragment {
         if (list == null || list.size() == 0) {
             list = logDataManager.exerciseToLogDataSetList(exercise);
         }
-        logDataSetsAdapter = new LogDataSetsAdapter(getContext(),list, true);
+       // logDataSetsAdapter = new LogDataSetsAdapter(getContext(),list, true);
 
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(lm);

@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
 import com.strongest.savingdata.Database.Managers.DataManager;
+import com.strongest.savingdata.MyViews.SaveExitToolBar;
 import com.strongest.savingdata.MyViews.WorkoutView.OnProgramToolsActionListener;
 import com.strongest.savingdata.R;
 import com.strongest.savingdata.Utils.MyUtils;
@@ -34,6 +36,8 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CustomExerciseFragment extends Fragment implements OnGridViewMuscleAdapterClickListener {
@@ -42,12 +46,22 @@ public class CustomExerciseFragment extends Fragment implements OnGridViewMuscle
     private GridView mGridView;
     private GridViewMusclesAdapter mGridViewAdapter;
     private RecyclerView recyclerView;
-    private TextView mMuscleText;
     private DataManager dataManager;
     private Muscle choosedMuscle;
     private Button saveBtn;
     private String choosedText;
-    private EditText editText;
+
+    @BindView(R.id.custom_exercise_name)
+     EditText editText;
+
+    @BindView(R.id.custom_exercise_icon_iv)
+    ImageView iconIV;
+
+    @BindView(R.id.custom_exercise_tv)
+    TextView muscleTV;
+
+    @BindView(R.id.custom_exercise_toolbar)
+    SaveExitToolBar toolBar;
 
     public static ProgramSettingsFragment getInstance(OnProgramToolsActionListener onProgramToolsActionListener) {
         ProgramSettingsFragment f = new ProgramSettingsFragment();
@@ -59,6 +73,7 @@ public class CustomExerciseFragment extends Fragment implements OnGridViewMuscle
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_custom_exercise, container, false);
+        ButterKnife.bind(this, v);
         v.setFocusableInTouchMode(true);
         v.requestFocus();
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -85,30 +100,28 @@ public class CustomExerciseFragment extends Fragment implements OnGridViewMuscle
     }
 
     private void initViews(View v) {
+        toolBar.instantiate()
+                .showBack(true)
+                .setOptionalText("Custom Exercise")
+                .setSaveButton(view->{
+                    InputMethodManager inputManager = (InputMethodManager) editText
+                            .getContext()
+                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                    IBinder binder = editText.getWindowToken();
+                    inputManager.hideSoftInputFromWindow(binder,
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+                    getFragmentManager().popBackStack();
+                });
         dataManager = ((HomeActivity) getActivity()).dataManager;
 
-        mMuscleText = (TextView) v.findViewById(R.id.muscle_tv);
         mExpandable = (ExpandableLayout) v.findViewById(R.id.expandable);
         mGridView = (GridView) v.findViewById(R.id.fragment_choose_exercise_gridview);
         int height = ((HomeActivity)getActivity()).getScreenHeight();
 
         mGridViewAdapter = new GridViewMusclesAdapter(height,getContext(), dataManager, this);
         mGridView.setAdapter(mGridViewAdapter);
-        editText = (EditText) v.findViewById(R.id.custom_exercise_name);
-        v.findViewById(R.id.toolbar_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InputMethodManager inputManager = (InputMethodManager) editText
-                        .getContext()
-                        .getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                IBinder binder = editText.getWindowToken();
-                inputManager.hideSoftInputFromWindow(binder,
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-                getFragmentManager().popBackStack();
-            }
-        });
-        ( (TextView)v.findViewById(R.id.tool_bar_title)).setText("Create Custom Exercise");
         v.findViewById(R.id.choose_change_Tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,7 +176,8 @@ public class CustomExerciseFragment extends Fragment implements OnGridViewMuscle
 
     @Override
     public void onMuscleChange(GridViewMusclesAdapter.MusclesContentHolder mch) {
-        mMuscleText.setText(mch.text);
+        muscleTV.setText(mch.text);
+        iconIV.setImageResource(mch.icon);
         choosedMuscle = mch.m;
         mExpandable.collapse();
     }

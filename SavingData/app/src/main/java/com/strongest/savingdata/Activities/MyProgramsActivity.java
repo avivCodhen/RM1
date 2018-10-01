@@ -46,7 +46,7 @@ public class MyProgramsActivity extends BaseActivity implements
 
     MyProgramsViewModel myProgramsViewModel;
     public static final String FRAGMENT_USER_PROGRAMS = "Mine";
-    public static final String FRAGMENT_USER_SHARED_FOR = "Shared";
+    //public static final String FRAGMENT_USER_SHARED_FOR = "Shared";
     public static final String FRAGMENT_USER_SHARED_BY = "Recieved";
     public static final int FRAGMENT_CREATE_PROGRAM = 3;
     public static final int LOG_IN = 4;
@@ -57,7 +57,7 @@ public class MyProgramsActivity extends BaseActivity implements
     private String[] fragmentsTitles = {
             MyProgramsActivity.FRAGMENT_USER_PROGRAMS,
             MyProgramsActivity.FRAGMENT_USER_SHARED_BY,
-            MyProgramsActivity.FRAGMENT_USER_SHARED_FOR,
+          /*  MyProgramsActivity.FRAGMENT_USER_SHARED_FOR,*/
     };
     private ArrayList<BaseFragment> fragments;
 
@@ -85,8 +85,8 @@ public class MyProgramsActivity extends BaseActivity implements
         tabLayout.setViewPager(viewPager);
 
         programService.listenForSharedPrograms(count -> {
-            tabLayout.showMsg(2, (int) count);
-            tabLayout.setMsgMargin(2, 43, 0);
+            tabLayout.showMsg(1, (int) count);
+            tabLayout.setMsgMargin(2, 73, 0);
         });
 
         if (!MyUtils.isNetworkConnected(this)) {
@@ -208,7 +208,14 @@ public class MyProgramsActivity extends BaseActivity implements
 
     @Override
     public void createNewProgram() {
-        setResult(FRAGMENT_CREATE_PROGRAM);
-        finish();
+        if (userService.isUserLoggedIn() || currentProgram == null) {
+            setResult(FRAGMENT_CREATE_PROGRAM);
+            finish();
+
+
+        } else {
+            Toast.makeText(this, "You can only save one program. Log in to save as many as you wish.", Toast.LENGTH_SHORT).show();
+
+        }
     }
 }

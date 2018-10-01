@@ -181,15 +181,11 @@
                         android:layout_height="wrap_content">
 
 
-                        <include
-                            android:id="@+id/stats"
-                            layout="@layout/recycler_view_exercise_stats"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:visibility="invisible"
-                            app:layout_collapseMode="parallax"></include>
-
+                      <com.strongest.savingdata.MyViews.ExerciseStatsView
+                          android:layout_width="match_parent"
+                          android:layout_marginTop="5dp"
+                          android:id="@+id/stats"
+                          android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.ExerciseStatsView>
 
                         <android.support.v7.widget.RecyclerView
                             android:layout_marginTop="20dp"

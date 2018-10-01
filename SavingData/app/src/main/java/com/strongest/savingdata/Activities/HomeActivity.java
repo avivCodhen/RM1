@@ -491,6 +491,9 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public void onProgramToolsAction(WorkoutsModel.Actions action) {
+        if(program == null){
+            return;
+        }
         if (action == Advanced) {
             addFragmentToActivity(R.id.activity_home_framelayout, new ProgramSettingsFragment(), "programsettings");
 
@@ -603,14 +606,8 @@ public class HomeActivity extends BaseActivity implements
                 workoutsViewModel.setCmd(WorkoutsService.CMD.SWITCH);
                 programViewModel.postProgram(p);
             } else if (resultCode == MyProgramsActivity.FRAGMENT_CREATE_PROGRAM) {
-                if (userService.isUserLoggedIn() || program == null) {
                     programViewModel.setNewProgram();
                     workoutsViewModel.setNewWorkout();
-
-                } else {
-                    Toast.makeText(this, "You can only save one program. Log in to save as many as you wish.", Toast.LENGTH_SHORT).show();
-
-                }
 
             } else if (resultCode == MyProgramsActivity.LOG_IN) {
                 toLogInActivity();

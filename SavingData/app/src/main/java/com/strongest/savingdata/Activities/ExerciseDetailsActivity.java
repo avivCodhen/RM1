@@ -2,6 +2,7 @@ package com.strongest.savingdata.Activities;
 
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.PersistableBundle;
 import android.support.design.widget.AppBarLayout;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.strongest.savingdata.Database.LogData;
 import com.strongest.savingdata.Database.LogDataManager;
 import com.strongest.savingdata.Fragments.ExerciseLogFragment;
 import com.strongest.savingdata.Handlers.YoutubeHandler;
+import com.strongest.savingdata.LogDataActivity;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
 import com.strongest.savingdata.R;
 
@@ -221,10 +223,15 @@ public class ExerciseDetailsActivity extends BaseActivity implements
 
     @Override
     public void dateClicked(String date) {
-        SelectedLogDataViewModel selectedLogDataViewModel = ViewModelProviders.of(this)
+       /* SelectedLogDataViewModel selectedLogDataViewModel = ViewModelProviders.of(this)
                 .get(SelectedLogDataViewModel.class);
         ArrayList<LogData.LogDataSets> sets = m.readSets(exercise.getExercise().getName(), date);
         selectedLogDataViewModel.setSets(sets);
-        addFragmentToActivity(R.id.exercise_log_frame, new ExerciseLogFragment(), "log");
+        addFragmentToActivity(R.id.exercise_log_frame, new ExerciseLogFragment(), "log");*/
+
+       Intent intent = new Intent(this, LogDataActivity.class);
+       intent.putExtra(LogDataActivity.EXERCISE, exercise);
+       intent.putExtra(LogDataActivity.DATE, date);
+       startActivity(intent);
     }
 }

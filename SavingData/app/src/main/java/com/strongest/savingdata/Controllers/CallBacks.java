@@ -10,4 +10,8 @@ public interface CallBacks {
 
         void notify(Object o);
     }
+
+    public interface Change{
+        void onChange();
+    }
 }
