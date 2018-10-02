@@ -1,20 +1,18 @@
 package com.strongest.savingdata.Adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.Activities.MyProgramsActivity;
 import com.strongest.savingdata.Controllers.Architecture;
-import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.R;
 
 import java.util.ArrayList;
@@ -72,6 +70,10 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
             holder.shareIV.setVisibility(View.GONE);
         }*/
 
+        if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY)) {
+            holder.shareIV.setVisibility(View.GONE);
+            holder.sharedTV.setVisibility(View.GONE);
+        }
         holder.sharedTV.setText(p.numOfShared <= 0 ? "No Shares" : "Shared with " + p.numOfShared + " people");
 
 
@@ -79,7 +81,13 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
 
         holder.options.setOnClickListener(optionsView -> {
             PopupMenu popupMenu = new PopupMenu(context, holder.options);
-            popupMenu.inflate(R.menu.my_program_program_menu);
+            if (!p.isSeen) {
+                popupMenu.inflate(R.menu.my_program_program_menu_unseen);
+
+            } else {
+                popupMenu.inflate(R.menu.my_program_program_menu_seen);
+
+            }
             popupMenu.setOnMenuItemClickListener((menuItem) -> {
 
                 switch (menuItem.getItemId()) {
@@ -93,12 +101,23 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
                         listener.loadProgram(p);
                         break;
 
+                    case R.id.menu_program_seen_program:
+                        listener.seen(p);
+                        break;
                 }
                 return true;
             });
             popupMenu.show();
 
         });
+
+        holder.itemView.setOnClickListener(clickedView -> {
+            listener.loadProgram(p);
+        });
+
+        if(isCurrentProgram(p)){
+            holder.progName.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+        }
     }
 
 

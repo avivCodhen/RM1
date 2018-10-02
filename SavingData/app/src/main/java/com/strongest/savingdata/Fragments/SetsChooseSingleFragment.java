@@ -72,9 +72,9 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
     @BindView(R.id.sets_choose_restchooseview)
     RestChooseView mRestChooseView;
 
-    @BindView(R.id.choose_sets_customweight)
+ /*   @BindView(R.id.choose_sets_customweight)
     CheckBox customWeightCB;
-
+*/
     @BindView(R.id.choose_sets_weight_layout)
     View weightLayout;
 
@@ -332,10 +332,10 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
 
     private void initWeightViews(View v) {
         weightET.setText(exerciseSet.getWeight() + "");
-        customWeightCB.setChecked(exerciseSet.isCustomWeight());
+      //  customWeightCB.setChecked(exerciseSet.isCustomWeight());
         weightET.setEnabled(exerciseSet.isCustomWeight());
         keyboardIV.setEnabled(exerciseSet.isCustomWeight());
-        customWeightCB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        /*customWeightCB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 weightET.setEnabled(isChecked);
@@ -343,7 +343,7 @@ public class SetsChooseSingleFragment extends BaseCreateProgramFragment implemen
                 exerciseSet.setCustomWeight(isChecked);
             }
         });
-
+*/
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

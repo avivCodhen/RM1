@@ -57,7 +57,7 @@ public class MyProgramsActivity extends BaseActivity implements
     private String[] fragmentsTitles = {
             MyProgramsActivity.FRAGMENT_USER_PROGRAMS,
             MyProgramsActivity.FRAGMENT_USER_SHARED_BY,
-          /*  MyProgramsActivity.FRAGMENT_USER_SHARED_FOR,*/
+            /*  MyProgramsActivity.FRAGMENT_USER_SHARED_FOR,*/
     };
     private ArrayList<BaseFragment> fragments;
 
@@ -84,10 +84,7 @@ public class MyProgramsActivity extends BaseActivity implements
         viewPager.setAdapter(myProgramsPagerAdapter);
         tabLayout.setViewPager(viewPager);
 
-        programService.listenForSharedPrograms(count -> {
-            tabLayout.showMsg(1, (int) count);
-            tabLayout.setMsgMargin(2, 73, 0);
-        });
+        listenForShares();
 
         if (!MyUtils.isNetworkConnected(this)) {
             MaterialDialogHandler.get()
@@ -142,6 +139,15 @@ public class MyProgramsActivity extends BaseActivity implements
         }
     }
 
+    private void listenForShares() {
+        programService.listenForSharedPrograms(count -> {
+            int c = (int) count;
+            if (c > 0) {
+                tabLayout.showMsg(1, c);
+                tabLayout.setMsgMargin(2, 73, 0);
+            }
+        });
+    }
 
     @Override
     public void onLoadProgram(Program p) {
@@ -207,6 +213,12 @@ public class MyProgramsActivity extends BaseActivity implements
     }
 
     @Override
+    public void seen(Program p) {
+        programService.updateSeenOnSharedProgram(p);
+        listenForShares();
+    }
+
+    @Override
     public void createNewProgram() {
         if (userService.isUserLoggedIn() || currentProgram == null) {
             setResult(FRAGMENT_CREATE_PROGRAM);
@@ -214,7 +226,7 @@ public class MyProgramsActivity extends BaseActivity implements
 
 
         } else {
-            Toast.makeText(this, "You can only save one program. Log in to save as many as you wish.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You can only save one program. Log in to save as many as you wish.", Toast.LENGTH_LONG).show();
 
         }
     }

@@ -37,6 +37,12 @@ import java.util.ArrayList;
 
 public class ProgramToolsView extends LinearLayout {
 
+    public boolean isOpen() {
+        return openProgramToolsEL.isExpanded();
+    }
+
+
+
     public enum Action {
         NewExercise, NewDivider, NewWorkout, Share, Advanced
     }
@@ -57,6 +63,7 @@ public class ProgramToolsView extends LinearLayout {
     private WorkoutViewModes mWorkoutViewModes;
 
     private Architecture.view.ProgramTools listener;
+    private boolean isOpen;
 
     public ProgramToolsView(Context context) {
         super(context);
@@ -161,13 +168,21 @@ public class ProgramToolsView extends LinearLayout {
 
 
         } else {
-            fab.setImageResource(R.drawable.edit_48px);
-            display(GONE);
+            close();
             //MyJavaAnimator.rotateView(programToolsBtn, 315, 360);
         }
 
     }
 
+    public void close() {
+        openProgramToolsEL.collapse();
+        fab.setImageResource(R.drawable.edit_48px);
+        display(GONE);
+    }
+
+    public void open(){
+
+    }
 
     public WorkoutViewModes getmWorkoutViewModes() {
         return mWorkoutViewModes;

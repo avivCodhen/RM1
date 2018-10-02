@@ -1,0 +1,32 @@
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:padding="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/sets_edit_Fragment_rep_icon"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_reps"
+                android:layout_width="@dimen/sets_icons_size"
+                android:layout_height="@dimen/sets_icons_size" />
+
+            <TextView
+                android:layout_toRightOf="@+id/sets_edit_Fragment_rep_icon"
+                android:textSize="16sp"
+                android:text="Repetitions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

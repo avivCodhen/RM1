@@ -128,7 +128,7 @@ public class WorkoutsService {
 
     public ArrayList<Workout> createDefaultWorkoutsList(String programUID) {
         ArrayList<Workout> workoutArrayList = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
             Workout w = new Workout();
             w.workoutName = "Workout " + (i + 1);
             if (i == 1) {

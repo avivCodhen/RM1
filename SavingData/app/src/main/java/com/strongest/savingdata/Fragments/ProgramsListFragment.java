@@ -116,13 +116,13 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
                             .setBody("Log in to send and recieve programs from other users.")
                             .setButtonText("Log In")
                             .setImage(smartEmptyView.getLogInImage())
-                            .setActionBtn(view->myProgramCallBack.logIn());
+                            .setActionBtn(view -> myProgramCallBack.logIn());
                 }/*else if(tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)){
                     smartEmptyView.setTitle("You haven't shared any programs.")
                             .setImage(smartEmptyView.getDocImage())
                             .setBody("Don't be shy. Share a program and make a trainee happy!")
                             .noButton();
-                }*/else if(tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY )){
+                }*/ else if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY)) {
                     smartEmptyView.setTitle("No one has shared a program with you yet.")
                             .setBody("Don't worry. We are sure someone will share a program with you!")
                             .setImage(smartEmptyView.getDocImage())
@@ -182,12 +182,30 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
 
     @Override
     public void loadProgram(Program p) {
-        myProgramCallBack.onLoadProgram(p);
+        MaterialDialogHandler.get()
+                .defaultBuilder(getContext(), "Load This Program?", "Load Program")
+                .buildDialog()
+                .addPositiveActionFunc(v -> {
+                    if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY)) {
+                        loadSharedProgram(p);
+                    } else {
+                        myProgramCallBack.onLoadProgram(p);
+                    }
+                }, true)
+                .show();
+
+
     }
 
     @Override
     public void loadSharedProgram(Program p) {
         myProgramCallBack.loadSharedProgram(p);
+    }
+
+    @Override
+    public void seen(Program p) {
+        myProgramCallBack.seen(p);
+        myProgramsAdapter.notifyItemChanged(programs.indexOf(p));
     }
 
     public interface MyProgramCallBack {
@@ -205,5 +223,7 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
         void createProgram();
 
         void logIn();
+
+        void seen(Program p);
     }
 }

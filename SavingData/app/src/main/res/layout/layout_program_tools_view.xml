@@ -1,5 +1,4 @@
 <net.cachapa.expandablelayout.ExpandableLayout android:elevation="10dp"
-    android:layout_gravity="left"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,6 +9,7 @@
     app:barrierDirection="right"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
+
         android:elevation="10dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

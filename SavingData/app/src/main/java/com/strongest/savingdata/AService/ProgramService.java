@@ -182,6 +182,24 @@ public class ProgramService {
         programRepository.updateProgram(p);
     }
 
+    public void updateSharedProgram(Program p){
+        sharedProgramReference.
+                orderByChild("programUID")
+                .equalTo(p.getKey())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String key = dataSnapshot.getChildren().iterator().next().getKey();
+                        sharedProgramReference.child(key).child("seen").setValue(true);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
     private Program saveProgramToFireBase(Program program) {
         String key = databaseReference.push().getKey();
         program.setKey(key);
@@ -442,5 +460,10 @@ public class ProgramService {
 
     public LiveData<List<Program>> getAllPrograms() {
         return programRepository.getAllPrograms();
+    }
+
+    public void updateSeenOnSharedProgram(Program p) {
+        p.isSeen = true;
+        updateSharedProgram(p);
     }
 }

@@ -193,9 +193,9 @@ public class HomeActivity extends BaseActivity implements
 
         programViewModel.getPrograms().observe(this, list -> {
             smartEmptyView.setImage(smartEmptyView.getDocImage())
-                    .setTitle("You haven't Loaded any programs yet.")
-                    .setBody("You can navigate to My Programs and load or create a program there.")
-                    .setButtonText("Navigate To My Programs")
+                    .setTitle(getString(R.string.no_program))
+                    .setBody(getString(R.string.no_program_content))
+                    .setButtonText(getString(R.string.navigate_my_programs_button))
                     .setActionBtn(v -> toMyProgramsActivity())
                     .setUpWithViewPager(mViewPager, false, false)
                     .onCondition(list.size());
@@ -214,18 +214,28 @@ public class HomeActivity extends BaseActivity implements
         programToolsView.instantiate(fab, this);
         programToolsView.setProgramToolsBtn(fab);
         loggedInUI();
+
+        if (program == null) {
+            title.setText("RM1");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         programService.listenForSharedPrograms(count -> showBadgeForMyProgram((int) count));
     }
 
     private void showBadgeForMyProgram(int count) {
+        myProgramBadge = (TextView) MenuItemCompat.getActionView(mNavigationView.getMenu().findItem(R.id.menu_my_programs));
+        myProgramBadge.setGravity(Gravity.CENTER_VERTICAL);
+        myProgramBadge.setTypeface(null, Typeface.BOLD);
+        myProgramBadge.setTextColor(getResources().getColor(R.color.red));
         if (count > 0) {
-
-            myProgramBadge = (TextView) MenuItemCompat.getActionView(mNavigationView.getMenu().findItem(R.id.menu_my_programs));
-            myProgramBadge.setGravity(Gravity.CENTER_VERTICAL);
-            myProgramBadge.setTypeface(null, Typeface.BOLD);
-            myProgramBadge.setTextColor(getResources().getColor(R.color.red));
-
             myProgramBadge.setText(count + "");
+        } else {
+            myProgramBadge.setText("");
+
         }
     }
 
@@ -321,6 +331,10 @@ public class HomeActivity extends BaseActivity implements
     public void onBackPressed() {
         if (longClickMenuView != null && longClickMenuView.isOn()) {
             longClickMenuView.onHideMenu();
+            return;
+        }
+        if (programToolsView.isOpen()) {
+            programToolsView.close();
             return;
         }
         Fragment f = getSupportFragmentManager().findFragmentByTag(ExerciseEditFragment.FRAGMENT_EDIT_EXERCISE);
@@ -491,16 +505,22 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public void onProgramToolsAction(WorkoutsModel.Actions action) {
-        if(program == null){
+        if (program == null) {
+            MaterialDialogHandler
+                    .get()
+                    .defaultBuilder(this, getString(R.string.no_program), getString(R.string.navigate_my_programs_button))
+                    .addContent(getString(R.string.no_program_content))
+                    .buildDialog()
+                    .addPositiveActionFunc(v -> toMyProgramsActivity(), true)
+                    .show();
             return;
         }
         if (action == Advanced) {
             addFragmentToActivity(R.id.activity_home_framelayout, new ProgramSettingsFragment(), "programsettings");
 
-        }else if (action == Share){
+        } else if (action == Share) {
             toShareActivity();
-        }
-        else {
+        } else {
             workoutsViewModel.workoutsModel.validateActions(
                     workoutsViewModel.getWorkoutsList().getValue(),
                     mViewPager.getCurrentItem(),
@@ -605,9 +625,20 @@ public class HomeActivity extends BaseActivity implements
                 workoutsViewModel.workoutsInitialized = false;
                 workoutsViewModel.setCmd(WorkoutsService.CMD.SWITCH);
                 programViewModel.postProgram(p);
+
+
             } else if (resultCode == MyProgramsActivity.FRAGMENT_CREATE_PROGRAM) {
-                    programViewModel.setNewProgram();
-                    workoutsViewModel.setNewWorkout();
+                programViewModel.setNewProgram();
+                workoutsViewModel.setNewWorkout();
+
+                MaterialDialogHandler
+                        .get()
+                        .defaultBuilder(this, getString(R.string.created_program_title), getString(R.string.got_it))
+                        .addContent(getString(R.string.created_program_content))
+                        .buildDialog()
+                        .hideNegativeButton()
+                        .show();
+
 
             } else if (resultCode == MyProgramsActivity.LOG_IN) {
                 toLogInActivity();
