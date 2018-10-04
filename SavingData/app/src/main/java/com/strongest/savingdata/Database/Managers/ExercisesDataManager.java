@@ -233,10 +233,19 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
                 break;
             case "triceps":
                 tableName = "arms";
+                constraints = new String[1];
+                constraints[0] = MUSCLES;
+                values = new String[1];
+                values[0] = "triceps";
 
                 break;
             case "biceps":
                 tableName = "arms";
+                constraints = new String[1];
+                constraints[0] = MUSCLES;
+                values = new String[1];
+
+                values[0] = "biceps";
 
                 break;
             case "quadriceps":
@@ -257,21 +266,6 @@ public class ExercisesDataManager extends DataManager implements DataManagerList
             default:
                 tableName = muscleName;
         }
-    /*    if (values != null && values[0].equals("4") && constraints[0].equals(MUSCLE)) {
-
-
-            values[1] = "1";
-            for (int i = 0; i < constraints.length; i++) {
-                if (constraints[i].equals(M_TRICEPS)) {
-                    values[0] = "5";
-
-                } else {
-                    values[0] = "6";
-                }
-            }
-            //condition = " OR ";
-
-        }*/
 
         condition = " AND ";
 

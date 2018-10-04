@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.Database.Managers.ExercisesDataManager;
-import com.strongest.savingdata.Database.Managers.ProgramDataManager;
+import com.strongest.savingdata.Database.Managers.WorkoutDataManager;
 
 import static com.strongest.savingdata.Database.Progress.DBProgressHelper.PHASE;
 
@@ -20,11 +20,11 @@ public class ProgressDataManager extends DataManager {
     private DBProgressHelper progressDB;
     private ExercisesDataManager edm;
     private final Context context;
-    private final ProgramDataManager pdm;
+    private final WorkoutDataManager pdm;
     private SQLiteDatabase db;
     private String currentTableName;
 
-    public ProgressDataManager(Context context, ProgramDataManager pdm, ExercisesDataManager edm) {
+    public ProgressDataManager(Context context, WorkoutDataManager pdm, ExercisesDataManager edm) {
         super(context);
         progressDB = new DBProgressHelper(context);
         this.edm = edm;

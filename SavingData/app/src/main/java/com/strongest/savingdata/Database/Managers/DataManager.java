@@ -45,7 +45,7 @@ public class DataManager {
 
     private ExercisesDataManager exerciseDataManager;
     private ArticleDataManager articleDataManager;
-    private ProgramDataManager programDataManager;
+    private WorkoutDataManager workoutDataManager;
     private ProgressDataManager progressDataManager;
     private MusclesDataManager musclesDataManager;
     private WeightToolsDataManager weightToolsDataManager;
@@ -76,12 +76,12 @@ public class DataManager {
         }
     }
 
-    public ProgramDataManager getProgramDataManager() {
-        if (programDataManager == null) {
-            programDataManager = new ProgramDataManager(getExerciseDataManager(), context);
-            return programDataManager;
+    public WorkoutDataManager getWorkoutDataManager() {
+        if (workoutDataManager == null) {
+            workoutDataManager = new WorkoutDataManager(getExerciseDataManager(), context);
+            return workoutDataManager;
         } else {
-            return programDataManager;
+            return workoutDataManager;
 
         }
 
@@ -89,7 +89,7 @@ public class DataManager {
 
     public ProgressDataManager getProgressDataManager(){
         if(progressDataManager == null){
-            progressDataManager = new ProgressDataManager(context, getProgramDataManager(), getExerciseDataManager());
+            progressDataManager = new ProgressDataManager(context, getWorkoutDataManager(), getExerciseDataManager());
             return progressDataManager;
         }else{
             return progressDataManager;
@@ -123,9 +123,9 @@ public class DataManager {
             exerciseDataManager.close();
             exerciseDataManager = null;
         }
-        if (programDataManager != null) {
-            programDataManager.close();
-            programDataManager = null;
+        if (workoutDataManager != null) {
+            workoutDataManager.close();
+            workoutDataManager = null;
         }
 
         if (articleDataManager != null) {

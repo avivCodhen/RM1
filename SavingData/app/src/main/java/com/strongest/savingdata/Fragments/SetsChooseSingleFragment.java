@@ -299,7 +299,10 @@ public class SetsChooseSingleFragment extends BaseFragment implements OnSingleCh
             exerciseSet.setRep(reps);
 
 
-            String rest = minTV.getText().toString() + ":" + secTV.getText().toString();
+            String rest = minTV.getText().toString() + ":";
+            if(secTV.getText().toString().equals("")){
+                rest +="00";
+            }
 
             exerciseSet.setRest(rest);
 

@@ -13,44 +13,41 @@ import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.AService.WorkoutsService;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
-import com.strongest.savingdata.Database.Program.DBProgramHelper;
+import com.strongest.savingdata.Database.Program.DBWorkoutHelper;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.*;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.BODY_TEMPLATE_STR;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.DATE_CREATED;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.EXERCISE_ID;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.INNER_TYPE;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.LAYOUT_NAME;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.PROGRAM_NAME;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.PROGRAM_TIME;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.RECOMMENDED_WORKOUTS;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.REP_ID;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.REST;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.ROUNDS_PER_WEEK;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.TABLE_LAYOUT_REFERENCE;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.TABLE_PROGRAM_REFERENCE;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.TABLE_TEMPLATES;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.TABLE_TEMPLATES_REFERENCE;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.TABLE_WORKOUTS;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.TEMPLATE_NAME;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.WORKOUTS_NAMES_ARRAY;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.BODY_TEMPLATE_STR;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.EXERCISE_ID;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.INNER_TYPE;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.LAYOUT_NAME;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.PROGRAM_NAME;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.RECOMMENDED_WORKOUTS;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.REP_ID;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.REST;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.ROUNDS_PER_WEEK;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.TABLE_PROGRAM_REFERENCE;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.TABLE_TEMPLATES;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.TABLE_TEMPLATES_REFERENCE;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.TABLE_WORKOUTS;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.TEMPLATE_NAME;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.WORKOUTS_NAMES_ARRAY;
 
 /**
  * Created by Cohen on 10/16/2017.
  */
 
 
-public class ProgramDataManager extends DataManager {
+public class WorkoutDataManager extends DataManager {
 
     private SQLiteDatabase db;
     private ExercisesDataManager exerciseDataManager;
     private Context context;
     private DBExercisesHelper exercisesHelper;
-    private DBProgramHelper programHelper;
+    private DBWorkoutHelper programHelper;
     private String currentProgramTable;
     private String currentLayoutTable;
 
@@ -64,12 +61,12 @@ public class ProgramDataManager extends DataManager {
         PROGRAM_REFERENCE, LAYOUT_REFERENCE, TEMPLATE_REFERENCE, TEMPLATE, PROGRAM;
     }
 
-    public ProgramDataManager(ExercisesDataManager exerciseDataManager, Context context) {
+    public WorkoutDataManager(ExercisesDataManager exerciseDataManager, Context context) {
         super(context);
         this.exerciseDataManager = exerciseDataManager;
         this.context = context;
         exercisesHelper = new DBExercisesHelper(context);
-        programHelper = new DBProgramHelper(context);
+        programHelper = new DBWorkoutHelper(context);
         //  updateCurrentTables(0);
     }
 
@@ -215,7 +212,7 @@ public class ProgramDataManager extends DataManager {
         if (c.getCount() <= 0) {
             Log.d("aviv", "getCurrentProgramTable:  no such table");
         } else {
-            currentProgramTable = c.getString(c.getColumnIndex(DBProgramHelper.PROGRAM_NAME));
+            currentProgramTable = c.getString(c.getColumnIndex(DBWorkoutHelper.PROGRAM_NAME));
             //currentTemplateTable = c.getString(c.getColumnIndex(DBProgramHelper.TEMPLATE_NAME));
 
 
@@ -362,10 +359,10 @@ public class ProgramDataManager extends DataManager {
 
     public ContentValues getProgramContentValues(Program program) {
         ContentValues v = new ContentValues();
-        v.put(DBProgramHelper.LAYOUT_NAME, program.getDbName());
-        v.put(DBProgramHelper.DATE_CREATED, program.getProgramDate());
-        v.put(DBProgramHelper.PROGRAM_NAME, program.getProgramName());
-        v.put(DBProgramHelper.PROGRAM_TIME, program.getTime());
+        v.put(DBWorkoutHelper.LAYOUT_NAME, program.getDbName());
+        v.put(DBWorkoutHelper.DATE_CREATED, program.getProgramDate());
+        v.put(DBWorkoutHelper.PROGRAM_NAME, program.getProgramName());
+        v.put(DBWorkoutHelper.PROGRAM_TIME, program.getTime());
 
         return v;
     }
@@ -377,17 +374,17 @@ public class ProgramDataManager extends DataManager {
             ArrayList<PLObject.ExerciseProfile> p = WorkoutsService.exerciseToPLObject((ArrayList) workout.exArray);
             ContentValues workoutV = new ContentValues();
             workoutV.put(DBExercisesHelper.TYPE, WorkoutLayoutTypes.WorkoutView.ordinal());
-            workoutV.put(DBProgramHelper.NAME, workout.workoutName);
+            workoutV.put(DBWorkoutHelper.NAME, workout.workoutName);
             contentValues.add(workoutV);
             for (PLObject ep : p) {
                 v = new ContentValues();
 
                 if (ep.type == WorkoutLayoutTypes.BodyView) {
                     v.put(DBExercisesHelper.TYPE, ep.getType().ordinal());
-                    v.put(DBProgramHelper.WORKOUT_ID, ep.getWorkoutId());
+                    v.put(DBWorkoutHelper.WORKOUT_ID, ep.getWorkoutId());
                     PLObject.ExerciseProfile bodyText = (PLObject.ExerciseProfile) ep;
                     v.put(INNER_TYPE, bodyText.innerType.ordinal());
-                    v.put(DBProgramHelper.TITLE, bodyText.getTitle());
+                    v.put(DBWorkoutHelper.TITLE, bodyText.getTitle());
                     contentValues.add(v);
                     //    v.put(DBProgramHelper.workou);
                 } else if (ep.type == WorkoutLayoutTypes.ExerciseProfile /*|| ep.type == WorkoutLayoutTypes.IntraSet*/) {
@@ -428,10 +425,10 @@ public class ProgramDataManager extends DataManager {
         ContentValues supersetIntraCV;
         supersetIntraCV = new ContentValues();
         supersetIntraCV.put(DBExercisesHelper.TYPE, setsPLObject.getType().ordinal());
-        supersetIntraCV.put(DBProgramHelper.WORKOUT_ID, setsPLObject.getWorkoutId());
+        supersetIntraCV.put(DBWorkoutHelper.WORKOUT_ID, setsPLObject.getWorkoutId());
         supersetIntraCV.put(DBExercisesHelper.TYPE, setsPLObject.getType().ordinal());
         supersetIntraCV.put(INNER_TYPE, setsPLObject.getInnerType().ordinal());
-        supersetIntraCV.put(DBProgramHelper.WORKOUT_ID, setsPLObject.getWorkoutId());
+        supersetIntraCV.put(DBWorkoutHelper.WORKOUT_ID, setsPLObject.getWorkoutId());
         supersetIntraCV.put(REP_ID, setsPLObject.getExerciseSet().getRep());
         supersetIntraCV.put(REST, setsPLObject.getExerciseSet().getRest());
         supersetIntraCV.put(WEIGHT, setsPLObject.getExerciseSet().getWeight());
@@ -455,7 +452,7 @@ public class ProgramDataManager extends DataManager {
     private ContentValues saveExercise(PLObject.ExerciseProfile exerciseProfile) {
         ContentValues epCV = new ContentValues();
         epCV.put(DBExercisesHelper.TYPE, exerciseProfile.getType().ordinal());
-        epCV.put(DBProgramHelper.WORKOUT_ID, exerciseProfile.getWorkoutId());
+        epCV.put(DBWorkoutHelper.WORKOUT_ID, exerciseProfile.getWorkoutId());
         if (exerciseProfile.getMuscle() != null) {
             epCV.put(MUSCLE, exerciseProfile.getMuscle().getMuscle_name());
         }
@@ -463,7 +460,7 @@ public class ProgramDataManager extends DataManager {
             epCV.put(EXERCISE_ID, exerciseProfile.getExercise().getName());
         }
 //        epCV.put(INNER_TYPE, exerciseProfile.getInnerType().ordinal());
-        epCV.put(DBProgramHelper.COMMENT, exerciseProfile.comment);
+        epCV.put(DBWorkoutHelper.COMMENT, exerciseProfile.comment);
         epCV.put(DEFAULT_INT, exerciseProfile.getDefaultInt());
         return epCV;
     }

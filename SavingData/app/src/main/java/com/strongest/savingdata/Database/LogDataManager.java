@@ -4,12 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
-import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
-import com.strongest.savingdata.Database.Exercise.ExerciseSet;
-import com.strongest.savingdata.Database.Program.DBProgramHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

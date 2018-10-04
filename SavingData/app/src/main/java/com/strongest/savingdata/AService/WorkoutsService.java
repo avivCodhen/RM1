@@ -12,7 +12,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.AModels.workoutModel.Workout;
@@ -20,21 +19,16 @@ import com.strongest.savingdata.AModels.workoutModel.WorkoutBro;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutHolder;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutLayoutTypes;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
-import com.strongest.savingdata.Adapters.WorkoutItemAdapters.SetsItemAdapter;
 import com.strongest.savingdata.BaseWorkout.Muscle;
-import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.Controllers.CallBacks;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
-import com.strongest.savingdata.Database.Program.DBProgramHelper;
+import com.strongest.savingdata.Database.Program.DBWorkoutHelper;
 import com.strongest.savingdata.Utils.FireBaseUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Completable;
-import io.reactivex.Observable;
 
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.DEFAULT_INT;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.MUSCLE;
@@ -42,12 +36,12 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.NAME;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_EXERCISES_CUSTOM;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TYPE;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.WEIGHT;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.COMMENT;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.EXERCISE_ID;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.INNER_TYPE;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.REP_ID;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.REST;
-import static com.strongest.savingdata.Database.Program.DBProgramHelper.TITLE;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.COMMENT;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.EXERCISE_ID;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.INNER_TYPE;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.REP_ID;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.REST;
+import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.TITLE;
 
 public class WorkoutsService {
 
@@ -103,7 +97,7 @@ public class WorkoutsService {
 
         if (cmd == CMD.INIT) {
             if (programUID.equals(getCurrentWorkoutUID())) {
-                list = readLayoutFromDataBase(DBProgramHelper.TABLE_WORKOUTS);
+                list = readLayoutFromDataBase(DBWorkoutHelper.TABLE_WORKOUTS);
             }
             if (list != null) {
                 mutableLiveDataWorkout.setValue(list);
@@ -266,7 +260,7 @@ public class WorkoutsService {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                dataManager.getProgramDataManager().insertTables(update, DBProgramHelper.TABLE_WORKOUTS, layout);
+                dataManager.getWorkoutDataManager().insertTables(update, DBWorkoutHelper.TABLE_WORKOUTS, layout);
                 if (onFinish != null) {
                     handler.post(new Runnable() {
                         @Override
@@ -289,7 +283,7 @@ public class WorkoutsService {
     public ArrayList<Workout> readLayoutFromDataBase(String currentDbName) {
         Log.d(TAG, "readLayoutFromDataBase: ");
         ArrayList<Workout> workoutsList = new ArrayList<>();
-        Cursor c = dataManager.getProgramDataManager().readLayoutTableCursor(DBProgramHelper.TABLE_WORKOUTS);
+        Cursor c = dataManager.getWorkoutDataManager().readLayoutTableCursor(DBWorkoutHelper.TABLE_WORKOUTS);
         //layout = new ArrayList<>();
         String muscle_str;
         WorkoutLayoutTypes type;

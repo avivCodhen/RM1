@@ -13,7 +13,7 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.WEIGH
  * Created by Cohen on 10/29/2017.
  */
 
-public class DBProgramHelper extends SQLiteOpenHelper {
+public class DBWorkoutHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "workouts.db";
     private static final int DB_VERSION = 1;
@@ -127,7 +127,7 @@ public class DBProgramHelper extends SQLiteOpenHelper {
             + " (id INTEGER PRIMARY KEY AUTOINCREMENT," + EXERCISE_ID+" INTEGER, "+SETS+" INTEGER,"
             + REPS +" TEXT, "+REST+" TEXT,"+WEIGHT+" TEXT)";*/
 
-    public DBProgramHelper(Context context) {
+    public DBWorkoutHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
