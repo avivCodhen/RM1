@@ -393,7 +393,7 @@ public class MyJavaAnimator {
             startRadius = 0;
 
         } else {
-            duration = 200;
+            duration = 300;
             finalRadius = 0;
             startRadius= Math.max(viewRoot.getWidth(), viewRoot.getHeight());
 

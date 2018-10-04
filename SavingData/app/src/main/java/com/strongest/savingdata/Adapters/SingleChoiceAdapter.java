@@ -66,7 +66,6 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView item;
-        int position = getAdapterPosition();
         public ViewHolder(View itemView) {
             super(itemView);
             item = (TextView) itemView.findViewById(R.id.single_choice_tv);
@@ -81,9 +80,9 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceAdapte
             item.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    list.remove(position);
-                    notifyItemRemoved(position);
-                    clickListener.onLongclick(list.get(position), type);
+                    clickListener.onLongclick(list.get(getAdapterPosition()), type);
+                    list.remove(getAdapterPosition());
+                    notifyItemRemoved(getAdapterPosition());
                     return true;
                 }
             });

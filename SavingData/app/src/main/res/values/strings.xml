@@ -73,6 +73,8 @@
     <string name="go_to_my_programs">Go To My Programs</string>
     <string name="no_program_content">You can navigate to My Programs and load or create a program there.</string>
     <string name="navigate_my_programs_button">Navigate To My Programs</string>
+    <string name="change_repetitions_title">Change repetitions</string>
+    <string name="change_btn_text">CHANGE</string>
 
 
     <!-- <string name="untrained_description">You do not have experience lifting weights at all, or you have not been training regularly for a year or more.\n\nYour progress will be fast, and the programming will be simple.</string>

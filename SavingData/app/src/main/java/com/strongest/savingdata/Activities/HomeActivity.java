@@ -44,10 +44,12 @@ import com.strongest.savingdata.Adapters.WorkoutsViewPagerAdapter;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.AModels.programModel.Program;
+import com.strongest.savingdata.Fragments.BaseFragment;
 import com.strongest.savingdata.Fragments.CustomExerciseFragment;
 import com.strongest.savingdata.Fragments.ExerciseEditFragment;
 import com.strongest.savingdata.Fragments.NewProgramFragment;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
+import com.strongest.savingdata.Fragments.SetsChooseSingleFragment;
 import com.strongest.savingdata.Fragments.WorkoutViewFragment;
 import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
@@ -337,22 +339,39 @@ public class HomeActivity extends BaseActivity implements
             programToolsView.close();
             return;
         }
-        Fragment f = getSupportFragmentManager().findFragmentByTag(ExerciseEditFragment.FRAGMENT_EDIT_EXERCISE);
-        if (f != null) {
+        BaseFragment f;
+        f = (BaseFragment) getSupportFragmentManager().findFragmentByTag(ExerciseEditFragment.FRAGMENT_EDIT_EXERCISE);
+        if (f == null) {
+            f = (BaseFragment) getSupportFragmentManager().findFragmentByTag(SetsChooseSingleFragment.SETS_CHOOSE_FRAGMENT);
+
+                if (f != null) {
+                    View v = f.getView();
+
+                    MyJavaAnimator.animateRevealShowParams(v, false, R.color.background_color, 0, 0, r -> {
+                        super.onBackPressed();
+                        return;
+                    });
+                } else {
+                    super.onBackPressed();
+                }
+
+        }else{
             View v = f.getView();
+
             MyJavaAnimator.animateRevealShowParams(v, false, R.color.background_color, 0, 0, r -> {
                 super.onBackPressed();
                 return;
             });
-        } else {
-            super.onBackPressed();
         }
+    }
+
+    private void makeCircularReturnAnimation(){
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //getMenuInflater().inflate(R.menu.aviv_menu_program, menu);
-
         return true;
     }
 

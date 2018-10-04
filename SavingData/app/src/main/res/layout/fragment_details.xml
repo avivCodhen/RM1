@@ -277,10 +277,30 @@
     </android.support.design.widget.CoordinatorLayout>
 
 
-    <FrameLayout
-        android:id="@+id/sets_details_frame"
+    <net.cachapa.expandablelayout.ExpandableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
+        app:el_expanded="false"
+        android:id="@+id/exercise_detail_expandable_layout"
+        android:layout_alignParentBottom="true"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <FrameLayout
+                android:id="@+id/sets_details_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/transparent_wrapper"
+                android:background="@color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></FrameLayout>
+        </LinearLayout>
+
+    </net.cachapa.expandablelayout.ExpandableLayout>
+
 
 
 </RelativeLayout>

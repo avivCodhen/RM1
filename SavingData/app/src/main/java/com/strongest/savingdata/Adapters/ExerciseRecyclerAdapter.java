@@ -54,8 +54,15 @@ public class ExerciseRecyclerAdapter extends RecyclerView.Adapter<ExerciseRecycl
             mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
             holder.icon.setImageResource(mui.getImage());
         }
-        if (exerciseProfile.getExercise() != null)
+        if (exerciseProfile.getExercise() != null){
+
             holder.name.setText(exerciseProfile.getExercise().getName());
+            if(exerciseProfile.getExercise().getDefault_int() == 1){
+                holder.exerciseInfo.setVisibility(View.GONE);
+            }
+        }else{
+            holder.exerciseInfo.setVisibility(View.GONE);
+        }
 
         holder.exerciseInfo.setOnClickListener(v -> {
             if (exerciseProfile.getExercise() == null) {
@@ -66,9 +73,7 @@ public class ExerciseRecyclerAdapter extends RecyclerView.Adapter<ExerciseRecycl
             }
         });
 
-        if(exerciseProfile.getExercise().getDefault_int() == 1){
-            holder.exerciseInfo.setVisibility(View.GONE);
-        }
+
         if (exerciseProfile.type == WorkoutLayoutTypes.IntraExerciseProfile) {
             holder.tag.setText("Superset");
             holder.childTag.setVisibility(View.VISIBLE);

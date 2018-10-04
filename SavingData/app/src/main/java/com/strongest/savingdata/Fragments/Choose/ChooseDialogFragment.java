@@ -111,11 +111,11 @@ public class ChooseDialogFragment extends BaseCreateProgramFragment implements V
             } else if (plObject instanceof PLObject.SetsPLObject) {
                 setsPLObject = (PLObject.SetsPLObject) plObject;
               //  exerciseProfile = setsPLObject.parent;
-                adapter = new ChooseAdapter(getChildFragmentManager(), SetsChooseSingleFragment.getInstance());
+                //adapter = new ChooseAdapter(getChildFragmentManager(), SetsChooseSingleFragment.getInstance());
             } else if (plObject instanceof PLObject.IntraSetPLObject) {
                 intraSetPLObject = (PLObject.IntraSetPLObject) plObject;
                // exerciseProfile = intraSetPLObject.getParent();
-                adapter = new ChooseAdapter(getChildFragmentManager(), SetsChooseSingleFragment.getInstance());
+                //adapter = new ChooseAdapter(getChildFragmentManager(), SetsChooseSingleFragment.getInstance());
             }
             plObjectPosition = getArguments().getInt(POSITION);
         }

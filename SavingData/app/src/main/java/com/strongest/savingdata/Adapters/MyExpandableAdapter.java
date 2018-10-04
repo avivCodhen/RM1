@@ -207,32 +207,32 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void configureViewHolder2(final MuscleViewHolder vh2, final int position) {
         final ExerciseProfile bodyText = (ExerciseProfile) exArray.get(position);
         String title = bodyText.getTitle();
-        if(title == null || title.equals("")){
+        if (title == null || title.equals("")) {
             title = "This Is A Title";
         }
 
-        vh2.edit.setOnClickListener((View v) ->{
-            MaterialDialogHandler.get().defaultBuilder(context,"Edit Title","CHANGE")
-                    .addInput(InputType.TYPE_CLASS_TEXT,vh2.bodyTv.getText().toString(), ((dialog, input) -> {
+        vh2.edit.setOnClickListener((View v) -> {
+            MaterialDialogHandler.get().defaultBuilder(context, "Edit Title", "CHANGE")
+                    .addInput(InputType.TYPE_CLASS_TEXT, vh2.bodyTv.getText().toString(), ((dialog, input) -> {
                         bodyText.setTitle(input.toString());
                         vh2.bodyTv.setText(input.toString());
                     }))
-            .buildDialog()
-            .show();
+                    .buildDialog()
+                    .show();
         });
 
         vh2.bodyTv.setText(title);
 
-        vh2.itemView.setOnLongClickListener(v->{
+        vh2.itemView.setOnLongClickListener(v -> {
             uiExerciseClickHandler.onLongClick(bodyText, vh2);
             return false;
         });
 
-       vh2.itemView.setOnClickListener(v->{
-           if(longClickMenuView.isOn()){
-               uiExerciseClickHandler.onLongClick(bodyText, vh2);
-           }
-       });
+        vh2.itemView.setOnClickListener(v -> {
+            if (longClickMenuView.isOn()) {
+                uiExerciseClickHandler.onLongClick(bodyText, vh2);
+            }
+        });
     }
 
     public void configurateSets(final SetsViewHolder vh, final int position) {
@@ -250,7 +250,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
 
-        vh.card.setOnLongClickListener(longClicked->{
+        vh.card.setOnLongClickListener(longClicked -> {
             uiSetsClickHandler.onSetsLongClick(setsPLObject, vh);
             return true;
         });
@@ -263,29 +263,27 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         vh.weight.setText(exerciseSet.getWeight() + "kg");
         vh.set.setText(position + 1 + "");
 
-        if(!exerciseSet.hasSomething()){
+        if (!exerciseSet.hasSomething()) {
             vh.editContainer.setVisibility(View.VISIBLE);
             vh.dataLayout.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             vh.dataLayout.setVisibility(View.VISIBLE);
             vh.editContainer.setVisibility(View.GONE);
 
         }
 
         int color;
-        if(longClickMenuView.isOn() && longClickMenuView.objectIsSelected(setsPLObject)){
+        if (longClickMenuView.isOn() && longClickMenuView.objectIsSelected(setsPLObject)) {
             color = ContextCompat.getColor(context, R.color.colorAccent);
-        }else{
+        } else {
             color = ContextCompat.getColor(context, R.color.colorPrimary);
         }
         vh.mainLayout.setBackgroundColor(color);
 
 
-
-
         ParentView.loadParent(context, vh.parentViewContainer)
                 .reset()
-                .with(new SetParentViewAdapter(supersets,setsPLObject, uiSetsClickHandler, vh, longClickMenuView))
+                .with(new SetParentViewAdapter(supersets, setsPLObject, uiSetsClickHandler, vh, longClickMenuView))
                 .make();
 
 
@@ -303,9 +301,10 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             break;
                         case R.id.edit_set:
                             uiSetsClickHandler.onSetsClick(vh, setsPLObject);
+                            break;
                         case R.id.duplicate_set:
                             uiSetsClickHandler.onDuplicate(setsPLObject);
-
+                            break;
                     }
                     return true;
                 }
@@ -335,7 +334,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             vh3.icon.setImageResource(android.R.color.transparent);
         }
 
-        vh3.reps.setText("Reps: "+ExerciseProfileStats.getAllRepsString(exerciseProfile));
+        vh3.reps.setText("Reps: " + ExerciseProfileStats.getAllRepsString(exerciseProfile));
 
         if (exerciseProfile.getExercise() != null) {
             vh3.editExerciseTV.setVisibility(View.GONE);
@@ -358,9 +357,9 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     uiExerciseClickHandler.onLongClick(exerciseProfile, vh3);
                 } else if (uiExerciseClickHandler != null) {
 
-                    if(exerciseProfile.getExercise() == null){
+                    if (exerciseProfile.getExercise() == null) {
                         uiExerciseClickHandler.onExerciseEdit(vh3.getAdapterPosition(), exerciseProfile);
-                    }else{
+                    } else {
                         uiExerciseClickHandler.onExerciseDetails(vh3, exerciseProfile);
 
                     }
@@ -382,9 +381,9 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         int color;
-        if(longClickMenuView.isOn() && longClickMenuView.objectIsSelected(exerciseProfile)){
+        if (longClickMenuView.isOn() && longClickMenuView.objectIsSelected(exerciseProfile)) {
             color = ContextCompat.getColor(context, R.color.colorAccent);
-        }else{
+        } else {
             color = ContextCompat.getColor(context, R.color.colorPrimary);
         }
         vh3.mainLayout.setBackgroundColor(color);
@@ -680,7 +679,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public ViewGroup mainLayout;
 
         @BindView(R.id.reps_rest_weight_layout)
-         ViewGroup dataLayout;
+        ViewGroup dataLayout;
 
         @BindView(R.id.parent_view_container)
         public LinearLayout parentViewContainer;

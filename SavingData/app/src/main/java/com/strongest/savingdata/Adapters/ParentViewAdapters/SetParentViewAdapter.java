@@ -61,15 +61,16 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
             intraSetViewHolder.editContainer.setVisibility(View.GONE);
         }
         if (list.get(position).type == WorkoutLayoutTypes.SuperSetIntraSet) {
+            intraSetViewHolder.supersetTag.setVisibility(View.VISIBLE);
             intraSetViewHolder.supersetTv.setVisibility(View.VISIBLE);
             //PLObject.ExerciseProfile superset = setsPLObject.parent.exerciseProfiles.get(position);
             intraSetViewHolder.deleteIV.setVisibility(View.INVISIBLE);
 
             if(supersets.get(position).getExercise() != null){
                 set.setExerciseName(supersets.get(position).getExercise().getName());
-                intraSetViewHolder.supersetTv.setText("Superset of " +set.getExerciseName());
+                intraSetViewHolder.supersetTv.setText(set.getExerciseName());
             }else{
-                intraSetViewHolder.supersetTv.setText("No exercise picked for this superset");
+                intraSetViewHolder.supersetTv.setText("No exercise picked");
             }
             intraSetViewHolder.editContainerTV.setText("Tap to edit Superset");
 /*
@@ -81,8 +82,9 @@ public class SetParentViewAdapter extends ParentView.Adapter<IntraSetViewHolder>
 */
 
         } else {
+            intraSetViewHolder.supersetTag.setVisibility(View.GONE);
             intraSetViewHolder.editContainerTV.setText("Tap to edit Dropset");
-            intraSetViewHolder.intraSetTag.setImageResource(R.drawable.child_green);
+            intraSetViewHolder.intraSetTag.setImageResource(R.drawable.icon_down_right_accent);
             intraSetViewHolder.deleteIV.setVisibility(View.VISIBLE);
             intraSetViewHolder.deleteIV.setOnClickListener((delete) -> {
                 uiSetsClickHandler.onRemoveIntraSet(setsPLObject, setsPLObject.intraSets.indexOf(set));

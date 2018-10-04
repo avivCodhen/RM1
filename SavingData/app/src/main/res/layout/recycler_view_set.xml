@@ -37,7 +37,7 @@
     <RelativeLayout
         android:id="@+id/recycler_view_set_card"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="65dp"
         android:layout_marginBottom="1dp"
         android:clickable="true"
         android:focusable="true"
@@ -73,6 +73,7 @@
 
 
         <LinearLayout
+            android:layout_toLeftOf="@+id/options_wrapper"
             android:layout_centerVertical="true"
             android:id="@+id/reps_rest_weight_layout"
             android:layout_width="match_parent"
@@ -87,13 +88,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.3"
                 android:gravity="center_horizontal">
-
-                <CheckBox
-                    android:id="@+id/set_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:elevation="5dp"
-                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/recycler_view_exercise_details_sets_tv"
@@ -113,13 +107,14 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.01"
+                android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <ImageView
+                    android:layout_gravity="center_horizontal"
                     android:id="@+id/sets_reps_icon"
-                    android:layout_width="18dp"
+                    android:layout_width="match_parent"
                     android:layout_height="18dp"
                     android:src="@drawable/icon_reps"
                     android:text="Reps: "
@@ -127,10 +122,13 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:layout_marginTop="5dp"
+
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
                     android:id="@+id/exerciseView_repsTV"
-                    android:layout_width="45dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:src="@drawable/reps_color_accent_icon"
                     android:text="-"
                     android:textSize="14dp" />
@@ -141,13 +139,13 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.01"
+                android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/sets_rest_icon"
-                    android:layout_width="18dp"
+                    android:layout_width="match_parent"
                     android:layout_height="18dp"
                     android:src="@drawable/icon_clock"
                     android:text="Rest: "
@@ -155,10 +153,12 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:elevation="10dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_horizontal"
                     android:id="@+id/exerciseView_restTV"
-                    android:layout_width="50dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:src="@drawable/time_24px"
                     android:text="-"
                     android:textSize="14dp" />
@@ -170,13 +170,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <ImageView
+                    android:elevation="10dp"
                     android:id="@+id/sets_weight_icon"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="18dp"
                     android:src="@drawable/icon_weight"
                     android:text="Wgh:"
 
@@ -184,32 +184,15 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:layout_marginTop="5dp"
 
+                    android:gravity="center_horizontal"
                     android:id="@+id/exerciseView_weightTV"
                     android:layout_width="65dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:text="-"
                     android:textSize="14dp" />
 
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-
-                <ImageView
-                    android:id="@+id/sets_settings"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:padding="8dp"
-                    android:src="@drawable/icon_menu_threedots_gray_48"
-                    android:visibility="visible" />
 
             </LinearLayout>
 
@@ -217,6 +200,25 @@
         </LinearLayout>
 
 
+
+        <LinearLayout
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/options_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/sets_settings"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:padding="8dp"
+                android:src="@drawable/icon_menu_threedots_gray_48"
+                android:visibility="visible" />
+
+        </LinearLayout>
 
 
 

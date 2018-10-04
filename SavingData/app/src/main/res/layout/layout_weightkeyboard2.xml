@@ -1,0 +1,91 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@color/colorAccent"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:text="+2.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@color/colorAccent"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:text="+5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@color/colorAccent"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:text="-2.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@color/colorAccent"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:text="-5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@color/colorAccent"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:text="+5%"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@color/colorAccent"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:text="+10%"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@color/colorAccent"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:text="-5%"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@color/colorAccent"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:text="-10%"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

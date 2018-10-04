@@ -2,23 +2,16 @@ package com.strongest.savingdata.Fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.transition.Fade;
-import android.support.transition.Transition;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -34,7 +27,6 @@ import com.strongest.savingdata.Adapters.GridViewMusclesAdapter;
 import com.strongest.savingdata.Adapters.OnExerciseListAdapterClickListener;
 import com.strongest.savingdata.Adapters.OnGridViewMuscleAdapterClickListener;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
-import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
@@ -64,9 +56,9 @@ public class ExerciseEditFragment extends BaseFragment implements
     public static final String FRAGMENT_EDIT_EXERCISE = "exerciseeditfragment";
     private OnExerciseSetChange onExerciseSetChange;
 
-   /* @BindView(R.id.muscle_tv)
-    TextView mMuscleText;
-*/
+    /* @BindView(R.id.muscle_tv)
+     TextView mMuscleText;
+ */
     @BindView(R.id.choose_change_Tv)
     TextView mChangeMuscleTV;
 
@@ -149,8 +141,6 @@ public class ExerciseEditFragment extends BaseFragment implements
     private String fragmentId;
     private View mainView;
 
-    int x;
-    int y;
 
     boolean clickedOnce;
 
@@ -175,9 +165,8 @@ public class ExerciseEditFragment extends BaseFragment implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_choose_exercise, container, false);
         ButterKnife.bind(this, v);
-        x = v.getRight();
-        y = v.getBottom();
-        v.setVisibility(View.INVISIBLE);
+
+        setUpMainViewForCircularAnimation(v);
 
         mainView = v;
         return v;
@@ -199,10 +188,7 @@ public class ExerciseEditFragment extends BaseFragment implements
         selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(fragmentId, SelectedExerciseViewModel.class);
         dataManager = workoutsViewModel.getDataManager();
         exerciseProfile = selectedExerciseViewModel.getSelectedExercise().getValue();
-        if(exerciseProfile == null){
-            getFragmentManager().popBackStack();
-            return;
-        }
+        guard(exerciseProfile);
         selectedExercise = exerciseProfile.exercise;
         selectedMuscle = exerciseProfile.getMuscle();
 
@@ -216,13 +202,7 @@ public class ExerciseEditFragment extends BaseFragment implements
 
     private void initViews(View v) {
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                MyJavaAnimator.animateRevealShowParams(v, true, R.color.colorAccent, x, y, null);
-
-            }
-        }, 200);
+        makeRevealAnimation(300,null);
         initToolbar();
         int height = ((HomeActivity) getActivity()).getScreenHeight();
         mGridViewAdapter = new GridViewMusclesAdapter(height, getContext(), dataManager, this);
@@ -264,9 +244,9 @@ public class ExerciseEditFragment extends BaseFragment implements
          * */
         mChangeMuscleTV.setOnClickListener(v12 -> {
             mExpandable.toggle();
-            if(mExpandable.isExpanded()){
+            if (mExpandable.isExpanded()) {
                 muscleArrow.setImageResource(R.drawable.sort_down_white_96dp);
-            }else{
+            } else {
                 muscleArrow.setImageResource(R.drawable.sort_up_white_96dp);
 
             }
@@ -307,42 +287,6 @@ public class ExerciseEditFragment extends BaseFragment implements
                 fabPlayerBtn.setImageResource(R.drawable.sort_down_white_96dp);
             }
         });
-
-        /**
-         * test porpuses only
-         * */
-      /*  v.findViewById(R.id.hide_player_edit_exercise_fragment).setOnClickListener(view -> {
-            float distance = 0;
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) listWrapper.getLayoutParams();
-
-            if (((TextView) view).getText().equals("Show Player")) {
-                distance = TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 260,
-                        getResources().getDisplayMetrics()
-                );
-                ((TextView) view).setText("Hide Player");
-            } else {
-                distance = TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 55,
-                        getResources().getDisplayMetrics());
-                ((TextView) view).setText("Show Player");
-
-            }
-
-            float finalDistance = distance;
-            Animation a = new Animation() {
-
-                @Override
-                protected void applyTransformation(float interpolatedTime, Transformation t) {
-                    params.topMargin = (int) (finalDistance * interpolatedTime);
-                    listWrapper.setLayoutParams(params);
-                }
-            };
-            a.setDuration(500); // in ms
-            listWrapper.startAnimation(a);
-
-        });
-*/
     }
 
     /**
@@ -363,19 +307,15 @@ public class ExerciseEditFragment extends BaseFragment implements
             int exercisePos = selectedExerciseViewModel.getSelectedExercisePosition();
             selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile, exercisePos);
             workoutsViewModel.saveLayoutToDataBase();
-            MyJavaAnimator.animateRevealShowParams(mainView, false, R.color.background_color, x, y, r -> {
-                getFragmentManager().popBackStack();
+            exitRevealAnimation(r -> getFragmentManager().popBackStack());
 
-            });
         });
 
         saveExitToolBar.setCancelButton(v -> {
             this.setExitTransition(new Fade());
 
-            MyJavaAnimator.animateRevealShowParams(mainView, false, R.color.background_color, x, y, r -> {
-                getFragmentManager().popBackStack();
+            exitRevealAnimation(r -> getFragmentManager().popBackStack());
 
-            });
 
         });
     }

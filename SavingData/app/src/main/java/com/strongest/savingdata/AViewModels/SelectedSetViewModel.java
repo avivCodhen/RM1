@@ -10,6 +10,7 @@ public class SelectedSetViewModel extends ViewModel {
 
     private MutableLiveData<PLObject.SetsPLObject> selectedSet = new MutableLiveData<>();
     private MutableLiveData<ExerciseSet> selectedExerciseSet= new MutableLiveData<>();
+    private MutableLiveData<PLObject.ExerciseProfile> selectedExercise= new MutableLiveData<>();
 
     public PLObject.SetsPLObject getSelectedSets(){
         return selectedSet.getValue();
@@ -25,5 +26,13 @@ public class SelectedSetViewModel extends ViewModel {
 
     public void modifySetSelected(ExerciseSet exerciseSet){
         this.selectedExerciseSet.setValue(exerciseSet);
+    }
+
+    public PLObject.ExerciseProfile getSelectedExercise() {
+        return selectedExercise.getValue();
+    }
+
+    public void selectExercise(PLObject.ExerciseProfile selectedExercise) {
+        this.selectedExercise.setValue(selectedExercise);
     }
 }

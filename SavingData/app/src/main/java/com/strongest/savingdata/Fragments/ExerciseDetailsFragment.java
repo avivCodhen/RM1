@@ -78,6 +78,12 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     @BindView(R.id.exercise_details_activity_toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.exercise_detail_expandable_layout)
+    ExpandableLayout expandableLayout;
+
+    @BindView(R.id.transparent_wrapper)
+    ViewGroup expandableTransparentWrapper;
+
     MyExpandableAdapter adapter;
     ExerciseRecyclerAdapter exerciseAdapter;
     private Workout workout = new Workout();
@@ -212,6 +218,10 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         }, 200);
 
 
+        expandableTransparentWrapper.setOnClickListener(v->{
+            expandableLayout.collapse();
+            getFragmentManager().popBackStack();
+        });
         /*exerciseInfo.setOnClickListener(info -> {
             transitionToExerciseDetailsActivity(exerciseProfile.getExercise());
         });
@@ -373,10 +383,11 @@ public class ExerciseDetailsFragment extends BaseFragment implements
             adapter.notifyDataSetChanged();
             stats.updateStats();
         });
-
+        selectedSetViewModel.selectExercise(exerciseProfile);
         SetsChooseSingleFragment f = SetsChooseSingleFragment.getInstance();
-        addFragmentChild(getFragmentManager(), f, SetsChooseSingleFragment.SETS_CHOOSE_FRAGMENT);
 
+        addFragmentChild(getFragmentManager(), f, SetsChooseSingleFragment.SETS_CHOOSE_FRAGMENT);
+        //expandableLayout.expand();
 
         /*setsItemAdapter.onChild((PLObject.SetsPLObject) plObject);
         adapter.notifyItemChanged(vh.getAdapterPosition());*/
