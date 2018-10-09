@@ -160,10 +160,24 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
                         "DELETE")
                 .buildDialog()
                 .addPositiveActionFunc(v -> {
-                    int pos = programs.indexOf(p);
-                    programs.remove(pos);
-                    myProgramsAdapter.notifyItemRemoved(pos);
-                    myProgramCallBack.deleteProgram(p);
+
+                    if (p.isUnShareable()) {
+                        MaterialDialogHandler.get()
+                                .defaultBuilder(getContext(), "You cannot delete a program you shared.", "OK")
+                                .hideNegativeButton()
+                                .buildDialog()
+                                .addPositiveActionFunc(view -> {
+                                }, true)
+                                .show();
+
+                    } else {
+
+                        int pos = programs.indexOf(p);
+                        programs.remove(pos);
+                        myProgramsAdapter.notifyItemRemoved(pos);
+                        myProgramCallBack.deleteProgram(p);
+                    }
+
 
                 }, true).show();
 

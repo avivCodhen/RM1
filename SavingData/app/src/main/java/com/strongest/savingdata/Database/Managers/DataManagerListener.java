@@ -16,6 +16,7 @@ public interface DataManagerListener<T> {
     void delete(String table);
 
 
+
     void close();
 
     T fetchById(String table, int id);

@@ -24,7 +24,8 @@ import com.strongest.savingdata.Controllers.CallBacks;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.ExerciseSet;
 import com.strongest.savingdata.Database.Managers.DataManager;
-import com.strongest.savingdata.Database.Program.DBWorkoutHelper;
+import com.strongest.savingdata.Database.Managers.DataManagerAPI;
+import com.strongest.savingdata.Database.Workout.DBWorkoutHelper;
 import com.strongest.savingdata.Utils.FireBaseUtils;
 
 import java.util.ArrayList;
@@ -36,12 +37,12 @@ import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.NAME;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TABLE_EXERCISES_CUSTOM;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.TYPE;
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.WEIGHT;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.COMMENT;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.EXERCISE_ID;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.INNER_TYPE;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.REP_ID;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.REST;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.TITLE;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.COMMENT;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.EXERCISE_ID;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.INNER_TYPE;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.REP_ID;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.REST;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.TITLE;
 
 public class WorkoutsService {
 
@@ -83,7 +84,7 @@ public class WorkoutsService {
     }
 
     public void provideWorktoutsList(MutableLiveData<ArrayList<Workout>> mutableLiveDataWorkout, CMD cmd) {
-        String programUID = sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
+        String programUID = getCurrentProgramUID();
         ArrayList<Workout> list = null;
         if (programUID.equals("")) {
             return;
@@ -96,8 +97,8 @@ public class WorkoutsService {
         }
 
         if (cmd == CMD.INIT) {
-            if (programUID.equals(getCurrentWorkoutUID())) {
-                list = readLayoutFromDataBase(DBWorkoutHelper.TABLE_WORKOUTS);
+            if (programUID.equals(getCurrentProgramUID())) {
+                list = readLayoutFromDataBase(dataManager.getWorkoutDataManager(), DBWorkoutHelper.TABLE_WORKOUTS);
             }
             if (list != null) {
                 mutableLiveDataWorkout.setValue(list);
@@ -119,6 +120,13 @@ public class WorkoutsService {
         }
 
     }
+
+    public ArrayList<Workout> provideDefaultTemplates(String s) {
+        ArrayList<Workout> list = readLayoutFromDataBase(dataManager.getDefaultWorkoutsDataManager(), s);
+        saveLayoutToDataBase(getCurrentProgramUID(), false, list, null);
+        return list;
+    }
+
 
     public ArrayList<Workout> createDefaultWorkoutsList(String programUID) {
         ArrayList<Workout> workoutArrayList = new ArrayList<>();
@@ -143,12 +151,16 @@ public class WorkoutsService {
                 );
     }
 
-    private String getCurrentWorkoutUID() {
-        return sharedPreferences.getString(CURRENT_WORKOUT, "");
+    private String getCurrentProgramUID() {
+        return sharedPreferences.getString(ProgramService.CURRENT_PROGRAM, "");
     }
 
     private boolean saveProgramNameToSharedPreference(String programUID) {
         return editor.putString(CURRENT_WORKOUT, programUID).commit();
+    }
+
+    private boolean removeProgramNameToSharedPreference() {
+        return editor.remove(CURRENT_WORKOUT).commit();
     }
 
 
@@ -196,7 +208,7 @@ public class WorkoutsService {
                 if (dataSnapshot.getValue() != null) {
                     WorkoutHolder wor = dataSnapshot.getValue(WorkoutHolder.class);
                     saveLayoutToDataBase(programUID, true, workoutBroParser(wor), (intResult) -> {
-                        ArrayList<Workout> list = readLayoutFromDataBase("");
+                        ArrayList<Workout> list = readLayoutFromDataBase(dataManager.getWorkoutDataManager(), DBWorkoutHelper.TABLE_WORKOUTS);
 
                         onFinish.onFinish(list);
 
@@ -248,7 +260,7 @@ public class WorkoutsService {
     }
 
     public void saveCurrentWorkouts(boolean b, ArrayList<Workout> value, CallBacks.OnFinish o) {
-        saveLayoutToDataBase(getCurrentWorkoutUID(), b, value, o);
+        saveLayoutToDataBase(getCurrentProgramUID(), b, value, o);
     }
 
 
@@ -278,12 +290,14 @@ public class WorkoutsService {
 
     public void deleteWorkout(String key) {
         databaseReference.child(key).setValue(null);
+        dataManager.getWorkoutDataManager().delete(DBWorkoutHelper.TABLE_WORKOUTS);
+        removeProgramNameToSharedPreference();
     }
 
-    public ArrayList<Workout> readLayoutFromDataBase(String currentDbName) {
+    public ArrayList<Workout> readLayoutFromDataBase(DataManagerAPI dataManagerAPI, String tableName) {
         Log.d(TAG, "readLayoutFromDataBase: ");
         ArrayList<Workout> workoutsList = new ArrayList<>();
-        Cursor c = dataManager.getWorkoutDataManager().readLayoutTableCursor(DBWorkoutHelper.TABLE_WORKOUTS);
+        Cursor c = dataManagerAPI.readLayoutTableCursor(tableName);
         //layout = new ArrayList<>();
         String muscle_str;
         WorkoutLayoutTypes type;

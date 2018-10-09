@@ -218,7 +218,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         }, 200);
 
 
-        expandableTransparentWrapper.setOnClickListener(v->{
+        expandableTransparentWrapper.setOnClickListener(v -> {
             expandableLayout.collapse();
             getFragmentManager().popBackStack();
         });
@@ -362,6 +362,10 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                 adapter.notifyItemRangeChanged(0, adapter.getExArray().size());
                 break;
 
+            case edit:
+                onSetsClick(longClickMenuView.getHighlightedViews().get(0), longClickMenuView.getSelectedPLObjects().get(0));
+                break;
+
 
         }
         selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile, exercisePosition);
@@ -382,6 +386,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         selectedSetViewModel.getSelectedExerciseSet().observe(this, (exerciseSet) -> {
             adapter.notifyDataSetChanged();
             stats.updateStats();
+            selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile, exercisePosition);
         });
         selectedSetViewModel.selectExercise(exerciseProfile);
         SetsChooseSingleFragment f = SetsChooseSingleFragment.getInstance();
@@ -505,14 +510,8 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("aviv", "onResume: yer");
         stats.updateStats();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("aviv", "onStart: ");
-    }
 
 }

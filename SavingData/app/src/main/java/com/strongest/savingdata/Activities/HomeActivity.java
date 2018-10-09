@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,7 +25,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,15 +44,16 @@ import com.strongest.savingdata.Adapters.WorkoutsViewPagerAdapter;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.AModels.programModel.Program;
+import com.strongest.savingdata.Database.Managers.DefaultWorkoutsDataManager;
 import com.strongest.savingdata.Fragments.BaseFragment;
 import com.strongest.savingdata.Fragments.CustomExerciseFragment;
 import com.strongest.savingdata.Fragments.ExerciseEditFragment;
-import com.strongest.savingdata.Fragments.NewProgramFragment;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
 import com.strongest.savingdata.Fragments.SetsChooseSingleFragment;
 import com.strongest.savingdata.Fragments.WorkoutViewFragment;
 import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
+import com.strongest.savingdata.MyViews.MovableFloatingActionButton;
 import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.MyViews.SmartProgressBar;
 import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
@@ -62,6 +63,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.strongest.savingdata.AModels.workoutModel.WorkoutsModel.Actions.Advanced;
+import static com.strongest.savingdata.AModels.workoutModel.WorkoutsModel.Actions.CustomExercise;
+import static com.strongest.savingdata.AModels.workoutModel.WorkoutsModel.Actions.MyProgram;
 import static com.strongest.savingdata.AModels.workoutModel.WorkoutsModel.Actions.Share;
 // import com.roughike.bottombar.OnMenuTabClickListener;
 
@@ -87,9 +90,9 @@ public class HomeActivity extends BaseActivity implements
     AppBarLayout mAppBarLayout;
     @BindView(R.id.activity_home_drawer_layout)
     DrawerLayout mDrawerLayout;
-    @BindView(R.id.home_activity_navigationview)
-    NavigationView mNavigationView;
-
+    /*  @BindView(R.id.home_activity_navigationview)
+      NavigationView mNavigationView;
+  */
     @BindView(R.id.activity_home_longclick_menu)
     public LongClickMenuView longClickMenuView;
     @BindView(R.id.activity_home_viewpager)
@@ -108,7 +111,7 @@ public class HomeActivity extends BaseActivity implements
     SmartProgressBar smartProgressBar;
 
     @BindView(R.id.home_activity_fab)
-    FloatingActionButton fab;
+    MovableFloatingActionButton fab;
 
     @BindView(R.id.fabMenu)
     FABRevealMenu fabRevealMenu;
@@ -144,7 +147,6 @@ public class HomeActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
-
         if (savedInstanceState != null) {
             program = (Program) savedInstanceState.getSerializable("program");
         }
@@ -200,6 +202,8 @@ public class HomeActivity extends BaseActivity implements
                     .setButtonText(getString(R.string.navigate_my_programs_button))
                     .setActionBtn(v -> toMyProgramsActivity())
                     .setUpWithViewPager(mViewPager, false, false)
+                    .setUpWithMoreViews(mTabLayout)
+                    .onShowFunc(() -> ifNoProgram())
                     .onCondition(list.size());
 
         });
@@ -215,8 +219,15 @@ public class HomeActivity extends BaseActivity implements
         longClickMenuView.instantiate(this);
         programToolsView.instantiate(fab, this);
         programToolsView.setProgramToolsBtn(fab);
+        programToolsView.setLoginFunc(v -> toLogInActivity());
+        programToolsView.setLogoutFunc(v -> logOut());
+
         loggedInUI();
 
+        ifNoProgram();
+    }
+
+    private void ifNoProgram() {
         if (program == null) {
             title.setText("RM1");
         }
@@ -225,11 +236,17 @@ public class HomeActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        programService.listenForSharedPrograms(count -> showBadgeForMyProgram((int) count));
+        if (programService.isProgramAvailable()) {
+            programService.listenForSharedPrograms(count -> showBadgeForMyProgram((int) count));
+        } else {
+            programViewModel.noProgram();
+            programViewModel.fetchAllPrograms();
+
+        }
     }
 
     private void showBadgeForMyProgram(int count) {
-        myProgramBadge = (TextView) MenuItemCompat.getActionView(mNavigationView.getMenu().findItem(R.id.menu_my_programs));
+      /*  myProgramBadge = (TextView) MenuItemCompat.getActionView(mNavigationView.getMenu().findItem(R.id.menu_my_programs));
         myProgramBadge.setGravity(Gravity.CENTER_VERTICAL);
         myProgramBadge.setTypeface(null, Typeface.BOLD);
         myProgramBadge.setTextColor(getResources().getColor(R.color.red));
@@ -238,14 +255,21 @@ public class HomeActivity extends BaseActivity implements
         } else {
             myProgramBadge.setText("");
 
-        }
+        }*/
+        programToolsView.updateMenuAlertCount(WorkoutsModel.Actions.MyProgram, count);
     }
 
     //TODO: call this function when needed
     private void loggedInUI() {
         isLoggedIn = userService.isUserLoggedIn();         //TODO: need to check if the user is logged in
+        programToolsView.setUpLoginCredentials(
+                isLoggedIn,
+                userService.getUsername(),
+                userService.getEmail()
+        );
 
-        if (isLoggedIn) {
+
+      /*  if (isLoggedIn) {
             mNavigationView.getMenu().clear();
             mNavigationView.inflateMenu(R.menu.menu_main_logged_in);
             View v = mNavigationView.getHeaderView(0);
@@ -258,7 +282,7 @@ public class HomeActivity extends BaseActivity implements
         } else {
             mNavigationView.getMenu().clear();
             mNavigationView.inflateMenu(R.menu.menu_main_logged_out);
-        }
+        }*/
 
 
     }
@@ -307,23 +331,23 @@ public class HomeActivity extends BaseActivity implements
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
 
-        mDrawerLayout.setScrimColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
+        //  mDrawerLayout.setScrimColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
+        //  mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
         //mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
-        mDrawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
-        mToggle.setDrawerIndicatorEnabled(true);
-        mNavigationView.setNavigationItemSelectedListener(this);
+        //  mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+        //  mDrawerLayout.addDrawerListener(mToggle);
+        //  mToggle.syncState();
+        //  mToggle.setDrawerIndicatorEnabled(true);
+        //  mNavigationView.setNavigationItemSelectedListener(this);
 
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
     }
 
     @Override
     protected void onPause() {
-        if (workoutsViewModel.safeToSave) {
+        if (workoutsViewModel.safeToSave && programService.isProgramAvailable()) {
             workoutsViewModel.saveLayoutToDataBase();
         }
         super.onPause();
@@ -344,18 +368,18 @@ public class HomeActivity extends BaseActivity implements
         if (f == null) {
             f = (BaseFragment) getSupportFragmentManager().findFragmentByTag(SetsChooseSingleFragment.SETS_CHOOSE_FRAGMENT);
 
-                if (f != null) {
-                    View v = f.getView();
+            if (f != null) {
+                View v = f.getView();
 
-                    MyJavaAnimator.animateRevealShowParams(v, false, R.color.background_color, 0, 0, r -> {
-                        super.onBackPressed();
-                        return;
-                    });
-                } else {
+                MyJavaAnimator.animateRevealShowParams(v, false, R.color.background_color, 0, 0, r -> {
                     super.onBackPressed();
-                }
+                    return;
+                });
+            } else {
+                super.onBackPressed();
+            }
 
-        }else{
+        } else {
             View v = f.getView();
 
             MyJavaAnimator.animateRevealShowParams(v, false, R.color.background_color, 0, 0, r -> {
@@ -365,30 +389,35 @@ public class HomeActivity extends BaseActivity implements
         }
     }
 
-    private void makeCircularReturnAnimation(){
+    private void makeCircularReturnAnimation() {
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.aviv_menu_program, menu);
+        getMenuInflater().inflate(R.menu.home_activity_settings_icon_menu, menu);
         return true;
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // programToolsBtn = findViewById(R.id.edit_menu);
-        //programToolsView.setProgramToolsBtn(programToolsBtn);
-        if (mToggle.onOptionsItemSelected(item)) {
+
+        /*if (mToggle.onOptionsItemSelected(item)) {
             return true;
-        }
+        }*/
 
         switch (item.getItemId()) {
             case R.id.edit_menu:
                 programToolsView.expand();
                 return true;
 
+            case R.id.home_activity_settings_menu:
+                if (program == null) {
+                    showNoProgramDialog();
+                }
+                addFragmentToActivity(R.id.activity_home_framelayout, new ProgramSettingsFragment(), "programsettings");
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -422,14 +451,18 @@ public class HomeActivity extends BaseActivity implements
                 toShareActivity();
                 break;
             case R.id.menu_logout:
-                userService.logout();
-                finish();
-                toLogInActivity();
+                logOut();
                 break;
         }
         mDrawerLayout.closeDrawer(Gravity.START);
 
         return false;
+    }
+
+    private void logOut() {
+        userService.logout();
+        finish();
+        toLogInActivity();
     }
 
     private void toShareActivity() {
@@ -477,6 +510,7 @@ public class HomeActivity extends BaseActivity implements
         longClickMenuView.onShowMenu(vh, plObject);
     }
 
+
     @Override
     public void onProgramToolsClick() {
 
@@ -510,6 +544,12 @@ public class HomeActivity extends BaseActivity implements
             case Child:
                 listModifier = WorkoutsModel.ListModifier.OnWith(w, WorkoutItemAdapterFactory.getFactory())
                         .doChild(longClickMenuView.getSelectedPLObjects().get(0));
+                break;
+
+            case edit:
+                w.getOnEdit().edit(position, (PLObject.ExerciseProfile) longClickMenuView.getSelectedPLObjects().get(0));
+                break;
+
         }
         if (listModifier != null) {
             w.getObserver().onChange(listModifier);
@@ -522,23 +562,44 @@ public class HomeActivity extends BaseActivity implements
 
     }
 
+    private void showNoProgramDialog() {
+        MaterialDialogHandler
+                .get()
+                .defaultBuilder(this, getString(R.string.no_program), getString(R.string.navigate_my_programs_button))
+                .addContent(getString(R.string.no_program_content))
+                .buildDialog()
+                .addPositiveActionFunc(v -> toMyProgramsActivity(), true)
+                .show();
+    }
+
     @Override
-    public void onProgramToolsAction(WorkoutsModel.Actions action) {
-        if (program == null) {
-            MaterialDialogHandler
-                    .get()
-                    .defaultBuilder(this, getString(R.string.no_program), getString(R.string.navigate_my_programs_button))
-                    .addContent(getString(R.string.no_program_content))
-                    .buildDialog()
-                    .addPositiveActionFunc(v -> toMyProgramsActivity(), true)
-                    .show();
-            return;
+    public void onProgramToolsAction(ProgramToolsView.ProgramButton programButton) {
+        WorkoutsModel.Actions action = programButton.type;
+        if (programButton.requiresProgram == true) {
+            if (program == null) {
+
+                showNoProgramDialog();
+                return;
+            }
         }
+
         if (action == Advanced) {
             addFragmentToActivity(R.id.activity_home_framelayout, new ProgramSettingsFragment(), "programsettings");
+            return;
 
         } else if (action == Share) {
             toShareActivity();
+            programToolsView.close();
+
+            return;
+        } else if (action == MyProgram) {
+            toMyProgramsActivity();
+            programToolsView.close();
+            return;
+        } else if (action == CustomExercise) {
+            CustomExerciseFragment f = new CustomExerciseFragment();
+            addFragmentToActivity(R.id.activity_home_framelayout, f, "CustomExercise");
+            return;
         } else {
             workoutsViewModel.workoutsModel.validateActions(
                     workoutsViewModel.getWorkoutsList().getValue(),
@@ -574,6 +635,14 @@ public class HomeActivity extends BaseActivity implements
 
         }
         workoutsViewModel.saveLayoutToDataBase();
+        Snackbar snackbar = Snackbar.
+                make(fab, "Added " + programButton.tv_name + " Successfully", Snackbar.LENGTH_SHORT);
+        View v = snackbar.getView();
+        v.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        TextView textView = v.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+        snackbar.show();
+        programToolsView.close();
 
     }
 
@@ -647,8 +716,15 @@ public class HomeActivity extends BaseActivity implements
 
 
             } else if (resultCode == MyProgramsActivity.FRAGMENT_CREATE_PROGRAM) {
-                programViewModel.setNewProgram();
-                workoutsViewModel.setNewWorkout();
+                String s = data.getStringExtra(MyProgramsActivity.WHICH_PROGRAM);
+                if (s.equals(DefaultWorkoutsDataManager.DEFAULT)) {
+                    programViewModel.setNewProgram();
+                    workoutsViewModel.setNewWorkout();
+
+                } else {
+                    programViewModel.setDefaultWorkoutTemplate(s);
+                    workoutsViewModel.setDefaultWorkoutsTemplate(s);
+                }
 
                 MaterialDialogHandler
                         .get()

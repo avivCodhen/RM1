@@ -144,15 +144,15 @@ public class UserService {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = null;
                         if (dataSnapshot.getValue() != null) {
                             for (DataSnapshot d : dataSnapshot.getChildren()) {
 
-                                User user = d.getValue(User.class);
+                                user = d.getValue(User.class);
                                 user.setUID(d.getKey());
-                                if (user != null)
-                                    onFinish.onFinish(user);
                             }
                         }
+                        onFinish.onFinish(user);
                     }
 
                     @Override

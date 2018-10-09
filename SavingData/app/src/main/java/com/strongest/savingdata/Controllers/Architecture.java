@@ -4,6 +4,7 @@ import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AModels.workoutModel.Workout;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
+import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
 
 public interface Architecture {
 
@@ -13,7 +14,7 @@ public interface Architecture {
         }
 
         interface ProgramTools {
-            void onProgramToolsAction(WorkoutsModel.Actions action);
+            void onProgramToolsAction(ProgramToolsView.ProgramButton programButton);
         }
 
         void onWorkoutViewFragmentLongClick();

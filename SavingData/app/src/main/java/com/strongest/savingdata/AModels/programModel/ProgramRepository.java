@@ -63,7 +63,9 @@ public class ProgramRepository {
                 });
     }
 
-    public void deleteList(Program program) {
-        programDAO.deleteList(program);
+    public void deleteProgram(Program program) {
+        Completable.fromRunnable(() -> programDAO.deleteProgram(program))
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 }

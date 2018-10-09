@@ -40,11 +40,18 @@ public class ProgramViewModel extends ViewModel {
     }
 
     public void setNewProgram() {
-        program.postValue(programService.provideNewProgram());
+        program.postValue(programService.provideNewProgram(""));
+    }
 
+    public void setDefaultWorkoutTemplate(String s){
+        program.postValue(programService.provideDefaultTemplate(s));
     }
     public void postProgram(Program p) {
         programService.insertProgram(p, result -> program.postValue(p.getKey()));
+    }
+
+    public void noProgram(){
+        program.postValue("");
     }
 
     public void initProgram(){

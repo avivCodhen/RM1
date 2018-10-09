@@ -29,10 +29,35 @@
             android:textStyle="bold"
             android:textSize="@dimen/program_menu_text_size"
             android:textColor="@color/colorPrimary"
-            android:text="New Exercise"
             android:layout_marginLeft="5dp"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content" />
+
+        <FrameLayout
+            android:id="@+id/alert_wrapper"
+            android:visibility="gone"
+            android:layout_marginLeft="10dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp">
+
+            <android.support.design.widget.FloatingActionButton
+                app:elevation="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:backgroundTint="@color/red" />
+
+            <TextView
+                android:id="@+id/button_alert"
+                android:textStyle="bold"
+                android:textSize="12dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:elevation="10dp"
+                android:text="1"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
 
     </LinearLayout>
 

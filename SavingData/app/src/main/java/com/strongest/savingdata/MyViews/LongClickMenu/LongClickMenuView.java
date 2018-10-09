@@ -49,6 +49,9 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
     @BindView(R.id.longclick_menu_selected)
     TextView selectedNum;
 
+    @BindView(R.id.longclick_menu_edit)
+    ImageView edit;
+
     private final Context context;
     private ArrayList<MyExpandableAdapter.MyExpandableViewHolder> highlightedViews = new ArrayList<>();
     private MyExpandableAdapter.MyExpandableViewHolder currentVH;
@@ -90,25 +93,21 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
 
     private void initViews() {
         findViewById(R.id.longclick_menu_back).setOnClickListener(this);
-        /*supersetBtn =  findViewById(R.id.longclick_menu_superset);
-        intrasetBtn = findViewById(R.id.longclick_menu_intraSet);*/
-        //  more =  findViewById(R.id.longclick_menu_more);
-        //more.setOnClickListener(this);
-        /*setBtn =  findViewById(R.id.longclick_menu_set);
-        setBtn.setOnClickListener(this);
-        intrasetBtn.setOnClickListener(this);
-        supersetBtn.setOnClickListener(this);*/
+
         findViewById(R.id.longclick_menu_delete).setOnClickListener(this);
+        edit.setOnClickListener(this);
         initDropMenu();
     }
 
     private void enableDisableBtns() {
-        if (highlightedViews.size() > 1) {
+        if (highlightedViews.size() > 1 || selectedPLObjects.get(0).type == WorkoutLayoutTypes.BodyView) {
+            disableBtns(edit);
             // disableBtns(duplicate, child);
         } else if (!selectedPLObjects.get(0).isParent) {
             //    enableBtns(duplicate);
             //   disableBtns(child);
         } else {
+            enableBtns(edit);
             //  enableBtns(duplicate, child);
         }
         /*else{
@@ -261,11 +260,11 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
 
                 break;
 
-            case R.id.longclick_menu_child:
-                listener.onLongClickAction(this, Actions.Child);
+            */
+            case R.id.longclick_menu_edit:
+                listener.onLongClickAction(this, Actions.edit);
 
-                break;*/
-
+                break;
             case R.id.longclick_menu_delete:
                 String s = selectedPLObjects.size() > 1 ? "All Of This" : "This";
                 MaterialDialogHandler

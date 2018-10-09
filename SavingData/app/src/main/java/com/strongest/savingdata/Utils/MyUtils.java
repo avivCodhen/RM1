@@ -91,5 +91,29 @@ public class MyUtils {
     public static int color(Context context, int color) {
         return ContextCompat.getColor(context, color);
     }
+
+    //trims spaces to "_"
+    public static String trimSpaceToUnderScore(String exerciseName) {
+        String trimmed = exerciseName.replace(" ", "_");
+        trimmed = trimmed.replace("-","_");
+        return trimmed;
+    }
+
+    //trims spaces to "_"
+    public static String trimLineToUnderScore(String exerciseName) {
+        String trimmed = exerciseName.replace("-", "_");
+        return trimmed;
+    }
+
+    public static String trimLineAndSpace(String exerciseName) {
+        String trimmed = exerciseName.replace("-", "_");
+        return trimSpaceToUnderScore(trimmed);
+    }
+
+    public static String trimLineAndUnderScoreToSpace(String exerciseName) {
+        String trimmed = exerciseName.replace("-", " ");
+        trimmed = trimmed.replace("_", " ");
+        return trimmed;
+    }
 }
 

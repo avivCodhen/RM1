@@ -37,6 +37,8 @@ public class SmartEmptyView extends LinearLayout {
     private ViewPager viewPager;
     private View[] views;
     private boolean hasViews;
+    private OnHide onHide;
+    private OnShow onShow;
 
     public SmartEmptyView(Context context) {
         super(context);
@@ -131,6 +133,16 @@ public class SmartEmptyView extends LinearLayout {
 
         public SmartEmptyView setButtonText(String text){
         actionBtn.setText(text);
+        return this;
+    }
+
+    public SmartEmptyView onHideFunc(OnHide onHide) {
+        this.onHide = onHide;
+        return this;
+    }
+
+    public SmartEmptyView onShowFunc(OnShow onShow){
+        this.onShow = onShow;
         return this;
     }
 
@@ -255,6 +267,10 @@ public class SmartEmptyView extends LinearLayout {
 
             }
         });
+
+        if(onHide != null){
+            onHide.func();
+        }
     }
 
     private void show(View v) {
@@ -304,6 +320,10 @@ public class SmartEmptyView extends LinearLayout {
 
             }
         });
+
+        if(onShow != null){
+            onShow.func();
+        }
     }
 
     private void setViewsVisibility(int visibility){
@@ -327,9 +347,19 @@ public class SmartEmptyView extends LinearLayout {
         return logInImage;
     }
 
+
+
     public interface OnCondition{
 
         boolean condition();
 
+    }
+
+    public interface OnHide {
+        void func();
+    }
+
+    public interface OnShow{
+        void func();
     }
 }

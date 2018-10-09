@@ -131,7 +131,7 @@ public class ExerciseModel {
             if (parent.exerciseProfiles.get(i).getExercise() != null) {
                 exerciseName = parent.exerciseProfiles.get(i).getExercise().getName();
             }
-            intraSet.setExerciseName(parent.exerciseProfiles.get(i).getExercise().getName());
+            intraSet.setExerciseName(exerciseName);
         }
     }
 }

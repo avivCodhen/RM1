@@ -1,4 +1,4 @@
-package com.strongest.savingdata.Database.Program;
+package com.strongest.savingdata.Database.Workout;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

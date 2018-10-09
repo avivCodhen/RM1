@@ -44,7 +44,8 @@ public class WorkoutsModel  {
     }
 
     public enum Actions {
-        Delete, Swap, Add, Duplicate, NewExercise, Child, MultiDelete, NewWorkout, Share, Advanced, NewDivider
+        Delete, Swap, Add, Duplicate, NewExercise,
+        Child, MultiDelete, NewWorkout, Share, Advanced, edit, NewDivider,CustomExercise, MyProgram
     }
 
     /*  public String getLayoutName() {
@@ -154,7 +155,6 @@ public class WorkoutsModel  {
             return validateActions(list, currentPosition, a);
         }
 
-        Workout w = list.get(currentPosition);
         boolean toUpdate = false;
 
         return toUpdate;

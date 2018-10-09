@@ -1,53 +1,90 @@
-<LinearLayout android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
 
     <com.strongest.savingdata.MyViews.SaveExitToolBar
-        android:layout_width="match_parent"
         android:id="@+id/share_program_toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
 
+    <TextView
+        android:layout_below="@+id/share_program_toolbar"
+        android:id="@+id/share_program_activity_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        android:textSize="20dp" />
+
     <EditText
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/share_program_activity_title_tv"
         android:id="@+id/share_program_ET"
-        android:hint="Email to share to"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:hint="Recipient Email" />
+
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/wrapper"
+        android:layout_below="@+id/share_program_ET"
+        android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icon_user" />
 
         <TextView
-            android:gravity="center"
-            android:textAlignment="center"
-            android:text=""
-            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
             android:id="@+id/shared_program_username"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:id="@+id/share_program_btn"
-            android:textColor="@color/colorPrimary"
-            android:background="@color/colorAccent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:text="Share Program"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:text="No user found."
+            android:textAlignment="center" />
 
 
     </LinearLayout>
 
+    <Button
+        android:enabled="false"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/wrapper"
+        android:id="@+id/share_program_btn"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/colorAccent"
+        android:clickable="true"
+        android:text="Share Program"
+        android:alpha="0.5"
+        android:textColor="@color/colorPrimary" />
+
+
     <com.strongest.savingdata.MyViews.SmartProgressBar
-        android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/share_program_btn"
         android:id="@+id/shared_smartprogressbar"
-        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SmartProgressBar>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"></com.strongest.savingdata.MyViews.SmartProgressBar>
 
-
-</LinearLayout>
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/success_tv"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="16dp"
+        android:text="Successfully shared with"
+        android:layout_below="@+id/share_program_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

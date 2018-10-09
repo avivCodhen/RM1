@@ -1,67 +1,144 @@
-<net.cachapa.expandablelayout.ExpandableLayout android:elevation="10dp"
-    android:orientation="horizontal"
+<net.cachapa.expandablelayout.ExpandableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/workout_view_program_tools_expandable"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/workout_view_program_tools_expandable"
-    app:el_expanded="false"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_alignParentRight="true"
+
+    android:elevation="10dp"
+    android:orientation="horizontal"
     app:barrierDirection="right"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:el_expanded="true">
+
     <RelativeLayout
 
-        android:elevation="10dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        >
+        android:elevation="10dp">
+
         <FrameLayout
-            android:clickable="true"
             android:id="@+id/clickSpace"
-            android:layout_toRightOf="@+id/recycler_wrapper"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></FrameLayout>
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/recycler_wrapper"
+            android:clickable="true"></FrameLayout>
 
         <RelativeLayout
-            android:background="@color/colorAccent"
-
+            android:clickable="true"
             android:id="@+id/recycler_wrapper"
-            android:layout_width="230dp"
-            android:layout_height="match_parent">
+            android:layout_width="270dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent"
+            android:elevation="10dp">
+
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/rocket_happy" />
+
+                <RelativeLayout
+                    android:id="@+id/login_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:text="asdasdasdadasdasd"
+                        android:id="@+id/usernameTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:textSize="14dp"
+                        android:text="cohen.lior.33@gmail.com"
+                        android:id="@+id/emailTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/usernameTV"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/colorPrimary" />
+
+
+                    <Button
+                        
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/programtoolsview_login"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/log_in"
+                        android:textColor="@color/colorAccent" />
+                    <ImageView
+                        android:id="@+id/programtoolsview_logoutIV"
+                        android:visibility="gone"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/icon_logout"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
+
+
+                </RelativeLayout>
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="100dp"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/header"
+                    android:background="@color/colorPrimary"></View>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:nestedScrollingEnabled="false"
+                    android:id="@+id/programtoolsview_recycler2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"></android.support.v7.widget.RecyclerView>
+
+                <!-- <Button
+                     android:id="@+id/share_program_programtoolsview"
+                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center_horizontal"
+                     android:backgroundTint="@color/colorPrimary"
+                     android:text="@string/share_program"
+                     android:textColor="@color/colorAccent" />-->
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="100dp"
+                android:layout_height="1dp"
+                android:layout_below="@+id/header"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorPrimary"></View>
+
 
             <android.support.v7.widget.RecyclerView
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/header"
-                android:padding="10dp"
+                android:nestedScrollingEnabled="false"
                 android:id="@+id/program_tools_view_recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/header"
+                android:layout_marginTop="5dp"
+                android:padding="5dp"></android.support.v7.widget.RecyclerView>
 
-          <LinearLayout
-              android:id="@+id/header"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-
-              <ImageView
-                  android:id="@+id/iv"
-                    android:layout_gravity="center_horizontal"
-                  android:src="@drawable/rocket_happy"
-                  android:layout_width="150dp"
-                  android:layout_height="150dp"
-                  />
-
-              <Button
-                  android:id="@+id/share_program_programtoolsview"
-                    android:backgroundTint="@color/colorPrimary"
-                  android:text="@string/share_program"
-                  android:textColor="@color/colorAccent"
-                  android:layout_gravity="center_horizontal"
-                  style="@style/Widget.AppCompat.Button.Colored"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content" />
-
-
-          </LinearLayout>
 
         </RelativeLayout>
 

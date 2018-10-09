@@ -49,6 +49,8 @@ public class MyProgramsActivity extends BaseActivity implements
     //public static final String FRAGMENT_USER_SHARED_FOR = "Shared";
     public static final String FRAGMENT_USER_SHARED_BY = "Recieved";
     public static final int FRAGMENT_CREATE_PROGRAM = 3;
+    public static final String WHICH_PROGRAM = "which_program";
+
     public static final int LOG_IN = 4;
 
 
@@ -151,10 +153,18 @@ public class MyProgramsActivity extends BaseActivity implements
 
     @Override
     public void onLoadProgram(Program p) {
-        Intent i = new Intent(this, HomeActivity.class);
-        i.putExtra("program", p);
-        setResult(RESULT_OK, i);
-        finish();
+        if (p.equals(currentProgram)) {
+            MaterialDialogHandler.get()
+                    .defaultBuilder(this, "Program already loaded.", "")
+                    .buildDialog()
+                    .show();
+        }else{
+            Intent i = new Intent(this, HomeActivity.class);
+            i.putExtra("program", p);
+            setResult(RESULT_OK, i);
+            finish();
+        }
+
     }
 
     @Override
@@ -164,18 +174,12 @@ public class MyProgramsActivity extends BaseActivity implements
 
     @Override
     public void deleteProgram(Program p) {
-        if (p.isUnShareable()) {
-            MaterialDialogHandler.get()
-                    .defaultBuilder(this, "You cannot delete a program you shared.", "OK")
-                    .hideNegativeButton()
-                    .buildDialog()
-                    .addPositiveActionFunc(v -> {
-                    }, true)
-                    .show();
-
-        }
+       if(p.equals(currentProgram)){
+           currentProgram = null;
+       }
         programService.deleteProgram(p);
         workoutsService.deleteWorkout(p.getKey());
+
     }
 
     @Override
@@ -219,9 +223,11 @@ public class MyProgramsActivity extends BaseActivity implements
     }
 
     @Override
-    public void createNewProgram() {
+    public void createProgram(String s) {
         if (userService.isUserLoggedIn() || currentProgram == null) {
-            setResult(FRAGMENT_CREATE_PROGRAM);
+            Intent i = new Intent();
+            i.putExtra(WHICH_PROGRAM, s);
+            setResult(FRAGMENT_CREATE_PROGRAM,i);
             finish();
 
 

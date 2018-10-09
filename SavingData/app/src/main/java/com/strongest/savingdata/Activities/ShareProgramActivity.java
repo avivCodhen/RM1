@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -40,6 +41,11 @@ public class ShareProgramActivity extends BaseActivity {
     @BindView(R.id.shared_smartprogressbar)
     SmartProgressBar smartProgressBar;
 
+    @BindView(R.id.success_tv)
+    TextView successTV;
+
+    @BindView(R.id.share_program_activity_title_tv)
+    TextView titleTV;
     User toUser;
 
     Program p;
@@ -51,8 +57,9 @@ public class ShareProgramActivity extends BaseActivity {
         ButterKnife.bind(this);
         programUID = getIntent().getStringExtra("programuid");
         p = (Program) getIntent().getSerializableExtra("program");
+        titleTV.setText(p.getProgramName());
         saveExitToolBar.instantiate();
-        saveExitToolBar.showCancel(false);
+        saveExitToolBar.showCancel(false).showBack(true);
         saveExitToolBar.setOptionalText("Share Program");
         saveExitToolBar.setSaveButton(v -> finish());
 
@@ -80,8 +87,18 @@ public class ShareProgramActivity extends BaseActivity {
             public void afterTextChanged(Editable editable) {
                 userService.findUserByEmail(editable.toString(),
                         user -> {
-                            toUser = (User) user;
-                            userNameTV.setText(((User) user).getName());
+                            if (user == null) {
+                                userNameTV.setText("No user found");
+                                shareBtn.setEnabled(false);
+                                shareBtn.setAlpha(0.5f);
+
+
+                            } else {
+                                toUser = (User) user;
+                                userNameTV.setText(((User) user).getName());
+                                shareBtn.setEnabled(true);
+                                shareBtn.setAlpha(1f);
+                            }
                         });
             }
         };
@@ -92,11 +109,17 @@ public class ShareProgramActivity extends BaseActivity {
             if (toUser != null) {
                 smartProgressBar.setText("Sharing program with " + toUser.getName() + "...")
                         .show();
-                programService.shareProgramWithUser(this,p, toUser);
+                programService.shareProgramWithUser(this, p, toUser);
+                shareBtn.setAlpha(0.5f);
+                shareBtn.setEnabled(false);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         smartProgressBar.hide();
+                        successTV.setText("Successfully shared with " + toUser.getName() + "!");
+                        successTV.setVisibility(View.VISIBLE);
+                        shareBtn.setAlpha(1);
+                        shareBtn.setEnabled(true);
 
                     }
                 }, 2000);

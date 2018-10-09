@@ -275,7 +275,8 @@ public class ExerciseEditFragment extends BaseFragment implements
          * */
         FloatingSearchViewHandler.getHandler(mSearchView).from(dataManager).handleExercises((b) -> {
             mSearchView.setSearchFocused(false);
-            onMuscleChange(new GridViewMusclesAdapter.MusclesContentHolder(-1, b.muscle.getMuscle_display(), b.muscle));
+            Muscle.MuscleUI mui = Muscle.provideMuscleUI(b.getMuscle());
+            onMuscleChange(new GridViewMusclesAdapter.MusclesContentHolder(mui.getImage(), b.muscle.getMuscle_display(), b.muscle));
             setExercise(b);
         });
 

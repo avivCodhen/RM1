@@ -121,7 +121,7 @@ public class ExerciseProfileStats {
         int totalRest = 0;
         for (int i = 0; i < ep.getSets().size(); i++) {
             String rest = ep.getSets().get(i).getExerciseSet().getRest();
-            totalRest = calcRest(rest);
+            totalRest += calcRest(rest);
             for (int j = 0; j < ep.getSets().get(i).intraSets.size(); j++) {
                 String intraRest = ep.getSets().get(i).intraSets.get(j).getExerciseSet().getRest();
                 totalRest += calcRest(intraRest);

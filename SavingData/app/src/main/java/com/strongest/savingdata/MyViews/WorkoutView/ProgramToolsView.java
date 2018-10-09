@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.shehabic.droppy.DroppyMenuItem;
 import com.shehabic.droppy.DroppyMenuPopup;
+import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel.Actions;
 import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.Controllers.Architecture;
@@ -37,6 +38,12 @@ import java.util.ArrayList;
 
 public class ProgramToolsView extends LinearLayout {
 
+    private TextView usernameTV;
+    private TextView emailTV;
+    private Button logInBtn;
+    private ImageView logoutIV;
+
+
     public boolean isOpen() {
         return openProgramToolsEL.isExpanded();
     }
@@ -44,7 +51,7 @@ public class ProgramToolsView extends LinearLayout {
 
 
     public enum Action {
-        NewExercise, NewDivider, NewWorkout, Share, Advanced
+        NewExercise, NewDivider, NewWorkout, Share, Advanced,
     }
 
     private Context context;
@@ -58,12 +65,18 @@ public class ProgramToolsView extends LinearLayout {
     Button shareProgramBtn;
 
     private RecyclerView mRecyclerview;
+    private RecyclerView mRecyclerview2;
     private ArrayList<ProgramButton> buttons;
+    ArrayList<ProgramButton> menuButtonList;
+
+    ProgramToolsAdapter menuListAdapter;
 
     private WorkoutViewModes mWorkoutViewModes;
 
     private Architecture.view.ProgramTools listener;
+
     private boolean isOpen;
+
 
     public ProgramToolsView(Context context) {
         super(context);
@@ -133,23 +146,48 @@ public class ProgramToolsView extends LinearLayout {
         int workoutIcon = R.drawable.icon_benchpress;
         int settingsIcon = R.drawable.icon_settings_white;
         int titleIcon = R.drawable.icon_text;
-        buttons.add(new ProgramButton(Actions.NewExercise, "New Exercise", exerciseIcon));
-        buttons.add(new ProgramButton(Actions.NewDivider, "New Title", titleIcon));
-        buttons.add(new ProgramButton(Actions.NewWorkout, "New Workout", workoutIcon));
-        buttons.add(new ProgramButton(Actions.Advanced, "Advanced", settingsIcon));
+        buttons.add(new ProgramButton(Actions.NewExercise, "New Exercise", exerciseIcon,true));
+        buttons.add(new ProgramButton(Actions.NewDivider, "New Title", titleIcon,true));
+        buttons.add(new ProgramButton(Actions.NewWorkout, "New Workout", workoutIcon,true));
+        buttons.add(new ProgramButton(Actions.Advanced, "Advanced", settingsIcon,true));
         mRecyclerview = (RecyclerView) findViewById(R.id.program_tools_view_recyclerview);
+        mRecyclerview2 = findViewById(R.id.programtoolsview_recycler2);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(context);
-        ProgramToolsAdapter adapter = new ProgramToolsAdapter();
+        RecyclerView.LayoutManager lm2 = new LinearLayoutManager(context);
+        ProgramToolsAdapter adapter = new ProgramToolsAdapter(buttons);
         mRecyclerview.setLayoutManager(lm);
+        mRecyclerview2.setLayoutManager(lm2);
+
+
         mRecyclerview.setAdapter(adapter);
+
+
+        menuButtonList = new ArrayList<>();
+        int folder = R.drawable.icon_folder;
+        int share = R.drawable.icon_share;
+        int newDoc = R.drawable.icon_new_document;
+
+        menuButtonList.add(new ProgramButton(Actions.MyProgram, "MyPrograms", folder, false));
+        menuButtonList.add(new ProgramButton(Actions.CustomExercise, "Custom Exercise", newDoc, false));
+        menuButtonList.add(new ProgramButton(Actions.Share, "Share Program", share, true));
+
+        menuListAdapter = new ProgramToolsAdapter(menuButtonList);
+        mRecyclerview2.setAdapter(menuListAdapter);
+
         openProgramToolsEL = (ExpandableLayout) findViewById(R.id.workout_view_program_tools_expandable);
         openProgramToolsEL.setOrientation(ExpandableLayout.HORIZONTAL);
 
-        shareProgramBtn = findViewById(R.id.share_program_programtoolsview);
+        usernameTV = findViewById(R.id.usernameTV);
+        emailTV= findViewById(R.id.emailTV);
+        logInBtn= findViewById(R.id.programtoolsview_login);
+        logoutIV= findViewById(R.id.programtoolsview_logoutIV);
+
+
+        /*shareProgramBtn = findViewById(R.id.share_program_programtoolsview);
 
         shareProgramBtn.setOnClickListener(shareView->{
             listener.onProgramToolsAction(Actions.Share);
-        });
+        });*/
     }
 
     //this function expands the expandable layout
@@ -184,6 +222,37 @@ public class ProgramToolsView extends LinearLayout {
 
     }
 
+    public void updateMenuAlertCount(Actions a, int count){
+        for (ProgramButton p : menuButtonList){
+            if(p.type == a){
+                p.alertCount = count;
+            }
+        }
+        menuListAdapter.notifyDataSetChanged();
+    }
+
+    public void setUpLoginCredentials(boolean loggedIn, String username, String email){
+        if(loggedIn){
+            usernameTV.setText(username);
+            emailTV.setText(email);
+            logInBtn.setVisibility(GONE);
+            logoutIV.setVisibility(VISIBLE);
+        }else{
+            usernameTV.setText("");
+            emailTV.setText("");
+            logInBtn.setVisibility(VISIBLE);
+            logoutIV.setVisibility(GONE);
+
+        }
+    }
+
+    public void setLoginFunc(View.OnClickListener onClickListener){
+        logInBtn.setOnClickListener(onClickListener);
+    }
+
+    public void setLogoutFunc(View.OnClickListener onClickListener){
+        logoutIV.setOnClickListener(onClickListener);
+    }
     public WorkoutViewModes getmWorkoutViewModes() {
         return mWorkoutViewModes;
     }
@@ -242,6 +311,11 @@ public class ProgramToolsView extends LinearLayout {
 
     private class ProgramToolsAdapter extends RecyclerView.Adapter<ProgramToolsAdapter.ViewHolder> {
 
+        ArrayList<ProgramButton> buttons;
+
+        public ProgramToolsAdapter(ArrayList<ProgramButton> buttons){
+            this.buttons = buttons;
+        }
         @Override
         public ProgramToolsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(context);
@@ -255,7 +329,11 @@ public class ProgramToolsView extends LinearLayout {
             holder.imageView.setImageResource(buttons.get(position).image);
             //holder.ImageView.setCircleBackgroundColor(buttons.get(position).color);
             holder.tv.setText(buttons.get(position).tv_name);
-            holder.itemView.setOnClickListener(v -> listener.onProgramToolsAction(pBtn.type));
+            holder.itemView.setOnClickListener(v -> listener.onProgramToolsAction(pBtn));
+            if(pBtn.alertCount != 0){
+                holder.wrapper.setVisibility(VISIBLE);
+                holder.alertTV.setText(pBtn.alertCount+"");
+            }
         }
 
         @Override
@@ -265,27 +343,34 @@ public class ProgramToolsView extends LinearLayout {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             private ImageView imageView;
-            private TextView tv;
+            private TextView tv,alertTV;
+            private ViewGroup wrapper;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 imageView = (ImageView) itemView.findViewById(R.id.program_menu_image);
                 tv = (TextView) itemView.findViewById(R.id.program_menu_tv);
+                wrapper = itemView.findViewById(R.id.alert_wrapper);
+                alertTV = itemView.findViewById(R.id.button_alert);
             }
         }
     }
 
-    class ProgramButton {
-        String tv_name;
-        Actions type;
+   public class ProgramButton {
+        public String tv_name;
+        public Actions type;
+        public int alertCount;
+        public boolean requiresLogin;
+        public boolean requiresProgram;
 
         int image;
 
-        ProgramButton(Actions type, String tv_name, int image) {
+        ProgramButton(Actions type, String tv_name, int image, boolean requiresProgram) {
 
             this.type = type;
             this.tv_name = tv_name;
             this.image = image;
+            this.requiresProgram = requiresProgram;
         }
     }
 

@@ -16,12 +16,12 @@
 
 
     <com.arlib.floatingsearchview.FloatingSearchView
-        android:elevation="1dp"
+        android:elevation="12dp"
         android:layout_below="@+id/exercise_edit_fragment_saveExitToolbar"
         android:background="@color/colorRedTry"
         android:id="@+id/exercise_choose_search_view"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
         app:floatingSearch_searchHint="Search Exercise..."
         app:floatingSearch_suggestionsListAnimDuration="250"
         app:floatingSearch_showSearchKey="false"

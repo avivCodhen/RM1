@@ -4,11 +4,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@color/background_color"
+    android:clickable="true"
     android:elevation="10dp">
 
-    <include layout="@layout/tool_bar_layout"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"></include>
+   <com.strongest.savingdata.MyViews.SaveExitToolBar
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/program_settings_toolbar"></com.strongest.savingdata.MyViews.SaveExitToolBar>
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <TextView
         android:layout_marginTop="20dp"
@@ -16,17 +24,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <RelativeLayout
+
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <EditText
+        <TextView
+
+            android:layout_marginTop="5dp"
+            android:textSize="24dp"
             android:layout_marginRight="20dp"
             android:layout_toLeftOf="@+id/program_title_edit_iv"
-            android:enabled="false"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:maxLines="1"
             android:id="@+id/program_settings_program_name_ED"
-            android:text="My Program"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -46,8 +56,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/program_settings_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
+    </LinearLayout>
 
 
 </LinearLayout>

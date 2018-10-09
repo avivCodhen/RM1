@@ -69,7 +69,7 @@ public class MaterialDialogHandler {
 
     }
 
-    public MaterialDialogHandler addInput(int inputType, String text, MaterialDialog.InputCallback inputCallback) {
+    public MaterialDialogHandler addInput(int maxLength, int inputType, String text, MaterialDialog.InputCallback inputCallback) {
         builder.input("", text, inputCallback).inputType(inputType).alwaysCallInputCallback();
         return this;
 
@@ -92,10 +92,10 @@ public class MaterialDialogHandler {
         return this;
     }
 
-    public void showInputDialog(Context context, int type, String text, String title, MaterialDialog.InputCallback func) {
+    public void showInputDialog(Context context, int type, int maxLength, String text, String title, MaterialDialog.InputCallback func) {
         defaultBuilder(context, title, "CHANGE")
                 .buildDialog()
-                .addInput(type, text, func)
+                .addInput(maxLength, type, text, func)
                 .buildDialog()
                 .show();
 

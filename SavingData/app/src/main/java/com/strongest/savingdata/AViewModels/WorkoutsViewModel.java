@@ -11,6 +11,7 @@ import com.strongest.savingdata.AService.ProgramService;
 import com.strongest.savingdata.AService.WorkoutsService;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Managers.DataManager;
+import com.strongest.savingdata.Database.Workout.DefaultDBWorkoutHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,7 @@ public class WorkoutsViewModel extends ViewModel {
     }
 
     public void initWorkouts() {
-        if(cmd == null){
+        if (cmd == null) {
             cmd = WorkoutsService.CMD.INIT;
         }
         workoutsService.provideWorktoutsList(workoutsList, cmd);
@@ -73,7 +74,6 @@ public class WorkoutsViewModel extends ViewModel {
     }
 
 
-
     public WorkoutsModel getWorkoutsModel() {
         return workoutsModel;
     }
@@ -82,6 +82,11 @@ public class WorkoutsViewModel extends ViewModel {
     public void setNewWorkout() {
         workoutsService.provideWorktoutsList(workoutsList, WorkoutsService.CMD.NEW);
     }
+
+    public void setDefaultWorkoutsTemplate(String s){
+        workoutsList.postValue(workoutsService.provideDefaultTemplates(s));
+    }
+
 
     public void setCmd(WorkoutsService.CMD cmd) {
         this.cmd = cmd;

@@ -196,7 +196,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="end">
 
-                    <TextView
+                    <EditText
+                        android:imeOptions="actionDone"
                         android:textColor="@color/colorAccent"
                         android:id="@+id/choose_sets_weight_tv"
                         android:layout_width="@dimen/edittext_width"
@@ -206,7 +207,7 @@
                         android:gravity="center"
                         android:inputType="numberDecimal"
                         android:text="0.0"
-                        android:maxLength="4"
+                        android:maxLength="6"
                         android:textSize="12sp" />
 
 

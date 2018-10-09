@@ -66,6 +66,7 @@ public class LogDataSetsAdapter extends RecyclerView.Adapter<LogDataSetsAdapter.
                 MaterialDialogHandler.get().showInputDialog(
                         context,
                         InputType.TYPE_CLASS_NUMBER,
+                        2,
                         l.rep,
                         "Change Repetitions",
                         (dialog,input)-> {
@@ -81,6 +82,7 @@ public class LogDataSetsAdapter extends RecyclerView.Adapter<LogDataSetsAdapter.
                 MaterialDialogHandler.get().showInputDialog(
                         context,
                         InputType.TYPE_NUMBER_FLAG_DECIMAL,
+                        6,
                         String.valueOf(l.weight),
                         "Change Weight",
                         (dialog,input)-> {

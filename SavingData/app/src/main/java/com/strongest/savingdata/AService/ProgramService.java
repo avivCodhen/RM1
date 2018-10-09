@@ -22,6 +22,7 @@ import com.strongest.savingdata.Activities.MyProgramsActivity;
 import com.strongest.savingdata.AndroidServices.FireBaseMessageService;
 import com.strongest.savingdata.Controllers.CallBacks;
 import com.strongest.savingdata.Utils.FireBaseUtils;
+import com.strongest.savingdata.Utils.MyUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -119,9 +120,9 @@ public class ProgramService {
         }
     }*/
 
-    public String provideNewProgram() {
+    public String provideNewProgram(String name) {
         cleanCurrentProgramSharedPreferences();
-        Program p = createNewProgram();
+        Program p = createNewProgram(name);
         saveProgramToFireBase(p);
         return p.getKey();
 
@@ -131,10 +132,6 @@ public class ProgramService {
         return programRepository.getProgramByKey(key);
     }
 
-    public Program getNewProgram() {
-        cleanCurrentProgramSharedPreferences();
-        return createNewProgram();
-    }
 
     private String getUsername() {
         return sharedPreferences.getString(UserService.USERNAME, "Anonymous");
@@ -149,9 +146,10 @@ public class ProgramService {
         sharedPreferencesEditor.putString(CURRENT_PROGRAM, key).commit();
     }
 
-    private void saveNumberOfSharedForPrograms(int num) {
-        sharedPreferencesEditor.putInt(NUM_OF_SHARED_PROGRAMS, num).commit();
+    private void removeProgramKeyFromSharedPreferences() {
+        sharedPreferencesEditor.remove(CURRENT_PROGRAM).commit();
     }
+
 
     private int getNumberOfSharedPrograms() {
         return sharedPreferences.getInt(NUM_OF_SHARED_PROGRAMS, -1);
@@ -162,12 +160,15 @@ public class ProgramService {
 
     }
 
-    private Program createNewProgram() {
+    private Program createNewProgram(String name) {
 
+        if (name.equals("")) {
+            name = "My New Program";
+        }
         Program program = new Program(
                 getUID(),
                 getUsername(),
-                "My New Program",
+                name,
                 new SimpleDateFormat("HH:mm:ss").format(new Date()),
                 new SimpleDateFormat("MMMM dd, yyyy", Locale.US).format(new Date()),
                 "");
@@ -182,7 +183,7 @@ public class ProgramService {
         programRepository.updateProgram(p);
     }
 
-    public void updateSharedProgram(Program p){
+    public void updateSharedProgram(Program p) {
         sharedProgramReference.
                 orderByChild("programUID")
                 .equalTo(p.getKey())
@@ -429,7 +430,7 @@ public class ProgramService {
         }
         sharedUser.setSenderToken(userToken);
         p.setUnShareable(true);
-        p.setNumOfShared(p.getNumOfShared()+1);
+        p.setNumOfShared(p.getNumOfShared() + 1);
         updateProgram(p);
         String key = sharedProgramReference.push().getKey();
         sharedProgramReference.child(key).setValue(sharedUser);
@@ -438,7 +439,8 @@ public class ProgramService {
 
     public void deleteProgram(Program p) {
         databaseReference.child(p.getKey()).setValue(null);
-
+        programRepository.deleteProgram(p);
+        removeProgramKeyFromSharedPreferences();
     }
 
     public ArrayList<SharedUser> getSharedList() {
@@ -465,5 +467,13 @@ public class ProgramService {
     public void updateSeenOnSharedProgram(Program p) {
         p.isSeen = true;
         updateSharedProgram(p);
+    }
+
+    public boolean isProgramAvailable() {
+        return !getProgramUID().equals("");
+    }
+
+    public String provideDefaultTemplate(String s) {
+        return provideNewProgram(MyUtils.trimLineAndUnderScoreToSpace(s));
     }
 }

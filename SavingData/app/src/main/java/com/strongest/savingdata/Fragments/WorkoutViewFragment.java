@@ -13,6 +13,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.transition.Fade;
 import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,6 +128,8 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
 
         });
 
+        workout.setOnEdit((pos, ep)-> onExerciseEdit(pos, ep));
+
         initViews(view);
     }
 
@@ -159,7 +162,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
 
         smartEmptyView
                 .setImage(smartEmptyView.getRocketImage())
-                .setBody("Click on the Plus Icon at the top right, to start adding customizing your exercises.")
+                .setBody("Click on the Round Pen Button, to start adding customizing your exercises.")
                 .setTitle("Looks like you don't have any exercises!")
                 .setButtonText("Add A New Exercise")
                 .setUpWithRecycler(recycler, true, true)
@@ -186,12 +189,12 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-              /*  FloatingActionButton fab = ((HomeActivity) getActivity() ).getFab();
+                FloatingActionButton fab = ((HomeActivity) getActivity() ).getFab();
 
-                if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                if (newState == RecyclerView.SCROLL_STATE_SETTLING)
                 {
                     fab.show();
-                }*/
+                }
 
                 super.onScrollStateChanged(recyclerView, newState);
             }
@@ -388,8 +391,17 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     public interface WorkoutViewFragmentListener {
 
         void onLongClick(PLObject plObject, MyExpandableAdapter.MyExpandableViewHolder vh);
-
         void onProgramToolsClick();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("aviv", "onResume: plz");
+    }
 }

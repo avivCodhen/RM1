@@ -14,6 +14,7 @@ public class Workout implements Lister {
     public String workoutName;
     private WorkoutObserver workoutObserver;
     private SpecificExerciseObserver exerciseObserver;
+    private OnEdit onEdit;
     private String uid;
     private String programUid;
 
@@ -77,6 +78,14 @@ public class Workout implements Lister {
         this.programUid = programUid;
     }
 
+    public OnEdit getOnEdit() {
+        return onEdit;
+    }
+
+    public void setOnEdit(OnEdit onEdit) {
+        this.onEdit = onEdit;
+    }
+
 
    /* public ArrayList<PLObject> getParents() {
         return parents;
@@ -85,4 +94,8 @@ public class Workout implements Lister {
     public void setParents(ArrayList<PLObject> parents) {
         this.parents = parents;
     }*/
+
+   public interface OnEdit{
+       void edit(int position, PLObject.ExerciseProfile exerciseProfile);
+   }
 }

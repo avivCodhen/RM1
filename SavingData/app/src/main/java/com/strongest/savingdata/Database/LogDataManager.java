@@ -6,11 +6,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.Utils.MyUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
+import static com.strongest.savingdata.Utils.MyUtils.trimLineAndSpace;
 
 
 /**
@@ -34,11 +37,12 @@ public class LogDataManager {
     }
 
     private void inserter(String tableNameToTrim, ArrayList<LogData.LogDataSets> list) {
-        String tableName = trimExerciseNameSpace(tableNameToTrim);
+        String tableName = trimLineAndSpace(tableNameToTrim);
         String result = getDateString();
-       // ArrayList<LogData.LogDataSets> list = exerciseToLogDataSetList(exerciseProfile);
+        // ArrayList<LogData.LogDataSets> list = exerciseToLogDataSetList(exerciseProfile);
         if (isTableExists(tableName)) {
             for (LogData.LogDataSets l : list) {
+                if(l.add)
                 db.insert(tableName, null, getContentValues(l, result));
             }
 
@@ -57,7 +61,7 @@ public class LogDataManager {
     }
 
     public boolean isTableExists(String tableName) {
-        tableName = trimExerciseNameSpace(tableName);
+        tableName = trimLineAndSpace(tableName);
         boolean isExist = false;
         Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + tableName + "'", null);
         if (cursor != null) {
@@ -70,19 +74,13 @@ public class LogDataManager {
     }
 
     private void createTable(String tableName) {
-        tableName = trimExerciseNameSpace(tableName);
+        tableName = MyUtils.trimLineToUnderScore(tableName);
+        tableName = MyUtils.trimSpaceToUnderScore(tableName);
         db.execSQL(dbLogDataHelper.getCreateCommand(tableName));
     }
 
 
-    //trims spaces to "_"
-    public static String trimExerciseNameSpace(String exerciseName) {
-        String trimmed = exerciseName.replace(" ", "_");
-        trimmed = trimmed.replace("-","_");
-        return trimmed;
-    }
-
-    public static String getDateString(){
+    public static String getDateString() {
         String date = new SimpleDateFormat("MMMM dd, yyyy", Locale.US).format(new Date());
         String currentTime = new SimpleDateFormat("HH:mm").format(new Date());
         String result = date + ", " + currentTime;
@@ -154,7 +152,7 @@ public class LogDataManager {
     }
 
     public ArrayList<LogData> readDates(String exerciseName) {
-        Cursor c = db.rawQuery("SELECT * FROM " + trimExerciseNameSpace(exerciseName), null);
+        Cursor c = db.rawQuery("SELECT * FROM " + trimLineAndSpace(exerciseName), null);
         String date = "";
         ArrayList<LogData> dates = new ArrayList<>();
         if (c != null && c.moveToFirst()) {
@@ -180,7 +178,7 @@ public class LogDataManager {
         }
         Cursor c;
         c = db.rawQuery("SELECT * FROM "
-                + trimExerciseNameSpace(exerciseName) + " WHERE " + DBLogDataHelper.DATE + "=?", new String[]{dates});
+                + trimLineAndSpace(exerciseName) + " WHERE " + DBLogDataHelper.DATE + "=?", new String[]{dates});
         ArrayList<LogData.LogDataSets> list = new ArrayList<>();
         LogData.LogDataSets logData;
         if (c != null && c.moveToFirst()) {

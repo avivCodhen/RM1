@@ -213,7 +213,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         vh2.edit.setOnClickListener((View v) -> {
             MaterialDialogHandler.get().defaultBuilder(context, "Edit Title", "CHANGE")
-                    .addInput(InputType.TYPE_CLASS_TEXT, vh2.bodyTv.getText().toString(), ((dialog, input) -> {
+                    .addInput(999,InputType.TYPE_CLASS_TEXT, vh2.bodyTv.getText().toString(), ((dialog, input) -> {
                         bodyText.setTitle(input.toString());
                         vh2.bodyTv.setText(input.toString());
                     }))

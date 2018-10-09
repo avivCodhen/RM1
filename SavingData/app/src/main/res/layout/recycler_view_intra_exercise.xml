@@ -87,7 +87,7 @@
                 android:id="@+id/child_arrow_iv"
                 android:paddingLeft="5dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/child_red"
+                android:src="@drawable/icon_down_right_red"
                 android:layout_width="20dp"
                 android:layout_height="20dp" />
 

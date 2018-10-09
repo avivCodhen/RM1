@@ -2,6 +2,7 @@ package com.strongest.savingdata.Database.Managers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.util.Log;
 
 import com.strongest.savingdata.Database.Progress.ProgressDataManager;
@@ -24,6 +25,13 @@ import javax.inject.Inject;
 
 public class DataManager {
 
+
+    public DefaultWorkoutsDataManager getDefaultWorkoutsDataManager() {
+        if (defaultWorkoutsDataManager == null) {
+            defaultWorkoutsDataManager = new DefaultWorkoutsDataManager(context);
+        }
+        return defaultWorkoutsDataManager;
+    }
 
     public enum Data {
         ARTICLE, EXERCISE, PROGRAM, STATS, ALL
@@ -49,6 +57,7 @@ public class DataManager {
     private ProgressDataManager progressDataManager;
     private MusclesDataManager musclesDataManager;
     private WeightToolsDataManager weightToolsDataManager;
+    private DefaultWorkoutsDataManager defaultWorkoutsDataManager;
 
     @Inject
     public Context context;
@@ -60,7 +69,7 @@ public class DataManager {
 
     public ExercisesDataManager getExerciseDataManager() {
         if (exerciseDataManager == null) {
-            exerciseDataManager = new ExercisesDataManager(this,context);
+            exerciseDataManager = new ExercisesDataManager(this, context);
             return exerciseDataManager;
         } else {
             return exerciseDataManager;
@@ -87,31 +96,31 @@ public class DataManager {
 
     }
 
-    public ProgressDataManager getProgressDataManager(){
-        if(progressDataManager == null){
+    public ProgressDataManager getProgressDataManager() {
+        if (progressDataManager == null) {
             progressDataManager = new ProgressDataManager(context, getWorkoutDataManager(), getExerciseDataManager());
             return progressDataManager;
-        }else{
+        } else {
             return progressDataManager;
         }
     }
 
 
-    public MusclesDataManager getMuscleDataManager(){
-        if(musclesDataManager != null){
+    public MusclesDataManager getMuscleDataManager() {
+        if (musclesDataManager != null) {
             return musclesDataManager;
-        }else{
+        } else {
             musclesDataManager = new MusclesDataManager(context);
             return musclesDataManager;
         }
 
     }
 
-    public WeightToolsDataManager getWeightToolsDataManager(){
-        if(weightToolsDataManager != null){
+    public WeightToolsDataManager getWeightToolsDataManager() {
+        if (weightToolsDataManager != null) {
             return weightToolsDataManager;
-        }else{
-            weightToolsDataManager= new WeightToolsDataManager(context);
+        } else {
+            weightToolsDataManager = new WeightToolsDataManager(context);
             return weightToolsDataManager;
         }
 
@@ -139,17 +148,8 @@ public class DataManager {
         }
 
 
-
     }
 
-    public static String generateTableName(String desiredTable) {
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date());
-        String table = date.replace("-", "_");
-        String currentTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
-        String time = "_" + currentTime.replace(":", "_");
-        String results = desiredTable+"_" + table + time;
-        return results;
-    }
 
     public void saveObjectToFile(Object obj, String file) {
         try {

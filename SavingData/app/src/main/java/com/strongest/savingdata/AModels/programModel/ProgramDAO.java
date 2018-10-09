@@ -40,7 +40,7 @@ public interface ProgramDAO {
     void insertProgram(Program program);
 
     @Delete
-    void deleteList(Program program);
+    void deleteProgram(Program program);
 
 
 }

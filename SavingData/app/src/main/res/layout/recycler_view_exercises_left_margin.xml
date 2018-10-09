@@ -136,7 +136,7 @@
 
             <TextView
                 android:id="@+id/exerciseView_repsTV"
-                android:layout_width="110dp"
+                android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:ellipsize="end"
                 android:gravity="center_vertical"

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.strongest.savingdata.AService.ProgramService;
 import com.strongest.savingdata.AService.UserService;
@@ -68,7 +69,7 @@ public abstract class BaseFragment extends Fragment {
         v.setVisibility(View.INVISIBLE);
     }
 
-    public void makeRevealAnimation(int delay,CallBacks.OnFinish onFinish){
+    public void makeRevealAnimation(int delay, CallBacks.OnFinish onFinish) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -77,8 +78,8 @@ public abstract class BaseFragment extends Fragment {
         }, delay);
     }
 
-    public void exitRevealAnimation(CallBacks.OnFinish onFinish){
+    public void exitRevealAnimation(CallBacks.OnFinish onFinish) {
         MyJavaAnimator.animateRevealShowParams(v, false, R.color.colorAccent, 0, 0, onFinish);
-
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 }

@@ -13,35 +13,35 @@ import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.AService.WorkoutsService;
 import com.strongest.savingdata.BaseWorkout.ProgramTemplate;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
-import com.strongest.savingdata.Database.Program.DBWorkoutHelper;
+import com.strongest.savingdata.Database.Workout.DBWorkoutHelper;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static com.strongest.savingdata.Database.Exercise.DBExercisesHelper.*;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.BODY_TEMPLATE_STR;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.EXERCISE_ID;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.INNER_TYPE;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.LAYOUT_NAME;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.PROGRAM_NAME;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.RECOMMENDED_WORKOUTS;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.REP_ID;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.REST;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.ROUNDS_PER_WEEK;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.TABLE_PROGRAM_REFERENCE;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.TABLE_TEMPLATES;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.TABLE_TEMPLATES_REFERENCE;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.TABLE_WORKOUTS;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.TEMPLATE_NAME;
-import static com.strongest.savingdata.Database.Program.DBWorkoutHelper.WORKOUTS_NAMES_ARRAY;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.BODY_TEMPLATE_STR;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.EXERCISE_ID;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.INNER_TYPE;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.LAYOUT_NAME;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.PROGRAM_NAME;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.RECOMMENDED_WORKOUTS;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.REP_ID;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.REST;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.ROUNDS_PER_WEEK;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.TABLE_PROGRAM_REFERENCE;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.TABLE_TEMPLATES;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.TABLE_TEMPLATES_REFERENCE;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.TABLE_WORKOUTS;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.TEMPLATE_NAME;
+import static com.strongest.savingdata.Database.Workout.DBWorkoutHelper.WORKOUTS_NAMES_ARRAY;
 
 /**
  * Created by Cohen on 10/16/2017.
  */
 
 
-public class WorkoutDataManager extends DataManager {
+public class WorkoutDataManager extends DataManager implements DataManagerAPI  {
 
     private SQLiteDatabase db;
     private ExercisesDataManager exerciseDataManager;
@@ -311,11 +311,7 @@ public class WorkoutDataManager extends DataManager {
         } catch (Exception e) {
             return null;
         }
-           /* if (c.getCount() >= 0) {
-                String currentLayout = c.getString(c.getColumnIndex(LAYOUT_NAME));
-                currentLayoutTable = currentLayout;
-                c = db.rawQuery("SELECT * FROM " + currentLayout, null);
-            }*/
+
         return c;
 
         // return c;

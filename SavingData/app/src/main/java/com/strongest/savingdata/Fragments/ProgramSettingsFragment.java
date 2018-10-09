@@ -25,13 +25,16 @@ import com.strongest.savingdata.Adapters.MainAdapter;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.DragAndSwipeCallback;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
-import com.strongest.savingdata.AModels.workoutModel.LayoutManagerAlertdialog;
 import com.strongest.savingdata.AModels.workoutModel.OnLayoutManagerDialogPress;
 import com.strongest.savingdata.Handlers.MaterialDialogHandler;
+import com.strongest.savingdata.MyViews.SaveExitToolBar;
 import com.strongest.savingdata.MyViews.WorkoutView.OnProgramToolsActionListener;
 import com.strongest.savingdata.R;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Cohen on 3/9/2018.
@@ -40,20 +43,19 @@ import java.util.ArrayList;
 public class ProgramSettingsFragment extends BaseFragment implements OnDragListener,
         OnLayoutManagerDialogPress {
 
-    private EditText editText;
+    private TextView titleTV;
     private String titleText;
     private TextWatcher textWatcher = null;
     private RecyclerView mRecyclerView;
     ArrayList<Workout> list;
     private WorkoutsViewModel workoutViewModel;
     private ItemTouchHelper itemTouchHelper;
-    private TextView toolbarTitle;
-    private ImageView toolbarIv;
-    private WorkoutsModel workoutsModel;
     private OnProgramToolsActionListener onProgramToolsActionListener;
     private OnProgramSettingsChange onProgramSettingChange;
+    Program p;
 
-
+    @BindView(R.id.program_settings_toolbar)
+    SaveExitToolBar toolBar;
     public static ProgramSettingsFragment getInstance(OnProgramToolsActionListener onProgramToolsActionListener) {
         ProgramSettingsFragment f = new ProgramSettingsFragment();
         f.setOnProgramToolsActionListener(onProgramToolsActionListener);
@@ -63,7 +65,9 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_program_settings, container, false);
+        View v =  inflater.inflate(R.layout.fragment_program_settings, container, false);
+        ButterKnife.bind(this,v);
+        return v;
     }
 
     @Override
@@ -76,7 +80,14 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
     }
 
     private void initViews(View v) {
-        ((TextView) v.findViewById(R.id.tool_bar_title)).setText("Advanced Program Settings");
+         p = ((HomeActivity) getActivity()).program;
+        titleTV =  v.findViewById(R.id.program_settings_program_name_ED);
+        titleTV.setText(p.getProgramName());
+        toolBar.instantiate()
+                .setOptionalText("Advanced Program Settings")
+                .setSaveButton(view->getFragmentManager().popBackStack())
+                .showCancel(false)
+                .showBack(true);
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.program_settings_recyclerview);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
@@ -91,10 +102,6 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
         mRecyclerView.setLayoutManager(lm);
         mRecyclerView.setAdapter(adapter);
 
-        toolbarIv = (ImageView) v.findViewById(R.id.toolbar_back);
-        toolbarIv.setOnClickListener((view) -> getFragmentManager().popBackStack());
-        toolbarTitle = (TextView) v.findViewById(R.id.tool_bar_title);
-        editText = (EditText) v.findViewById(R.id.program_settings_program_name_ED);
         textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -108,31 +115,28 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
 
             @Override
             public void afterTextChanged(Editable s) {
-              /*  ((HomeActivity) getActivity()).title.setText(editText.getText().toString());
+              /*  ((HomeActivity) getActivity()).title.setText(titleTV.getText().toString());
                 Program p = ((HomeActivity) getActivity()).program;
-                p.setProgramName(editText.getText().toString());
-                editText.setSelection(s.length());
-                toolbarTitle.setText(editText.getText());*/
+                p.setProgramName(titleTV.getText().toString());
+                titleTV.setSelection(s.length());
+                toolbarTitle.setText(titleTV.getText());*/
 
                 //TODO: fix this
-                //  ((HomeActivity) getActivity()).programmer.getProgram().programName = editText.getText().toString();
+                //  ((HomeActivity) getActivity()).programmer.getProgram().programName = titleTV.getText().toString();
 
             }
         };
 
         //TODO: fix this
         //titleText = workoutViewModel.getProgram().getValue().getProgramName();
-        editText.setText(titleText);
-        editText.addTextChangedListener(textWatcher);
+        titleTV.addTextChangedListener(textWatcher);
         v.findViewById(R.id.program_title_edit_iv).setOnClickListener(v1 -> {
 
             MaterialDialogHandler
                     .get()
                     .defaultBuilder(getContext(), "Edit Program Name", "CHANGE")
-                    .addInput(InputType.TYPE_CLASS_TEXT, titleText, (dialog, input) -> {
-                        editText.setText(input.toString());
-                        toolbarTitle.setText(editText.getText().toString());
-                        Program p = ((HomeActivity) getActivity()).program;
+                    .addInput(InputType.TYPE_CLASS_TEXT, 999, titleText, (dialog, input) -> {
+                        titleTV.setText(input.toString());
                         p.setProgramName(input.toString());
                         ((HomeActivity) getActivity()).programViewModel.updateProgram(p);
                     })
@@ -165,12 +169,11 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
 
     @Override
     public void onLMDialogOkPressed(String input, int position) {
-        editText.setText(input);
-        toolbarTitle.setText(editText.getText());
+        titleTV.setText(input);
 
         //TODO: fix this
         //workoutViewModel.getProgram().getValue().setProgramName(input);
-       /* ((HomeActivity) getActivity()).programmer.getProgram().programName = editText.getText().toString();
+       /* ((HomeActivity) getActivity()).programmer.getProgram().programName = titleTV.getText().toString();
         ((HomeActivity) getActivity()).dataManager.getProgramDataManager().updateProgramName(input,
                layoutManager.getDbName() );
 */

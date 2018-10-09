@@ -216,7 +216,6 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
         try {
             createDataBase();
         } catch (IOException e) {
-            Log.d("aviv", "onCreate: ");
             e.printStackTrace();
         }
     }
@@ -256,12 +255,11 @@ public class DBExercisesHelper extends SQLiteOpenHelper {
             this.getWritableDatabase();
             this.close();
             try {
-                Log.d("aviv", "createDataBase: working!");
 
                 //Copy the database from assests
                 copyDataBase();
             } catch (IOException mIOException) {
-                Log.d("aviv", "not working: " + mIOException.toString());
+                Log.d("aviv", " DBExerciseHelper CreateDataBase not working: " + mIOException.toString());
                 throw new Error("ErrorCopyingDataBase");
             }
         }

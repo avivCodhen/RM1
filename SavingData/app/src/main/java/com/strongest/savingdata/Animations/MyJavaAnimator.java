@@ -388,12 +388,12 @@ public class MyJavaAnimator {
      //   int cx = viewRoot.getRight();
        // int cy = viewRoot.getBottom();
         if (isStart) {
-            duration = 300;
+            duration = 250;
             finalRadius = (int) Math.hypot(viewRoot.getWidth(), viewRoot.getHeight());
             startRadius = 0;
 
         } else {
-            duration = 300;
+            duration = 250;
             finalRadius = 0;
             startRadius= Math.max(viewRoot.getWidth(), viewRoot.getHeight());
 
