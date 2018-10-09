@@ -158,7 +158,7 @@ public class MyProgramsActivity extends BaseActivity implements
                     .defaultBuilder(this, "Program already loaded.", "")
                     .buildDialog()
                     .show();
-        }else{
+        } else {
             Intent i = new Intent(this, HomeActivity.class);
             i.putExtra("program", p);
             setResult(RESULT_OK, i);
@@ -174,9 +174,9 @@ public class MyProgramsActivity extends BaseActivity implements
 
     @Override
     public void deleteProgram(Program p) {
-       if(p.equals(currentProgram)){
-           currentProgram = null;
-       }
+        if (p.equals(currentProgram)) {
+            currentProgram = null;
+        }
         programService.deleteProgram(p);
         workoutsService.deleteWorkout(p.getKey());
 
@@ -227,13 +227,17 @@ public class MyProgramsActivity extends BaseActivity implements
         if (userService.isUserLoggedIn() || currentProgram == null) {
             Intent i = new Intent();
             i.putExtra(WHICH_PROGRAM, s);
-            setResult(FRAGMENT_CREATE_PROGRAM,i);
+            setResult(FRAGMENT_CREATE_PROGRAM, i);
             finish();
 
 
         } else {
-            Toast.makeText(this, "You can only save one program. Log in to save as many as you wish.", Toast.LENGTH_LONG).show();
-
+            MaterialDialogHandler.get()
+                    .defaultBuilder(this, "You must be logged in to create another program.", "LOG IN")
+                    .addContent("Log in to save as many programs as you wish.")
+                    .buildDialog()
+                    .addPositiveActionFunc(v -> logIn(), true)
+                    .show();
         }
     }
 }
