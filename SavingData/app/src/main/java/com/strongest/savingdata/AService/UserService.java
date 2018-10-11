@@ -164,6 +164,7 @@ public class UserService {
 
     public void logout() {
         firebaseAuth.signOut();
+        resetFirstTimeClient();
     }
 
     public boolean firstTimeClient() {
@@ -173,6 +174,10 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public void resetFirstTimeClient(){
+        editor.remove("firstTime");
     }
 
     public String getEmail() {

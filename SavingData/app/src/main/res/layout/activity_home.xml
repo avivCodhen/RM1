@@ -31,10 +31,19 @@
             android:elevation="10dp"
             android:id="@+id/activity_home_app_bar"
             android:background="@color/background_color"
-            android:stateListAnimator="@animator/appbar_always_elevated"
-            >
 
+            >
+          <!--  <android.support.design.widget.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foregroundGravity="bottom|right"
+                android:foregroundTintMode="add"
+                app:contentScrim="?attr/colorAccent"
+                android:id="@+id/activity_home_collapsingtoolbar"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+-->
             <android.support.v7.widget.Toolbar
+                app:layout_collapseMode="parallax"
 
                 app:elevation="10dp"
                 android:id="@+id/activity_home_toolbar"
@@ -54,20 +63,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </android.support.v7.widget.Toolbar>
-          <!--  <android.support.design.widget.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="true"
-                android:foregroundGravity="bottom|right"
-                android:foregroundTintMode="add"
-                app:contentScrim="?attr/colorAccent"
-                app:titleEnabled="false"
-                android:id="@+id/activity_home_collapsingtoolbar"
-                app:expandedTitleTextAppearance="@android:color/transparent"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
--->
+
                 <android.support.design.widget.TabLayout
-                        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+                    app:layout_collapseMode="parallax"
+
+                    app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
                     android:id="@+id/activity_home_tablayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                     app:tabSelectedTextColor="@color/colorPrimary"
                     app:tabTextColor="@color/background_color"></android.support.design.widget.TabLayout>
 
-           <!-- </android.support.design.widget.CollapsingToolbarLayout>-->
+           <!--</android.support.design.widget.CollapsingToolbarLayout>-->
         </android.support.design.widget.AppBarLayout>
 
 
@@ -88,10 +88,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:behavior_overlapTop="100dp"
-
-            >
+            android:layout_height="match_parent">
 
 
             <android.support.v4.view.ViewPager
@@ -101,15 +98,6 @@
                 ></android.support.v4.view.ViewPager>
 
         </android.support.v4.widget.NestedScrollView>
-
-
-
-             <!--   <com.strongest.savingdata.MyViews.WorkoutView.WorkoutView
-                    android:id="@+id/fragment_workout_workoutview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="visible"></com.strongest.savingdata.MyViews.WorkoutView.WorkoutView>-->
-
         <com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -192,6 +180,7 @@
         android:background="@color/colorAccent"
         app:itemTextColor="@color/colorPrimary"
         android:fitsSystemWindows="true"
+        app:itemIconTint="@color/colorPrimary"
         app:menu="@menu/menu_main_logged_in">
 
     </android.support.design.widget.NavigationView>

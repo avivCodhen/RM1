@@ -25,8 +25,8 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hlab.fabrevealmenu.listeners.OnFABMenuSelectedListener;
 import com.hlab.fabrevealmenu.view.FABRevealMenu;
@@ -58,8 +58,6 @@ import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.MyViews.SmartProgressBar;
 import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
 import com.strongest.savingdata.R;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -277,24 +275,27 @@ public class HomeActivity extends BaseActivity implements
         programToolsView.updateMenuAlertCount(WorkoutsModel.Actions.MyProgram, count);
     }
 
-    //TODO: call this function when needed
     private void loggedInUI() {
-        isLoggedIn = userService.isUserLoggedIn();         //TODO: need to check if the user is logged in
+        isLoggedIn = userService.isUserLoggedIn();
 
-
+        View v = mNavigationView.getHeaderView(0);
+        TextView untv = v.findViewById(R.id.usernameTV);
+        TextView emtv = v.findViewById(R.id.emailTV);
+        Button logInbtn = v.findViewById(R.id.menu_header_login);
+        View logOut = v.findViewById(R.id.menu_header_logoutIV);
         if (isLoggedIn) {
-            mNavigationView.getMenu().clear();
-            mNavigationView.inflateMenu(R.menu.menu_main_logged_in);
-            View v = mNavigationView.getHeaderView(0);
-            TextView untv = v.findViewById(R.id.usernameTV);
-            TextView emtv = v.findViewById(R.id.emailTV);
 
             untv.setText(userService.getUsername());
             emtv.setText(userService.getEmail());
-            //TODO: apply any "user logged in" changes such as username
+            logInbtn.setVisibility(View.GONE);
+            logOut.setVisibility(View.VISIBLE);
+            logOut.setOnClickListener(view -> logOut());
         } else {
-            mNavigationView.getMenu().clear();
-            mNavigationView.inflateMenu(R.menu.menu_main_logged_out);
+            untv.setText("");
+            emtv.setText("");
+            logInbtn.setVisibility(View.VISIBLE);
+            logInbtn.setOnClickListener(view -> toLogInActivity());
+            logOut.setVisibility(View.GONE);
         }
 
 
@@ -401,7 +402,9 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_activity_settings_icon_menu, menu);
+        getMenuInflater().inflate(R.menu.home_activity_plus_menu, menu);
+        /*programToolsBtn =(View) menu.findItem(R.id.home_activity_plus_menu);
+        programToolsView.setProgramToolsBtn(programToolsBtn);*/
         return true;
     }
 
@@ -419,11 +422,13 @@ public class HomeActivity extends BaseActivity implements
                 programToolsView.expand();
                 return true;
 
-            case R.id.home_activity_settings_menu:
-                if (program == null) {
+            case R.id.home_activity_plus_menu:
+                programToolsView.expand();
+
+                /*if (program == null) {
                     showNoProgramDialog();
                 }
-                addFragmentToActivity(R.id.activity_home_framelayout, new ProgramSettingsFragment(), "programsettings");
+                addFragmentToActivity(R.id.activity_home_framelayout, new ProgramSettingsFragment(), "programsettings");*/
                 return true;
         }
 
@@ -449,16 +454,16 @@ public class HomeActivity extends BaseActivity implements
                 f = new CustomExerciseFragment();
                 addFragmentToActivity(R.id.activity_home_framelayout, f, "CustomExercise");
                 break;
-            case R.id.menu_login:
+            /*case R.id.menu_login:
                 startActivityForResult(new Intent(this, LoginActivity2.class), LOGIN_ACTIVITY);
                 break;
-
+*/
             case R.id.menu_share_program:
                 toShareActivity();
                 break;
-            case R.id.menu_logout:
+          /*  case R.id.menu_logout:
                 logOut();
-                break;
+                break;*/
         }
         mDrawerLayout.closeDrawer(Gravity.START);
 
@@ -475,6 +480,7 @@ public class HomeActivity extends BaseActivity implements
 
                     userService.logout();
                     finish();
+
                     toLogInActivity();
 
                 }, true)

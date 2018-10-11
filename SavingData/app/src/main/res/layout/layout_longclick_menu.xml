@@ -49,7 +49,7 @@
             android:paddingRight="10dp"
             android:layout_marginRight="10dp"
             android:src="@drawable/edit_48px"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <!--<ImageView
             android:id="@+id/longclick_menu_duplicate"

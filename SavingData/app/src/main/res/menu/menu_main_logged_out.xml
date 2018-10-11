@@ -18,8 +18,4 @@
         android:icon="@drawable/icon_share"
         android:title="Share Program"/>
 
-    <item
-        android:id="@+id/menu_login"
-        android:title="Login " />
-
 </menu>

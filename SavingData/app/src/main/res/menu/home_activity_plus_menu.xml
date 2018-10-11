@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <item android:id="@+id/home_activity_settings_menu"
+    <item android:id="@+id/home_activity_plus_menu"
         app:showAsAction="always"
-        android:icon="@drawable/icon_settings_48px"
-        android:title="Advanced Settings"/>
+        android:icon="@drawable/plus_48px"
+        app:actionViewClass="android.widget.View"
+        android:title="Menu"/>
 
 
 </menu>

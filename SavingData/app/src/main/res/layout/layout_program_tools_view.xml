@@ -8,7 +8,7 @@
     android:elevation="10dp"
     android:orientation="horizontal"
     app:barrierDirection="right"
-    app:el_expanded="false">
+    app:el_expanded="true">
 
     <RelativeLayout
 
