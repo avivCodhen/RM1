@@ -87,8 +87,8 @@ public class HomeActivity extends BaseActivity implements
 
     @BindView(R.id.activity_home_toolbar)
     Toolbar toolbar;
-    @BindView(R.id.activity_home_app_bar)
-    AppBarLayout mAppBarLayout;
+    /*@BindView(R.id.activity_home_app_bar)
+    AppBarLayout mAppBarLayout;*/
     @BindView(R.id.activity_home_drawer_layout)
     DrawerLayout mDrawerLayout;
     @BindView(R.id.home_activity_navigationview)
