@@ -407,6 +407,7 @@ public class ExerciseEditFragment extends BaseFragment implements
             //sets the toolbar exercise text
             saveExitToolBar.setOptionalText(selectedExercise.getName());
             mAdapter.notifyDataSetChanged();
+            recyclerView.scrollToPosition(selectedIndex);
         }
     }
 

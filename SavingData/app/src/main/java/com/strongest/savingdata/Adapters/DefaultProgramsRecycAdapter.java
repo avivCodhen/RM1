@@ -1,6 +1,7 @@
 package com.strongest.savingdata.Adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,9 @@ public class DefaultProgramsRecycAdapter extends RecyclerView.Adapter<DefaultPro
         String s = list.get(position);
         holder.itemView.setOnClickListener(v->onDefaultWorkoutClick.onDefaultClick(s));
         holder.tv.setText(MyUtils.trimLineAndUnderScoreToSpace(s));
+        if(position == 0){
+            holder.tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -88,10 +89,12 @@ public class NewProgramFragment extends BaseFragment implements DefaultProgramsR
         list.add(DefaultWorkoutsDataManager.DEFAULT);
         list.add(DefaultWorkoutsDataManager.FBW_TEMPLATE);
         list.add(DefaultWorkoutsDataManager.AB_TEMPLATE);
+        list.add(DefaultWorkoutsDataManager.ABC_DROPSET_strength_TEMPLATE);
         adapter = new DefaultProgramsRecycAdapter(list, this);
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(lm);
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
 
         new Handler().postDelayed(new Runnable() {

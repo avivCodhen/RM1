@@ -2,6 +2,7 @@ package com.strongest.savingdata.AModels.programModel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.util.Log;
 
 import com.strongest.savingdata.Controllers.CallBacks;
 
@@ -64,7 +65,10 @@ public class ProgramRepository {
     }
 
     public void deleteProgram(Program program) {
-        Completable.fromRunnable(() -> programDAO.deleteProgram(program))
+        Completable.fromRunnable(() -> {
+            programDAO.deleteProgram(program);
+            Log.d("aviv", "deleteProgram: ");
+        })
                 .subscribeOn(Schedulers.io())
                 .subscribe();
     }

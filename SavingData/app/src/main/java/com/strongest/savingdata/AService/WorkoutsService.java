@@ -87,6 +87,7 @@ public class WorkoutsService {
         String programUID = getCurrentProgramUID();
         ArrayList<Workout> list = null;
         if (programUID.equals("")) {
+            mutableLiveDataWorkout.setValue(new ArrayList<>());
             return;
         }
 
@@ -231,6 +232,7 @@ public class WorkoutsService {
     }
 
     private ArrayList<Workout> workoutBroParser(WorkoutHolder workoutHolder) {
+
         ArrayList<Workout> list = new ArrayList<>();
         for (WorkoutBro wor : workoutHolder.getWorkouts()) {
             Workout w = new Workout();

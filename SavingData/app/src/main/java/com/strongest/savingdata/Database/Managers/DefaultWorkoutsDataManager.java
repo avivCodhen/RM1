@@ -11,6 +11,7 @@ public class DefaultWorkoutsDataManager implements DataManagerAPI {
     public static final String DEFAULT = "Blank Template";
     public static final String FBW_TEMPLATE= "Full_Body_Workout_Template";
     public static final String AB_TEMPLATE= "AB_Superset_Template";
+    public static final String ABC_DROPSET_strength_TEMPLATE= "ABC_Dropset_Strength_Template";
 
     SQLiteDatabase db;
     DefaultDBWorkoutHelper defaultDBWorkoutHelper;

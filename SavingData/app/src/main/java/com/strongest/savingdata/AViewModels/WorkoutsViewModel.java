@@ -95,4 +95,8 @@ public class WorkoutsViewModel extends ViewModel {
     public WorkoutsService.CMD getCmd() {
         return cmd;
     }
+
+    public void noWorkout() {
+    workoutsService.provideWorktoutsList(workoutsList, WorkoutsService.CMD.INIT);
+    }
 }

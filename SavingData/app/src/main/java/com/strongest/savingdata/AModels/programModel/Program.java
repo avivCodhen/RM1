@@ -10,7 +10,7 @@ import java.io.Serializable;
  * Created by Cohen on 10/18/2017.
  */
 @Entity
-public class Program implements Serializable{
+public class Program implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int uid;
@@ -37,7 +37,7 @@ public class Program implements Serializable{
     }
 
     @Ignore
-    public Program(){
+    public Program() {
 
     }
 
@@ -114,8 +114,11 @@ public class Program implements Serializable{
     @Override
     public boolean equals(Object obj) {
         Program p = (Program) obj;
-        if (this.getKey().equals(p.getKey())){
-            return true;
+        if (obj != null) {
+
+            if (this.getKey().equals(p.getKey())) {
+                return true;
+            }
         }
         return false;
     }

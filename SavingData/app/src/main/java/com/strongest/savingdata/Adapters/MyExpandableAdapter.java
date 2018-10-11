@@ -258,7 +258,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (position != (exArray.size() - 1)) {
             vh.rest.setText(exerciseSet.getRest());
         } else {
-            vh.rest.setText("-");
+            vh.rest.setText("none");
         }
         vh.weight.setText(exerciseSet.getWeight() + "kg");
         vh.set.setText(position + 1 + "");

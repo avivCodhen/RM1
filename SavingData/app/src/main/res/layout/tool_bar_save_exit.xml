@@ -42,8 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:paddingBottom="15dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:paddingTop="15dp"
         android:src="@drawable/checkmark_96px_white" />
 

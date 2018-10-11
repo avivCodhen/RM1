@@ -8,7 +8,7 @@
     android:elevation="10dp"
     android:orientation="horizontal"
     app:barrierDirection="right"
-    app:el_expanded="true">
+    app:el_expanded="false">
 
     <RelativeLayout
 
@@ -52,7 +52,6 @@
                     android:padding="5dp">
 
                     <TextView
-                        android:text="asdasdasdadasdasd"
                         android:id="@+id/usernameTV"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -61,7 +60,6 @@
 
                     <TextView
                         android:textSize="14dp"
-                        android:text="cohen.lior.33@gmail.com"
                         android:id="@+id/emailTV"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -88,8 +86,8 @@
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:src="@drawable/icon_logout"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp" />
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
 
 
                 </RelativeLayout>

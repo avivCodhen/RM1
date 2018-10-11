@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.strongest.savingdata.AModels.workoutModel.Workout;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ItemTouchHelperAdapter;
@@ -57,7 +58,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     private void configWorkout(WorkoutViewHolder holder, int position) {
-        holder.editText.setText(list.get(position).workoutName);
+        holder.textView.setText(list.get(position).workoutName);
     }
 
 
@@ -72,13 +73,13 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     public class WorkoutViewHolder extends RecyclerView.ViewHolder implements OnLayoutManagerDialogPress {
-        private EditText editText;
+        private TextView textView;
         private ImageView delete, drag, edit;
         private WorkoutViewHolder _this = this;
 
         public WorkoutViewHolder(View itemView) {
             super(itemView);
-            editText = (EditText) itemView.findViewById(R.id.recyclerview_workout_tv);
+            textView = itemView.findViewById(R.id.recyclerview_workout_tv);
             drag = (ImageView) itemView.findViewById(R.id.recyclerview_workout_drag_iv);
             delete = (ImageView) itemView.findViewById(R.id.recyclerview_workout_delete_iv);
             edit = (ImageView) itemView.findViewById(R.id.recycler_view_workouts_edit_iv);
@@ -103,7 +104,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LayoutManagerAlertdialog.getInputAlertDialog(context, WorkoutViewHolder.this, editText.getText().toString(), getAdapterPosition());
+                    LayoutManagerAlertdialog.getInputAlertDialog(context, WorkoutViewHolder.this, textView.getText().toString(), getAdapterPosition());
                 }
             });
         }
@@ -119,7 +120,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         @Override
         public void onLMDialogOkPressed(String input, int position) {
-            editText.setText(input);
+            textView.setText(input);
             list.get(getAdapterPosition()).workoutName = input;
             onProgramChangeListener.notifyAdapter();
 

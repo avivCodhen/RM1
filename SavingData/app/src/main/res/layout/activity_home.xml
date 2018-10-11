@@ -67,10 +67,9 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 -->
                 <android.support.design.widget.TabLayout
-                    android:layout_gravity="center_horizontal"
                         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
                     android:id="@+id/activity_home_tablayout"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorAccent"
                     app:tabIndicatorColor="#5B57AB"
@@ -182,19 +181,20 @@
 
 
 </RelativeLayout>
-<!--
+
     <android.support.design.widget.NavigationView
-        android:visibility="gone"
         app:headerLayout="@layout/layout_menu_user_header"
         android:id="@+id/home_activity_navigationview"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:layout_marginRight="30dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorAccent"
+        app:itemTextColor="@color/colorPrimary"
+        android:fitsSystemWindows="true"
         app:menu="@menu/menu_main_logged_in">
 
-    </android.support.design.widget.NavigationView>-->
+    </android.support.design.widget.NavigationView>
 
 
 </android.support.v4.widget.DrawerLayout>

@@ -75,7 +75,7 @@
             <ImageView
                 android:layout_toRightOf="@+id/recyclerview_exercise_flipview"
                 android:id="@+id/child_arrow_iv"
-                android:src="@drawable/child_red"
+                android:src="@drawable/icon_down_right_red"
                 android:layout_width="20dp"
                 android:layout_height="15dp" />
 

@@ -59,6 +59,8 @@ import com.strongest.savingdata.MyViews.SmartProgressBar;
 import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
 import com.strongest.savingdata.R;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -83,6 +85,7 @@ public class HomeActivity extends BaseActivity implements
     public static final int MY_PROGRAM_ACTIVITY = 3;
     public static final int NOTIFICATION = 4;
     public static final String EXERCISE_POSITION = "exercisePosition";
+    public static final String REFRESH = "refresh";
 
     @BindView(R.id.activity_home_toolbar)
     Toolbar toolbar;
@@ -90,9 +93,8 @@ public class HomeActivity extends BaseActivity implements
     AppBarLayout mAppBarLayout;
     @BindView(R.id.activity_home_drawer_layout)
     DrawerLayout mDrawerLayout;
-    /*  @BindView(R.id.home_activity_navigationview)
-      NavigationView mNavigationView;
-  */
+    @BindView(R.id.home_activity_navigationview)
+    NavigationView mNavigationView;
     @BindView(R.id.activity_home_longclick_menu)
     public LongClickMenuView longClickMenuView;
     @BindView(R.id.activity_home_viewpager)
@@ -196,16 +198,7 @@ public class HomeActivity extends BaseActivity implements
         programViewModel.fetchAllPrograms();
 
         programViewModel.getPrograms().observe(this, list -> {
-            smartEmptyView.setImage(smartEmptyView.getDocImage())
-                    .setTitle(getString(R.string.no_program))
-                    .setBody(getString(R.string.no_program_content))
-                    .setButtonText(getString(R.string.navigate_my_programs_button))
-                    .setActionBtn(v -> toMyProgramsActivity())
-                    .setUpWithViewPager(mViewPager, false, false)
-                    .setUpWithMoreViews(mTabLayout)
-                    .onShowFunc(() -> ifNoProgram())
-                    .onCondition(list.size());
-
+            showNoProgramLoadedDialog(list.size());
         });
 
         workoutsViewModel.getWorkoutsList().observe(this, workouts -> {
@@ -227,6 +220,30 @@ public class HomeActivity extends BaseActivity implements
         ifNoProgram();
     }
 
+    private void showNoProgramDialog() {
+        MaterialDialogHandler
+                .get()
+                .defaultBuilder(this, getString(R.string.no_program), getString(R.string.navigate_my_programs_button))
+                .addContent(getString(R.string.no_program_content))
+                .buildDialog()
+                .addPositiveActionFunc(v -> toMyProgramsActivity(), true)
+                .show();
+    }
+
+
+    private void showNoProgramLoadedDialog(int size) {
+        smartEmptyView.setImage(smartEmptyView.getDocImage())
+                .setTitle(getString(R.string.no_program))
+                .setBody(getString(R.string.no_program_content))
+                .setButtonText(getString(R.string.navigate_my_programs_button))
+                .setActionBtn(v -> toMyProgramsActivity())
+                .setUpWithViewPager(mViewPager, false, false)
+                .setUpWithMoreViews(mTabLayout)
+                .onShowFunc(() -> ifNoProgram())
+                .onCondition(size);
+
+    }
+
     private void ifNoProgram() {
         if (program == null) {
             title.setText("RM1");
@@ -240,13 +257,14 @@ public class HomeActivity extends BaseActivity implements
             programService.listenForSharedPrograms(count -> showBadgeForMyProgram((int) count));
         } else {
             programViewModel.noProgram();
+            workoutsViewModel.noWorkout();
             programViewModel.fetchAllPrograms();
 
         }
     }
 
     private void showBadgeForMyProgram(int count) {
-      /*  myProgramBadge = (TextView) MenuItemCompat.getActionView(mNavigationView.getMenu().findItem(R.id.menu_my_programs));
+        myProgramBadge = (TextView) MenuItemCompat.getActionView(mNavigationView.getMenu().findItem(R.id.menu_my_programs));
         myProgramBadge.setGravity(Gravity.CENTER_VERTICAL);
         myProgramBadge.setTypeface(null, Typeface.BOLD);
         myProgramBadge.setTextColor(getResources().getColor(R.color.red));
@@ -255,21 +273,16 @@ public class HomeActivity extends BaseActivity implements
         } else {
             myProgramBadge.setText("");
 
-        }*/
+        }
         programToolsView.updateMenuAlertCount(WorkoutsModel.Actions.MyProgram, count);
     }
 
     //TODO: call this function when needed
     private void loggedInUI() {
         isLoggedIn = userService.isUserLoggedIn();         //TODO: need to check if the user is logged in
-        programToolsView.setUpLoginCredentials(
-                isLoggedIn,
-                userService.getUsername(),
-                userService.getEmail()
-        );
 
 
-      /*  if (isLoggedIn) {
+        if (isLoggedIn) {
             mNavigationView.getMenu().clear();
             mNavigationView.inflateMenu(R.menu.menu_main_logged_in);
             View v = mNavigationView.getHeaderView(0);
@@ -282,14 +295,15 @@ public class HomeActivity extends BaseActivity implements
         } else {
             mNavigationView.getMenu().clear();
             mNavigationView.inflateMenu(R.menu.menu_main_logged_out);
-        }*/
+        }
 
 
     }
 
 
     private void notifyCurrentWorkout() {
-        w = workoutsViewModel.getWorkoutsList().getValue().get(mViewPager.getCurrentItem());
+        if (workoutsViewModel.getWorkoutsList().getValue().size() != 0)
+            w = workoutsViewModel.getWorkoutsList().getValue().get(mViewPager.getCurrentItem());
 
     }
 
@@ -310,7 +324,6 @@ public class HomeActivity extends BaseActivity implements
                 longClickMenuView.onHideMenu();
                 notifyCurrentWorkout();
                 fab.show();
-                //layoutManager.mLayoutManagerHelper.updateLayoutManagerHelper(mViewPager.getCurrentItem());
             }
 
             @Override
@@ -330,18 +343,15 @@ public class HomeActivity extends BaseActivity implements
     private void setUpToolbar() {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-
-        //  mDrawerLayout.setScrimColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
-        //  mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
-        //mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        //  mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
-        //  mDrawerLayout.addDrawerListener(mToggle);
-        //  mToggle.syncState();
-        //  mToggle.setDrawerIndicatorEnabled(true);
-        //  mNavigationView.setNavigationItemSelectedListener(this);
-
-
-        //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mDrawerLayout.setScrimColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        mToggle.setDrawerIndicatorEnabled(true);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
     }
 
@@ -389,10 +399,6 @@ public class HomeActivity extends BaseActivity implements
         }
     }
 
-    private void makeCircularReturnAnimation() {
-
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_activity_settings_icon_menu, menu);
@@ -403,9 +409,10 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        /*if (mToggle.onOptionsItemSelected(item)) {
+        if (mToggle.onOptionsItemSelected(item)) {
+            mDrawerLayout.openDrawer(GravityCompat.START);
             return true;
-        }*/
+        }
 
         switch (item.getItemId()) {
             case R.id.edit_menu:
@@ -444,7 +451,6 @@ public class HomeActivity extends BaseActivity implements
                 break;
             case R.id.menu_login:
                 startActivityForResult(new Intent(this, LoginActivity2.class), LOGIN_ACTIVITY);
-                //startActivityForResult(new Intent(this, RegisterActivity.class), LOGIN_ACTIVITY);
                 break;
 
             case R.id.menu_share_program:
@@ -460,9 +466,19 @@ public class HomeActivity extends BaseActivity implements
     }
 
     private void logOut() {
-        userService.logout();
-        finish();
-        toLogInActivity();
+
+        MaterialDialogHandler.get()
+                .defaultBuilder(this, "Are you sure you want to logout?", "YES")
+                .buildDialog()
+                .addPositiveActionFunc(v -> {
+
+
+                    userService.logout();
+                    finish();
+                    toLogInActivity();
+
+                }, true)
+                .show();
     }
 
     private void toShareActivity() {
@@ -562,15 +578,6 @@ public class HomeActivity extends BaseActivity implements
 
     }
 
-    private void showNoProgramDialog() {
-        MaterialDialogHandler
-                .get()
-                .defaultBuilder(this, getString(R.string.no_program), getString(R.string.navigate_my_programs_button))
-                .addContent(getString(R.string.no_program_content))
-                .buildDialog()
-                .addPositiveActionFunc(v -> toMyProgramsActivity(), true)
-                .show();
-    }
 
     @Override
     public void onProgramToolsAction(ProgramToolsView.ProgramButton programButton) {
@@ -742,6 +749,7 @@ public class HomeActivity extends BaseActivity implements
             Log.d(TAG, "onActivityResult: " + data.getStringExtra("userName"));
         }
         super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     @Override

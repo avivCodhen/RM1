@@ -62,6 +62,7 @@ public class MyProgramsActivity extends BaseActivity implements
             /*  MyProgramsActivity.FRAGMENT_USER_SHARED_FOR,*/
     };
     private ArrayList<BaseFragment> fragments;
+    Intent i;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -74,6 +75,7 @@ public class MyProgramsActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_programs);
         ButterKnife.bind(this);
+        i = new Intent();
         currentProgram = (Program) getIntent().getSerializableExtra("current_program");
         saveExitToolBar.instantiate();
         saveExitToolBar.showBack(true);
@@ -159,7 +161,7 @@ public class MyProgramsActivity extends BaseActivity implements
                     .buildDialog()
                     .show();
         } else {
-            Intent i = new Intent(this, HomeActivity.class);
+            i = new Intent(this, HomeActivity.class);
             i.putExtra("program", p);
             setResult(RESULT_OK, i);
             finish();
@@ -176,6 +178,7 @@ public class MyProgramsActivity extends BaseActivity implements
     public void deleteProgram(Program p) {
         if (p.equals(currentProgram)) {
             currentProgram = null;
+            i.putExtra(HomeActivity.REFRESH, true);
         }
         programService.deleteProgram(p);
         workoutsService.deleteWorkout(p.getKey());
@@ -186,7 +189,6 @@ public class MyProgramsActivity extends BaseActivity implements
     public void shareProgram(Program p) {
         if (userService.isUserLoggedIn()) {
 
-            Intent i;
             i = new Intent(this, ShareProgramActivity.class);
             i.putExtra("programuid", p.getKey());
             i.putExtra("program", p);
@@ -225,7 +227,6 @@ public class MyProgramsActivity extends BaseActivity implements
     @Override
     public void createProgram(String s) {
         if (userService.isUserLoggedIn() || currentProgram == null) {
-            Intent i = new Intent();
             i.putExtra(WHICH_PROGRAM, s);
             setResult(FRAGMENT_CREATE_PROGRAM, i);
             finish();

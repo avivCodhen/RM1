@@ -7,15 +7,16 @@
         android:layout_below="@+id/new_program_frag_saveexittoolbar"
         android:id="@+id/fragment_new_program_default_blank_template"
         android:orientation="horizontal"
-        android:padding="20dp"
+        android:padding="10dp"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.CardView
-            android:layout_width="300px"
-            android:layout_height="200px"></android.support.v7.widget.CardView>
-
         <TextView
+            android:textSize="16dp"
+            android:text="asdsadsadsd"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:id="@+id/programNameTv"
             android:textColor="@color/colorPrimary"
             android:layout_marginLeft="35dp"

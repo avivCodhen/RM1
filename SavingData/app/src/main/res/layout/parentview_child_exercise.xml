@@ -72,8 +72,9 @@
                 android:layout_marginLeft="15dp"
                 android:id="@+id/child_arrow_iv"
                 android:layout_centerVertical="true"
-                android:src="@drawable/child_red"
-                android:layout_width="25dp"
+                android:src="@drawable/icon_down_right_red"
+                android:layout_width="20dp"
+                android:padding="3dp"
                 android:layout_height="20dp" />
 
 

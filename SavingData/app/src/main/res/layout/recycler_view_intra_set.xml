@@ -71,8 +71,8 @@
 
             <ImageView
                 android:id="@+id/recycler_view_exercise_details_sets_tv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_centerVertical="true"
                 android:elevation="16dp"
                 android:src="@drawable/icon_down_right_red"

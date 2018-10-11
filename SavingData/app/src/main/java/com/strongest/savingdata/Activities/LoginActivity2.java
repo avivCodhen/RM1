@@ -3,6 +3,7 @@ package com.strongest.savingdata.Activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -206,6 +207,11 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
                 if ((int) result == 1) {
 
                     setResult(RESULT_OK);
+                    //if there is a homeactivity, then just finish. else
+                    //to start a new homeactivity and finish this
+                    if(isTaskRoot()){
+                        startActivity(new Intent(this, MainActivity.class));
+                    }
                     finish();
                 }
             });
