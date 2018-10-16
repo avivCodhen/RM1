@@ -1,15 +1,12 @@
 <LinearLayout android:layout_height="wrap_content"
-    android:layout_width="250dp"
+    android:layout_width="match_parent"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp"
-    android:background="@color/colorAccent"
-    android:layout_gravity="right"
-
     >
 
     <LinearLayout
+        android:padding="6dp"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
         android:layout_width="wrap_content"
@@ -17,18 +14,18 @@
         <ImageView
             android:layout_marginRight="5dp"
             android:id="@+id/program_menu_image"
-            android:src="@drawable/plus_gray_24px"
+            android:src="@drawable/plus_48px"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"/>
 
         <TextView
+            android:textColor="@color/colorPrimary"
+            android:text="Add New Exercise"
             android:id="@+id/program_menu_tv"
             android:elevation="10dp"
             android:layout_gravity="center_vertical"
-            android:textStyle="bold"
             android:textSize="@dimen/program_menu_text_size"
-            android:textColor="@color/colorPrimary"
             android:layout_marginLeft="5dp"
             android:layout_width="130dp"
             android:layout_height="wrap_content" />
@@ -59,6 +56,8 @@
                 android:layout_height="match_parent" />
         </FrameLayout>
 
+
     </LinearLayout>
+
 
 </LinearLayout>

@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccent"
@@ -23,7 +24,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
 
-                android:layout_height="54dp"
+                android:layout_height="@dimen/sets_screen_height"
                 android:background="@color/colorPrimary"
                 android:orientation="horizontal">
 
@@ -45,22 +46,24 @@
                     android:textStyle="bold" />
 
                 <RelativeLayout
-                    android:layout_marginRight="10dp"
-
                     android:id="@+id/choose_sets_reps_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp">
+
+                    <EditText
                         android:id="@+id/choose_sets_rep_tv"
-                        android:textColor="@color/colorAccent"
                         android:layout_width="@dimen/edittext_width"
                         android:layout_height="match_parent"
                         android:layout_gravity="end"
                         android:layout_toLeftOf="@+id/choose_sets_reps_cb"
                         android:gravity="center"
-                        android:text="10"
+                        android:imeOptions="actionDone"
                         android:inputType="number"
+                        android:maxLength="2"
+                        android:text="10"
+                        android:textColor="@color/colorAccent"
                         android:textSize="12sp" />
 
                     <CheckBox
@@ -71,18 +74,20 @@
                         android:layout_toLeftOf="@+id/choose_sets_reps_range_et"
                         android:text="To" />
 
-                    <TextView
-                        android:textColor="@color/colorAccent"
-
+                    <EditText
                         android:id="@+id/choose_sets_reps_range_et"
                         android:layout_width="@dimen/edittext_width"
-
                         android:layout_height="match_parent"
+
                         android:layout_alignParentEnd="true"
                         android:layout_gravity="end"
+
                         android:gravity="center"
-                        android:text="10"
+                        android:imeOptions="actionDone"
                         android:inputType="number"
+                        android:maxLength="2"
+                        android:text="10"
+                        android:textColor="@color/colorAccent"
                         android:textSize="12sp" />
 
 
@@ -97,7 +102,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="@dimen/sets_screen_height"
+
                 android:background="@color/colorPrimary"
                 android:orientation="horizontal">
 
@@ -120,40 +126,70 @@
 
 
                 <RelativeLayout
-                    android:layout_marginRight="10dp"
-
                     android:id="@+id/choose_sets_rest_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dp">
 
-                    <TextView
-                        android:textColor="@color/colorAccent"
-                        android:textColorHint="@color/colorAccent"
-                        android:id="@+id/choose_sets_rest_min_tv"
-                        android:layout_width="@dimen/edittext_width"
+                    <LinearLayout
+                        android:id="@+id/minutes_wrapper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/seconds_wrapper"
+                        android:orientation="vertical">
 
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:layout_marginRight="45dp"
-                        android:layout_toLeftOf="@+id/choose_sets_rest_sec_tv"
-                        android:gravity="center"
-                        android:hint="min"
-                        android:inputType="number"
-                        android:textSize="12sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Minutes" />
 
-                    <TextView
-                        android:textColor="@color/colorAccent"
-                        android:id="@+id/choose_sets_rest_sec_tv"
-                        android:layout_width="@dimen/edittext_width"
+                        <EditText
+                            android:id="@+id/choose_sets_rest_min_tv"
+                            android:layout_width="@dimen/edittext_width"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="end"
+                            android:layout_marginRight="45dp"
+                            android:layout_toLeftOf="@+id/choose_sets_rest_sec_tv"
+                            android:gravity="center"
+                            android:hint="min"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:maxLength="1"
+                            android:textColor="@color/colorAccent"
+                            android:textColorHint="@color/colorAccent"
+                            android:textSize="12sp" />
+                    </LinearLayout>
 
-                        android:layout_height="match_parent"
-                        android:layout_alignParentEnd="true"
-                        android:layout_gravity="end"
-                        android:gravity="center"
-                        android:hint="sec"
-                        android:textColorHint="@color/colorAccent"
-                        android:inputType="number"
-                        android:textSize="12sp" />
+                    <LinearLayout
+                        android:id="@+id/seconds_wrapper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Seconds" />
+
+                        <EditText
+                            android:id="@+id/choose_sets_rest_sec_tv"
+                            android:layout_width="@dimen/edittext_width"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:layout_gravity="end"
+                            android:gravity="center"
+                            android:hint="sec"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:textColor="@color/colorAccent"
+                            android:textColorHint="@color/colorAccent"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
 
 
                 </RelativeLayout>
@@ -188,36 +224,41 @@
                     android:textStyle="bold" />
 
 
-                <FrameLayout
-                    android:layout_marginRight="10dp"
+                <LinearLayout
                     android:id="@+id/choose_sets_weight_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
-                    android:layout_gravity="end">
+                    android:layout_gravity="end"
+                    android:layout_marginRight="10dp"
+                    android:gravity="right">
 
                     <EditText
-                        android:imeOptions="actionDone"
-                        android:textColor="@color/colorAccent"
+
                         android:id="@+id/choose_sets_weight_tv"
                         android:layout_width="@dimen/edittext_width"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
 
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
                         android:gravity="center"
+                        android:imeOptions="actionDone"
                         android:inputType="numberDecimal"
-                        android:text="0.0"
                         android:maxLength="6"
+
+                        android:text="0.0"
+                        android:textColor="@color/colorAccent"
                         android:textSize="12sp" />
 
 
-                </FrameLayout>
+                </LinearLayout>
 
 
             </LinearLayout>
 
-            <include layout="@layout/layout_weightkeyboard2"
+            <include
+                layout="@layout/layout_weightkeyboard2"
                 android:visibility="gone"></include>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -225,7 +266,6 @@
                 android:layout_height="44dp"
                 android:background="@color/colorAccent"
                 android:orientation="horizontal">
-
 
 
                 <TextView
@@ -238,21 +278,19 @@
                     android:textStyle="bold" />
 
 
-
             </LinearLayout>
 
 
-
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <android.support.v7.widget.RecyclerView
-                    android:layout_weight="1"
                     android:id="@+id/fragment_sets_choose_recycler_repetitions"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"></android.support.v7.widget.RecyclerView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -260,7 +298,6 @@
                     android:layout_height="44dp"
                     android:background="@color/colorAccent"
                     android:orientation="horizontal">
-
 
 
                     <TextView
@@ -273,44 +310,98 @@
                         android:textStyle="bold" />
 
 
-
                 </LinearLayout>
 
 
-
                 <android.support.v7.widget.RecyclerView
-                    android:layout_weight="1"
                     android:id="@+id/fragment_sets_choose_recycler_rest"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"></android.support.v7.widget.RecyclerView>
 
                 <include layout="@layout/layout_bottom_border"></include>
 
-<FrameLayout
-    android:layout_weight="1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+            </LinearLayout>
 
-    <Button
+            <LinearLayout
+                android:layout_width="match_parent"
 
-        android:id="@+id/apply_settings_for_allsets_btn"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/colorAccent"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:text="APPLY SETTINGS TO ALL THE SETS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+                android:layout_height="44dp"
+                android:background="@color/colorAccent"
+                android:orientation="horizontal">
 
 
-</FrameLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="Apply All Sets"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold" />
+
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkbox_reps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
+                    android:text="Repetitions"
+                    android:textColor="@color/colorPrimary" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_rest"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
+                    android:text="Rest"
+                    android:textColor="@color/colorPrimary" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_weight"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
+                    android:text="Weight"
+                    android:textColor="@color/colorPrimary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/checkbox_superset"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
+                    android:text="Include All Supersets"
+                    android:textColor="@color/colorPrimary" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_dropset"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
+                    android:text="Include All Dropsets"
+                    android:textColor="@color/colorPrimary" />
+            </LinearLayout>
 
         </LinearLayout>
+
+
     </ScrollView>
 
 </LinearLayout>

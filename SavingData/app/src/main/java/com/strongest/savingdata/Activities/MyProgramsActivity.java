@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.AViewModels.MyProgramsViewModel;
 import com.strongest.savingdata.Adapters.MyProgramsPagerAdapter;
@@ -46,8 +47,7 @@ public class MyProgramsActivity extends BaseActivity implements
 
     MyProgramsViewModel myProgramsViewModel;
     public static final String FRAGMENT_USER_PROGRAMS = "Mine";
-    //public static final String FRAGMENT_USER_SHARED_FOR = "Shared";
-    public static final String FRAGMENT_USER_SHARED_BY = "Recieved";
+    public static final String FRAGMENT_USER_SHARED_BY = "Received";
     public static final int FRAGMENT_CREATE_PROGRAM = 3;
     public static final String WHICH_PROGRAM = "which_program";
 
@@ -59,7 +59,6 @@ public class MyProgramsActivity extends BaseActivity implements
     private String[] fragmentsTitles = {
             MyProgramsActivity.FRAGMENT_USER_PROGRAMS,
             MyProgramsActivity.FRAGMENT_USER_SHARED_BY,
-            /*  MyProgramsActivity.FRAGMENT_USER_SHARED_FOR,*/
     };
     private ArrayList<BaseFragment> fragments;
     Intent i;
@@ -88,8 +87,42 @@ public class MyProgramsActivity extends BaseActivity implements
         viewPager.setAdapter(myProgramsPagerAdapter);
         tabLayout.setViewPager(viewPager);
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if(position == 1){
+                    programService.setProgramsAsSeen();
+                    tabLayout.hideMsg(1);
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         listenForShares();
 
+
+        tabLayout.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                if(position == 1){
+                    programService.setProgramsAsSeen();
+                    tabLayout.hideMsg(1);
+                }
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
         if (!MyUtils.isNetworkConnected(this)) {
             MaterialDialogHandler.get()
                     .defaultBuilder(this, "No Internet Connection", "OK")
@@ -156,10 +189,7 @@ public class MyProgramsActivity extends BaseActivity implements
     @Override
     public void onLoadProgram(Program p) {
         if (p.equals(currentProgram)) {
-            MaterialDialogHandler.get()
-                    .defaultBuilder(this, "Program already loaded.", "")
-                    .buildDialog()
-                    .show();
+            finish();
         } else {
             i = new Intent(this, HomeActivity.class);
             i.putExtra("program", p);

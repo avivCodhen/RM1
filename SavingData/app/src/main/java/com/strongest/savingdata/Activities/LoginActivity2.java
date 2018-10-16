@@ -98,6 +98,7 @@ public class LoginActivity2 extends BaseActivity implements LoaderCallbacks<Curs
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
         ButterKnife.bind(this);
+        closeKeyBoardOnClick();
         // Set up the login form.
         mEmailView = (EditText) findViewById(R.id.email);
         populateAutoComplete();

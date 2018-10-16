@@ -387,7 +387,7 @@ public class ProgramService {
             if (tag.equals(MyProgramsActivity.FRAGMENT_USER_PROGRAMS)) {
                 fetchAllPrograms(databaseReference, allPrograms, "creatorUID", userService.getUserUID());
             } else if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY)) {
-                fetchAllProgramsShared(allPrograms, "senderUID");
+                fetchAllProgramsShared(allPrograms, "recieverUID");
 
             }/* else if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_FOR)) {
                 fetchAllProgramsShared(allPrograms, "recieverUID");
@@ -422,7 +422,7 @@ public class ProgramService {
         sharedUser.setProgramUID(p.getKey());
         sharedUser.setSenderUID(userService.getUserUID());
         sharedUser.setRecieverUID(user.getUID());
-        sharedUser.setSenderName(user.getName());
+        sharedUser.setSenderName(getUsername());
         sharedUser.setProgramName(p.getProgramName());
         String userToken = user.getUserToken();
         if (userToken.equals("")) {
@@ -433,6 +433,7 @@ public class ProgramService {
         p.setNumOfShared(p.getNumOfShared() + 1);
         updateProgram(p);
         String key = sharedProgramReference.push().getKey();
+        //String key = user.getUID();
         sharedProgramReference.child(key).setValue(sharedUser);
     }
 
@@ -475,5 +476,22 @@ public class ProgramService {
 
     public String provideDefaultTemplate(String s) {
         return provideNewProgram(MyUtils.trimLineAndUnderScoreToSpace(s));
+    }
+
+    public void setProgramsAsSeen() {
+        sharedProgramReference.orderByChild("recieverUID").equalTo(getUID()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot d : dataSnapshot.getChildren()){
+                    d.getRef().child("seen").setValue(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

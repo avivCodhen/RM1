@@ -117,6 +117,10 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
 
         if(isCurrentProgram(p)){
             holder.progName.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+            holder.currentIV.setVisibility(View.VISIBLE);
+        }else{
+            holder.currentIV.setVisibility(View.GONE);
+
         }
     }
 
@@ -162,6 +166,9 @@ public class MyProgramsAdapter extends RecyclerView.Adapter<MyProgramsAdapter.Vi
 
         @BindView(R.id.program_options)
         ImageView options;
+
+        @BindView(R.id.program_current_iv)
+        ImageView currentIV;
 
         /* @BindView(R.id.load_program_btn)
          Button loadProgramBtn;

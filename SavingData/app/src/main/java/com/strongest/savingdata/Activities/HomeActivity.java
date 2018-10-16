@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -29,7 +27,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.hlab.fabrevealmenu.listeners.OnFABMenuSelectedListener;
-import com.hlab.fabrevealmenu.view.FABRevealMenu;
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
 import com.strongest.savingdata.AModels.workoutModel.Workout;
@@ -41,19 +38,14 @@ import com.strongest.savingdata.Adapters.MyExpandableAdapter;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.TitleItemAdapter;
 import com.strongest.savingdata.Adapters.WorkoutItemAdapters.ExerciseItemAdapter;
 import com.strongest.savingdata.Adapters.WorkoutsViewPagerAdapter;
-import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.Controllers.Architecture;
 import com.strongest.savingdata.AModels.programModel.Program;
 import com.strongest.savingdata.Database.Managers.DefaultWorkoutsDataManager;
-import com.strongest.savingdata.Fragments.BaseFragment;
 import com.strongest.savingdata.Fragments.CustomExerciseFragment;
-import com.strongest.savingdata.Fragments.ExerciseEditFragment;
 import com.strongest.savingdata.Fragments.ProgramSettingsFragment;
-import com.strongest.savingdata.Fragments.SetsChooseSingleFragment;
 import com.strongest.savingdata.Fragments.WorkoutViewFragment;
 import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
-import com.strongest.savingdata.MyViews.MovableFloatingActionButton;
 import com.strongest.savingdata.MyViews.SmartEmptyView;
 import com.strongest.savingdata.MyViews.SmartProgressBar;
 import com.strongest.savingdata.MyViews.WorkoutView.ProgramToolsView;
@@ -73,7 +65,6 @@ public class HomeActivity extends BaseActivity implements
         WorkoutViewFragment.WorkoutViewFragmentListener,
         Architecture.view.LongClickView,
         Architecture.view.ProgramTools,
-        ProgramSettingsFragment.OnProgramSettingsChange,
         OnFABMenuSelectedListener {
 
     // public WorkoutsModelController workoutsModelController;
@@ -110,12 +101,9 @@ public class HomeActivity extends BaseActivity implements
     @BindView(R.id.home_activity_smartprogressbar)
     SmartProgressBar smartProgressBar;
 
-    @BindView(R.id.home_activity_fab)
+    /*@BindView(R.id.home_activity_fab)
     MovableFloatingActionButton fab;
-
-    @BindView(R.id.fabMenu)
-    FABRevealMenu fabRevealMenu;
-
+*/
     //this view is the edit "+" button of the toolbar menu
     //it will be setuped with the programtoolsview on inflating menu
     View programToolsBtn;
@@ -125,7 +113,7 @@ public class HomeActivity extends BaseActivity implements
 
     public Program program;
 
-    private WorkoutsViewPagerAdapter mAdapter;
+    public WorkoutsViewPagerAdapter mAdapter;
 
     public WorkoutsViewModel workoutsViewModel;
     public ProgramViewModel programViewModel;
@@ -146,11 +134,13 @@ public class HomeActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         ButterKnife.bind(this);
         if (savedInstanceState != null) {
             program = (Program) savedInstanceState.getSerializable("program");
         }
         String userName = getIntent().getStringExtra("userName");
+        showNoProgramLoadedEmptyView(program == null);
         if (userName != null && !userName.equals("")) {
             getIntent().removeExtra("userName");
             MaterialDialogHandler.get()
@@ -176,6 +166,7 @@ public class HomeActivity extends BaseActivity implements
 
         programViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(ProgramViewModel.class);
         programViewModel.initProgram();
+        smartProgressBar.show();
         workoutsViewModel = ViewModelProviders.of(this, workoutsViewModelFactory).get(WorkoutsViewModel.class);
         setUpToolbar();
 
@@ -188,16 +179,18 @@ public class HomeActivity extends BaseActivity implements
                     workoutsViewModel.initWorkouts();
                 }
                 programService.annonymouseToUser(program);
+            }else{
+                showNoProgramLoadedEmptyView(program == null);
             }
             smartProgressBar.hide();
 
         });
 
-        programViewModel.fetchAllPrograms();
+       /* programViewModel.fetchAllPrograms();
 
         programViewModel.getPrograms().observe(this, list -> {
-            showNoProgramLoadedDialog(list.size());
-        });
+            showNoProgramLoadedEmptyView(list.size());
+        });*/
 
         workoutsViewModel.getWorkoutsList().observe(this, workouts -> {
 
@@ -208,10 +201,7 @@ public class HomeActivity extends BaseActivity implements
 
 
         longClickMenuView.instantiate(this);
-        programToolsView.instantiate(fab, this);
-        programToolsView.setProgramToolsBtn(fab);
-        programToolsView.setLoginFunc(v -> toLogInActivity());
-        programToolsView.setLogoutFunc(v -> logOut());
+        programToolsView.instantiate(this);
 
         loggedInUI();
 
@@ -229,16 +219,16 @@ public class HomeActivity extends BaseActivity implements
     }
 
 
-    private void showNoProgramLoadedDialog(int size) {
+    private void showNoProgramLoadedEmptyView(boolean b) {
         smartEmptyView.setImage(smartEmptyView.getDocImage())
                 .setTitle(getString(R.string.no_program))
                 .setBody(getString(R.string.no_program_content))
                 .setButtonText(getString(R.string.navigate_my_programs_button))
                 .setActionBtn(v -> toMyProgramsActivity())
                 .setUpWithViewPager(mViewPager, false, false)
-                .setUpWithMoreViews(mTabLayout)
+                .setUpWithMoreViews(mTabLayout, programToolsView)
                 .onShowFunc(() -> ifNoProgram())
-                .onCondition(size);
+                .onCondition(b);
 
     }
 
@@ -253,10 +243,10 @@ public class HomeActivity extends BaseActivity implements
         super.onResume();
         if (programService.isProgramAvailable()) {
             programService.listenForSharedPrograms(count -> showBadgeForMyProgram((int) count));
+            smartEmptyView.hideEmptyView();
         } else {
             programViewModel.noProgram();
             workoutsViewModel.noWorkout();
-            programViewModel.fetchAllPrograms();
 
         }
     }
@@ -272,7 +262,7 @@ public class HomeActivity extends BaseActivity implements
             myProgramBadge.setText("");
 
         }
-        programToolsView.updateMenuAlertCount(WorkoutsModel.Actions.MyProgram, count);
+//        programToolsView.updateMenuAlertCount(WorkoutsModel.Actions.MyProgram, count);
     }
 
     private void loggedInUI() {
@@ -324,7 +314,6 @@ public class HomeActivity extends BaseActivity implements
                 mViewPager.setCurrentItem(tab.getPosition());
                 longClickMenuView.onHideMenu();
                 notifyCurrentWorkout();
-                fab.show();
             }
 
             @Override
@@ -370,11 +359,12 @@ public class HomeActivity extends BaseActivity implements
             longClickMenuView.onHideMenu();
             return;
         }
-        if (programToolsView.isOpen()) {
+        super.onBackPressed();
+       /* if (programToolsView.isOpen()) {
             programToolsView.close();
             return;
-        }
-        BaseFragment f;
+        }*/
+        /*BaseFragment f;
         f = (BaseFragment) getSupportFragmentManager().findFragmentByTag(ExerciseEditFragment.FRAGMENT_EDIT_EXERCISE);
         if (f == null) {
             f = (BaseFragment) getSupportFragmentManager().findFragmentByTag(SetsChooseSingleFragment.SETS_CHOOSE_FRAGMENT);
@@ -397,12 +387,12 @@ public class HomeActivity extends BaseActivity implements
                 super.onBackPressed();
                 return;
             });
-        }
+        }*/
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_activity_plus_menu, menu);
+        getMenuInflater().inflate(R.menu.home_activity_settings_menu, menu);
         /*programToolsBtn =(View) menu.findItem(R.id.home_activity_plus_menu);
         programToolsView.setProgramToolsBtn(programToolsBtn);*/
         return true;
@@ -430,6 +420,9 @@ public class HomeActivity extends BaseActivity implements
                 }
                 addFragmentToActivity(R.id.activity_home_framelayout, new ProgramSettingsFragment(), "programsettings");*/
                 return true;
+            case R.id.menu_advanced_settings:
+                addFragmentToActivity(R.id.activity_home_framelayout, new ProgramSettingsFragment(), "programsettings");
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -602,12 +595,10 @@ public class HomeActivity extends BaseActivity implements
 
         } else if (action == Share) {
             toShareActivity();
-            programToolsView.close();
 
             return;
         } else if (action == MyProgram) {
             toMyProgramsActivity();
-            programToolsView.close();
             return;
         } else if (action == CustomExercise) {
             CustomExerciseFragment f = new CustomExerciseFragment();
@@ -632,7 +623,7 @@ public class HomeActivity extends BaseActivity implements
 
                 case NewWorkout:
                     workoutsViewModel.workoutsModel.addNewWorkout(workoutsViewModel.getWorkoutsList().getValue());
-                    notifyAdapter();
+                    mAdapter.notifyDataSetChanged();
                     break;
 
                 case NewDivider:
@@ -649,19 +640,13 @@ public class HomeActivity extends BaseActivity implements
         }
         workoutsViewModel.saveLayoutToDataBase();
         Snackbar snackbar = Snackbar.
-                make(fab, "Added " + programButton.tv_name + " Successfully", Snackbar.LENGTH_SHORT);
+                make(programToolsView, "Added " + programButton.tv_name + " Successfully", Snackbar.LENGTH_SHORT);
         View v = snackbar.getView();
         v.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
         TextView textView = v.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
         snackbar.show();
-        programToolsView.close();
 
-    }
-
-    @Override
-    public void notifyAdapter() {
-        mAdapter.notifyDataSetChanged();
     }
 
    /* public void test(View v) {
@@ -763,7 +748,7 @@ public class HomeActivity extends BaseActivity implements
 
     }
 
-    public FloatingActionButton getFab() {
+   /* public FloatingActionButton getFab() {
         return fab;
-    }
+    }*/
 }

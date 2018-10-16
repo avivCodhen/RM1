@@ -128,9 +128,17 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
 
         });
 
-        workout.setOnEdit((pos, ep)-> onExerciseEdit(pos, ep));
+        workout.setOnEdit((pos, ep) -> onExerciseEdit(pos, ep));
+
+        workout.registerExerciseObserver((changedEp, pos) -> {
+
+            adapter.notifyItemChanged(pos);
+        });
+
 
         initViews(view);
+
+
     }
 
     private void initViews(View view) {
@@ -155,6 +163,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         recycler.setAdapter(adapter);
         adapter.setOnDragListener(this);
         adapter.setScrollListener(this);
+        recycler.setNestedScrollingEnabled(false);
         //   adapter.setHelper(layoutManagerHelper);
         ItemTouchHelper.Callback callback = new DragAndSwipeCallback(adapter);
         touchHelper = new ItemTouchHelper(callback);
@@ -162,9 +171,9 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
 
         smartEmptyView
                 .setImage(smartEmptyView.getRocketImage())
-                .setBody("Click on the Round Pen Button, to start adding customizing your exercises.")
+                .setBody("Click on the Add New Exercise, to start customizing your exercises.")
                 .setTitle("Looks like you don't have any exercises!")
-                .setButtonText("Add A New Exercise")
+                .setButtonText("Add New Exercise")
                 .setUpWithRecycler(recycler, true, true)
                 .setActionBtn(v -> {
                     workout.getObserver().onChange(
@@ -175,7 +184,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
                     );
                 });
 
-        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        /*recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 FloatingActionButton fab = ((HomeActivity) getActivity() ).getFab();
@@ -199,7 +208,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
-
+*/
     }
 
 
@@ -275,16 +284,10 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
      * it transists to the ExerciseDetailsFragment/Activity
      */
     @Override
-    public void onExerciseDetails(ExerciseViewHolder vh, ExerciseProfile exerciseProfile) {
+    public void onExerciseDetails(int position, ExerciseProfile exerciseProfile) {
         // final int selectedPosition = workout.exArray.indexOf(exerciseProfile);
 
         //this is an object that has observer that applies changes to this fragment's list
-        workout.registerExerciseObserver((changedEp, pos) -> {
-            //  adapter.notifyItemChanged(selectedExerciseViewModel.getSelectedExercisePosition());
-
-            adapter.notifyItemChanged(pos);
-        });
-
 
         /**
          * selectedExerciseViewModel provides the ExerciseProfile for the fragment
@@ -292,11 +295,11 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(String.valueOf(tag), SelectedExerciseViewModel.class);
         selectedExerciseViewModel.select(exerciseProfile);
         selectedExerciseViewModel.setParentWorkout(workout);
+        Fragment nextFragment = ExerciseDetailsFragment.getInstance(String.valueOf(tag), position);
 
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        Fragment nextFragment = ExerciseDetailsFragment.getInstance(String.valueOf(tag), vh.getAdapterPosition());
-        //Fragment previousFragment = getSupportFragmentManager().getFragments().get(tag);
-        // 1. Exit for Previous Fragment
+        addFragmentChild(getFragmentManager(), nextFragment, String.valueOf(tag));
+
+       /* FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         Fade exitFade = new Fade();
         exitFade.setDuration(200);
         this.setExitTransition(exitFade);
@@ -314,16 +317,13 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
         enterFade.setDuration(200);
         nextFragment.setEnterTransition(enterFade);
 
-        /**
+        *//**
          * icon is the imageview for the shared element
-         * */
+         * *//*
 
-        vh.icon.setTransitionName("q");
-        fragmentTransaction.addSharedElement(vh.icon, "q");
         fragmentTransaction.replace(R.id.activity_home_framelayout, nextFragment);
-        fragmentTransaction.addToBackStack(String.valueOf(tag));
-        fragmentTransaction.commitAllowingStateLoss();
-
+        fragmentTransaction.addToBackStack();
+        fragmentTransaction.commitAllowingStateLoss();*/
         //((HomeActivity) getActivity()).navigateToExerciseDetailsActivity(exerciseProfile, vh);
 
     }
@@ -391,6 +391,7 @@ public class WorkoutViewFragment extends BaseFragment implements com.strongest.s
     public interface WorkoutViewFragmentListener {
 
         void onLongClick(PLObject plObject, MyExpandableAdapter.MyExpandableViewHolder vh);
+
         void onProgramToolsClick();
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +24,11 @@ public class SaveExitToolBar extends LinearLayout {
     ImageView back;
     @BindView(R.id.fragment_choose_nosave_iv)
     ImageView cancel;
+
+    @BindView(R.id.fragment_choose_back_tv)
+    TextView saveTV;
+    @BindView(R.id.fragment_choose_next_tv)
+    TextView nextTV;
     @BindView(R.id.optional_text)
     TextView optionalText;
     @BindView(R.id.save_exit_toolbar_optional_iv)
@@ -65,17 +71,36 @@ public class SaveExitToolBar extends LinearLayout {
 
     }
 
+    public SaveExitToolBar showNext(boolean b) {
+        if (b) {
+            nextTV.setVisibility(VISIBLE);
+            showCancel(false);
+        } else {
+            nextTV.setVisibility(GONE);
+        }
+        return this;
+    }
+
+    public SaveExitToolBar nextFunc(View.OnClickListener onClickListener) {
+        nextTV.setOnClickListener(onClickListener);
+        return this;
+    }
+
     public SaveExitToolBar setOptionalText(String txt) {
         optionalText.setText(txt);
         return this;
     }
 
-    public SaveExitToolBar setOptionalTV(String t, OnClickListener onClickListener) {
-        optionalTV.setVisibility(VISIBLE);
-        optionalTV.setText(t);
-        optionalTV.setOnClickListener(onClickListener);
+    public SaveExitToolBar disableNextBtn() {
+        nextTV.setAlpha(0.5f);
+        nextTV.setClickable(false);
         return this;
+    }
 
+    public SaveExitToolBar enableNextBtn() {
+        nextTV.setAlpha(1f);
+        nextTV.setClickable(true);
+        return this;
     }
 
     public SaveExitToolBar setOptionalIV(int resource, OnClickListener onClickListener) {

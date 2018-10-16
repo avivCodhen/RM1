@@ -174,11 +174,11 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (ep.getExercise() != null)
             supersetViewHolder.name.setText(ep.getExercise().getName());
 
-        if (ep.getExercise() != null)
+        /*if (ep.getExercise() != null)
             supersetViewHolder.exerciseInfo.setOnClickListener(v -> {
                 onExerciseInfo.transitionToExerciseInfo(ep.getExercise());
             });
-
+*/
     }
 
 
@@ -208,10 +208,10 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         final ExerciseProfile bodyText = (ExerciseProfile) exArray.get(position);
         String title = bodyText.getTitle();
         if (title == null || title.equals("")) {
-            title = "This Is A Title";
+            title = "Tap To Edit This Title";
         }
 
-        vh2.edit.setOnClickListener((View v) -> {
+        vh2.itemView.setOnClickListener((View v) -> {
             MaterialDialogHandler.get().defaultBuilder(context, "Edit Title", "CHANGE")
                     .addInput(999,InputType.TYPE_CLASS_TEXT, vh2.bodyTv.getText().toString(), ((dialog, input) -> {
                         bodyText.setTitle(input.toString());
@@ -360,7 +360,7 @@ public class MyExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     if (exerciseProfile.getExercise() == null) {
                         uiExerciseClickHandler.onExerciseEdit(vh3.getAdapterPosition(), exerciseProfile);
                     } else {
-                        uiExerciseClickHandler.onExerciseDetails(vh3, exerciseProfile);
+                        uiExerciseClickHandler.onExerciseDetails(vh3.getAdapterPosition(), exerciseProfile);
 
                     }
                 }

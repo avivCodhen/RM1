@@ -197,7 +197,7 @@ public class ProgramsListFragment extends BaseFragment implements Architecture.p
     @Override
     public void loadProgram(Program p) {
         MaterialDialogHandler.get()
-                .defaultBuilder(getContext(), "Load This Program?", "Load Program")
+                .defaultBuilder(getContext(), "View This Program?", "View Program")
                 .buildDialog()
                 .addPositiveActionFunc(v -> {
                     if (tag.equals(MyProgramsActivity.FRAGMENT_USER_SHARED_BY)) {

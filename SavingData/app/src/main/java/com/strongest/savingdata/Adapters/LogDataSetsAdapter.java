@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.strongest.savingdata.Controllers.CallBacks;
@@ -24,15 +25,15 @@ public class LogDataSetsAdapter extends RecyclerView.Adapter<LogDataSetsAdapter.
 
 
     private ArrayList<LogData.LogDataSets> list;
-    private boolean editable;
+    private boolean noEdit;
     Context context;
     private CallBacks.Change onChange;
 
-    public LogDataSetsAdapter(Context context, ArrayList<LogData.LogDataSets> list,boolean editable, CallBacks.Change onChange) {
+    public LogDataSetsAdapter(Context context, ArrayList<LogData.LogDataSets> list, boolean noEdit, CallBacks.Change onChange) {
         this.context = context;
 
         this.list = list;
-        this.editable = editable;
+        this.noEdit = noEdit;
         this.onChange = onChange;
     }
 
@@ -56,45 +57,20 @@ public class LogDataSetsAdapter extends RecyclerView.Adapter<LogDataSetsAdapter.
         holder.weight.setText(l.weight+"");
         holder.title.setText(l.title);
 
-        if(!editable){
+        if(noEdit){
             holder.reps.setTextColor(ContextCompat.getColor(context, R.color.black));
             holder.weight.setTextColor(ContextCompat.getColor(context, R.color.black));
         }
 
-        if(editable){
+        if(!noEdit){
             holder.repLay.setOnClickListener(repLayView->{
-                MaterialDialogHandler.get().showInputDialog(
-                        context,
-                        InputType.TYPE_CLASS_NUMBER,
-                        2,
-                        l.rep,
-                        "Change Repetitions",
-                        (dialog,input)-> {
-                            l.rep = input.toString();
-                            notifyItemChanged(position);
-                            onChange.onChange();
-
-                        }
-                );
+               holder.reps.callOnClick();
             });
 
             holder.weightLay.setOnClickListener(repLayView->{
-                MaterialDialogHandler.get().showInputDialog(
-                        context,
-                        InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        6,
-                        String.valueOf(l.weight),
-                        "Change Weight",
-                        (dialog,input)-> {
-                            l.weight = Double.parseDouble(input.toString());
-                            notifyItemChanged(position);
-                            onChange.onChange();
-                        }
-                );
+              holder.weight.callOnClick();
 
             });
-
-
         }
 
     }
@@ -122,13 +98,13 @@ public class LogDataSetsAdapter extends RecyclerView.Adapter<LogDataSetsAdapter.
         CheckBox checkBox;
 
         @BindView(R.id.reps_tv)
-        TextView reps;
+        EditText reps;
 
         @BindView(R.id.rest_tv)
         TextView rest;
 
         @BindView(R.id.weight_tv)
-        TextView weight;
+        EditText weight;
 
         @BindView(R.id.weight_lay)
         ViewGroup weightLay;

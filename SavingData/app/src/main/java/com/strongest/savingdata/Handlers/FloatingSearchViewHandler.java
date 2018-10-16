@@ -12,6 +12,9 @@ import com.strongest.savingdata.Database.Managers.DataManager;
 import com.strongest.savingdata.Fragments.Choose.ExerciseSearchSuggestion;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -47,14 +50,13 @@ public class FloatingSearchViewHandler {
     public void handleExercises(FloatingSearchVHandlerCallback floatingSearchVHandlerCallback) {
         new Thread(() -> {
             fullExercisesList = dataManager.getExerciseDataManager().getAllExercises();
+            fullExercisesList = Beans.sortByAccessory(fullExercisesList);
             for (Beans b : fullExercisesList) {
                 fullExerciseSuggestionsList.add(new ExerciseSearchSuggestion(b.getName()));
 
                 exercisesHandlerFunc(floatingSearchVHandlerCallback);
             }
         }).start();
-
-
     }
 
     public void exercisesHandlerFunc(FloatingSearchVHandlerCallback floatingSearchVHandlerCallback) {

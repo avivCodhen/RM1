@@ -2,10 +2,12 @@ package com.strongest.savingdata.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,7 +18,6 @@ import com.strongest.savingdata.Adapters.WorkoutAdapter.OnDragListener;
 import com.strongest.savingdata.Adapters.WorkoutAdapter.ScrollToPositionListener;
 import com.strongest.savingdata.AModels.workoutModel.LayoutManagerAlertdialog;
 import com.strongest.savingdata.AModels.workoutModel.OnLayoutManagerDialogPress;
-import com.strongest.savingdata.Fragments.ProgramSettingsFragment.OnProgramSettingsChange;
 import com.strongest.savingdata.R;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     private void configWorkout(WorkoutViewHolder holder, int position) {
-        holder.textView.setText(list.get(position).workoutName);
+        holder.editText.setText(list.get(position).workoutName);
     }
 
 
@@ -73,13 +74,13 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     public class WorkoutViewHolder extends RecyclerView.ViewHolder implements OnLayoutManagerDialogPress {
-        private TextView textView;
+        private EditText editText;
         private ImageView delete, drag, edit;
         private WorkoutViewHolder _this = this;
 
         public WorkoutViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.recyclerview_workout_tv);
+            editText = itemView.findViewById(R.id.recyclerview_workout_tv);
             drag = (ImageView) itemView.findViewById(R.id.recyclerview_workout_drag_iv);
             delete = (ImageView) itemView.findViewById(R.id.recyclerview_workout_delete_iv);
             edit = (ImageView) itemView.findViewById(R.id.recycler_view_workouts_edit_iv);
@@ -101,12 +102,19 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 }
             });
 
-            edit.setOnClickListener(new View.OnClickListener() {
+            editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
-                public void onClick(View v) {
-                    LayoutManagerAlertdialog.getInputAlertDialog(context, WorkoutViewHolder.this, textView.getText().toString(), getAdapterPosition());
+                public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                    if (i == EditorInfo.IME_ACTION_DONE) {
+                        editText.setText(textView.getText().toString());
+                        list.get(getAdapterPosition()).workoutName = textView.getText().toString();
+                        onProgramChangeListener.notifyAdapter();
+                        return true;
+                    };
+                    return false;
                 }
             });
+
         }
 
 
@@ -120,7 +128,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         @Override
         public void onLMDialogOkPressed(String input, int position) {
-            textView.setText(input);
+            //textView.setText(input);
             list.get(getAdapterPosition()).workoutName = input;
             onProgramChangeListener.notifyAdapter();
 
@@ -157,4 +165,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     }
 
+    public interface OnProgramSettingsChange {
+        void notifyAdapter();
+    }
 }

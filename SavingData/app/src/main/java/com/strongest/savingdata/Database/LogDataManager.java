@@ -42,8 +42,8 @@ public class LogDataManager {
         // ArrayList<LogData.LogDataSets> list = exerciseToLogDataSetList(exerciseProfile);
         if (isTableExists(tableName)) {
             for (LogData.LogDataSets l : list) {
-                if(l.add)
-                db.insert(tableName, null, getContentValues(l, result));
+                if (l.add)
+                    db.insert(tableName, null, getContentValues(l, result));
             }
 
         } else {
@@ -102,9 +102,10 @@ public class LogDataManager {
                 title = "Set " + (position + 1);
                 break;
         }
+        String[] reps = setsPLObject.getExerciseSet().getRep().split("-");
         return new LogData.LogDataSets(
                 title,
-                setsPLObject.getExerciseSet().getRep(),
+                reps[0],
                 setsPLObject.getExerciseSet().getRest(),
                 setsPLObject.getExerciseSet().getWeight()
         );

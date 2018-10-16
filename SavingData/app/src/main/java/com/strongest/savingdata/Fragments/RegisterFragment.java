@@ -77,6 +77,8 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        closeKeyBoardOnClick();
+
         saveExitToolBar.instantiate();
         saveExitToolBar.showBack(true);
         saveExitToolBar.showCancel(false);
@@ -144,13 +146,9 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
             emailED.setError("Email address is incorrect");
             valid = false;
         }
-        if (fullName.length() < 2) {
-            fullNameED.setError("Please enter your full name");
-            valid = false;
-        }
 
         if (!valid(fullName)) {
-            fullNameED.setError("Please enter your full name");
+            fullNameED.setError("Please enter your name");
         }
 
         return valid;
@@ -158,7 +156,7 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
 
     private boolean valid(String fullNameED) {
 
-        if (fullNameED.length() < 1 && fullNameED.contains(" ")) {
+        if (fullNameED.length() < 1) {
             return true;
         }
         return false;

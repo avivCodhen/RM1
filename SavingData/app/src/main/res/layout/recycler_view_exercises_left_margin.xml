@@ -85,10 +85,8 @@
             android:layout_marginTop="13dp"
             android:layout_toRightOf="@+id/ex1"
             android:ellipsize="end"
-            android:textColor="@color/gray"
-            android:textStyle="bold"
+            android:textColor="@color/black"
             android:maxLines="1"
-            android:text="Barbell Close-Grip Bench Press"
             android:textSize="14dp" />
 
 

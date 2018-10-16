@@ -39,9 +39,11 @@
 
                     <TextView
                         android:id="@+id/toolbar_title"
-                        android:layout_width="match_parent"
+                        android:layout_width="280dp"
                         android:layout_height="match_parent"
+                        android:ellipsize="end"
                         android:gravity="center_vertical"
+                        android:maxLines="1"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/header_text_size"
                         android:textStyle="bold" />
@@ -157,7 +159,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/log_data_Recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 

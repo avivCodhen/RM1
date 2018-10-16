@@ -2,22 +2,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:elevation="5dp">
+    android:background="@color/colorAccent"
+    >
+    <com.strongest.savingdata.MyViews.SaveExitToolBar
+        android:id="@+id/saveExitToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_below="@+id/saveExitToolbar"
+
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorAccent"
-        android:gravity="center_horizontal"
+        android:gravity="center">
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="-50dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
         android:orientation="vertical">
-
-        <com.strongest.savingdata.MyViews.SaveExitToolBar
-            android:id="@+id/saveExitToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
 
 
         <RelativeLayout
@@ -133,4 +141,5 @@
             android:visibility="gone" />
 
     </LinearLayout>
+</RelativeLayout>
 </RelativeLayout>

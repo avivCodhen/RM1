@@ -5,8 +5,11 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.strongest.savingdata.AService.ProgramService;
 import com.strongest.savingdata.AService.UserService;
@@ -19,6 +22,8 @@ import com.strongest.savingdata.DependencyInjection.MainApplication;
 import com.strongest.savingdata.R;
 
 import javax.inject.Inject;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -47,11 +52,9 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void addFragmentChild(FragmentManager fm, Fragment f, String tag) {
-        //  f = ChooseDialogFragment.getInstance(this, oldPosition, position, plObject);
-        f.setTargetFragment(this, 0);
         fm.beginTransaction()
-                //  .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                .add(R.id.activity_home_framelayout, f, tag)
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.activity_home_framelayout, f, tag)
                 .addToBackStack(tag)
                 .commit();
     }
@@ -69,6 +72,24 @@ public abstract class BaseFragment extends Fragment {
         v.setVisibility(View.INVISIBLE);
     }
 
+    public void setOnBackPress(View v, CallBacks.Change change) {
+
+        v.setFocusableInTouchMode(true);
+        v.requestFocus();
+
+        v.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    change.onChange();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+    }
+
     public void makeRevealAnimation(int delay, CallBacks.OnFinish onFinish) {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -76,6 +97,22 @@ public abstract class BaseFragment extends Fragment {
                 MyJavaAnimator.animateRevealShowParams(v, true, R.color.colorAccent, cx, cy, onFinish);
             }
         }, delay);
+    }
+
+    public void closeKeyBoardOnClick() {
+        getView().setOnTouchListener((v, event) -> {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+            return true;
+        });
+
+    }
+
+
+    public void closeKeyBoard(){
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
     }
 
     public void exitRevealAnimation(CallBacks.OnFinish onFinish) {

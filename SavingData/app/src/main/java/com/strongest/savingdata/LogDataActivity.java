@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 public class LogDataActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, CallBacks.Change {
 
     public static final String EXERCISE = "exercise";
+    public static final String FROM_DATA = "fromData";
     public static final String DATE = "date";
     public static final String NO_LIST = "nolist";
 
@@ -85,7 +86,7 @@ public class LogDataActivity extends AppCompatActivity implements AppBarLayout.O
         ButterKnife.bind(this);
         exercise = (PLObject.ExerciseProfile) getIntent().getSerializableExtra(EXERCISE);
         date = getIntent().getStringExtra(DATE);
-
+        fromData = getIntent().getBooleanExtra(FROM_DATA, false);
         if (savedInstanceState != null) {
             exercise = (PLObject.ExerciseProfile) savedInstanceState.getSerializable(EXERCISE);
             date = savedInstanceState.getString(DATE);
@@ -93,10 +94,10 @@ public class LogDataActivity extends AppCompatActivity implements AppBarLayout.O
         dateTV.setText(date);
         toolbarTitle.setText(exercise.getExercise().getName());
         logDataManager = new LogDataManager(this);
-        list = logDataManager.readSets(exercise.getExercise().getName(), date);
-        if (list == null || list.size() == 0) {
+        if (fromData) {
+            list = logDataManager.readSets(exercise.getExercise().getName(), date);
+        } else {
             list = logDataManager.exerciseToLogDataSetList(exercise);
-            fromData = true;
         }
         exerciseStatsView.instantiate(list);
         logDataSetsAdapter = new LogDataSetsAdapter(this, list, fromData, this);
@@ -123,13 +124,13 @@ public class LogDataActivity extends AppCompatActivity implements AppBarLayout.O
         });
 
         addSetFab.setOnClickListener(add -> {
-            ArrayList<LogData.LogDataSets> logDataSets = logDataManager.setToLogDataSetList(new SetsItemAdapter(exercise).insert(), exercise.getSets().size()-1);
+            ArrayList<LogData.LogDataSets> logDataSets = logDataManager.setToLogDataSetList(new SetsItemAdapter(exercise).insert(), exercise.getSets().size() - 1);
             list.addAll(logDataSets);
             logDataSetsAdapter.notifyItemRangeInserted(list.size() - 1, logDataSets.size());
             exerciseStatsView.updateStats();
         });
 
-        if(fromData){
+        if (fromData) {
             saveLogFab.hide();
             addSetFab.hide();
         }

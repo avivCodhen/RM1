@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     android:id="@+id/workoutview_list_layout">
 
-    <!--<FrameLayout
+    <FrameLayout
         android:id="@+id/workoutview_list_shared_element_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></FrameLayout>-->
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
 
     <com.strongest.savingdata.MyViews.SmartEmptyView
+        android:visibility="gone"
         android:id="@+id/workout_view_smartemptyview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></com.strongest.savingdata.MyViews.SmartEmptyView>

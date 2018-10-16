@@ -5,9 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.transition.Fade;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionInflater;
+import android.transition.TransitionSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +31,7 @@ import com.strongest.savingdata.Adapters.GridViewMusclesAdapter;
 import com.strongest.savingdata.Adapters.OnExerciseListAdapterClickListener;
 import com.strongest.savingdata.Adapters.OnGridViewMuscleAdapterClickListener;
 import com.strongest.savingdata.AModels.workoutModel.PLObject;
+import com.strongest.savingdata.Animations.MyJavaAnimator;
 import com.strongest.savingdata.BaseWorkout.Muscle;
 import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.Exercise.DBExercisesHelper;
@@ -115,11 +120,14 @@ public class ExerciseEditFragment extends BaseFragment implements
     @BindView(R.id.my_exercise_smart_empty_view)
     SmartEmptyView myExerciseSmartView;
 
-    @BindView(R.id.change_btn)
+    /*@BindView(R.id.change_btn)
     Button changeBtn;
-
+*/
     @BindView(R.id.no_exercise_wrapper)
     ViewGroup noExerciseWrapper;
+
+    @BindView(R.id.no_exercise_tv)
+    TextView customExerciseTV;
 
     public static final String EXERCISE_PROFILE = "exercise_profile";
     public ArrayList<Beans> exerciseBeans = new ArrayList<>();
@@ -141,6 +149,7 @@ public class ExerciseEditFragment extends BaseFragment implements
     private String fragmentId;
     private View mainView;
 
+    private boolean customExercise;
 
     boolean clickedOnce;
 
@@ -165,9 +174,6 @@ public class ExerciseEditFragment extends BaseFragment implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_choose_exercise, container, false);
         ButterKnife.bind(this, v);
-
-        setUpMainViewForCircularAnimation(v);
-
         mainView = v;
         return v;
     }
@@ -202,7 +208,6 @@ public class ExerciseEditFragment extends BaseFragment implements
 
     private void initViews(View v) {
 
-        makeRevealAnimation(300,null);
         initToolbar();
         int height = ((HomeActivity) getActivity()).getScreenHeight();
         mGridViewAdapter = new GridViewMusclesAdapter(height, getContext(), dataManager, this);
@@ -238,6 +243,11 @@ public class ExerciseEditFragment extends BaseFragment implements
             setExercise(exerciseBeans.get(selectedIndex));
         }
 
+        if (exerciseProfile.getMuscle() != null) {
+            Muscle.MuscleUI mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
+            muscleIcon.setImageResource(mui.getImage());
+        }
+
         /**
          * these two onclicks are used to toggle between showing a "change"
          * and showing a "cancel" on the gridview's button toggle
@@ -245,19 +255,19 @@ public class ExerciseEditFragment extends BaseFragment implements
         mChangeMuscleTV.setOnClickListener(v12 -> {
             mExpandable.toggle();
             if (mExpandable.isExpanded()) {
-                muscleArrow.setImageResource(R.drawable.sort_down_white_96dp);
+                MyJavaAnimator.rotateView(muscleArrow, 360, 180);
             } else {
-                muscleArrow.setImageResource(R.drawable.sort_up_white_96dp);
+                MyJavaAnimator.rotateView(muscleArrow, 180, 360);
 
             }
         });
 
-        changeBtn.setOnClickListener(changeBtn -> {
+        /*changeBtn.setOnClickListener(changeBtn -> {
             if (!clickedOnce) {
                 mChangeMuscleTV.callOnClick();
             }
             clickedOnce = true;
-        });
+        });*/
         /**
          * this is used to show the user's custom exercises
          * */
@@ -297,9 +307,25 @@ public class ExerciseEditFragment extends BaseFragment implements
     private void initToolbar() {
 
         saveExitToolBar.instantiate()
-                .noElevation();
+                .noElevation()
+                .showNext(true)
+                .nextFunc(v -> {
+                    exerciseProfile.setMuscle(selectedMuscle);
+                    exerciseProfile.setExercise(selectedExercise);
+                    int exercisePos = selectedExerciseViewModel.getSelectedExercisePosition();
+                    selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile, exercisePos);
+                    selectedExerciseViewModel = ViewModelProviders.of(getActivity()).get(fragmentId, SelectedExerciseViewModel.class);
+                    selectedExerciseViewModel.select(exerciseProfile);
+                    selectedExerciseViewModel.setParentWorkout(selectedExerciseViewModel.getParentWorkout());
+                    Fragment nextFragment = ExerciseDetailsFragment.getInstance(fragmentId, selectedExerciseViewModel.getSelectedExercisePosition());
+
+                    addFragmentChild(getFragmentManager(), nextFragment, fragmentId);
+                });
         if (selectedExercise != null) {
             saveExitToolBar.setOptionalText(exerciseProfile.getExercise().getName());
+        }
+        if (exerciseProfile.getExercise() == null) {
+            saveExitToolBar.disableNextBtn();
         }
 
         saveExitToolBar.setSaveButton(saveBtn -> {
@@ -308,17 +334,16 @@ public class ExerciseEditFragment extends BaseFragment implements
             int exercisePos = selectedExerciseViewModel.getSelectedExercisePosition();
             selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile, exercisePos);
             workoutsViewModel.saveLayoutToDataBase();
-            exitRevealAnimation(r -> getFragmentManager().popBackStack());
+            getFragmentManager().popBackStack();
 
         });
 
-        saveExitToolBar.setCancelButton(v -> {
+       /* saveExitToolBar.setCancelButton(v -> {
             this.setExitTransition(new Fade());
-
             exitRevealAnimation(r -> getFragmentManager().popBackStack());
+        });*/
 
 
-        });
     }
 
 
@@ -346,18 +371,29 @@ public class ExerciseEditFragment extends BaseFragment implements
                 dataManager.getExerciseDataManager().
                         readByTable(m.getMuscle_name());
         exerciseBeans = Beans.sortByAccessory(exerciseBeans);
+        customExercise = false;
     }
 
     private void showUserCustomExercises() {
         exerciseBeans = (ArrayList<Beans>) dataManager.getExerciseDataManager().readByTable(DBExercisesHelper.TABLE_EXERCISES_CUSTOM);
         mAdapter.setExerciseBeans(exerciseBeans);
         collapseExpandableLayout();
-        mAdapter.notifyDataSetChanged();
+        customExercise = true;
+        notifyAdapter();
+
+    }
+
+    private void needToShowCustomExerciseTV() {
+        if (exerciseBeans.size() == 0 && customExercise) {
+            customExerciseTV.setVisibility(View.VISIBLE);
+        } else {
+            customExerciseTV.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onMuscleChange(GridViewMusclesAdapter.MusclesContentHolder mch) {
-        muscleArrow.setImageResource(R.drawable.sort_down_white_96dp);
+        MyJavaAnimator.rotateView(muscleArrow, 180, 360);
         muscleIcon.setImageResource(mch.icon);
         muscleTV.setText(mch.text);
         initExerciseBeans(mch.m);
@@ -365,8 +401,7 @@ public class ExerciseEditFragment extends BaseFragment implements
         selectedMuscle = mch.m;
         selectedExercise = null;
         mAdapter.setSelectedIndex(-1);
-        mAdapter.notifyDataSetChanged();
-
+        notifyAdapter();
     }
 
     @Override
@@ -390,7 +425,7 @@ public class ExerciseEditFragment extends BaseFragment implements
     public void setExercise(Beans beans) {
         selectedExercise = beans;
         if (beans != null) {
-
+            saveExitToolBar.enableNextBtn();
             //hides the default text that overlays the youtube player
             noExerciseWrapper.setVisibility(View.GONE);
             //makes the youtube player visible
@@ -409,6 +444,11 @@ public class ExerciseEditFragment extends BaseFragment implements
             mAdapter.notifyDataSetChanged();
             recyclerView.scrollToPosition(selectedIndex);
         }
+    }
+
+    private void notifyAdapter() {
+        mAdapter.notifyDataSetChanged();
+        needToShowCustomExerciseTV();
     }
 
     @Override

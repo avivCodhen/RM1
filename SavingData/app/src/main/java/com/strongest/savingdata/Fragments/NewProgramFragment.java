@@ -84,7 +84,6 @@ public class NewProgramFragment extends BaseFragment implements DefaultProgramsR
                 .showBack(true)
                 .setSaveButton(view -> MyJavaAnimator.animateRevealShowParams(v, false, R.color.colorAccent, 0,0, r -> getFragmentManager().popBackStack()))
                 .setOptionalText("Create New Program");
-
         ArrayList<String> list = new ArrayList();
         list.add(DefaultWorkoutsDataManager.DEFAULT);
         list.add(DefaultWorkoutsDataManager.FBW_TEMPLATE);

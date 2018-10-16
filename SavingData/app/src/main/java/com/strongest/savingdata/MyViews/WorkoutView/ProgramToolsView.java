@@ -35,11 +35,11 @@ import java.util.ArrayList;
 
 public class ProgramToolsView extends LinearLayout {
 
-    private TextView usernameTV;
+   /* private TextView usernameTV;
     private TextView emailTV;
     private Button logInBtn;
     private ImageView logoutIV;
-
+*/
 
     public boolean isOpen() {
         return openProgramToolsEL.isExpanded();
@@ -57,17 +57,18 @@ public class ProgramToolsView extends LinearLayout {
 
 
     View view;
-    FrameLayout clickSpaceView;
-    Button shareProgramBtn;
+    View include;
+    View arrowIV;
+    //FrameLayout clickSpaceView;
+    //Button shareProgramBtn;
 
     private RecyclerView mRecyclerview;
-    private RecyclerView mRecyclerview2;
+   // private RecyclerView mRecyclerview2;
     private ArrayList<ProgramButton> buttons;
     ArrayList<ProgramButton> menuButtonList;
 
     ProgramToolsAdapter menuListAdapter;
 
-    private WorkoutViewModes mWorkoutViewModes;
 
     private Architecture.view.ProgramTools listener;
 
@@ -100,8 +101,7 @@ public class ProgramToolsView extends LinearLayout {
 
     }
 
-    public void instantiate(FloatingActionButton programToolsBtn, Architecture.view.ProgramTools listener) {
-        this.view = programToolsBtn;
+    public void instantiate(Architecture.view.ProgramTools listener) {
         this.listener = listener;
         initViews();
     }
@@ -109,7 +109,7 @@ public class ProgramToolsView extends LinearLayout {
     private void initViews() {
         inflate(context, R.layout.layout_program_tools_view, this);
         initProgramToolsViews();
-        clickSpaceView.setOnClickListener(v -> {
+       /* clickSpaceView.setOnClickListener(v -> {
             view.setClickable(false);
             new Handler()
                     .postDelayed(() -> view.setClickable(true), 300);
@@ -123,8 +123,7 @@ public class ProgramToolsView extends LinearLayout {
                 MyJavaAnimator.rotateView(view, 315, 360);
 
             }
-        });
-        mWorkoutViewModes = new WorkoutViewModes();
+        });*/
 
     }
 
@@ -134,24 +133,25 @@ public class ProgramToolsView extends LinearLayout {
 
     private void initProgramToolsViews() {
         buttons = new ArrayList<>();
-        clickSpaceView = findViewById(R.id.clickSpace);
+        //clickSpaceView = findViewById(R.id.clickSpace);
         int green = ContextCompat.getColor(context, R.color.green_dark);
         int red = ContextCompat.getColor(context, R.color.red);
         int exerciseIcon = R.drawable.icon_exercise;
         int workoutIcon = R.drawable.icon_benchpress;
         int settingsIcon = R.drawable.icon_settings_white;
         int titleIcon = R.drawable.icon_text;
-        buttons.add(new ProgramButton(Actions.NewExercise, "New Exercise", exerciseIcon, true));
-        buttons.add(new ProgramButton(Actions.NewDivider, "New Title", titleIcon, true));
-        buttons.add(new ProgramButton(Actions.NewWorkout, "New Workout", workoutIcon, true));
-        buttons.add(new ProgramButton(Actions.Advanced, "Advanced", settingsIcon, true));
+        int plusIcon = R.drawable.plus_coloraccent_48px;
+        //buttons.add(new ProgramButton(Actions.NewExercise, "New Exercise", plusIcon, true));
+        buttons.add(new ProgramButton(Actions.NewDivider, "Add New Title", plusIcon, true));
+        buttons.add(new ProgramButton(Actions.NewWorkout, "Add New Workout", plusIcon, true));
+        //buttons.add(new ProgramButton(Actions.Advanced, "Advanced", plusIcon, true));
         mRecyclerview = (RecyclerView) findViewById(R.id.program_tools_view_recyclerview);
-        mRecyclerview2 = findViewById(R.id.programtoolsview_recycler2);
+       // mRecyclerview2 = findViewById(R.id.programtoolsview_recycler2);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(context);
-        RecyclerView.LayoutManager lm2 = new LinearLayoutManager(context);
+       // RecyclerView.LayoutManager lm2 = new LinearLayoutManager(context);
         ProgramToolsAdapter adapter = new ProgramToolsAdapter(buttons);
         mRecyclerview.setLayoutManager(lm);
-        mRecyclerview2.setLayoutManager(lm2);
+        //mRecyclerview2.setLayoutManager(lm2);
 
 
         mRecyclerview.setAdapter(adapter);
@@ -166,23 +166,30 @@ public class ProgramToolsView extends LinearLayout {
         menuButtonList.add(new ProgramButton(Actions.CustomExercise, "Custom Exercise", newDoc, false));
         menuButtonList.add(new ProgramButton(Actions.Share, "Share Program", share, true));
 
-        menuListAdapter = new ProgramToolsAdapter(menuButtonList);
-        mRecyclerview2.setAdapter(menuListAdapter);
+       // menuListAdapter = new ProgramToolsAdapter(menuButtonList);
+       // mRecyclerview2.setAdapter(menuListAdapter);
 
         openProgramToolsEL = (ExpandableLayout) findViewById(R.id.workout_view_program_tools_expandable);
-        openProgramToolsEL.setOrientation(ExpandableLayout.HORIZONTAL);
+        openProgramToolsEL.setOrientation(ExpandableLayout.VERTICAL);
 
-        usernameTV = findViewById(R.id.usernameTV);
+       /* usernameTV = findViewById(R.id.usernameTV);
         emailTV = findViewById(R.id.emailTV);
         logInBtn = findViewById(R.id.programtoolsview_login);
         logoutIV = findViewById(R.id.programtoolsview_logoutIV);
 
-
+*/
         /*shareProgramBtn = findViewById(R.id.share_program_programtoolsview);
 
         shareProgramBtn.setOnClickListener(shareView->{
             listener.onProgramToolsAction(Actions.Share);
         });*/
+
+        include = findViewById(R.id.programtoolsview_include);
+        include.setOnClickListener(includeView->{
+            listener.onProgramToolsAction(new ProgramButton(Actions.NewExercise, "Add New Exercise", plusIcon, true));
+        });
+        arrowIV = findViewById(R.id.arrowIV);
+        arrowIV.setOnClickListener(arrowView-> expand());
     }
 
     //this function expands the expandable layout
@@ -191,26 +198,24 @@ public class ProgramToolsView extends LinearLayout {
 
         openProgramToolsEL.toggle();
         if (openProgramToolsEL.isExpanded()) {
-            setVisibility(VISIBLE);
-            MyJavaAnimator.rotateView(view, 360, 315);
+            //setVisibility(VISIBLE);
+            MyJavaAnimator.rotateView(arrowIV, 360, 180);
 
 
         } else {
-            close();
-            MyJavaAnimator.rotateView(view, 315, 360);
+            //close();
+            MyJavaAnimator.rotateView(arrowIV, 180, 360);
         }
 
     }
 
-    public void close() {
+    /*public void close() {
         openProgramToolsEL.collapse();
         MyJavaAnimator.rotateView(view, 315, 360);
         display(GONE);
-    }
+    }*/
 
-    public void open() {
 
-    }
 
     public void updateMenuAlertCount(Actions a, int count) {
         for (ProgramButton p : menuButtonList) {
@@ -221,32 +226,7 @@ public class ProgramToolsView extends LinearLayout {
         menuListAdapter.notifyDataSetChanged();
     }
 
-    public void setUpLoginCredentials(boolean loggedIn, String username, String email) {
-        if (loggedIn) {
-            usernameTV.setText(username);
-            emailTV.setText(email);
-            logInBtn.setVisibility(GONE);
-            logoutIV.setVisibility(VISIBLE);
-        } else {
-            usernameTV.setText("");
-            emailTV.setText("");
-            logInBtn.setVisibility(VISIBLE);
-            logoutIV.setVisibility(GONE);
 
-        }
-    }
-
-    public void setLoginFunc(View.OnClickListener onClickListener) {
-        logInBtn.setOnClickListener(onClickListener);
-    }
-
-    public void setLogoutFunc(View.OnClickListener onClickListener) {
-        logoutIV.setOnClickListener(onClickListener);
-    }
-
-    public WorkoutViewModes getmWorkoutViewModes() {
-        return mWorkoutViewModes;
-    }
 
     public void setProgramToolsBtn(View view) {
         view.setOnClickListener(v -> {
@@ -322,10 +302,10 @@ public class ProgramToolsView extends LinearLayout {
             //holder.ImageView.setCircleBackgroundColor(buttons.get(position).color);
             holder.tv.setText(buttons.get(position).tv_name);
             holder.itemView.setOnClickListener(v -> listener.onProgramToolsAction(pBtn));
-            if (pBtn.alertCount != 0) {
+           /* if (pBtn.alertCount != 0) {
                 holder.wrapper.setVisibility(VISIBLE);
                 holder.alertTV.setText(pBtn.alertCount + "");
-            }
+            }*/
         }
 
         @Override

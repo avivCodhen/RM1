@@ -19,9 +19,9 @@ public class LeanExerciseViewHolder extends MyExpandableAdapter.MyExpandableView
     @BindView(R.id.exerciseView_nameTV)
     public TextView name;
 
-    @BindView(R.id.exercise_info)
+ /*   @BindView(R.id.exercise_info)
     public View exerciseInfo;
-
+*/
 
 
     public LeanExerciseViewHolder(View itemView) {

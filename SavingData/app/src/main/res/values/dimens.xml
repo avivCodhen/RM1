@@ -52,4 +52,5 @@
     <dimen name="sets_icons_size">20dp</dimen>
     <dimen name="header_text_size">18sp</dimen>
     <dimen name="edittext_width">50dp</dimen>
+    <dimen name="sets_screen_height">60dp</dimen>
 </resources>

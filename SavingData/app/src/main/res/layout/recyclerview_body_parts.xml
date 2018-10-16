@@ -65,6 +65,7 @@
 
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/body_view_edit_iv"
                android:padding="11dp"
                 android:layout_centerVertical="true"

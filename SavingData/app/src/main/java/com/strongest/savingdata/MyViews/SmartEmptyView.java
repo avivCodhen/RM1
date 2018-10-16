@@ -85,6 +85,11 @@ public class SmartEmptyView extends LinearLayout {
         return this;
     }
 
+    public SmartEmptyView noImage(){
+        this.image.setVisibility(GONE);
+        return this;
+    }
+
     public SmartEmptyView setActionBtn(View.OnClickListener func) {
         actionBtn.setOnClickListener(func);
         return this;
@@ -96,7 +101,7 @@ public class SmartEmptyView extends LinearLayout {
             observerRecycler();
         }
         if (start) {
-            decide(recycler.getAdapter().getItemCount());
+            decide(recycler.getAdapter().getItemCount() == 0);
         }
         return this;
     }
@@ -107,7 +112,7 @@ public class SmartEmptyView extends LinearLayout {
             observerViewPager();
         }
         if(start){
-            decide(viewPager.getAdapter().getCount());
+            decide(viewPager.getAdapter().getCount() == 0);
         }
 
         return this;
@@ -119,15 +124,15 @@ public class SmartEmptyView extends LinearLayout {
         return this;
     }
 
-    public void onCondition(int count){
-        decide(count);
+    public void onCondition(boolean b){
+        decide(b);
     }
 
     public void onCondition(OnCondition onCondition){
         if(onCondition.condition() == false){
-            decide(0);
+            decide(false);
         }else{
-            decide(1);
+            decide(true);
         }
     }
 
@@ -159,34 +164,34 @@ public class SmartEmptyView extends LinearLayout {
         recyclerView.getAdapter().registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
-                decide(recyclerView.getAdapter().getItemCount());
+                decide(recyclerView.getAdapter().getItemCount() == 0);
                 super.onChanged();
             }
 
             @Override
             public void onItemRangeChanged(int positionStart, int itemCount) {
-                decide(itemCount);
+                decide(itemCount == 0);
 
                 super.onItemRangeChanged(positionStart, itemCount);
             }
 
             @Override
             public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
-                decide(itemCount);
+                decide(itemCount == 0);
 
                 super.onItemRangeChanged(positionStart, itemCount, payload);
             }
 
             @Override
             public void onItemRangeRemoved(int positionStart, int itemCount) {
-                decide(itemCount);
+                decide(itemCount == 0);
 
                 super.onItemRangeRemoved(positionStart, itemCount);
             }
 
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                decide(itemCount);
+                decide(itemCount == 0);
 
                 super.onItemRangeInserted(positionStart, itemCount);
             }
@@ -203,26 +208,26 @@ public class SmartEmptyView extends LinearLayout {
         viewPager.getAdapter().registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {
-                decide(viewPager.getAdapter().getCount());
+                decide(viewPager.getAdapter().getCount() == 0);
                 super.onChanged();
             }
         });
     }
 
-    private void decide(int itemCount) {
+    private void decide(boolean b) {
         View v = recyclerView == null? viewPager : recyclerView;
 
         if(v == null){
             throw new IllegalArgumentException("view is null");
         }
-        if (itemCount == 0) {
+        if (b) {
             show(v);
         } else {
             hide(v);
         }
     }
 
-    private void hide(View v) {
+    public void hide(View v) {
         main.animate().alpha(0f).setDuration(DEFAULT_DURATION).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -332,6 +337,14 @@ public class SmartEmptyView extends LinearLayout {
                 vews.setVisibility(visibility);
             }
         }
+    }
+
+    public void hideEmptyView() {
+        decide(false);
+    }
+
+    public void hidshowEmptyView() {
+        decide(true);
     }
 
 

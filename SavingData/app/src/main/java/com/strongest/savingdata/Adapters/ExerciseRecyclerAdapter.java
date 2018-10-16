@@ -54,23 +54,14 @@ public class ExerciseRecyclerAdapter extends RecyclerView.Adapter<ExerciseRecycl
             mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
             holder.icon.setImageResource(mui.getImage());
         }
-        if (exerciseProfile.getExercise() != null){
+        if (exerciseProfile.getExercise() != null) {
 
             holder.name.setText(exerciseProfile.getExercise().getName());
-            if(exerciseProfile.getExercise().getDefault_int() == 1){
-                holder.exerciseInfo.setVisibility(View.GONE);
-            }
-        }else{
-            holder.exerciseInfo.setVisibility(View.GONE);
         }
 
-        holder.exerciseInfo.setOnClickListener(v -> {
-            if (exerciseProfile.getExercise() == null) {
-                Toast.makeText(context, "You did not choose any exercises", Toast.LENGTH_SHORT).show();
+        holder.itemView.setOnClickListener(v -> {
 
-            } else {
-                onExerciseInfo.transitionToExerciseInfo(exerciseProfile.getExercise());
-            }
+                onExerciseInfo.transitionToExerciseInfo(exerciseProfile);
         });
 
 
@@ -99,9 +90,9 @@ public class ExerciseRecyclerAdapter extends RecyclerView.Adapter<ExerciseRecycl
         @BindView(R.id.exerciseView_nameTV)
         public TextView name;
 
-        @BindView(R.id.exercise_info)
+        /*@BindView(R.id.exercise_info)
         public View exerciseInfo;
-
+*/
         @BindView(R.id.child_arrow_iv)
         ImageView childTag;
 

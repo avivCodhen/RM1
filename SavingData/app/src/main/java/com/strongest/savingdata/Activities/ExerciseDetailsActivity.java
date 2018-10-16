@@ -97,25 +97,31 @@ public class ExerciseDetailsActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_details);
+
+        if (savedInstanceState != null) {
+            exercise = (PLObject.ExerciseProfile) savedInstanceState.getSerializable("exercise");
+        }
+        exercise = (PLObject.ExerciseProfile) getIntent().getSerializableExtra("exercise");
+
         ButterKnife.bind(this);
         testIv.setTransitionName(getIntent().getStringExtra("transitionName"));
-        exercise = (PLObject.ExerciseProfile) getIntent().getSerializableExtra("exercise");
         initToolbar();
         initRecycler();
 
-        toolbarAddSet.setOnClickListener(toolBarAddIcon -> {
+    }
 
-        });
+    @Override
+    protected void onResume() {
+        super.onResume();
         youtubeHandler = YoutubeHandler.getHandler(this);
         youtubeHandler.init(R.id.youtube_fragment, getSupportFragmentManager())
                 .searchOnYoutube(exercise.getExercise().getName());
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        outState.putSerializable("exercise", exercise);
-
+    protected void onPause() {
+        super.onPause();
+        youtubeHandler.stop();
     }
 
     @Override
@@ -140,7 +146,7 @@ public class ExerciseDetailsActivity extends BaseActivity implements
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (outState != null) {
-            exercise = (PLObject.ExerciseProfile) outState.getSerializable("exercise");
+            outState.putSerializable("exercise", exercise);
         }
     }
 
@@ -229,9 +235,11 @@ public class ExerciseDetailsActivity extends BaseActivity implements
         selectedLogDataViewModel.setSets(sets);
         addFragmentToActivity(R.id.exercise_log_frame, new ExerciseLogFragment(), "log");*/
 
-       Intent intent = new Intent(this, LogDataActivity.class);
-       intent.putExtra(LogDataActivity.EXERCISE, exercise);
-       intent.putExtra(LogDataActivity.DATE, date);
-       startActivity(intent);
+        Intent intent = new Intent(this, LogDataActivity.class);
+        intent.putExtra(LogDataActivity.EXERCISE, exercise);
+        intent.putExtra(LogDataActivity.DATE, date);
+        intent.putExtra(LogDataActivity.FROM_DATA, true);
+        startActivity(intent);
     }
+
 }

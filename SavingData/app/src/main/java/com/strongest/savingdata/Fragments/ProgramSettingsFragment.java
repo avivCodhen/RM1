@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,9 +12,12 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,9 +46,9 @@ import butterknife.ButterKnife;
  */
 
 public class ProgramSettingsFragment extends BaseFragment implements OnDragListener,
-        OnLayoutManagerDialogPress {
+        OnLayoutManagerDialogPress, MainAdapter.OnProgramSettingsChange {
 
-    private TextView titleTV;
+    private EditText titleTV;
     private String titleText;
     private TextWatcher textWatcher = null;
     private RecyclerView mRecyclerView;
@@ -52,11 +56,16 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
     private WorkoutsViewModel workoutViewModel;
     private ItemTouchHelper itemTouchHelper;
     private OnProgramToolsActionListener onProgramToolsActionListener;
-    private OnProgramSettingsChange onProgramSettingChange;
     Program p;
 
     @BindView(R.id.program_settings_toolbar)
     SaveExitToolBar toolBar;
+    MainAdapter adapter;
+
+    @BindView(R.id.newWorkoutFab)
+    FloatingActionButton addWorkoutFab;
+
+
     public static ProgramSettingsFragment getInstance(OnProgramToolsActionListener onProgramToolsActionListener) {
         ProgramSettingsFragment f = new ProgramSettingsFragment();
         f.setOnProgramToolsActionListener(onProgramToolsActionListener);
@@ -66,8 +75,8 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v =  inflater.inflate(R.layout.fragment_program_settings, container, false);
-        ButterKnife.bind(this,v);
+        View v = inflater.inflate(R.layout.fragment_program_settings, container, false);
+        ButterKnife.bind(this, v);
         return v;
     }
 
@@ -81,20 +90,23 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
     }
 
     private void initViews(View v) {
-         p = ((HomeActivity) getActivity()).program;
-        titleTV =  v.findViewById(R.id.program_settings_program_name_ED);
+        p = ((HomeActivity) getActivity()).program;
+        titleTV = v.findViewById(R.id.program_settings_program_name_ED);
         titleTV.setText(p.getProgramName());
         toolBar.instantiate()
                 .setOptionalText("Advanced Program Settings")
-                .setSaveButton(view->getFragmentManager().popBackStack())
+                .setSaveButton(view -> {
+                    getFragmentManager().popBackStack();
+                    closeKeyBoard();
+                })
                 .showCancel(false)
                 .showBack(true);
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.program_settings_recyclerview);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
 
-        MainAdapter adapter = new MainAdapter(getContext(), list, this, null);
-        adapter.setOnProgramChangeListener(onProgramSettingChange);
+        adapter = new MainAdapter(getContext(), list, this, null);
+        adapter.setOnProgramChangeListener(this);
         ItemTouchHelper.Callback callback = new DragAndSwipeCallback(adapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
@@ -103,46 +115,26 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
         mRecyclerView.setLayoutManager(lm);
         mRecyclerView.setAdapter(adapter);
 
-        textWatcher = new TextWatcher() {
+        titleTV.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    titleTV.setText(textView.getText().toString());
+                    p.setProgramName(textView.getText().toString());
+                    ((HomeActivity) getActivity()).programViewModel.updateProgram(p);
+                    closeKeyBoard();
+                    return true;
+                }
+                return false;
             }
+        });
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-              /*  ((HomeActivity) getActivity()).title.setText(titleTV.getText().toString());
-                Program p = ((HomeActivity) getActivity()).program;
-                p.setProgramName(titleTV.getText().toString());
-                titleTV.setSelection(s.length());
-                toolbarTitle.setText(titleTV.getText());*/
-
-                //TODO: fix this
-                //  ((HomeActivity) getActivity()).programmer.getProgram().programName = titleTV.getText().toString();
-
-            }
-        };
-
-        //TODO: fix this
-        //titleText = workoutViewModel.getProgram().getValue().getProgramName();
-        titleTV.addTextChangedListener(textWatcher);
-        v.findViewById(R.id.program_title_edit_iv).setOnClickListener(v1 -> {
-
-            MaterialDialogHandler
-                    .get()
-                    .defaultBuilder(getContext(), "Edit Program Name", "CHANGE")
-                    .addInput(InputType.TYPE_CLASS_TEXT, 999, titleText, (dialog, input) -> {
-                        titleTV.setText(input.toString());
-                        p.setProgramName(input.toString());
-                        ((HomeActivity) getActivity()).programViewModel.updateProgram(p);
-                    })
-                    .buildDialog()
-                    .show();
+        addWorkoutFab.setOnClickListener(fab -> {
+            Workout w = new Workout();
+            w.setWorkoutName("Workout " + (list.size() + 1));
+            list.add(w);
+            adapter.notifyItemInserted(list.size() - 1);
+            notifyhomeActivityAdapter();
         });
     }
 
@@ -152,14 +144,8 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
         itemTouchHelper.startDrag(viewHolder);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        onProgramSettingChange = (OnProgramSettingsChange) context;
-
-    }
-
-    public void setOnProgramToolsActionListener(OnProgramToolsActionListener onProgramToolsActionListener) {
+    public void setOnProgramToolsActionListener(OnProgramToolsActionListener
+                                                        onProgramToolsActionListener) {
         this.onProgramToolsActionListener = onProgramToolsActionListener;
     }
 
@@ -180,8 +166,18 @@ public class ProgramSettingsFragment extends BaseFragment implements OnDragListe
 */
     }
 
+    @Override
+    public void notifyAdapter() {
+        closeKeyBoard();
+        notifyhomeActivityAdapter();
+        adapter.notifyDataSetChanged();
 
-    public interface OnProgramSettingsChange {
-        void notifyAdapter();
     }
+
+    private void notifyhomeActivityAdapter() {
+        ((HomeActivity) getActivity()).mAdapter.notifyDataSetChanged();
+
+    }
+
+
 }

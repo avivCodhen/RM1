@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
     android:background="@color/background_color">
 <com.strongest.savingdata.MyViews.SaveExitToolBar
     android:layout_width="match_parent"
@@ -48,20 +49,35 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-        android:id="@+id/choose_change_Tv"
-        android:textColor="@color/colorAccent"
-        android:gravity="center_vertical"
-        android:textSize="10dp"
-        android:text="Choose Muscle"
-        android:layout_toRightOf="@id/choose_muscle_include"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/choose_change_Tv"
+                android:textColor="@color/colorAccent"
 
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/youtube_fragment"
+                android:layout_marginLeft="5dp"
+                android:layout_toLeftOf="@+id/choose_change_user_tv"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="MUSCLE"
+                android:textSize="12dp" />
+
+            <ImageView
+                android:id="@+id/edit_exercise_arrow_iv"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="-15dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_expand_more_black_24dp" />
+
+
+        </LinearLayout>
 
     <LinearLayout
         android:layout_marginTop="10dp"

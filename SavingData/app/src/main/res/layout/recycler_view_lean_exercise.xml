@@ -99,9 +99,8 @@
                 android:textStyle="bold"
                 android:ellipsize="end"
                 android:id="@+id/exerciseView_nameTV"
-                android:layout_width="130dp"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:text=""
                 android:textSize="14sp"
                 android:textColor="@color/colorPrimary"
                 />
@@ -109,14 +108,14 @@
 
         </RelativeLayout>
 
-        <ImageView
+       <!-- <ImageView
             android:layout_margin="5dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:src="@drawable/icon_info_48_white"
             android:id="@+id/exercise_info"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" />-->
 
 
         <LinearLayout

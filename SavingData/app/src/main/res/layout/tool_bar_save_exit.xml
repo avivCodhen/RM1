@@ -16,18 +16,20 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:paddingTop="5dp"
-        android:src="@drawable/ic_action_search_white"/>
+       />
 
 
     <TextView
+        android:layout_toRightOf="@+id/fragment_choose_back_iv"
         android:visibility="gone"
         android:textSize="18dp"
         android:textColor="@color/colorPrimary"
         android:id="@+id/save_exit_toolbar_optional_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
         android:paddingBottom="5dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
@@ -47,6 +49,34 @@
         android:paddingTop="15dp"
         android:src="@drawable/checkmark_96px_white" />
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/fragment_choose_back_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp"
+        android:text="Save"
+        android:src="@drawable/checkmark_96px_white" />
+
+    <TextView
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:id="@+id/fragment_choose_next_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:text="Next"
+        android:textSize="18sp"
+        android:padding="12dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:src="@drawable/delete_96px_white" />
+
     <ImageView
         android:layout_alignParentRight="true"
         android:id="@+id/fragment_choose_nosave_iv"
@@ -60,14 +90,16 @@
         android:src="@drawable/delete_96px_white" />
 
     <TextView
-        android:ellipsize="end"
-        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@+id/fragment_choose_back_iv"
         android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:ellipsize="end"
         android:id="@+id/optional_text"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="match_parent"
         android:elevation="10dp"
         android:padding="5dp"
+        android:layout_marginRight="10dp"
         android:maxLines="1"
         android:textSize="18dp"
         android:textColor="@color/colorPrimary"

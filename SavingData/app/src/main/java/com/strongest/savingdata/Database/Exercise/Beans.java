@@ -1,5 +1,7 @@
 package com.strongest.savingdata.Database.Exercise;
 
+import android.support.annotation.NonNull;
+
 import com.strongest.savingdata.BaseWorkout.Muscle;
 
 import java.io.Serializable;
@@ -66,21 +68,21 @@ public class Beans implements Serializable {
                 "Machine"
         };
         ArrayList<ArrayList<Beans>> matrix = new ArrayList<>();
-        for (int i = 0; i <acs.length+1 ; i++) {
+        for (int i = 0; i < acs.length + 1; i++) {
             matrix.add(new ArrayList<Beans>());
         }
-        for (int i = 0; i <original.size(); i++) {
+        for (int i = 0; i < original.size(); i++) {
             boolean flag = true;
             innerloop:
             for (int j = 0; j < acs.length; j++) {
-                if(original.get(i).getName().contains(acs[j])){
+                if (original.get(i).getName().contains(acs[j])) {
                     matrix.get(j).add(original.get(i));
                     flag = false;
                     break innerloop;
                 }
             }
-            if(flag)
-                matrix.get(matrix.size()-1).add(original.get(i));
+            if (flag)
+                matrix.get(matrix.size() - 1).add(original.get(i));
         }
         for (int i = 0; i < matrix.size(); i++) {
             for (int j = 0; j < matrix.get(i).size(); j++) {
@@ -170,8 +172,9 @@ public class Beans implements Serializable {
         return sortedList;
     }
 
+
     public static String parsePrimaryMuscle(String muscles) {
-        if(muscles != null){
+        if (muscles != null) {
 
             for (int i = 0; i < muscles.length(); i++) {
                 if (muscles.charAt(i) == '$') {
@@ -493,4 +496,6 @@ public class Beans implements Serializable {
     public void setValue(int value) {
         this.value = value;
     }
+
+
 }

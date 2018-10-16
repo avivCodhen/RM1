@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.strongest.savingdata.Controllers.LogDataAdapterOnClick;
@@ -21,7 +22,7 @@ public class LogDataAdapter extends RecyclerView.Adapter<LogDataAdapter.LogDataA
     private ArrayList<LogData> dates;
     private LogDataAdapterOnClick logDataAdapterOnClick;
 
-    public  LogDataAdapter(ArrayList<LogData> dates){
+    public LogDataAdapter(ArrayList<LogData> dates) {
 
         this.dates = dates;
     }
@@ -35,17 +36,20 @@ public class LogDataAdapter extends RecyclerView.Adapter<LogDataAdapter.LogDataA
 
     @Override
     public void onBindViewHolder(LogDataAdapterViewHolder holder, int position) {
-        LogData  l = dates.get(position);
+        LogData l = dates.get(position);
         String fullText;
-        if(l.time.equals("")){
+        if (l.time.equals("")) {
             fullText = l.date;
-        }else{
+            holder.arrowIV.setVisibility(View.GONE);
+        } else {
+            holder.itemView.setOnClickListener(v -> {
+                logDataAdapterOnClick.dateClicked(dates.get(position).full);
+            });
+            holder.arrowIV.setVisibility(View.VISIBLE);
+
             fullText = l.date + "," + l.time;
         }
         holder.tv.setText(fullText);
-        holder.itemView.setOnClickListener(v ->{
-            logDataAdapterOnClick.dateClicked(dates.get(position).full);
-        });
     }
 
     @Override
@@ -57,13 +61,17 @@ public class LogDataAdapter extends RecyclerView.Adapter<LogDataAdapter.LogDataA
         this.logDataAdapterOnClick = logDataAdapterOnClick;
     }
 
-    public static class LogDataAdapterViewHolder extends RecyclerView.ViewHolder{
+    public static class LogDataAdapterViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_date)
         TextView tv;
 
+        @BindView(R.id.arrow_log_data_iv)
+        ImageView arrowIV;
+
         @BindView(R.id.tv_time)
         TextView timeTV;
+
         public LogDataAdapterViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

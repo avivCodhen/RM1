@@ -7,6 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.strongest.savingdata.AModels.workoutModel.WorkoutsModel;
 import com.strongest.savingdata.AService.ProgramService;
@@ -64,25 +67,35 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void addFragmentToActivity(int id, Fragment f, String tag){
+    public void addFragmentToActivity(int id, Fragment f, String tag) {
 
         getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_left, R.anim.slide_out_right)
-                //.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left)
+        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                 .replace(id, f, tag)
                 .addToBackStack(tag)
                 .commit();
     }
 
-    public void addFragmentToActivityNoTransition(int id, Fragment f, String tag){
+    public void addFragmentToActivityNoTransition(int id, Fragment f, String tag) {
 
         getSupportFragmentManager().beginTransaction()
                 .replace(id, f, tag)
                 .addToBackStack(tag)
                 .commit();
     }
-    public SharedPreferences.Editor getPrefsEditor() {
-        return editor = getPrefs().edit();
+
+
+    public void closeKeyBoardOnClick() {
+        final ViewGroup viewGroup = (ViewGroup) ((ViewGroup) this
+                .findViewById(android.R.id.content)).getChildAt(0);
+
+        viewGroup.setOnTouchListener((par1,par2) -> {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    return true;
+                });
+
+
     }
 
     public DataManager getDataManager() {

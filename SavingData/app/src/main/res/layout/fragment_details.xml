@@ -25,11 +25,11 @@
 
 
         <android.support.design.widget.AppBarLayout
-            android:elevation="10dp"
             android:id="@+id/activity_exercise_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent">
+            android:background="@color/colorAccent"
+            android:elevation="10dp">
 
 
             <android.support.design.widget.CollapsingToolbarLayout
@@ -48,8 +48,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:background="@color/colorAccent"
-                    android:focusable="true"
                     android:elevation="1dp"
+                    android:focusable="true"
                     android:focusableInTouchMode="true"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -63,6 +63,8 @@
 
 
                         <TextView
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:id="@+id/textview_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -74,19 +76,19 @@
                             android:textSize="16dp"
                             android:textStyle="bold" />
 
-                       <!-- <Button
-                            android:id="@+id/logBtn"
-                            style="@style/Base.Widget.AppCompat.Button.Small"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_toLeftOf="@+id/toolbar_add_set_btn"
-                            android:backgroundTint="@color/orangeColor"
-                            android:text="LOG"
-                            android:textColor="@color/colorPrimary" />
--->
-                        <ImageView
+                        <!-- <Button
+                             android:id="@+id/logBtn"
+                             style="@style/Base.Widget.AppCompat.Button.Small"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_marginBottom="5dp"
+                             android:layout_marginTop="5dp"
+                             android:layout_toLeftOf="@+id/toolbar_add_set_btn"
+                             android:backgroundTint="@color/orangeColor"
+                             android:text="LOG"
+                             android:textColor="@color/colorPrimary" />
+ -->
+                        <!--<ImageView
 
                             android:id="@+id/toolbar_add_set_btn"
                             android:layout_width="50dp"
@@ -101,59 +103,22 @@
                             app:layout_collapseMode="pin"
 
                             />
-
+-->
                         <Button xmlns:app="http://schemas.android.com/apk/res-auto"
-                            android:padding="8dp"
-                            android:layout_toLeftOf="@+id/toolbar_add_set_btn"
-                            android:text="LOG"
                             android:id="@+id/toLog"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            style="@style/Widget.AppCompat.Button.Colored"
                             android:elevation="10dp"
-                            android:background="@color/colorPrimary"
+                            android:padding="8dp"
                             android:src="@drawable/icon_event_note_white_24dp"
-                            />
-
-
-
-                        <net.cachapa.expandablelayout.ExpandableLayout
-                            android:layout_below="@+id/toolbar_add_set_btn"
-                            android:id="@+id/youtube_expand_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:el_expanded="true">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_margin="10dp"
-                                android:orientation="horizontal">
-
-                                <Button
-                                    android:id="@+id/saveToLogBtn"
-                                    style="@style/Base.Widget.AppCompat.Button"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:backgroundTint="@color/orangeColor"
-                                    android:text="SAVE TO LOG"
-                                    android:textColor="@color/colorPrimary" />
-
-                                <Button
-                                    style="@style/Base.Widget.AppCompat.Button"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:backgroundTint="@color/colorGreenTry"
-                                    android:text="SAVE CHANGES"
-                                    android:textColor="@color/colorPrimary" />
-
-
-                            </LinearLayout>
-
-
-                        </net.cachapa.expandablelayout.ExpandableLayout>
+                            android:text="Log Data"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:textColor="@color/colorAccent"
+                            android:textAllCaps="false" />
 
 
                     </RelativeLayout>
@@ -174,26 +139,25 @@
 
 
                     <RelativeLayout
-                        android:layout_marginBottom="20dp"
-
                         android:id="@+id/statswrapper"
+
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp">
 
 
-                      <com.strongest.savingdata.MyViews.ExerciseStatsView
-                          android:layout_width="match_parent"
-                          android:layout_marginTop="5dp"
-                          android:id="@+id/stats"
-                          android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.ExerciseStatsView>
+                        <com.strongest.savingdata.MyViews.ExerciseStatsView
+                            android:id="@+id/stats"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"></com.strongest.savingdata.MyViews.ExerciseStatsView>
 
                         <android.support.v7.widget.RecyclerView
-                            android:layout_marginTop="20dp"
                             android:id="@+id/fragment_details_recycler_exercises"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/stats"
-                            android:visibility="invisible"></android.support.v7.widget.RecyclerView>
+                            android:layout_marginTop="20dp"></android.support.v7.widget.RecyclerView>
 
                     </RelativeLayout>
 
@@ -219,11 +183,12 @@
 
 
         <com.strongest.savingdata.MyViews.SmartEmptyView
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/youtube_expand_layout"
             android:id="@+id/fragment_exercise_details_smartemptyview"
-            android:layout_height="match_parent"></com.strongest.savingdata.MyViews.SmartEmptyView>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/youtube_expand_layout"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"></com.strongest.savingdata.MyViews.SmartEmptyView>
+
         <android.support.v7.widget.RecyclerView
 
             android:id="@+id/details_fragment_recyclerview"
@@ -278,15 +243,17 @@
 
 
     <net.cachapa.expandablelayout.ExpandableLayout
-        android:layout_width="match_parent"
-        app:el_expanded="false"
         android:id="@+id/exercise_detail_expandable_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_height="match_parent">
+        app:el_expanded="false">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <FrameLayout
                 android:id="@+id/sets_details_frame"
                 android:layout_width="match_parent"
@@ -294,13 +261,21 @@
 
             <FrameLayout
                 android:id="@+id/transparent_wrapper"
-                android:background="@color/transparent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></FrameLayout>
+                android:layout_height="match_parent"
+                android:background="@color/transparent"></FrameLayout>
         </LinearLayout>
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 
-
+    <com.strongest.savingdata.MyViews.MovableFloatingActionButton
+        android:id="@+id/exercise_detail_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="20dp"
+        android:src="@drawable/plus_48px"
+        app:fabSize="normal" />
 
 </RelativeLayout>

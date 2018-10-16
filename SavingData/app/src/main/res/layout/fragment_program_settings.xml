@@ -1,78 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
     android:clickable="true"
-    android:elevation="10dp"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.strongest.savingdata.MyViews.SaveExitToolBar
-        android:id="@+id/program_settings_toolbar"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_color"
+        android:clickable="true"
         android:orientation="vertical">
 
-
-        <TextView
+        <com.strongest.savingdata.MyViews.SaveExitToolBar
+            android:id="@+id/program_settings_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/colorPrimary"
-            android:gravity="center_vertical"
-            android:padding="6dp"
-            android:text="Program Title" />
+            android:layout_height="wrap_content"></com.strongest.savingdata.MyViews.SaveExitToolBar>
 
-        <RelativeLayout
-
-
-            android:padding="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_centerVertical="true"
-                android:id="@+id/program_settings_program_name_ED"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/program_title_edit_iv"
-                android:maxLines="1"
-                android:textSize="16sp" />
-
-            <ImageView
-
-                android:id="@+id/program_title_edit_iv"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:src="@drawable/ic_edit_black_18dp" />
-
-        </RelativeLayout>
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/colorPrimary"
-            android:gravity="center_vertical"
-            android:padding="6dp"
-            android:text="List Of Workouts" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/program_settings_recyclerview"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            ></android.support.v7.widget.RecyclerView>
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorPrimary"
+                android:gravity="center_vertical"
+                android:padding="6dp"
+                android:text="Program Title" />
+
+            <RelativeLayout
+
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <EditText
+                    android:id="@+id/program_settings_program_name_ED"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_toLeftOf="@+id/program_title_edit_iv"
+                    android:background="@color/background_color"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/program_title_edit_iv"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/ic_edit_black_18dp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorPrimary"
+                android:gravity="center_vertical"
+                android:padding="6dp"
+                android:text="List Of Workouts" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/program_settings_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
-
-</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/newWorkoutFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="15dp"
+        app:fabSize="normal"
+        android:src="@drawable/plus_48px" />
+</RelativeLayout>

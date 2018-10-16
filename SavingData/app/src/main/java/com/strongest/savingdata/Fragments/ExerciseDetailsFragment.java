@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -43,6 +44,7 @@ import com.strongest.savingdata.Database.Exercise.Beans;
 import com.strongest.savingdata.Database.LogData;
 import com.strongest.savingdata.Database.LogDataManager;
 import com.strongest.savingdata.Dialogs.LogModeDialog;
+import com.strongest.savingdata.Handlers.MaterialDialogHandler;
 import com.strongest.savingdata.LogDataActivity;
 import com.strongest.savingdata.MyViews.ExerciseStatsView;
 import com.strongest.savingdata.MyViews.LongClickMenu.LongClickMenuView;
@@ -68,9 +70,6 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     @BindView(R.id.stats)
     ExerciseStatsView stats;
 
-    @BindView(R.id.toolbar_add_set_btn)
-    ImageView toolbarAddSet;
-
     @BindView(R.id.details_fragment_recyclerview)
     RecyclerView recyclerView;
     @BindView(R.id.fragment_details_recycler_exercises)
@@ -84,6 +83,9 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     @BindView(R.id.transparent_wrapper)
     ViewGroup expandableTransparentWrapper;
 
+    @BindView(R.id.exercise_detail_fab)
+    FloatingActionButton addSetFab;
+
     MyExpandableAdapter adapter;
     ExerciseRecyclerAdapter exerciseAdapter;
     private Workout workout = new Workout();
@@ -95,9 +97,6 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     /*@BindView(R.id.exercise_info)
     View exerciseInfo;
 */
-    @BindView(R.id.youtube_expand_layout)
-    ExpandableLayout el;
-
 
     @BindView(R.id.toLog)
     Button saveToLogBtn;
@@ -143,7 +142,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_details, container, false);
         ButterKnife.bind(this, view);
-        //postponeEnterTransition();
+        //setOnBackPress(view, () -> getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE));
         return view;
     }
 
@@ -193,63 +192,31 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         longClickMenuView.instantiate(this);
 
 
-       /* if (exerciseProfile.getMuscle() != null) {
-            Muscle.MuscleUI mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
-        }*/
-        //startPostponedEnterTransition();
-
-
-        slideRight = AnimationUtils.loadAnimation(getContext(),
-                R.anim.slide_in_right);
-        slideTop = AnimationUtils.loadAnimation(getContext(),
-                R.anim.slide_in_up);
-
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                stats.setVisibility(View.VISIBLE);
-                stats.startAnimation(slideRight);
-                exerciseRecycler.setVisibility(View.VISIBLE);
-                exerciseRecycler.startAnimation(slideRight);
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView.startAnimation(slideTop);
-            }
-        }, 200);
-
-
         expandableTransparentWrapper.setOnClickListener(v -> {
             expandableLayout.collapse();
             getFragmentManager().popBackStack();
         });
-        /*exerciseInfo.setOnClickListener(info -> {
-            transitionToExerciseDetailsActivity(exerciseProfile.getExercise());
-        });
-*/
-     /*   saveToLogBtn.setOnClickListener(btnClicked -> {
-
-            LogModeDialog l = LogModeDialog.getInstacen(exerciseProfile);
-            l.show(getFragmentManager(), "dialog");
-           *//* if (!el.isExpanded()) {
-                showEnterLogModeDialog();
-            } else {
-                el.collapse();
-                exitLogMode();
-            }*//*
-        });
-*/
 
         saveToLogBtn.setOnClickListener(saveLog -> {
             // logDataManager.insert(exerciseProfile);
+            if (exerciseProfile.getExercise() != null) {
+                Intent i = new Intent(getContext(), LogDataActivity.class);
+                i.putExtra(LogDataActivity.EXERCISE, exerciseProfile);
+                i.putExtra(LogDataActivity.DATE, LogDataManager.getDateString());
+                startActivity(i);
+            } else {
+               showNoExerciseDialog();
+            }
 
-            Intent i = new Intent(getContext(), LogDataActivity.class);
-            i.putExtra(LogDataActivity.EXERCISE, exerciseProfile);
-            i.putExtra(LogDataActivity.DATE, LogDataManager.getDateString());
-            startActivity(i);
-            // addFragmentChild(getFragmentManager(), ExerciseLogDataFragment.getInstance("", exerciseProfile), "log");
         });
 
 
+    }
+
+    private void showNoExerciseDialog(){
+        MaterialDialogHandler.get()
+                .defaultBuilder(getContext(), "You did not choose any exercise to log data.", "")
+                .buildDialog().show();
     }
 
     private void initRecycler() {
@@ -259,19 +226,18 @@ public class ExerciseDetailsFragment extends BaseFragment implements
         recyclerView.setLayoutManager(setsLayoutManager);
 
         exerciseRecycler.setLayoutManager(lm2);
-        //recyclerView.setNestedScrollingEnabled(false);
 
         recyclerView.setAdapter(adapter);
         exerciseRecycler.setAdapter(exerciseAdapter);
-        recyclerView.setAlpha(0f);
         smartEmptyView
                 .setTitle("You haven't created any sets for this Exercise yet.")
                 .setBody("Click on the Plus Icon to add new sets.")
-                .setButtonText("Add A New Set")
+                .setButtonText("Add New Set")
+                .noImage()
                 .setUpWithRecycler(recyclerView, true, true)
                 .setImage(smartEmptyView.getRocketImage())
-                .setActionBtn(v -> toolbarAddSet.callOnClick())
-                .onCondition(exerciseProfile.getSets().size());
+                .setActionBtn(v -> addSetFab.callOnClick())
+                .onCondition(exerciseProfile.getSets().size() == 0);
 
     }
 
@@ -279,19 +245,14 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     private void initToolbar() {
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        // textview_title.setText( selectedExerciseViewModel.getParentWorkout().getWorkoutName());
         if (exerciseProfile.getExercise() != null) {
             textview_title.setText(exerciseProfile.getExercise().getName());
 
-            //used to put exercisename here
         }
-       /* if (exerciseProfile.getMuscle() != null) {
-            Muscle.MuscleUI mui = Muscle.provideMuscleUI(exerciseProfile.getMuscle());
-            icon.setImageResource(mui.getImage());
-        }*/
+
         toolbar.setTitle("");
 
-        toolbarAddSet.setOnClickListener(toolBarAddIcon -> {
+        addSetFab.setOnClickListener(toolBarAddIcon -> {
 
             selectedExerciseViewModel.getParentWorkout().getExerciseObserver().onChange(exerciseProfile, exercisePosition);
             WorkoutsModel.ListModifier.OnWith(workout, setsItemAdapter)
@@ -307,9 +268,6 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     }
 
     private void initAdapters() {
-        //workout = workoutsViewModel.workoutsModel.exerciseToList(ep);
-
-
         exerciseAdapter = new ExerciseRecyclerAdapter(
                 getContext(),
                 new ArrayList<>(),
@@ -326,7 +284,7 @@ public class ExerciseDetailsFragment extends BaseFragment implements
 
     }
 
-    private void transitionToExerciseDetailsActivity(Beans exercise) {
+    private void transitionToExerciseDetailsActivity(PLObject.ExerciseProfile exerciseProfile) {
         Intent i = new Intent(getContext(), ExerciseDetailsActivity.class);
         i.putExtra("exercise", exerciseProfile);
        /* Pair<View, String>[] pairs = new Pair[2];
@@ -436,44 +394,13 @@ public class ExerciseDetailsFragment extends BaseFragment implements
     }
 
     @Override
-    public void transitionToExerciseInfo(Beans exercise) {
-        transitionToExerciseDetailsActivity(exercise);
-    }
+    public void transitionToExerciseInfo(PLObject.ExerciseProfile exercise) {
+        if(exercise.getExercise() == null){
+            showNoExerciseDialog();
+        }else{
 
-    private void showEnterLogModeDialog() {
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(getContext())
-                .title("Log Mode")
-                .content("On entering Log Mode, any changes you make will not apply to the program." +
-                        " To save, click Save To Program. ")
-                .positiveText("Enter")
-                .negativeText("Cancel");
-
-        if (!workoutsViewModel.getDataManager().getPrefs().getString(DONT_DISPLAY_CHECKBOX, "").equals(DONT_DISPLAY_CHECKBOX)) {
-            builder.checkBoxPromptRes(R.string.log_mode_checkbox, false, (compoundButton, b) -> {
-                if (b == true)
-                    workoutsViewModel.getDataManager().getPrefsEditor().putString(DONT_DISPLAY_CHECKBOX, DONT_DISPLAY_CHECKBOX);
-            });
-
+            transitionToExerciseDetailsActivity(exercise);
         }
-
-        MaterialDialog dialog = builder.build();
-        dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener((positive) -> {
-            el.toggle();
-            enterLogMode();
-            dialog.dismiss();
-        });
-        dialog.show();
-
-    }
-
-    private void enterLogMode() {
-        exerciseProfile = new PLObject.ExerciseProfile(selectedExerciseViewModel.getSelectedExercise().getValue());
-        getList();
-    }
-
-    private void exitLogMode() {
-        getExercise();
-        getList();
     }
 
     private void getExercise() {
@@ -496,7 +423,6 @@ public class ExerciseDetailsFragment extends BaseFragment implements
                     adapter.setExArray(workout.getExArray());
                     adapter.notifyDataSetChanged();
 
-                    MyJavaAnimator.fadeIn(300, recyclerView);
 
                 }
             });

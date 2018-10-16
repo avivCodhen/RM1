@@ -161,6 +161,16 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
             setVisibility(VISIBLE);
             enableDisableBtns();
 
+        } else {
+            int pos = selectedPLObjects.indexOf(plObject);
+            removeVisibility(pos, pos + 1);
+            selectedPLObjects.remove(plObject);
+            highlightedViews.remove(vh);
+            selectedNum.setText(highlightedViews.size() + "");
+            if (highlightedViews.size() == 0) {
+                onHideMenu();
+            }
+
         }
 
     }
@@ -197,14 +207,13 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
 
             }
         });
-        if (highlightedViews.size() != 0) {
-            removeVisibility();
+
+            removeVisibility(0, highlightedViews.size());
             highlightedViews.clear();
             currentType = null;
             currentVH = null;
             isOn = false;
             selectedPLObjects.clear();
-        }
         setVisibility(GONE);
 
 
@@ -288,8 +297,8 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
 
     }
 
-    public void removeVisibility() {
-        for (int i = 0; i < highlightedViews.size(); i++) {
+    public void removeVisibility(int start, int length) {
+        for (int i = start; i < length; i++) {
             int color = highlightedViews.get(i) instanceof MyExpandableAdapter.MuscleViewHolder ? R.color.background_color : R.color.colorPrimary;
             highlightedViews.get(i).getMainLayout().setBackgroundColor(
                     ContextCompat.getColor(getContext(), color)
@@ -335,7 +344,7 @@ public class LongClickMenuView extends LinearLayout implements View.OnClickListe
 
     public boolean objectIsSelected(PLObject plObject) {
 
-        if(selectedPLObjects.indexOf(plObject) != -1){
+        if (selectedPLObjects.indexOf(plObject) != -1) {
             return true;
         }
         return false;

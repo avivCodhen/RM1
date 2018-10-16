@@ -70,7 +70,7 @@ public class MaterialDialogHandler {
     }
 
     public MaterialDialogHandler addInput(int maxLength, int inputType, String text, MaterialDialog.InputCallback inputCallback) {
-        builder.input("", text, inputCallback).inputType(inputType).alwaysCallInputCallback();
+        builder.input("", text, inputCallback).inputType(inputType);
         return this;
 
     }

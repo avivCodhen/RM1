@@ -11,7 +11,7 @@ android {
     dataBinding.enabled = true
     defaultConfig {
         multiDexEnabled true
-        applicationId "com.strongest.savingdata"
+        applicationId 'com.strongest.rm1'
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 8
@@ -43,18 +43,13 @@ android {
         google()
         mavenCentral()
     }
-
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-
     def lifecycle_version = "1.1.1"
     def autoValueVersion = "1.5.1"
     def autoValueMoshiVersion = "0.4.5"
-
     dependencies {
         implementation fileTree(dir: 'libs', include: ['*.jar'])
         androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -174,7 +169,6 @@ android {
 
         implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
     }
-
     configurations.all {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             def requested = details.requested
@@ -184,6 +178,8 @@ android {
                 }
             }
         }
+    }
+    productFlavors {
     }
 }
 repositories {

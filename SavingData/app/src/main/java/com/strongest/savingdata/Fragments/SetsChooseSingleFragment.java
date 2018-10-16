@@ -59,19 +59,25 @@ public class SetsChooseSingleFragment extends BaseFragment implements OnSingleCh
     public static final String SETS_CHOOSE_FRAGMENT = "setsfragment";
 
     @BindView(R.id.choose_sets_rep_tv)
-    TextView reps1TV;
+    EditText reps1ED;
 
     @BindView(R.id.choose_sets_reps_cb)
     CheckBox repsToCB;
 
     @BindView(R.id.choose_sets_reps_range_et)
-    TextView reps2TV;
+    EditText reps2ED;
 
     @BindView(R.id.choose_sets_rest_sec_tv)
-    TextView secTV;
+    EditText secED;
 
     @BindView(R.id.choose_sets_rest_min_tv)
-    TextView minTV;
+    EditText minED;
+
+    @BindView(R.id.seconds_wrapper)
+    ViewGroup secondsWrapper;
+
+    @BindView(R.id.minutes_wrapper)
+    ViewGroup minutesWrapper;
 
     @BindView(R.id.fragment_sets_choose_recycler_repetitions)
     RecyclerView mRepRecycler;
@@ -93,8 +99,19 @@ public class SetsChooseSingleFragment extends BaseFragment implements OnSingleCh
     @BindView(R.id.set_edit_saveExitToolbar)
     SaveExitToolBar saveExitToolBar;
 
-    @BindView(R.id.apply_settings_for_allsets_btn)
-    Button applyAll;
+    @BindView(R.id.checkbox_reps)
+    CheckBox repsCB;
+    @BindView(R.id.checkbox_rest)
+    CheckBox restCB;
+
+    @BindView(R.id.checkbox_weight)
+    CheckBox weightCB;
+
+    @BindView(R.id.checkbox_superset)
+    CheckBox supersetCB;
+
+    @BindView(R.id.checkbox_dropset)
+    CheckBox dropsetCB;
 
     SingleChoiceAdapter mRepAdapter, mRestAdapter;
 
@@ -145,7 +162,8 @@ public class SetsChooseSingleFragment extends BaseFragment implements OnSingleCh
         guard(setsPLObject);
         exerciseSet = new ExerciseSet(setsPLObject.getExerciseSet());
         exerciseProfile = selectedSetViewModel.getSelectedExercise();
-        setUpMainViewForCircularAnimation(v);
+
+        setOnBackPress(v, ()->closeKeyBoard());
         return v;
     }
 
@@ -157,7 +175,6 @@ public class SetsChooseSingleFragment extends BaseFragment implements OnSingleCh
     }
 
     private void initViews(View v) {
-        makeRevealAnimation(300, null);
         RecyclerView.LayoutManager lmRep = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         RecyclerView.LayoutManager lmRest = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
@@ -187,62 +204,28 @@ public class SetsChooseSingleFragment extends BaseFragment implements OnSingleCh
 
         initWeight();
 
-        if (setsPLObject.getType() != WorkoutLayoutTypes.SetsPLObject) {
-            applyAll.setVisibility(View.GONE);
-        } else {
-            applyAll.setOnClickListener(view -> applyForAll(view));
-        }
 
     }
 
     private void initWeight() {
         currentWeightTV.setText(exerciseSet.getWeight() + "");
-        currentWeightTV.setOnEditorActionListener(new DoneOnEditorActionListener());
-        /*currentWeightTV.setOnClickListener(v -> {
-            MaterialDialogHandler.get()
-                    .showInputDialog(getContext(),
-                            InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                            currentWeightTV.getText().toString(),
-                            "Change Weight",
-                            ((dialog, input) -> {
-                                currentWeightTV.setText(input.toString());
-
-                            }));
-        });*/
+        //currentWeightTV.setOnEditorActionListener(new DoneOnEditorActionListener());
 
     }
 
     private void initRest() {
         String[] rests = exerciseSet.getRest().split(":");
-        minTV.setText(rests[0]);
+        minED.setText(rests[0]);
         if (rests.length > 1) {
-            secTV.setText(rests[1]);
+            secED.setText(rests[1]);
         }
 
-        secTV.setOnClickListener(sectv -> {
-            MaterialDialogHandler.get()
-                    .showInputDialog(getContext(),
-                            InputType.TYPE_CLASS_NUMBER,
-                            2,
-                            secTV.getText().toString(),
-                            "Change seconds",
-                            ((dialog, input) -> {
-                                secTV.setText(input.toString());
-
-                            }));
+        secondsWrapper.setOnClickListener(sectv -> {
+            secED.callOnClick();
         });
 
-        minTV.setOnClickListener(mintv -> {
-            MaterialDialogHandler.get()
-                    .showInputDialog(getContext(),
-                            InputType.TYPE_CLASS_NUMBER,
-                            2,
-                            minTV.getText().toString(),
-                            "Change minutes",
-                            ((dialog, input) -> {
-                                minTV.setText(input.toString());
-
-                            }));
+        minutesWrapper.setOnClickListener(mintv -> {
+            minED.callOnClick();
         });
     }
 
@@ -251,46 +234,22 @@ public class SetsChooseSingleFragment extends BaseFragment implements OnSingleCh
         if (exerciseSet.getRep().split("-").length > 1) {
             repsToCB.setChecked(true);
         } else {
-            reps2TV.setAlpha(0.5f);
-            reps2TV.setEnabled(false);
+            reps2ED.setAlpha(0.5f);
+            reps2ED.setEnabled(false);
             repsToCB.setChecked(false);
         }
         String[] reps = exerciseSet.getRep().split("-");
-        reps1TV.setText(reps[0]);
+        reps1ED.setText(reps[0]);
         if (reps.length > 1) {
 
-            reps2TV.setText(reps[1]);
+            reps2ED.setText(reps[1]);
         } else {
-            reps2TV.setText("10");
+            reps2ED.setText("10");
 
         }
 
-        reps1TV.setOnClickListener(repClickedView -> {
-            MaterialDialogHandler.get()
-                    .showInputDialog(getContext(),
-                            InputType.TYPE_CLASS_NUMBER,
-                            2,
-                            reps1TV.getText().toString(),
-                            getString(R.string.change_repetitions_title),
-                            ((dialog, input) -> {
-                                reps1TV.setText(input.toString());
-
-                            }));
-        });
-
         repsToCB.setOnCheckedChangeListener(this);
 
-        reps2TV.setOnClickListener(repClickedView -> {
-            MaterialDialogHandler.get()
-                    .showInputDialog(getContext(),
-                            InputType.TYPE_CLASS_NUMBER,
-                            2,
-                            reps1TV.getText().toString(),
-                            getString(R.string.change_repetitions_title),
-                            ((dialog, input) -> {
-                                reps2TV.setText(input.toString());
-                            }));
-        });
     }
 
     private void initToolbar() {
@@ -298,34 +257,35 @@ public class SetsChooseSingleFragment extends BaseFragment implements OnSingleCh
                 .setOptionalText("Edit Set");
 
         this.saveExitToolBar.setSaveButton((v) -> {
-
+            closeKeyBoard();
             String reps1 = "0";
-            if (!reps1TV.getText().toString().equals("")) {
-                reps1 = reps1TV.getText().toString();
+            if (!reps1ED.getText().toString().equals("")) {
+                reps1 = reps1ED.getText().toString();
                 if (checkZeroRepAtStart(reps1)) {
                     reps1 = reps1.substring(1);
                 }
             }
 
             if (repsToCB.isChecked()) {
-                String reps2 = reps2TV.getText().toString();
-                    if(checkZeroRepAtStart(reps2)){
-                        reps2 = reps2.substring(1);
-                    }
-                    reps1 = reps1+"-"+reps2;
+                String reps2 = reps2ED.getText().toString();
+                if (checkZeroRepAtStart(reps2)) {
+                    reps2 = reps2.substring(1);
+                }
+                reps1 = reps1 + "-" + reps2;
             }
 
             exerciseSet.setRep(reps1);
 
 
             String rest = "00";
-            if (!minTV.getText().toString().equals("")) {
-                rest = minTV.getText().toString() + ":";
+            if (!minED.getText().toString().equals("")) {
+                rest = minED.getText().toString();
             }
-            if (secTV.getText().toString().equals("")) {
+            rest += ":";
+            if (secED.getText().toString().equals("")) {
                 rest += "00";
             } else {
-                rest += secTV.getText().toString();
+                rest += secED.getText().toString();
             }
 
             exerciseSet.setRest(rest);
@@ -338,15 +298,16 @@ public class SetsChooseSingleFragment extends BaseFragment implements OnSingleCh
 
             setsPLObject.setExerciseSet(exerciseSet);
             selectedSetViewModel.modifySetSelected(exerciseSet);
-            exitRevealAnimation(r -> getFragmentManager().popBackStack());
+            applyForAll();
+            getFragmentManager().popBackStack();
         });
 
         this.saveExitToolBar.setCancelButton(v -> exitRevealAnimation(r -> getFragmentManager().popBackStack()));
     }
 
-    public boolean checkZeroRepAtStart(String rep){
-        if(rep.charAt(0) == '0' && rep.length() > 1){
-         return true;
+    public boolean checkZeroRepAtStart(String rep) {
+        if (rep.charAt(0) == '0' && rep.length() > 1) {
+            return true;
         }
         return false;
     }
@@ -385,11 +346,38 @@ public class SetsChooseSingleFragment extends BaseFragment implements OnSingleCh
      * this is a function to provide "apply all" functionality where
      * on button press, the data is transfered to all the sets
      */
-    private void applyForAll(View v) {
+    private void applyForAll() {
         for (PLObject.SetsPLObject set : exerciseProfile.getSets()) {
-            set.setExerciseSet(exerciseSet);
+            apploSettingsForSet(set);
+            if (supersetCB.isChecked()) {
+                for (PLObject.SetsPLObject superset : set.superSets) {
+                    apploSettingsForSet(superset);
+                }
+            }
+
+            if (dropsetCB.isChecked()) {
+                for (PLObject.SetsPLObject intraSet : set.intraSets) {
+                    apploSettingsForSet(intraSet);
+                }
+            }
+
         }
-        cancelAndToast(v);
+    }
+
+    private void apploSettingsForSet(PLObject.SetsPLObject set) {
+        if (repsCB.isChecked()) {
+            set.getExerciseSet().setRep(exerciseSet.getRep());
+        }
+
+        if (restCB.isChecked()) {
+            set.getExerciseSet().setRest(exerciseSet.getRest());
+
+        }
+
+        if (weightCB.isChecked()) {
+            set.getExerciseSet().setWeight(exerciseSet.getWeight());
+        }
+
     }
 
 
@@ -466,11 +454,11 @@ public class SetsChooseSingleFragment extends BaseFragment implements OnSingleCh
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if (!b) {
-            reps2TV.setEnabled(false);
-            reps2TV.setAlpha(0.5f);
+            reps2ED.setEnabled(false);
+            reps2ED.setAlpha(0.5f);
         } else {
-            reps2TV.setEnabled(true);
-            reps2TV.setAlpha(1f);
+            reps2ED.setEnabled(true);
+            reps2ED.setAlpha(1f);
         }
     }
 }
